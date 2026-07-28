@@ -78,3 +78,35 @@ o  Configuring BMad Core Configuration
 `报类似Could not resolve stable tag for 'xxx',是GitHub API 限流，这里需要设置GITHUB_TOKEN，设置流程直接问AI`
 
 设置`GITHUB_TOKEN的终端和安装BMAD的终端需要是同一个，比如你在powershell里设置的，也要在powershell里安装，cmd同理`
+
+# 基础使用
+
+官方文档：<https://docs.bmad-method.org/zh-cn/tutorials/getting-started/>
+
+## 命名智能体
+
+说”嘿 Mary，咱们来头脑风暴”，Mary 就激活了。然后她跳过菜单，直接进入头脑风暴。如果说的不够清晰，会显示菜单让你选择使用哪一个skill
+
+调用命名智能体时的步骤如下
+
+1. **解析智能体配置** — 通过 Python 解析器（使用 stdlib `tomllib`）将内置 `customize.toml` 与团队覆盖和个人覆盖合并
+2. **执行前置步骤** — 团队配置的任何预处理行为
+3. **采用人设** — 硬编码身份加上自定义的角色、沟通风格、原则
+4. **加载持久化事实** — 组织规则、合规说明，可通过 `file:` 前缀加载文件（如 `file:{project-root}/docs/project-context.md`）
+5. **加载配置** — 用户名、沟通语言、输出语言、产物路径
+6. **打招呼** — 个性化问候，使用配置的语言，带上智能体的 emoji 前缀让你一眼认出谁在说话
+7. **执行后置步骤** — 团队配置的任何问候后设置
+8. **分发或展示菜单** — 如果你的开场消息能匹配某个菜单项，直接执行；否则展示菜单等待输入
+
+## 核心文件夹
+
+安装后每个文件夹的作用
+
+## 运行机制
+
+运行机制，\_bmad文件夹下与每一个skill的关系
+
+<br />
+
+<br />
+

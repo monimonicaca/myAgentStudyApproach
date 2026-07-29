@@ -85,6 +85,8 @@ o  Configuring BMad Core Configuration
 
 ## 命名智能体
 
+### 定义
+
 概念解释：一个可辨识的身份，把一组相关技能包装在统一的语气、原则和视觉标识下，目录名以 `bmad-agent-*` 开头的技能。
 
 以下是内置的一些命名智能体，当然也可以自己设置自定义智能体：
@@ -98,11 +100,13 @@ o  Configuring BMad Core Configuration
 | 🏗️ Winston，系统架构师 | 方案设计 | 技术架构、一致性检查                   |
 | 💻 Amelia，高级工程师   | 实现   | Story 执行、快速开发、代码评审、Sprint 规划 |
 
+### 命名智能体定义文档理解
+
 当我们下达如下命令”嘿 Mary，咱们来头脑风暴”，Mary 就激活了。然后她跳过菜单，直接进入头脑风暴。如果说的不够清晰，会显示菜单让你选择使用哪一个skill。
 
-当我们去看BMAD安装后的目录会发现，Mary这个角色对应的文档在.agents/skills/bmad-agent-analyst下，也就是说Mary也是一个skill。
+当我们去看BMAD安装后的目录会发现，Mary这个角色对应的文档在.agents/skills/bmad-agent-analyst下，也就是说Mary也是一个skill。这个目录下有customize.toml和SKILL.md。
 
-这个目录下有customize.toml和SKILL.md。打开customize.toml，会看见以下字段，它们定义了这个skill的“人设”。包括它的名字，能力以及能力对应的skill。通过这个AI就可以根据你的命令选择合适的skill或者是在终端显示可选的skill菜单。
+打开customize.toml，会看见以下字段，它们定义了这个skill的“人设”。包括它的名字，能力以及能力对应的skill。通过这个AI就可以根据你的命令选择合适的skill或者是在终端显示可选的skill菜单。注意这是一个可编辑文档，所以后续这个角色的功能是可以扩展的。
 
 ```TOML
 [agent]
@@ -175,9 +179,13 @@ description = "Analyze an existing project to produce documentation for human an
 skill = "bmad-document-project"
 ```
 
-那么AI是如何知道Mary对应的是哪一个skill呢？这主要依赖于\_bmad/config.toml文件
+SKILL.md就是用于定义"Mary"的工作流的，跟普通的SKILL.md文档没什么区别。
 
-调用命名智能体时的步骤如下
+### 调用时做了什么
+
+那么AI是如何知道Mary对应的是哪一个skill呢？这主要依赖于\_bmad/config.toml文件，这里面定义了BMAD method的配置，包括当前项目名，命名智能体和skill之间的对应关系，以及安装的modules。通过这个文件，AI就可以知道当你向'Mary'下达命令时，它应该去调用哪一个skill。
+
+调用命名智能体时的具体步骤如下
 
 1. **解析智能体配置** — 通过 Python 解析器（使用 stdlib `tomllib`）将内置 `customize.toml` 与团队覆盖和个人覆盖合并
 2. **执行前置步骤** — 团队配置的任何预处理行为

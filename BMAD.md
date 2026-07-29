@@ -217,6 +217,12 @@ SKILL.md就是用于定义"Mary"的工作流的，跟普通的SKILL.md文档没�
 7. **执行后置步骤** — 团队配置的任何问候后设置，也就是customize.toml中的activation\_steps\_append字段
 8. **分发或展示菜单** — 如果你的开场消息能匹配某个菜单项，直接执行；否则展示菜单等待输入
 
+<br />
+
+**1、注意：通过上文可以知道，某些skill是被定义在一个角色比如"mary"的人设文档的menu中的，所以你通过唤醒Mary可以调用某些skill，但是如果skill没有被加入到menu中，那么就需要通过/skill-name(codex中)的方式使用某一个skill。**
+
+**2、启发：根据Mary的路径，我们可以自定义一个角色，这个角色的skill目录要放在本地，不要放在.agent/skills目录下，放在这里重新安装BMAD时可能会被覆盖，然后将其软链接到.agent/skills下。在这个skill中定义好toml文件和md文件，和Mary一样，然后在\_bmad/config.toml中定义好这个角色对应的skill即可。这里需要注意，并不是想当然的在\_bmad/config.user.toml中定义，它是由安装器维护，从每个模块的 module.yaml 重建**
+
 ## 核心文件夹
 
 安装后每个文件夹的作用

@@ -185,15 +185,36 @@ SKILL.md就是用于定义"Mary"的工作流的，跟普通的SKILL.md文档没�
 
 那么AI是如何知道Mary对应的是哪一个skill呢？这主要依赖于\_bmad/config.toml文件，这里面定义了BMAD method的配置，包括当前项目名，命名智能体和skill之间的对应关系，以及安装的modules。通过这个文件，AI就可以知道当你向'Mary'下达命令时，它应该去调用哪一个skill。
 
-调用命名智能体时的具体步骤如下
+调用命名智能体时的具体步骤如下，其实就是SKILL.md文档（这里以Mary为例）：
 
-1. **解析智能体配置** — 通过 Python 解析器（使用 stdlib `tomllib`）将内置 `customize.toml` 与团队覆盖和个人覆盖合并
-2. **执行前置步骤** — 团队配置的任何预处理行为
+1. **解析智能体配置** — 根据SKILL.md 中的工作流，第一步就是获得Mary的人设，运行python脚本将内置 `customize.toml` 与团队覆盖和个人覆盖合并。
+   ```
+   Run: python3 {project-root}/_bmad/scripts/resolve_customization.py --skill {skill-root} --key agent
+   ```
+   这并不意味着必须安装python，继续往下读会看到如果脚本运行失败，直接按顺序读取配置文件即可。
+   ```
+   1.
+   {skill-root}/customize.toml — defaults
+   2.
+   {project-root}/_bmad/custom/{skill-name}.toml — team overrides
+   3.
+   {project-root}/_bmad/custom/{skill-name}.user.toml — personal overrides
+   ```
+   对于Mary来说，人设配置文件的读取顺序如下，因为是覆盖合并，所以**个人自定义的人设优先级最高，其次是团队，最后才是官方**。也就是说，如果需要更改人设需要在这个文件project-name/\_bmad/custom/bmad-agent-analyst.user.toml或者project-name/\_bmad/custom/bmad-agent-analyst.toml下更改，虽然直接在bmad-agent-analyst/customize.toml中也可以更改，但是需要注意的是，**如果重新安装BMAD，这个文件会被覆盖。**
+   ```
+   1.
+   bmad-agent-analyst/customize.toml — defaults
+   2.
+   project-name/_bmad/custom/bmad-agent-analyst.toml — team overrides
+   3.
+   project-name/_bmad/custom/bmad-agent-analyst.user.toml — personal overrides
+   ```
+2. **执行前置步骤** — 团队配置的任何预处理行为，也就是customize.toml中的activation\_steps\_prepend字段
 3. **采用人设** — 硬编码身份加上自定义的角色、沟通风格、原则
 4. **加载持久化事实** — 组织规则、合规说明，可通过 `file:` 前缀加载文件（如 `file:{project-root}/docs/project-context.md`）
 5. **加载配置** — 用户名、沟通语言、输出语言、产物路径
 6. **打招呼** — 个性化问候，使用配置的语言，带上智能体的 emoji 前缀让你一眼认出谁在说话
-7. **执行后置步骤** — 团队配置的任何问候后设置
+7. **执行后置步骤** — 团队配置的任何问候后设置，也就是customize.toml中的activation\_steps\_append字段
 8. **分发或展示菜单** — 如果你的开场消息能匹配某个菜单项，直接执行；否则展示菜单等待输入
 
 ## 核心文件夹

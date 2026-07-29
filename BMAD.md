@@ -1,5 +1,7 @@
 # 前言
 
+<https://steinslab.io/archives/3168>
+
 流程与敏捷开发强相关
 
 在每一个阶段给AI一个“人设”，让AI变成这个阶段的专业人士然后产出相应的文档或者代码
@@ -225,11 +227,22 @@ SKILL.md就是用于定义"Mary"的工作流的，跟普通的SKILL.md文档没�
 
 ## 核心文件夹
 
-安装后每个文件夹的作用
+- `_bmad\core`
+- `_bmad\bmm`
+- `_bmad\bmb`
+- `_bmad\cis`
+- `_bmad\tea`
+- `_bmad\wds`
 
-## 运行机制
-
-运行机制，\_bmad文件夹下与每一个skill的关系
-
-<br />
+  以上是在安装的时候选择要安装的module，里面的文件分别是用于定义module的相关属性和用于说明这个模块都有什么skill的
+- `_bmad\custom`
+  - **自定义配置区**：放你自己的覆盖配置和本地定制内容，不影响原始模块结构，上文有。
+- `_bmad\scripts`
+  - **辅助脚本**：用于解析配置、处理自定义项、生成或读取 BMad 相关数据。
+- `_bmad\_config`
+  - **安装/索引清单**：保存整个 BMad 安装的总配置、文件索引、技能索引和模块清单。
+- `_bmad\config.toml`
+  - **基础配置文件**：BMad 的主配置,上文有。
+- `_bmad\config.user.toml`
+  - 上文有
 

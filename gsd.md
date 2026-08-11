@@ -1,0 +1,1 @@
+https://github.com/open-gsd/gsd-core/blob/next/docs/zh-CN/tutorials/your-first-project.md

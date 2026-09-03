@@ -29,25 +29,25 @@ These files live in the same directory as this SKILL.md. Read them directly duri
 
 ## 4. UX Document Optimization Process
 
-Optimize a BMAD-generated UX document by following these steps. At each stage, use the Read tool to read the relevant rule file — do not rely on memory or summaries.
+Optimize a BMAD-generated UX document by following these steps. Use the Read tool to read the rule files — do not rely on memory or summaries. The five rule files are independent and compact; you may Read all of them once before step 1, then treat each step's references below as a verification checklist.
 
-1. **Identify the page type.** Determine whether the page is an auth/single-task screen (Mode A) or a main-app screen (Mode B). Read `page_composing_rules.md` (§0 "Layout Scope & Modes") to classify it correctly.
+1. **Identify the page type.** Read `page_composing_rules.md` (§0 "Layout Scope & Modes"). The page is Mode A only if it appears in the Mode A list (splash, captcha, forgot password); everything else is Mode B. If the source document misclassifies the page, note the correction first — the classification determines which sections every later step applies.
 
 2. **Verify overall visual identity.** Confirm the page matches the product personality and visual style. Read `rules.md` (§1 Visual Identity, §2 Visual Style, §7 Design Principles).
 
-3. **Check layout & composition.** Validate the structural composition — columns, cards per screen, alignment, content width, negative space, and vertical flow. Read `page_composing_rules.md` (the sections for the active mode) and `shared_page_composition_rules.md` for cross-page consistency and the spacing standard.
+3. **Check layout & composition.** Validate the structural composition — columns, cards per screen, alignment, content width, negative space, and vertical flow. Read `page_composing_rules.md`: for Mode A, §14 (Auth / Single-Task Screen Layout); for Mode B, §1 (Vertical Breathing Flow), §2 (Island Card Composition), §3 (Card Size System), §4 (Negative Space Principle), §5 (Single Visual Focus Rule), §7 (Alignment Rules), §8 (Header Composition Rules), §10 (Data Visualization Composition), §11 (Scrolling Structure). Also read `shared_page_composition_rules.md` for the cross-page spacing standard (24dp screen horizontal padding; 16dp card spacing and internal padding).
 
-4. **Check color usage.** Verify backgrounds, brand/accent/semantic colors, gradients, and emotion mapping against the design. Read `color_rules.md` (all sections).
+4. **Check color usage.** Verify backgrounds, brand/accent/semantic colors, gradients, and emotion mapping against the design. Read `color_rules.md` (all sections). Pay particular attention to §1.6 (On Primary text is `#252332` by default and `#FFFFFF` only when pressed; Error is `#B3261A`) and §3 (Emotion-Colour Mapping) whenever the page visualizes mood or emotion data.
 
 5. **Check typography.** Confirm font sizes, weights, and hierarchy. Read `rules.md` (§3 Typography System).
 
-6. **Check components.** For each card, button, text field, and progress indicator, verify shape, size, padding, and state behavior. Read `components_styles.md` (the relevant component section).
+6. **Check components.** For each card, button, text field, and progress indicator, verify shape, size, padding, and state behavior. Read `components_styles.md` (the relevant component section). Frequent misses to verify explicitly: card corner radius 24–28dp (28–32dp for hero cards), button 46dp high with 22dp radius and pill shape, progress indicator 20dp with 2dp stroke.
 
-7. **Check interaction & motion.** Verify animations, transitions, and loading behavior. Read `rules.md` (§6 Motion and Interaction Style).
+7. **Check interaction & motion.** Verify animations, transitions, and loading behavior. Read `rules.md` (§6 Motion and Interaction Style). Frequent misses: custom slide/scale transitions should be removed in favour of Compose Navigation defaults; entrance animations use fade-in opacity `tween(400ms)` with staggered delays.
 
-8. **Check restrictions.** Ensure none of the "must avoid" patterns are present and that error/required-field highlighting is correct. Read `rules.md` (§8 Restrictions & Avoidances) and `components_styles.md` (OutlinedTextField error state).
+8. **Check restrictions.** Ensure none of the "must avoid" patterns are present and that error/required-field highlighting is correct. Read `rules.md` (§8 Restrictions & Avoidances), `components_styles.md` (OutlinedTextField error state — errors must NOT be downplayed with grey or secondary text), and the "Avoid" lists in `page_composing_rules.md` (§10 dense dashboards / competing metrics, §11 nested scroll containers) plus `shared_page_composition_rules.md` (avoid dense dashboard-style layouts).
 
-9. **Output.** Produce the corrected UX document. Where a rule was applied, cite the file (and section) that was read so the change is traceable to its authority.
+9. **Output.** Produce two artifacts. First, a violation summary listing every violation found with its location in the source document and its rule source (file + section). Second, the corrected UX document. Where a rule was applied, cite it inline as `[Source: <file> §<section>]` so every change is traceable to its authority.
 
 ## 5. Design Checklist
 
@@ -63,6 +63,10 @@ Check each item against the cited rule file when generating pages.
 - Do buttons and text fields follow the component specs (shape, height, states)? — `components_styles.md`
 - Are errors and required-field misses highlighted prominently? — `rules.md` §8, `components_styles.md`
 - Are the "must avoid" patterns (multi-column, dense, harsh shadows, sharp corners) absent? — `rules.md` §8
+- Is there exactly one scrollable column with no nested scroll containers? — `page_composing_rules.md` §11
+- Is data visualization a single centred emotional element (feeling first, data second) instead of a dense chart? — `page_composing_rules.md` §10
+- Are header actions minimal and secondary, with no competing buttons? — `page_composing_rules.md` §8
+- Does button text use the On Primary colour (`#252332` default, `#FFFFFF` pressed)? — `color_rules.md` §1.6
 
 ## 6. Common Violation Examples and Corrections
 
@@ -85,3 +89,18 @@ Check each item against the cited rule file when generating pages.
 - **Violation:** An empty required field is highlighted with grey border and secondary-text helper text.
 - **Correction:** Thicken border to 2dp with error color, turn label/placeholder red, and show the specific missing reason.
 - **Rule source:** `components_styles.md` (OutlinedTextField error state), `rules.md` §8.
+
+### Example 5 — Dashboard anti-pattern on a Mode B page
+- **Violation:** Equal-width two-column dashboard grid, multiple equal-weight metric cards competing for attention, header crowded with action buttons.
+- **Correction:** Single main column with a hero focal point at 35–65% screen height, Primary/Secondary/Supporting card hierarchy, minimal secondary header actions.
+- **Rule source:** `page_composing_rules.md` §1, §2, §3, §5, §8.
+
+### Example 6 — Dense analytical chart for emotional data
+- **Violation:** Mood data rendered as a dense multi-series chart with saturated colours, grid lines, and axis labels.
+- **Correction:** Replace with a single centred emotional visualization (one key number + label) using the pastel emotion-colour palette.
+- **Rule source:** `page_composing_rules.md` §10, `color_rules.md` §3.
+
+### Example 7 — Oversized bold headings breaking flat hierarchy
+- **Violation:** Screen titles at 24–32sp Bold with a multi-level heading hierarchy.
+- **Correction:** Flatten to 20sp Normal for page/card titles, 16sp body, 14sp button labels, 11sp captions.
+- **Rule source:** `rules.md` §3.

@@ -1,0 +1,23 @@
+{
+  "skill_name": "api-rules",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement a login endpoint in Spring Boot. POST /api/v1/auth/login that takes email and password and returns an access token plus user info.",
+      "expected_output": "Controller returns a unified ApiResponse envelope with data+meta, uses a LoginRequest DTO (not entity), and follows RESTful versioned URL.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Define how my API should return validation errors and auth errors. I want a consistent error format so my Android app can handle them programmatically.",
+      "expected_output": "Structured error envelope with machine-readable string code, human message, optional details, plus requestId in meta; proper HTTP status mapping (400/401/404/500).",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Create a paginated endpoint for listing user diaries. GET /api/v1/diaries with page and pageSize params.",
+      "expected_output": "Pagination params (page/pageSize, camelCase, pageSize<=100), response with data array + meta containing page/pageSize/total.",
+      "files": []
+    }
+  ]
+}

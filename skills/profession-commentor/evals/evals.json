@@ -1,0 +1,23 @@
+{
+  "skill_name": "profession-commentor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add comments to the file evals/files/Order.java following the profession-commentor standard.",
+      "expected_output": "Order.java with Javadoc on the class, all public methods, and only the non-obvious fields. Simple getters/setters should have Javadoc since they are public methods. Fields like paidAt and notes get comments, id/orderNumber/totalAmount do not.",
+      "files": ["evals/files/Order.java"]
+    },
+    {
+      "id": 2,
+      "prompt": "Add comments to the file evals/files/OrderService.java following the profession-commentor standard.",
+      "expected_output": "OrderService.java with Javadoc on the class, all public methods including @param, @return, and @throws where applicable. The findById method should document the IllegalArgumentException, markAsPaid should document OrderNotFoundException. Inline comments should explain the why of the stream filter/sort, not just what it does.",
+      "files": ["evals/files/OrderService.java"]
+    },
+    {
+      "id": 3,
+      "prompt": "Add comments to the file evals/files/OrderController.java following the profession-commentor standard.",
+      "expected_output": "OrderController.java with Javadoc on the controller class, all endpoint methods, and both DTO records. Each record should have @param for each component. The controller methods should have @param and @return. The factory method 'from' on OrderResponse should get Javadoc.",
+      "files": ["evals/files/OrderController.java"]
+    }
+  ]
+}

@@ -141,6 +141,17 @@ Usage rules differ by mode — see §14.
 
 ---
 
+### 2.1 Inside a Card: Semantic Grouping
+
+Within a card, information should be arranged by type and **not** visually mixed into a single undifferentiated row of identical elements.
+
+- **Group A (System/Context)**: Timestamp, location, weather — use plain text or inline icon+text, with no container background, centre-aligned.
+- **Group B (User Content)**: Tags, attachments, actions — use chips or buttons, left-aligned (or centre-aligned if the whole card is centred).
+
+If both groups appear in the same card, separate them with a thin divider (`Divider`) or sufficient vertical spacing (16dp).
+
+---
+
 ## 3. Card Size System
 
 > The sizes below apply to **Mode B (Main App)**. For Mode A (Auth), a single centred card with `max-width 400dp` is used — see §14.

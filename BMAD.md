@@ -108,7 +108,7 @@ o  Configuring BMad Core Configuration
 
 当我们去看BMAD安装后的目录会发现，Mary这个角色对应的文档在.agents/skills/bmad-agent-analyst下，也就是说Mary也是一个skill。这个目录下有customize.toml和SKILL.md。
 
-打开customize.toml，会看见以下字段，它们定义了这个skill的“人设”。包括它的名字，能力以及能力对应的skill。通过这个AI就可以根据你的命令选择合适的skill或者是在终端显示可选的skill菜单。注意这是一个可编辑文档，所以后续这个角色的功能是可以扩展的。
+打开customize.toml，会看见以下字段，它们定义了这个skill的“人设”。包括它的名字，能力以及能力对应的skill。通过这个AI就可以根据你的命令选择合适的skill或者是在终端显示可选的skill菜单。
 
 ```TOML
 [agent]

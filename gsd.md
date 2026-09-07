@@ -326,7 +326,7 @@ Parse JSON for: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `co
 除此之外还需要注意的是，在这个工作流文件中，第一次使用section_manifest字段的时候还没有执行获取section_manifest字段的脚本，那么是否意味着这个工作流文件的顺序不对呢？答案是错误的。LLM在读取的时候不像我们平常写的程序那样，变量不能在声明之前使用。他不是程序解释器，它的工作流程是先读取整个文件，然后形成任务计划，再根据任务计划来执行，所以说它的执行顺序并不是读一段执行一段,读一段执行一段。对于LLM来说section_manifest是未来会产生的变量而不是现在必须存在的变量。
 
 那万一LLM没有先读取section_manifest就直接去执行那条命令了呢？真的，大神就是大神，人家的设计就是天衣无缝。如果先执行那条命令，那么就会读取gsd-core/workflows/new-project/steps/auto-mode-detection.md，我们看一下这个文件，人家开头就写了Check if `--auto` flag is present in $ARGUMENTS.如果没有就不会继续向下执行，进行双重校验。
-判断gsd运行在什么工具下
+判断gsd运行在什么工具下，这里的作用主要是确定我们要使用的skill的目录，因为不同的AI工具定义的skill存放目录不同
 **Detect runtime and set instruction file name:**
 
 Derive `RUNTIME` from the invoking prompt's `execution_context` path:
@@ -357,9 +357,9 @@ INSTRUCTION_FILE=$(gsd_run query project-instruction-file --runtime "$RUNTIME")
 
 All subsequent references to the project instruction file use `$INSTRUCTION_FILE`.
 根据之前获取到的json变量进行一些判断
-
 **If** **`project_exists`** **is true:** Error — project already initialized. Use `/gsd:progress`.
 
+这里是判断当前项目的仓库，因为后续gsd可能会直接推送代码。
 **Git init (#3491 — never nest** **`.git`** **inside an existing worktree):**
 
 - If `has_git` true and `in_nested_subdir` true: skip `git init`; warn `⚠ Initializing inside existing worktree (${git_worktree_root}); planning files will track to outer repo.`
@@ -370,11 +370,10 @@ All subsequent references to the project instruction file use `$INSTRUCTION_FILE
 
 **If auto mode:** Skip to Step 4 (assume greenfield, synthesize PROJECT.md from provided document).
 
+同样就像上文所述，这里的HTML注释在安装gsd时是没有的，只有源码中有
 <!-- gsd:section id="codebase-map-offer" when="state:needs-codebase-map" -->
-
-如果已经有了代码映射，表示这不是一个新项目，直接执行codebase-map-offer.md文件，继续往下看会发现它执行的是\$gsd-map-codebase，最终的工作流由gsd-core\workflows\map-codebase.md决定
+如果已经有了代码映射，表示这不是一个新项目，直接执行codebase-map-offer.md文件，继续往下看会发现它执行的是\gsd-map-codebase，最终的工作流由gsd-core\workflows\map-codebase.md决定，这里需要注意的是并没有开子agent。
 If `section_manifest` is `null` or `"codebase-map-offer"` is in its `included` list: read and execute `gsd-core/workflows/new-project/steps/codebase-map-offer.md`. Otherwise skip — do not read the file.
-
 <!-- /gsd:section -->
 
 **If "Skip mapping" OR** **`needs_codebase_map`** **is false:** Continue to Step 3.
@@ -389,7 +388,7 @@ If `section_manifest` is `null` or `"auto-mode-config"` is in its `included` lis
 
 ## 2b. Prior Spike/Sketch Detection
 
-检测已有的探索成果（spike/sketch），目的是避免 AI 重新分析已经做过的探索。有可能会将已有的实践和实验结果包装为一个skill
+检测已有的探索成果，会通过脚本查找是否有已经包装好的skill，避免 AI 重新分析已经做过的探索，这也是省token的一个方式。
 Check for existing spike and sketch work that should inform project setup:
 
 ```bash
@@ -415,13 +414,69 @@ If any of these exist, surface them before questioning:
 
 These findings will be incorporated into project context and available to planning agents.
 ```
-
+如果有已经包装好的探索成果，就需要检查是否是包含了question阶段的所有信息。
 If spike/sketch findings skills exist, read their SKILL.md files to inform the questioning phase — they contain validated patterns, constraints, and design decisions that should shape the project definition.
 
 ## 3. Deep Questioning
-
-如果用户没有提供一些文档，就需要AI和用户交互获得最终的需求
+**这一段和用户对话采取的策略和逻辑也可以借鉴来开发我们自己的创造力skill，因为它会不断的向下挖掘，直到挖掘不出东西。**
+接着就进入到深入交流阶段,这个阶段来判断用户需要构建什么样的项目。
 ...省略...
+**Open the conversation:**
+这里注明了不要使用AskUserQuestion，使用freeform的提问。因为AskUserQuestion是AI工具自带的api，他有固定的输入格式，会限制用户只能选择选项，而freeform的提问可以更灵活地获取用户的信息。这里注意freeform的提问规则实在questioning.md中定义的，而这个文件是一个必读的上下文文件。
+Ask inline (freeform, NOT AskUserQuestion):
+
+"What do you want to build?"
+
+Wait for their response. This gives you the context needed to ask intelligent follow-up questions.
+
+如果用户允许research_before_questions的话，那么就会在网上去搜索一下用户需求相关。
+**Research-before-questions mode:** Check if `workflow.research_before_questions` is enabled in `.planning/config.json` (or the config from init context). When enabled, before asking follow-up questions about a topic area:
+
+1. Do a brief web search for best practices related to what the user described
+这里比较关键，是让模型将搜索的结果揉进问题里文用户，这样得到的结果更加具体。
+2. Mention key findings naturally as you ask questions (e.g., "Most projects like this use X — is that what you're thinking, or something different?")
+3. This makes questions more informed without changing the conversational flow
+
+When disabled (default), ask questions directly as before.
+
+**Follow the thread:**
+然后使用AskUserQuestion来从三个维度向用户提供选项卡来选择。
+Based on what they said, ask follow-up questions that dig into their response. Use AskUserQuestion with options that probe what they mentioned — interpretations, clarifications, concrete examples.
+同时，会根据用户的每一次选择来从以下几个方面来继续提问和挖掘，这样使得需求更加明确，也可以和用户一起头脑风暴。
+Keep following threads. Each answer opens new threads to explore. Ask about:
+
+- What excited them
+- What problem sparked this
+- What they mean by vague terms
+- What it would actually look like
+- What's already decided
+
+Consult `questioning.md` for techniques:
+
+- Challenge vagueness
+- Make abstract concrete
+- Surface assumptions
+- Find edges
+- Reveal motivation
+
+**Check context (background, not out loud):**
+
+As you go, mentally check the context checklist from `questioning.md`. If gaps remain, weave questions naturally. Don't suddenly switch to checklist mode.
+
+**Decision gate:**
+当跟用户沟通的一定多时，能够产出一个清晰的PROJECT.md文件时，让用户确认是否继续。
+When you could write a clear PROJECT.md, use AskUserQuestion:
+
+- header: "Ready?"
+- question: "I think I understand what you're after. Ready to create PROJECT.md?"
+- options:
+  - "Create PROJECT.md" — Let's move forward
+  - "Keep exploring" — I want to share more / ask me more
+
+If "Keep exploring" — ask what they want to add, or identify gaps and probe naturally.
+
+Loop until "Create PROJECT.md" selected.
+
 
 ## 4. Write PROJECT.md
 
@@ -430,117 +485,89 @@ If spike/sketch findings skills exist, read their SKILL.md files to inform the q
 **For greenfield projects:**
 
 ...省略...
+以下这个思考模板也很值得学习，在我们开发的时候让AI遵循这个模板来开发，这样我们就知道当前的开发进度了。
+```markdown
+## Requirements
 
+### Validated
+
+(None yet — ship to validate)
+
+### Active
+
+- [ ] [Requirement 1]
+- [ ] [Requirement 2]
+- [ ] [Requirement 3]
+
+### Out of Scope
+
+- [Exclusion 1] — [why]
+- [Exclusion 2] — [why]
+```
+**All Active requirements are hypotheses until shipped and validated.**这句话的意思是所有"进行中"需求在发布并验证之前都是假设。也就是Active中的需求都是不确定的，我老感觉这里也挺重要的，但是不知道为什么。
 **For brownfield projects (codebase map exists):**
+Infer Validated requirements from existing code:
+这是两个上下文文件，
+1. Read `.planning/codebase/ARCHITECTURE.md` and `STACK.md`
+2. Identify what the codebase already does
+3. These become the initial Validated set
 
 ...省略...
 
 **Key Decisions:**
+这里也挺重要的，就是记录下之前深度提问环节的所有决策，并且标记上这个决策的状态，有利于项目的进度管理，以后写比较大型的skill也可以考虑使用。我的写小说的skill完全就可以妇科gsd的思想来进行进度管理和记忆管理，而不是多个skill的堆砌。
+Initialize with any decisions made during questioning:
 
-...省略...
-
+```markdown
 ## Key Decisions
 
-...省略...
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| [Choice from questioning] | [Why] | — Pending |
+```
+**Last updated footer:**
 
-## Evolution
+```markdown
+---
+*Last updated: [date] after initialization*
+```
 
-...省略...
-
+**Evolution section** (include at the end of PROJECT.md, before the footer):
+其实这个环节也挺重要的，可以之后去看一下，我把它复制过来就仅仅是翻译一下。好像都挺重要的，提问：文章中有几个挺重要的🤣？
+**Commit PROJECT.md:**
+最后写入时使用脚本而不是自然语言也在一定程度上减少token的消耗。
+```bash
+mkdir -p .planning
+gsd_run query commit "docs: initialize project" --files .planning/PROJECT.md
+```
 ## 5. Workflow Preferences
-
-主要是根据`~/.gsd/defaults.json`中的配置信息跟用户对话，并将用户的选择保存于本地写入磁盘中持久化。
-
 ...省略...
-
+主要是根据`~/.gsd/defaults.json`中的配置信息展示给用户让用户修改或者确认这些配置。
+如果存在这个配置文件，走一个路径：
+...省略...
+这里对于不同的运行时，跟用户交互的方式也不同。因为如果使用AskUserQuestion，claude会对选项有上限（4个），而默认的配置项有9个，所以对于claude，作者采取先路由（yes/no）然后再根据不同的路由来展示不同的选项。除此之外不同的AI工具的提问api也不同，，所以这里直接如果是其他运行时，直接把所有的选项展示出来，让用户直接输入要改什么。
+如果不是claude：
+**If TEXT\_MODE is active** (non-Claude runtimes): display a numbered list and ask the user to type the numbers of settings they want to change (comma-separated). Parse the response and proceed.
+如果是claude：
+...省略...
+如果没有这个配置文件将会走几轮对话来确定配置，这里可以去看一下源码学习一下如何设置跟用户的对话。还有需要注意的是第一轮对话questions中只有4个问题，是因为claude的AskUserQuestion最多一次只能问4个问题。
 ## 5.1. Sub-Repo Detection
 
 因为gsd后续可能会自执行git命令，所以要判断那些是属于这个项目的，哪些是gsd可以管理的
+...省略...
 
-**Detect multi-repo workspace:**
 
-Check for directories with their own `.git` folders (separate repos within the workspace):
-
-```bash
-find . -maxdepth 1 -type d -not -name ".*" -not -name "node_modules" -exec test -d "{}/.git" \; -print
-```
-
-**If sub-repos found:**
-
-Strip the `./` prefix to get directory names (e.g., `./backend` → `backend`).
-
-Use AskUserQuestion:
-
-- header: "Multi-Repo Workspace"
-- question: "I detected separate git repos in this workspace. Which directories contain code that GSD should commit to?"
-- multiSelect: true
-- options: one option per detected directory
-  - "\[directory name]" — Separate git repo
-
-**If user selects one or more directories:**
-
-- Set `planning.sub_repos` in config.json to the selected directory names array (e.g., `["backend", "frontend"]`)
-- Auto-set `planning.commit_docs` to `false` (planning docs stay local in multi-repo workspaces)
-- Add `.planning/` to `.gitignore` if not already present
-
-Config changes are saved locally — no commit needed since `commit_docs` is `false` in multi-repo mode.
-
-**If no sub-repos found or user selects none:** Continue with no changes to config.
-
-## 5.5. Resolve Model Profile
-
-上面setup阶段获得的一些json字段
-
-Use models from init: `researcher_model`, `synthesizer_model`, `roadmapper_model`.
-
-从这里开始要开启新的上下文窗口了
 
 ## 6. Research Decision
-
-如果是自动模式问用户需不需要先research
-
-**If auto mode:** Default to "Research first" without asking.
-
-Use AskUserQuestion:
-
-- header: "Research"
-- question: "Research the domain ecosystem before defining requirements?"
-- options:
-  - "Research first (Recommended)" — Discover standard stacks, expected features, architecture patterns
-  - "Skip research" — I know this domain well, go straight to requirements
-
-**If "Research first":**
-
-展示
-Display stage banner:
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► RESEARCHING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Researching [domain] ecosystem...
-```
-
-新建文件夹
-Create research directory:
-
-```bash
-mkdir -p .planning/research
-```
+从这里开始要开启新的上下文窗口了，这也是gsd解决上下文腐败的大杀招。
+如果是自动模式问用户需不需要先research，同时创建planning/research问津夹
+...省略...
 
 **Determine milestone context:**
 
-判断是从0开始还是从当前已知开始
-Check if this is greenfield or subsequent milestone:
-
-- If no "Validated" requirements in PROJECT.md → Greenfield (building from scratch)
-- If "Validated" requirements exist → Subsequent milestone (adding to existing app)
-
-Display spawning indicator:
-
-展示在终端，告诉用户将要并行开4个agent(gsd-project-researcher)
-
+判断是从0开始还是从当前已知开始，通过前文中的PROJECT.md中是否有已验证的需求来判断是否是greenfield项目还是brownfield项目。
+...省略...
+展示在终端，告诉用户将要并行开4个agent。
 ```
 ◆ Spawning 4 researchers in parallel... (each runs in a subagent — no output until they return, ~1–5 min; expected, not a freeze)
   → Stack research
@@ -555,13 +582,13 @@ Spawn 4 parallel gsd-project-researcher agents with path references:
 
 <!-- #2517 model-omit-on-inherit -->
 
-当researcher\_model，synthesizer\_model，roadmapper\_model为inherit时，打开子agent时不用将其传递给子agent，而是直接由你的AI根据决定。这里不懂的可以继续往下看
+当researcher\_model，synthesizer\_model，roadmapper\_model（这三个参数也是上文配置config阶段询问得到的结果）为inherit时，打开子agent时不用将其传递给子agent，而是直接由你的AI工具决定。这里不懂的可以继续往下看
 
 > **Model omission (#2517).** Omit the `model` parameter entirely when the value it would carry (`researcher_model`, `synthesizer_model`, `roadmapper_model`) is `"inherit"` or empty. An empty value 404s on runtimes without native tier aliases — the default on non-Claude runtimes. Omitting it inherits the orchestrator's model. See @gsd-core/references/model-profile-resolution.md.
 
 ```text
 这里使用Agent()来开启子agent，这里需要注意的是由于这个工具一开始是为claude设计的，所以不同的运行时开启子Agent的方式是不同的。对于codex来说，这个工具的做法是在skill的文档头部加入一个说明，告诉codex，如何将claude平台下的API转换为codex中支持的API，相当于一个说明书，具体的可以去看这个文件src\runtime-artifact-conversion.cts。
-还记得xml吗，这里的prompt使用了xml的格式，用research_type标签包裹起来，这样大模型在回答的时候也是一个结构化的回答，大模型也知道这段内容属于什么领域
+还记得xml吗，这里的prompt使用了xml的格式，用research_type标签包裹起来，这样大模型在回答的时候也是一个结构化的回答，大模型也知道这段内容属于什么领域。
 Agent(prompt="<research_type>
 Project Research — Stack dimension for [domain].
 </research_type>
@@ -607,11 +634,10 @@ Your STACK.md feeds into roadmap creation. Be prescriptive:
 Write to: {research_dir}/STACK.md
 Use template: ~/.claude/gsd-core/templates/research-project/STACK.md
 </output>
-",
-一直到这里prompt字段才结束
+",一直到这里prompt字段才结束，整个promp中都用xml标签包裹。
  subagent_type="gsd-project-researcher", 
  model="{researcher_model}", 
- 到这里可以看到将researcher_model传入Agent函数了，这里就可以解释为什么上面会强调当researcher_model为inherit或空时，打开子agent不用将其传递给子agent，而是直接由你的AI根据决定，如果将model="inherit"或者""传入的话，AI工具会在支持的模型中查找是否有名字为inherit或者""的模型,那肯定没有的，会直接失败。除此之外不同的AI工具对于inherit的处理方式也不同，比如Claude支持inherit，而其他工具不支持inherit。
+ 到这里可以看到将researcher_model传入Agent函数了，这里就可以解释为什么上面会强调当researcher_model为inherit或空时，打开子agent不用将其传递给子agent，而是直接由你的AI工具决定，如果将model="inherit"或者""传入的话，AI工具会在支持的模型中查找是否有名字为inherit或者""的模型,那肯定没有的，会直接失败。除此之外不同的AI工具对于inherit的处理方式也不同，比如Claude支持inherit，而其他工具不支持inherit，而如果不传的话默认采取主agent的模型，所以这里如果是inherit或者""还是不穿这个字段为好。
  description="Stack research")
 
 到)表示已经调用了一个子agent，以上这段可以理解为
@@ -627,13 +653,20 @@ Use template: ~/.claude/gsd-core/templates/research-project/STACK.md
 │ prompt = 研究 Stack           │
 │ skill = AGENT_SKILLS_RESEARCHER│
 └──────────────────────────────┘
-
+我觉得开启子agent提示词模板也很好，这里以后可以借鉴一下，贴在下方。
+<research_type>      ← 任务类型标识
+<milestone_context>  ← greenfield/subsequent 分支
+<question>           ← 核心问题
+<files_to_read>      ← 输入文件
+${AGENT_SKILLS_RESEARCHER}  ← Persona 注入
+<downstream_consumer>      ← 下游谁会读
+<quality_gate>       ← 自检清单
+<output>             ← 输出路径与模板
 下面几个开启子agent的代码就省略了
+...省略...
 ```
-
-这里也比较重要，是让当前agent去等待所有子agent返回结果，同时向AI强调在等待子agent返回结果时，不能自己去读取子agent的文件，也不能自己去综合子agent的输出，只能等待子agent返回结果后再继续执行
-
-这一条是专门针对codex运行时的，前面说过GSD将Agent()转化为codex下的spawn\_agent()来开启子agent,spawn\_agent()开启子agent后会立马返回一个agentId，而不会让当前的agent等待子agent结束，所以这里需要特别强调
+这里也比较重要，是让当前agent去等待所有子agent返回结果，同时向AI强调在等待子agent返回结果时，不能自己去读取子agent的文件，也不能自己去综合子agent的输出，只能等待子agent返回结果后再继续执行。
+这一条是专门针对codex运行时的，前面说过GSD将Agent()转化为codex下的spawn\_agent()来开启子agent,spawn\_agent()开启子agent后会立马返回一个agentId，而不会让当前的agent等待子agent结束，所以这里需要特别强调。
 
 > **ORCHESTRATOR RULE — CODEX RUNTIME**: After calling all 4 researcher Agent() calls above, do NOT read research files or synthesize content independently while the subagents are active. Wait for all 4 researchers to complete before spawning the synthesizer. This prevents duplicate work and wasted context.
 
@@ -1017,3 +1050,5 @@ PHASE1_HAS_UI=$(echo "$PHASE1_SECTION" | grep -qi "UI hint.*yes" && echo "true" 
 **Atomic commits:** Each phase commits its artifacts immediately. If context is lost, artifacts persist.
 
 \</success\_criteria>
+
+和BMAD对比：

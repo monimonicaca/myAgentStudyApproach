@@ -1,0 +1,23 @@
+{
+  "skill_name": "moni-app-skill",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a simple to-do list screen for an Android app. Users should be able to add tasks via a text field and see them in a list below. Each task has a checkbox to mark it done.",
+      "expected_output": "MVVM Compose screen with a @Composable function, ViewModel with StateFlow, LazyColumn for tasks, Material 3 theming, and logging.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Create a settings screen with a dark mode toggle switch. The toggle should be labeled 'Dark Mode' and placed in a card. When toggled, it should log the new setting value.",
+      "expected_output": "Settings screen with Compose Switch in a Card, ViewModel with StateFlow, Material 3, resource theming, and logging on toggle.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Add a profile screen that shows a user's name, email, and a circular avatar placeholder. The layout should be scrollable and use responsive constraints.",
+      "expected_output": "Profile screen with scrollable Compose Column, circular avatar via clip(CircleShape), ViewModel with user data, resource theming, and section dividers.",
+      "files": []
+    }
+  ]
+}

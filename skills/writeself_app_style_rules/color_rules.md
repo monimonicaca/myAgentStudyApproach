@@ -40,8 +40,12 @@
 
 | Name | Value | Usage |
 |------|-------|-------|
-| Card Background | `#ECEBF1` with 0.85 opacity | Card surfaces |
+| Card Background | `#ECEBF1` with 0.85 opacity | **Only** for standard floating card containers (corner radius 24–28dp). Must NOT be used as a background for interactive elements (chips, buttons). |
 | Glass Surface | `rgba(255,255,255,0.7)` | Translucent overlays only (modals, popovers, tooltips) — never standard cards |
+| Chip Background (Default) | `Color.Transparent` | **Explicitly use transparent** for unselected chips. Do NOT rely on the `surfaceVariant` theme alias, as it may resolve to the same grey as `surface_card`. |
+| Interactive Pill Background | `Color.Transparent` (default) / emotion colour with alpha (selected) | For `FilterChip` or `AssistChip` — selected state uses `moodColor.copy(alpha = 0.2f)`. |
+
+**Core principle:** `surface_card` is only for carrying **content**; it must NOT be used as the background of **clickable interactive elements**, otherwise the visual hierarchy collapses.
 
 ### 1.6 Semantic Colours
 

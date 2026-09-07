@@ -25,29 +25,79 @@ These files live in the same directory as this SKILL.md. Read them directly duri
 | `color_rules.md` | Full colour system: backgrounds, brand, accent, text, surface, semantic, gradients, emotion-colour mapping, AI module colours |
 | `page_composing_rules.md` | Page composition: layout modes (Mode A/B), card composition, card sizes, negative space, alignment, header, illustration, data visualization, scrolling |
 | `shared_page_composition_rules.md` | Cross-page shared composition principles and the negative-space spacing standard |
-| `components_styles.md` | Component-level styles: cards, buttons, text buttons, outlined text fields, progress indicators |
+| `components_styles.md` | Component-level styles: cards, buttons, text buttons, outlined text fields, progress indicators, Chip components |
+| `component_semantics.md` | Component semantics: information taxonomy, which visual form per information type, prohibited patterns, grouping rules |
 
 ## 4. UX Document Optimization Process
 
-Optimize a BMAD-generated UX document by following these steps. Use the Read tool to read the rule files — do not rely on memory or summaries. The five rule files are independent and compact; you may Read all of them once before step 1, then treat each step's references below as a verification checklist.
+Optimize a BMAD-generated UX document by following these steps. Use the Read tool to read the rule files — do not rely on memory or summaries. The six rule files are independent and compact; you may Read all of them once before step 1, then treat each step's references below as a verification checklist.
 
 1. **Identify the page type.** Read `page_composing_rules.md` (§0 "Layout Scope & Modes"). The page is Mode A only if it appears in the Mode A list (splash, captcha, forgot password); everything else is Mode B. If the source document misclassifies the page, note the correction first — the classification determines which sections every later step applies.
 
 2. **Verify overall visual identity.** Confirm the page matches the product personality and visual style. Read `rules.md` (§1 Visual Identity, §2 Visual Style, §7 Design Principles).
 
+2.5. **Check component semantics (information-role mapping).** Read `component_semantics.md`. For every information element in the page (timestamp, location, weather, tags, attachment counts, add buttons), verify that its visual representation matches its defined type in the taxonomy. If a timestamp or metadata is rendered as a `Chip` / `Card`, flag as violation. If an interactive element (tag, attachment) is rendered as plain text without click feedback, flag as violation. Correct by replacing with the appropriate component (plain `Text`, inline icon+text, or `AssistChip`).
+
 3. **Check layout & composition.** Validate the structural composition — columns, cards per screen, alignment, content width, negative space, and vertical flow. Read `page_composing_rules.md`: for Mode A, §14 (Auth / Single-Task Screen Layout); for Mode B, §1 (Vertical Breathing Flow), §2 (Island Card Composition), §3 (Card Size System), §4 (Negative Space Principle), §5 (Single Visual Focus Rule), §7 (Alignment Rules), §8 (Header Composition Rules), §10 (Data Visualization Composition), §11 (Scrolling Structure). Also read `shared_page_composition_rules.md` for the cross-page spacing standard (24dp screen horizontal padding; 16dp card spacing and internal padding).
+
+3.5. **Contextual alignment check for Timestamp/Environment metadata.** If the page is **Mode A** (Auth), timestamps must be **centred**. If the page is **Mode B** (Main App): if the timestamp appears inside a **Large Feature Card / Primary Card** (the primary visual focus), it may be **centred**; if the timestamp appears inside a **Secondary/Supporting Information Card**, it must be **left-aligned** to match the surrounding text. Flag a violation if a timestamp inside a Secondary Card is centred, or if a timestamp inside a Large Feature Card / Primary Card is left-aligned without a justified reason. Correction: Re-align according to the above context. Source: `component_semantics.md` §1, `page_composing_rules.md` §2.1, §7, and `shared_page_composition_rules.md`.
 
 4. **Check color usage.** Verify backgrounds, brand/accent/semantic colors, gradients, and emotion mapping against the design. Read `color_rules.md` (all sections). Pay particular attention to §1.6 (On Primary text is `#252332` by default and `#FFFFFF` only when pressed; Error is `#B3261A`) and §3 (Emotion-Colour Mapping) whenever the page visualizes mood or emotion data.
 
+4.5. **Partial dark mode & RTL mapping (Informational check).** 
+- **Dark mode:** `color_rules.md` §1.6 defines dark-mode colours **only for Error** (`#F2B8B5` and `#601410`). No dark mappings exist for surface, text, brand, or accent colours. If the UX document invents dark colours not in the system, flag as **INFO** with note: "Design system lacks complete dark-mode specification. These invented colours are not authoritative. Use only the defined Error dark colours; defer other dark colours to future system updates."
+- **RTL:** Scan for `start`/`end` vs `left`/`right`. If `start`/`end` is used, flag as **INFO** noting RTL is not yet supported by the design system.
+
 5. **Check typography.** Confirm font sizes, weights, and hierarchy. Read `rules.md` (§3 Typography System).
 
-6. **Check components.** For each card, button, text field, and progress indicator, verify shape, size, padding, and state behavior. Read `components_styles.md` (the relevant component section). Frequent misses to verify explicitly: card corner radius 24–28dp (28–32dp for hero cards), button 46dp high with 22dp radius and pill shape, progress indicator 20dp with 2dp stroke.
+5.5. **Dynamic content states (Empty / Collapsible).** **Precondition:** Only execute this check if the page explicitly contains attachment components (`Attachments`, `+ Photo`, `📷 N`) OR collapsible/expandable cards. For attachment components, check if the design defines a **zero-state** (e.g., when attachment count = 0, does the "+ Photo" AssistChip still render?). For collapsible cards (e.g., expandable insights), verify that the expanded state does **not** cause overlapping/obscuring of the card below. If the document lacks instructions for these states, flag as **MINOR VIOLATION** with correction: "Define explicit empty-state rendering for attachments. For expandable cards, ensure downstream content uses `animateContentSize()` or push subsequent cards down by 16dp spacing to avoid visual jumps."
+
+6. **Check components.** For each card, button, chip, text field, and progress indicator, verify shape, size, padding, and state behavior. Read `components_styles.md` (the relevant component section). Frequent misses to verify explicitly: card corner radius 24–28dp (28–32dp for hero cards), button 46dp high with 22dp radius and pill shape, progress indicator 20dp with 2dp stroke, chips only for interactive elements (never timestamp/metadata).
+
+6.1. **Detect custom-built interactive elements.** Scan the component definitions for `Row` or `Box` that contain `.clip(RoundedCornerShape(...))` combined with `.background(...)` **AND are explicitly bound to a clickable modifier** (`Modifier.clickable`, `Modifier.combinedClickable`, or `Modifier.pointerInput`). If this exact combination is found, flag as **CRITICAL VIOLATION**.
+**Note:** A `Row` with `.clip` + `.background` that has NO `onClick` binding is considered a **passive visual decoration** and is PERMITTED.
+**Correction:** Replace the interactive custom pill with `AssistChip`, `FilterChip`, or `Card` as appropriate. *Rationale:* Custom pills lack Material ripple effects, proper touch targets, and standard semantics. Source: `components_styles.md` §0.
+
+6.2. **Check background color misuse.** Verify that `surface_card` colour (or its color resource `#ECEBF1`) is **only** used on top-level Card containers. If `surface_card` is used inside `MoodChipGrid`, `AssistActions`, or `SaveBar` as a background, flag as violation. **Correction:** Replace with `Color.Transparent` (for unselected chips) or `moodColor.copy(alpha = 0.2f)` (for selected emotional states). Never use `surfaceVariant` to avoid grey theme alias leakage. Source: `color_rules.md` §1.5.
+
+6.3. **Verify icon presence on attachment elements only.** According to `component_semantics.md` §1, interactive **attachments** (e.g., "📷 3", "+ Photo") must include a leading icon. If an attachment chip lacks an icon, flag as a visual deficiency. **Correction:** Add `leadingIcon` for `AssistChip`. **Note:** AI action cards (Template / Polish / Preview) are **not** required to carry an icon by the current design system — do not flag them for missing icons.
+
+6.4. **Verify primary button background uses gradient.** Scan `Button` components with primary intent. If its background is a solid colour (e.g., colorResource `R.color.primary_button` or hex `#B18BFC`) without `Brush.horizontalGradient`, flag as **CRITICAL VIOLATION**. **Correction:** Use `ButtonDefaults.buttonColors(containerColor = Color.Transparent)` and place a `Box` inside the button's content with `Modifier.fillMaxSize().background(brush = Brush.horizontalGradient(listOf(Color(0xFFB18BFC), Color(0xFF8F7AE5))), shape = RoundedCornerShape(22.dp))` to host the gradient. This ensures the gradient renders below the ripple and respects the button's rounded shape. Example:
+
+```kotlin
+Button(
+    onClick = { ... },
+    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+    shape = RoundedCornerShape(22.dp)
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    listOf(Color(0xFFB18BFC), Color(0xFF8F7AE5))
+                ),
+                shape = RoundedCornerShape(22.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Save", color = Color(0xFF252332))
+    }
+}
+```
+Source: `components_styles.md` (Button Components), `color_rules.md` §2.
+
+6.5. **Verify AI action loading states.** For any component whose label or context includes "AI", "Insight", "Rewrite", "Generate", or "Polish", scan for its **loading/processing state** definition. If the UX document defines the button text as simply "Generating..." **without** specifying the transition to a `CircularProgressIndicator` (20dp, 2dp stroke), flag as **MINOR VIOLATION**. **Correction:** Add explicit instruction: "On loading, replace label text with `CircularProgressIndicator` (size 20dp, stroke 2dp, colour `#252332`) while keeping the button dimensions fixed. The indicator must be centred within the button." Additionally, verify that the button's container background (gradient) does **not** change opacity or colour during loading — only the content swaps. Source: `components_styles.md` (Button Components, Progress Indicator), `rules.md` §6.
 
 7. **Check interaction & motion.** Verify animations, transitions, and loading behavior. Read `rules.md` (§6 Motion and Interaction Style). Frequent misses: custom slide/scale transitions should be removed in favour of Compose Navigation defaults; entrance animations use fade-in opacity `tween(400ms)` with staggered delays.
 
 8. **Check restrictions.** Ensure none of the "must avoid" patterns are present and that error/required-field highlighting is correct. Read `rules.md` (§8 Restrictions & Avoidances), `components_styles.md` (OutlinedTextField error state — errors must NOT be downplayed with grey or secondary text), and the "Avoid" lists in `page_composing_rules.md` (§10 dense dashboards / competing metrics, §11 nested scroll containers) plus `shared_page_composition_rules.md` (avoid dense dashboard-style layouts).
 
-9. **Output.** Produce two artifacts. First, a violation summary listing every violation found with its location in the source document and its rule source (file + section). Second, the corrected UX document. Where a rule was applied, cite it inline as `[Source: <file> §<section>]` so every change is traceable to its authority.
+8.1. **Check shadow/elevation usage.** Verify that no card, button, or container defines a custom `Modifier.shadow` or `elevation` parameter with a positive value. **Critical nuance:** Material 3 `Card` defaults to `elevation = 1.dp` (or similar). This default IS a shadow and violates the design system. **Correction:** All `Card` composables must explicitly set `elevation = 0.dp` (or `shadowElevation = 0.dp` for `CardDefaults`). If any `Card` lacks this explicit zero elevation, flag as **CRITICAL VIOLATION**. Source: `page_composing_rules.md` §2 (Card Visual Specs: "Shadow: Not needed for now (deferred)") and `components_styles.md` (Card Components).
+
+**⚠️ Design system conflict note:** `rules.md` §8 states "✅ Soft shadow on cards", but `page_composing_rules.md` §2 and `components_styles.md` (Card Components) explicitly defer shadows ("Not needed for now"). Where these files conflict, **the more specific, component-level rules (`page_composing_rules.md` and `components_styles.md`) take precedence** over the high-level `rules.md`. Therefore, shadows are currently **prohibited**, and the `elevation = 0.dp` check stands. If a document references the `rules.md` "soft shadow" requirement, flag it as **INFO** and note the conflict.
+
+9. **Output.** Produce two artifacts. First, a **Violation Audit Log** as a Markdown table (`Page | Section | Component | Violation Type | Source Rule | Severity`). Second, the corrected UX document. Where a rule was applied, cite it inline as `[Source: <file> §<section>]` so every change is traceable to its authority.
 
 ## 5. Design Checklist
 
@@ -55,12 +105,18 @@ Check each item against the cited rule file when generating pages.
 
 - Is the page classified into the correct layout mode (Mode A vs Mode B)? — `page_composing_rules.md` §0
 - Is the product personality and visual style respected? — `rules.md` §1–§2
+- Is every information element (timestamp, metadata, tags, attachments) rendered with the correct component type per its semantic role? — `component_semantics.md` §1
 - Does the layout follow the vertical breathing flow with one dominant focal point? — `page_composing_rules.md` §1, §5
 - Is negative space generous and does it match the spacing standard? — `shared_page_composition_rules.md`
 - Are cards floating, rounded, and correctly sized for the active mode? — `page_composing_rules.md` §2–§3, `components_styles.md`
 - Are colors (backgrounds, brand, accents, semantic, gradients, emotion mapping) correct? — `color_rules.md`
 - Does typography match the flat hierarchy and specified sizes/weights? — `rules.md` §3
 - Do buttons and text fields follow the component specs (shape, height, states)? — `components_styles.md`
+- Are interactive elements built with M3 components (never hand-built `Row` + `.background`)? — `components_styles.md` §0
+- Is `surface_card` used only for card containers, never as a chip/button background? — `color_rules.md` §1.5
+- Do interactive attachments (e.g., "📷 3", "+ Photo") carry a leading icon? — `component_semantics.md` §1
+- Do primary buttons use the horizontal gradient background (not a solid colour)? — `components_styles.md`, `color_rules.md` §2
+- Are all shadows (elevation/drop shadows) omitted from cards, buttons, and containers? — `page_composing_rules.md` §2, `components_styles.md`
 - Are errors and required-field misses highlighted prominently? — `rules.md` §8, `components_styles.md`
 - Are the "must avoid" patterns (multi-column, dense, harsh shadows, sharp corners) absent? — `rules.md` §8
 - Is there exactly one scrollable column with no nested scroll containers? — `page_composing_rules.md` §11
@@ -104,3 +160,33 @@ Check each item against the cited rule file when generating pages.
 - **Violation:** Screen titles at 24–32sp Bold with a multi-level heading hierarchy.
 - **Correction:** Flatten to 20sp Normal for page/card titles, 16sp body, 14sp button labels, 11sp captions.
 - **Rule source:** `rules.md` §3.
+
+### Example 8 — Timestamp or metadata rendered as a Chip
+- **Violation:** Timestamp "12:42 · Sep 7", location "Shanghai", or weather "Clear" wrapped in a Chip container.
+- **Correction:** Use plain `Text` in Muted Text colour for timestamp; inline `Icon` + `Text` for location/weather; no container, non-interactive.
+- **Rule source:** `component_semantics.md` §1–§2.
+
+### Example 9 — All cards rendered as the same Chip type regardless of role
+- **Violation:** Tags, attachment counts, timestamp, and weather all rendered as identical filled capsules.
+- **Correction:** Separate into passive group (timestamp + environment as plain text) and interactive group (tags + attachments as `AssistChip` with `onClick`).
+- **Rule source:** `component_semantics.md` §1, §3.
+
+### Example 10 — Custom-built `Row` pills instead of M3 components
+- **Violation:** Clickable tags, mood chips, or action buttons built with `Row` + `Modifier.clip` + `.background` without any M3 component; no ripple feedback, wrong proportions.
+- **Correction:** Replace with `AssistChip` / `FilterChip` / `Button` (M3 standard). **Note:** Icon requirements are handled separately in Step 6.3 (attachments only) — do not force icons on tags or AI actions.
+- **Rule source:** `components_styles.md` §0.
+
+### Example 11 — `surface_card` used as chip/button background
+- **Violation:** `surface_card` colour (`#ECEBF1`) used on `MoodChipGrid`, `AssistActions`, or `SaveBar` backgrounds, making the whole page a grey mush with no hierarchy.
+- **Correction:** Cards use `surface_card`; chips use `Color.Transparent` (unselected) or emotion colour + alpha (selected); buttons use gradient. Never use `surfaceVariant`. Source: `color_rules.md` §1.5.
+- **Rule source:** `color_rules.md` §1.5.
+
+### Example 14 — Card has visible shadow (including Material 3 defaults)
+- **Violation:** A Card component is defined without any elevation parameter, relying on M3 defaults (e.g., `elevation = 1.dp`), OR an explicit `Modifier.shadow` is added, resulting in a visible drop shadow.
+- **Correction:** Explicitly set `elevation = 0.dp` (or `shadowElevation = 0.dp`) on every Card composable. Remove any `Modifier.shadow` calls.
+- **Rule source:** `page_composing_rules.md` §2, `components_styles.md` (Card Components).
+
+### Example 15 — AI button lacks loading state transition
+- **Violation:** An "AI Rewrite" button only changes its label to "Processing..." but does not replace text with a spinner.
+- **Correction:** Define a state machine: default → loading (spinner only) → success/error. Spinner must be 20dp with 2dp stroke.
+- **Rule source:** `components_styles.md` (Button Components, Progress Indicator).

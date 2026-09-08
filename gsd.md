@@ -545,7 +545,7 @@ gsd_run query commit "docs: initialize project" --files .planning/PROJECT.md
 主要是根据`~/.gsd/defaults.json`中的配置信息展示给用户让用户修改或者确认这些配置。
 如果存在这个配置文件，走一个路径：
 ...省略...
-这里对于不同的运行时，跟用户交互的方式也不同。因为如果使用AskUserQuestion，claude会对选项有上限（4个），而默认的配置项有9个，所以对于claude，作者采取先路由（yes/no）然后再根据不同的路由来展示不同的选项。除此之外不同的AI工具的提问api也不同，，所以这里直接如果是其他运行时，直接把所有的选项展示出来，让用户直接输入要改什么。
+这里对于不同的运行时，跟用户交互的方式也不同。因为如果使用AskUserQuestion，claude会对选项有上限（4个），而默认的配置项有9个，所以对于claude，作者采取先路由（yes/no）然后再根据不同的路由来展示不同的选项。除此之外不同的AI工具的提问api也不同，但是在安装的时候会根据你选择的要安装到什么工具对这个进行适配改造，估计这个是作者后增的，所以这里直接如果是其他运行时，直接把所有的选项展示出来，让用户直接输入要改什么。
 如果不是claude：
 **If TEXT\_MODE is active** (non-Claude runtimes): display a numbered list and ask the user to type the numbers of settings they want to change (comma-separated). Parse the response and proceed.
 如果是claude：
@@ -627,7 +627,13 @@ Your STACK.md feeds into roadmap creation. Be prescriptive:
 </quality_gate>
 
 <!-- #2508 runtime-aware-dispatch -->
-
+ GSD 的子代理派发如何适配不同运行时，因为有些运行时是不支持自定义的agent的，比如kimi-code，它只支持3种（`coder`/`explore`/`plan`）,所以就需要将三个角色映射到这上面。
+ | Agent role suffix | Built-in | Rationale |
+|---|---|---|
+| `-planner`, `-roadmapper`, `-selector`, `-spec` | `plan` | Plans/designs; no file writes |
+| `-researcher`, `-mapper`, `-checker`, `-verifier`, `-auditor`, `-analyzer`, `-synthesizer`, `-profiler`, `-curator`, `-classifier`, `-reviewer` | `explore` | Read-only investigation |
+| everything else (`-executor`, `-fixer`, `-writer`, `-debugger`, …) | `coder` | General-purpose with full tool set |
+| `general-purpose`, `general`, `default`, `sonnet`, `opus`, `haiku` | `coder` | Already-generic names |
 > **Runtime-aware dispatch (#2508 Phase 4).** GSD workflows dispatch specialized subagents by role. Before dispatching on a built-in-only runtime (kimi-code — three built-ins only), resolve the role to a built-in via `gsd_run query resolve-dispatch-type --requested <role> --raw`. On named-dispatch runtimes (Claude/OpenCode/…) the role is returned unchanged; on kimi-code it maps to `coder`/`explore`/`plan` by role-suffix. The persona rides `${AGENT_SKILLS_<ROLE>}` (Phase 3) regardless. See @gsd-core/references/runtime-aware-dispatch.md.
 
 <output>
@@ -653,7 +659,7 @@ Use template: ~/.claude/gsd-core/templates/research-project/STACK.md
 │ prompt = 研究 Stack           │
 │ skill = AGENT_SKILLS_RESEARCHER│
 └──────────────────────────────┘
-我觉得开启子agent提示词模板也很好，这里以后可以借鉴一下，贴在下方。
+我觉得开启子agent提示词模板也很好（又很好了😀），这里以后可以借鉴一下，贴在下方。
 <research_type>      ← 任务类型标识
 <milestone_context>  ← greenfield/subsequent 分支
 <question>           ← 核心问题
@@ -699,39 +705,28 @@ Commit after writing.
 
 > **ORCHESTRATOR RULE — CODEX RUNTIME**: After calling Agent() above, stop working on this task immediately. Do not read more files, edit code, or run tests related to this task while the subagent is active. Wait for the subagent to return its result. This prevents duplicate work, conflicting edits, and wasted context. Only resume when the subagent result is available.
 
-这里有点像一个bug的修复方案，同步的时候本应该把研究结果写入 .planning/research/SUMMARY.md 文件，然后只返回一个简短确认；但是有时 LLM 会误以为自己不能写文件，于是把整个 SUMMARY.md 内容直接输出在聊天响应里，导致磁盘没有文件。下面这段就是保证orchestrator 必须检测并自动修复，而不能直接进入 roadmap 阶段。
+这里有点像一个bug的修复方案，同步的时候本应该把研究结果写入 .planning/research/SUMMARY.md 文件，然后只返回一个简短确认；但是有时 LLM 会误以为自己不能写文件，于是把整个 SUMMARY.md 内容直接输出在聊天响应里，导致磁盘没有文件。下面这段就是保证orchestrator必须检测并自动修复，而不能直接进入 roadmap 阶段。
 
 **Synthesizer output self-heal (#222) — verify SUMMARY.md materialized:** The synthesizer's canonical output is `.planning/research/SUMMARY.md` on disk; its brief structured return (`## SYNTHESIS COMPLETE` plus a few `###` confirmation lines) is NOT the file content. A known LLM false-refusal (issue #222) sometimes makes the agent return the full SUMMARY.md document inline — fabricating a write restriction (e.g. "the runtime is blocking file writes") — instead of writing the file. Prompt hardening alone does not fully eliminate it, so the orchestrator MUST absorb the failure deterministically before spawning `gsd-roadmapper`:
-
+第一步：判断这个文件是否在当前项目中，同时检测它是否合法。
 1. Verify `.planning/research/SUMMARY.md` exists AND is substantive — non-empty, and free of any leftover `<!-- gsd:write-continue -->` continuation sentinel (which marks a truncated/incomplete write). You may validate with `gsd_run verify-summary .planning/research/SUMMARY.md` — it exits 0 regardless, so check its JSON `passed` field (`"passed": false` means missing or invalid), not the process exit code. If it passes, continue normally.
+第二步：如果说第一步没有通过但是对话框中输出了完整的 SUMMARY.md 内容（主要靠着这几个字段来判断`# Project Research Summary`, `## Key Findings`, `## Implications for Roadmap`, and `## Sources`），那么就需要修复。那么就用工具自带的工具写入。
 2. If it is MISSING or invalid AND the synthesizer's return message contains the FULL SUMMARY.md document — recognizable by the template's top-level markers `# Project Research Summary`, `## Key Findings`, `## Implications for Roadmap`, and `## Sources`, not merely the brief `## SYNTHESIS COMPLETE` confirmation — the false-refusal fired: write that returned document to `.planning/research/SUMMARY.md` with the Write tool, then commit ALL research artifacts the synthesizer owns (it commits on behalf of the four researchers) with `gsd_run query commit "docs: complete project research" --files .planning/research/` unless they are already committed. Log `⚠ #222 self-heal: synthesizer returned SUMMARY.md inline without writing it; orchestrator persisted the file.`
+第三步：如果第一步第二步都没有命中，那么保存就真正的失败了，不要启动gsd-roadmapper子代理。
 3. If it is MISSING or invalid AND the return is only a brief confirmation (no full SUMMARY document to recover), the synthesizer genuinely failed — surface the error and stop; do NOT spawn `gsd-roadmapper` against a missing or incomplete SUMMARY.md.
 
 This guarantees `gsd-roadmapper` (which lists SUMMARY.md as required reading) never runs against a missing or truncated SUMMARY.md.
 
 Display research complete banner and key findings:
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► RESEARCH COMPLETE ✓
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-## Key Findings
-
-**Stack:** [from SUMMARY.md]
-**Table Stakes:** [from SUMMARY.md]
-**Watch Out For:** [from SUMMARY.md]
-
-Files: `.planning/research/`
-```
+...省略...
 
 **If "Skip research":** Continue to Step 7.
 
 ## 7. Define Requirements
 
-这里就是一些step的定义，没啥好讲的，先省略
-
-.....
+这里会跟用户沟通需求，如果是自动模式就跳过，否则通过询问确定哪些是v1的需求，哪些是v2需求，优先完成基础功能，最后询问用户是否有遗漏的需求，最后再将划分好的需求展示给用户进行最后确认。
+...省略...
 
 **Commit requirements:**
 
@@ -743,312 +738,22 @@ gsd_run query commit "docs: define v1 requirements" --files .planning/REQUIREMEN
 
 ## 7.5. Project Structure Mode
 
-**If auto mode:** Set `PROJECT_MODE=mvp` and skip this prompt.
+询问用户使用什么项目结构：
+1、垂直最小可行产品（Vertical MVP）— 快速产出可运行应用，按业务切片逐步叠加功能。每个阶段交付一套完整端到端用户可用能力。（推荐用于新产品、快速迭代 MVP 项目）设置PROJECT_MODE=mvp
+2、水平分层架构（Horizontal Layers）— 构建完整的技术层（数据库 → API → UI → 电路），并在最后组装。适用于基础设施密集型项目，多个开发人员合作。设置PROJECT_MODE=standard
 
-**Mode prompt: Vertical MVP vs Horizontal Layers.**
-
-Ask the user how they want to structure the project. Use `AskUserQuestion` with two options:
-
-- **Vertical MVP** — get a working app fast, add features slice by slice. Each phase delivers an end-to-end user capability. *(Recommended for new products and rapid-iteration MVPs.)*
-- **Horizontal Layers** — build complete technical layers (DB → API → UI → wiring) and assemble at the end. *(Better for infrastructure-heavy projects with multiple developers.)*
-
-Set `PROJECT_MODE=mvp` if the user picks Vertical MVP, otherwise `PROJECT_MODE=standard`.
-
-When `TEXT_MODE=true` (per the workflow's existing TEXT\_MODE handling for non-Claude runtimes), present the same two options as a plain-text numbered list and ask the user to type their choice number.
+...省略...
 
 ## 8. Create Roadmap
 
-Display stage banner:
+开新agent按照MVP和standard模式生成项目路线图（提供模板），跟用户确认路线图结果，将路线图保存于磁盘中。
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► CREATING ROADMAP
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-◆ Spawning roadmapper... (runs in a subagent — no output until it returns, ~1–5 min; expected, not a freeze)
-```
-
-**ROADMAP.md template — mode-aware emit.** When generating the initial ROADMAP.md:
-
-- If `PROJECT_MODE=mvp`: under each `### Phase N:` header, emit `**Mode:** mvp` on the line immediately following `**Goal:**`. This sets every initial phase to MVP mode (per Phase-4-Persistence decision: per-phase mode, not project-wide config).
-- If `PROJECT_MODE=standard`: emit the standard ROADMAP.md template with no `**Mode:**` lines (Horizontal Layers standard template — no behavioral change for users who pick Horizontal Layers).
-
-Example MVP-mode emit for Phase 1:
-
-```markdown
-### Phase 1: [Name]
-**Goal:** [Goal]
-**Mode:** mvp
-**Success Criteria**:
-1. [Criterion]
-```
-
-Pass `PROJECT_MODE` to the roadmapper so it applies the correct template.
-
-Spawn gsd-roadmapper agent with path references:
-
-```text
-Agent(prompt="
-<planning_context>
-
-<files_to_read>
-- {project_path} (Project context)
-- {requirements_path} (v1 Requirements)
-- {research_dir}/SUMMARY.md (Research findings - if exists)
-- {config_path} (Granularity and mode settings)
-</files_to_read>
-
-${AGENT_SKILLS_ROADMAPPER}
-
-</planning_context>
-
-<instructions>
-Create roadmap:
-1. Derive phases from requirements (don't impose structure)
-2. Map every v1 requirement to exactly one phase
-3. Derive 2-5 success criteria per phase (observable user behaviors)
-4. Validate 100% coverage
-5. Write files immediately (ROADMAP.md, STATE.md, update REQUIREMENTS.md traceability)
-6. Return ROADMAP CREATED with summary
-
-Write files first, then return. This ensures artifacts persist even if context is lost.
-</instructions>
-", subagent_type="gsd-roadmapper", model="{roadmapper_model}", description="Create roadmap")
-```
-
-> **ORCHESTRATOR RULE — CODEX RUNTIME**: After calling Agent() above, stop working on this task immediately. Do not read more files, edit code, or run tests related to this task while the subagent is active. Wait for the subagent to return its result. This prevents duplicate work, conflicting edits, and wasted context. Only resume when the subagent result is available.
-
-**Handle roadmapper return:**
-
-**If** **`## ROADMAP BLOCKED`:**
-
-- Present blocker information
-- Work with user to resolve
-- Re-spawn when resolved
-
-**If** **`## ROADMAP CREATED`:**
-
-Read the created ROADMAP.md and present it nicely inline:
-
-```
----
-
-## Proposed Roadmap
-
-**[N] phases** | **[X] requirements mapped** | All v1 requirements covered ✓
-
-| # | Phase | Goal | Requirements | Success Criteria |
-|---|-------|------|--------------|------------------|
-| 1 | [Name] | [Goal] | [REQ-IDs] | [count] |
-| 2 | [Name] | [Goal] | [REQ-IDs] | [count] |
-| 3 | [Name] | [Goal] | [REQ-IDs] | [count] |
-...
-
-### Phase Details
-
-**Phase 1: [Name]**
-Goal: [goal]
-Requirements: [REQ-IDs]
-Success criteria:
-1. [criterion]
-2. [criterion]
-3. [criterion]
-
-**Phase 2: [Name]**
-Goal: [goal]
-Requirements: [REQ-IDs]
-Success criteria:
-1. [criterion]
-2. [criterion]
-
-[... continue for all phases ...]
-
----
-```
-
-**If auto mode:** Skip approval gate — auto-approve and commit directly.
-
-**CRITICAL: Ask for approval before committing (interactive mode only):**
-
-Use AskUserQuestion:
-
-- header: "Roadmap"
-- question: "Does this roadmap structure work for you?"
-- options:
-  - "Approve" — Commit and continue
-  - "Adjust phases" — Tell me what to change
-  - "Review full file" — Show raw ROADMAP.md
-
-**If "Approve":** Continue to commit.
-
-**If "Adjust phases":**
-
-- Get user's adjustment notes
-- Re-spawn roadmapper with revision context:
-  ```text
-  Agent(prompt="
-  <revision>
-  User feedback on roadmap:
-  [user's notes]
-
-  <files_to_read>
-  - {roadmap_path} (Current roadmap to revise)
-  </files_to_read>
-
-  ${AGENT_SKILLS_ROADMAPPER}
-
-  Update the roadmap based on feedback. Edit files in place.
-  Return ROADMAP REVISED with changes made.
-  </revision>
-  ", subagent_type="gsd-roadmapper", model="{roadmapper_model}", description="Revise roadmap")
-  ```
-  > **ORCHESTRATOR RULE — CODEX RUNTIME**: After calling Agent() above, stop working on this task immediately. Do not read more files, edit code, or run tests related to this task while the subagent is active. Wait for the subagent to return its result. This prevents duplicate work, conflicting edits, and wasted context. Only resume when the subagent result is available.
-- Present revised roadmap
-- Loop until user approves
-
-**If "Review full file":** Display raw `cat .planning/ROADMAP.md`, then re-ask.
-
-**Generate or refresh project instruction file before final commit:**
-
-```bash
-gsd_run query generate-claude-md --output "$INSTRUCTION_FILE"
-```
-
-This ensures new projects get the default GSD workflow-enforcement guidance and current project context in `$INSTRUCTION_FILE`.
-
-**Commit roadmap (after approval or auto mode):**
-
-```bash
-gsd_run query commit "docs: create roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md "$INSTRUCTION_FILE"
-```
+...省略...
 
 ## 9. Done
 
-Present completion summary:
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► PROJECT INITIALIZED ✓
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-**[Project Name]**
-
-| Artifact       | Location                    |
-|----------------|-----------------------------|
-| Project        | `.planning/PROJECT.md`      |
-| Config         | `.planning/config.json`     |
-| Research       | `.planning/research/`       |
-| Requirements   | `.planning/REQUIREMENTS.md` |
-| Roadmap        | `.planning/ROADMAP.md`      |
-| Project guide  | `$INSTRUCTION_FILE`         |
-
-**[N] phases** | **[X] requirements** | Ready to build ✓
-```
-
-**If auto mode:**
-
-```
-╔══════════════════════════════════════════╗
-║  AUTO-ADVANCING → DISCUSS PHASE 1        ║
-╚══════════════════════════════════════════╝
-```
-
-Exit skill and invoke SlashCommand("/gsd:discuss-phase 1 --auto")
-
-**If interactive mode:**
-
-Check if Phase 1 has UI indicators (look for `**UI hint**: yes` in Phase 1 detail section of ROADMAP.md):
-
-```bash
-PHASE1_SECTION=$(gsd_run query roadmap.get-phase 1 2>/dev/null)
-PHASE1_HAS_UI=$(echo "$PHASE1_SECTION" | grep -qi "UI hint.*yes" && echo "true" || echo "false")
-```
-
-**If Phase 1 has UI (`PHASE1_HAS_UI`** **is** **`true`):**
-
-```
-───────────────────────────────────────────────────────────────
-
-## ▶ Next Up — [${PROJECT_CODE}] ${PROJECT_TITLE}
-
-**Phase 1: [Phase Name]** — [Goal from ROADMAP.md]
-
-/clear then:
-
-/gsd:discuss-phase 1 — gather context and clarify approach
-
----
-
-**Also available:**
-- /gsd:ui-phase 1 — generate UI design contract (recommended for frontend phases)
-- /gsd:plan-phase 1 — skip discussion, plan directly
-
-───────────────────────────────────────────────────────────────
-```
-
-**If Phase 1 has no UI:**
-
-```
-───────────────────────────────────────────────────────────────
-
-## ▶ Next Up — [${PROJECT_CODE}] ${PROJECT_TITLE}
-
-**Phase 1: [Phase Name]** — [Goal from ROADMAP.md]
-
-/clear then:
-
-/gsd:discuss-phase 1 — gather context and clarify approach
-
----
-
-**Also available:**
-- /gsd:plan-phase 1 — skip discussion, plan directly
-
-───────────────────────────────────────────────────────────────
-```
-
-</process>
-
-<output>
-
-- `.planning/PROJECT.md`
-- `.planning/config.json`
-- `.planning/research/` (if research selected)
-  - `STACK.md`
-  - `FEATURES.md`
-  - `ARCHITECTURE.md`
-  - `PITFALLS.md`
-  - `SUMMARY.md`
-- `.planning/REQUIREMENTS.md`
-- `.planning/ROADMAP.md`
-- `.planning/STATE.md`
-- `$INSTRUCTION_FILE` (runtime-derived via the shared `getProjectInstructionFile` policy: `AGENTS.md` for codex/opencode/kilo/kimi, `.github/copilot-instructions.md` for copilot, `GEMINI.md` for gemini/antigravity, `.claude/CLAUDE.md` for claude)
-
-</output>
-
-\<success\_criteria>
-
-- [ ] .planning/ directory created
-- [ ] Git repo initialized
-- [ ] Brownfield detection completed
-- [ ] Deep questioning completed (threads followed, not rushed)
-- [ ] PROJECT.md captures full context → **committed**
-- [ ] config.json has workflow mode, granularity, parallelization → **committed**
-- [ ] Research completed (if selected) — 4 parallel agents spawned → **committed**
-- [ ] Requirements gathered (from research or conversation)
-- [ ] User scoped each category (v1/v2/out of scope)
-- [ ] REQUIREMENTS.md created with REQ-IDs → **committed**
-- [ ] gsd-roadmapper spawned with context
-- [ ] Roadmap files written immediately (not draft)
-- [ ] User feedback incorporated (if any)
-- [ ] ROADMAP.md created with phases, requirement mappings, success criteria
-- [ ] STATE.md initialized
-- [ ] REQUIREMENTS.md traceability updated
-- [ ] `$INSTRUCTION_FILE` generated with GSD workflow guidance (runtime-derived via the shared `getProjectInstructionFile` policy — `AGENTS.md` for codex/opencode/kilo/kimi, `.github/copilot-instructions.md` for copilot, `GEMINI.md` for gemini/antigravity, `.claude/CLAUDE.md` for claude; an existing hand-crafted file without GSD markers is left untouched unless `--force`)
-- [ ] User knows next step is `/gsd:discuss-phase 1`
-
-**Atomic commits:** Each phase commits its artifacts immediately. If context is lost, artifacts persist.
-
-\</success\_criteria>
+...省略...
 
 和BMAD对比：
+
+可以看到的是每一个开子agent的步骤都会再次强调对codex的特殊处理-->反复强调告诉，防止遗忘。

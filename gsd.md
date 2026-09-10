@@ -627,7 +627,7 @@ Your STACK.md feeds into roadmap creation. Be prescriptive:
 </quality_gate>
 
 <!-- #2508 runtime-aware-dispatch -->
- GSD 的子代理派发如何适配不同运行时，因为有些运行时是不支持自定义的agent的，比如kimi-code，它只支持3种（`coder`/`explore`/`plan`）,所以就需要将三个角色映射到这上面。
+ GSD 的子代理派发如何适配不同运行时。运行时主要分成两种：具名分发型和内置类型型。对于具名分发型支持自定义的agent，而内置类型型只支持自己的运行时内部的agent，它只支持3种（`coder`/`explore`/`plan`）,所以就需要将三个角色映射到这上面。
  | Agent role suffix | Built-in | Rationale |
 |---|---|---|
 | `-planner`, `-roadmapper`, `-selector`, `-spec` | `plan` | Plans/designs; no file writes |
@@ -754,6 +754,54 @@ gsd_run query commit "docs: define v1 requirements" --files .planning/REQUIREMEN
 
 ...省略...
 
-和BMAD对比：
-
 可以看到的是每一个开子agent的步骤都会再次强调对codex的特殊处理-->反复强调告诉，防止遗忘。
+
+和BMAD对比：
+BMAD也有开子agent，但是常用的skill并没有开子agent。除此之外BMAD中开启子agent直接告诉模型’spawn agent‘，让模型自主选择使用什么api来开启子agent-->开启失败的概率较大，开启失败就在当前上下文中处理。
+
+除此之外，gsd在开子代理的时候会询问是否选择其他模型，这样我们就可以根据不同模型的特性来让agent干不同的活
+
+
+
+
+# hook系统（根据作者文档，只有Claude 和Gemini支持该hook系统）
+
+## 总体概览
+以下是作者写的hook结构，但是你打开hooks.json会发现不止只有三个事件，我们还是先从这3个事件开始学习，通过这三个事件来监控上下文窗口。
+Runtime Engine (Claude Code / Gemini CLI)
+    │
+    ├── statusLine event ──► gsd-statusline.js//每次开始新一轮对话时，会触发statusLine事件
+    │   Reads: stdin (session JSON)
+    │   Writes: stdout (formatted status), /tmp/claude-ctx-{session}.json (bridge)
+    │
+    ├── PostToolUse/AfterTool event ──► gsd-context-monitor.js//每次调用工具后，会触发PostToolUse/AfterTool事件
+    │   Reads: stdin (tool event JSON), /tmp/claude-ctx-{session}.json (bridge)
+    │   Writes: stdout (hookSpecificOutput with additionalContext warning)
+    │
+    └── SessionStart event ──► gsd-check-update.js//开启新对话时触发
+        Reads: VERSION file
+        Writes: ~/.claude/cache/gsd-update-check.json (spawns background process)
+## 监控上下文总流程
+### 简要概括
+当打开一个新对话时，会触发SessionStart事件。然后我们跟模型进行对话，statusLine是用于给状态栏进行更新用的hook，所以每一次UI发生变化都会触发statusLine事件，通过这个事件我们可以获取到当前上下文窗口的状态（包括剩余上下文remaining_percentage和窗口总大小total_tokens，还有session_id等），获取到这些数据之后写入桥接文件 /tmp/claude-ctx-{session}.json中。当AI工具调用完工具之后（Bash|Edit|Write|MultiEdit|Agent|Task）会触发PostToolUse事件，然后读取这个桥接文件获取到当前的上下文剩余，判断是否超过了阈值，然后在下次下发任务时除了读取文档，还会将不同阈值对应的提醒注入，通过以下代码注入。
+const output = {
+  hookSpecificOutput: {
+    hookEventName: "PostToolUse",
+    additionalContext: message
+  }
+};
+process.stdout.write(JSON.stringify(output));
+
+### 为什么使用桥接文件
+因为对于Claude或者其他AI工具来说并不是所有的hook都支持跟上下文窗口进行交互，所以需要使用桥接文件来存储上下文窗口的状态。statusLine事件就不支持将内容注入到会话中给AI，但是可以获取到相应的上下文状态。而PostToolUse事件则支持将内容注入到会话中给AI，所以在这个时间来判断上下文是否超过了阈值，然后将相应的提醒注入下一次对话。
+
+### 阈值处理
+以下是作者规定的一些阈值和是否需要注入和注入什么警告。
+| 剩余上下文 | 级别     | Agent 行为                                |
+| --------- | -------- | ----------------------------------------- |
+| > 35%     | 正常     | 不注入警告                                |
+| ≤ 35%     | 警告     | "避免开始新的复杂工作"                     |
+| ≤ 25%     | 严重     | "上下文即将耗尽，请告知用户"               |
+值得注意的是，当剩余量小于25%时，除了注入严重警告之外还会用node.js另外开启一个新的进程，对当前的上下文记录下来断点（在剩余多少的时候），下次直接使用/gsd:resume-work继续干。同时当警告过一次后之后，比如说在剩余量小于等于35%时，之后的4次工具调用（即PostToolUse事件触发）都不会注入警告，除非警告级别越级比如从警告到严重。如果说不需要注入警告时，会直接采用process.exit(0)退出，使用信号0的好处是不会报错阻塞继续执行，同时作者的说明文档中说所有 hook 包裹在 try/catch 中，出错时静默退出，这样就不会阻碍agent的执行。
+
+当只有很小的改动时，使用/gsd:quick

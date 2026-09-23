@@ -27,13 +27,13 @@ gsd-core\workflows\new-project\steps\codebase-map-offer.md
 
 我认为这个框架相比于BMAD的最大的优势是它会根据当前上下文的窗口大小来决定是否要开启一个新的上下文，同时在执行工作流的时候，并不是将所有的工作都交给当前agent，而是会按需开启新的agent，主agent会等待子agent的工作完成才会继续向下运行。这样子就不用我们手动去开启新的上下文窗口了。比如使用BMAD时，调用mary生成文档后，再次调用john生成prd会在同一个窗口下，除非自己手动开启新窗口；除此之外，如果mary识别到你需要调用skill，它采取的策略是读取相应skill的SKILL.md文档，这又会消耗上下文窗口。所以gsd可以尽可能的避免上下文腐化的问题。
 
-但是每个AI工具开启的子agent的方法都不同（比如codex是spawn，而Claude是Agent()），所以gsd会根据运行时来对其进行转化。通过src\runtime-artifact-conversion.cts文件根据不同运行时来将适配于claude的相关命令等（不仅仅是关于子agent创建的）转换为适配于不同运行时的（太多了看不过来）。
+**但是每个AI工具开启的子agent的方法都不同（比如codex是spawn，而Claude是Agent()），所以gsd会根据运行时来对其进行转化。通过src\runtime-artifact-conversion.cts文件根据不同运行时来将适配于claude的相关命令等（不仅仅是关于子agent创建的）转换为适配于不同运行时的（太多了看不过来）**。
 
 **我们可以通过这个文件来了解不同AI工具下的api区别或者命令区别。**
 
 # 详细解读
 
-当我们使用一个AI工具的时候通常会去看skills目录，可以看到gsd源码中有skills目录，codex中通过\$gsd-skill调用某一个skill，然后读取skill的SKILL.md文档，但是作者写的命令入口是commands/gsd/\*.md，因为在安装的时候会将这个转换为不同AI根据下适配的架构，两个文件好像没有差别，可能是刚开始这个工具是专为claude code设计的，所以保留了skills目录(我认为)所以会有硬编码的.claude。
+**当我们使用一个AI工具的时候通常会去看skills目录**，可以看到gsd源码中有skills目录，codex中通过\$gsd-skill调用某一个skill，然后读取skill的SKILL.md文档，但是作者写的命令入口是commands/gsd/\*.md，因为在安装的时候会将这个转换为不同AI根据下适配的架构，两个文件好像没有差别，可能是刚开始这个工具是专为claude code设计的，所以保留了skills目录(我认为)所以会有硬编码的.claude。
 
 除此之外，这个SKILL.md文档中有上下文字段execution\_context，这个execution\_context就是workflow文档中规定的必读的上下文文档。这也是我建议从一个具体的例子开始的原因，因为作者说明时直接从workflow开始的，所以我直接去看的workflow，就有这个令我疑惑的execution\_context。
 
@@ -41,7 +41,7 @@ gsd-core\workflows\new-project\steps\codebase-map-offer.md
 
 ## 安装
 
-研究一个由npm管理的工具时，首先从**package.json**文件开始，这里会有这个工具提供的命令还有使用npm运行某一个命令时执行的脚本命令，但是这个工具的安装命令是**npx @opengsd/gsd-core\@latest**，而**npx需要关注bin字段**，首先会找**lates**t指向的版本，比如最新版本是1.40,那么这个命令就是npx @opengsd/gsd-core\@1.40.然后会去找bin字段找gsd-core命令对应执行的脚本，也就是bin/install.js。问了下gpt（实在没有脑容量看了，燃尽了），它说这个脚本的作用是将gsd源码转换成可以适配不同AI工具的格式，同时也可以根据参数执行部分，而不是整个脚本，比如--codex表示直接转换为codex下的就行，--global表示安装在全局。否则就会询问你。
+**研究一个由npm管理的工具时，首先从package.json**文件开始，这里会有这个工具提供的命令还有使用npm运行某一个命令时执行的脚本命令，但是这个工具的安装命令是**npx @opengsd/gsd-core\@latest**，而**npx需要关注bin字段**，首先会找**latest**指向的版本，比如**最新版本是1.40,那么这个命令就是npx @opengsd/gsd-core\@1.40.然后会去找bin字段找gsd-core命令对应执行的脚本，也就是bin/install.js**。问了下gpt（实在没有脑容量看了，燃尽了），它说这个脚本的作用是将gsd源码转换成可以适配不同AI工具的格式，同时也可以根据参数执行部分，而不是整个脚本，比如--codex表示直接转换为codex下的就行，--global表示安装在全局。否则就会询问你。
 
 ## 路由
 
@@ -50,7 +50,7 @@ gsd-core\workflows\new-project\steps\codebase-map-offer.md
 关于每个agent的路由，作者说是采用了**层级路由**，可以将其跟BMAD method对比着来看。和BMAD设计一样，使用路由来标明每个agent的位置和作用，而不是简单的全都列出来。
 
 作者原话：
-为控制急于列举技能的 token 开销，v1.40 引入了六个命名空间元技能（gsd-workflow、gsd-project、gsd-quality、gsd-context、gsd-manage、gsd-ideate——源自 commands/gsd/ns-\*.md，但可调用的 name: 为此处显示的简短形式），位于具体子技能之上。模型看到的是 6 个命名空间路由器（约 120 个 token），而非扁平的 86 个技能列表（约 2,150 个 token），选择命名空间后通过嵌入在命名空间路由器主体中的路由表路由到具体子技能。命名空间技能是可叠加的——每个具体命令仍可直接调用，这里也和BMAD一样，因为本质上都是skill，自然可以直接调用。
+为控制急于列举技能的 token 开销，v1.40 引入了六个命名空间元技能（**gsd-workflow、gsd-project、gsd-quality、gsd-context、gsd-manage、gsd-ideate——源自 commands/gsd/ns-\*.md，但可调用的 name: 为此处显示的简短形式**），位于具体子技能之上。模型看到的是 6 个命名空间路由器（约 120 个 token），而非扁平的 86 个技能列表（约 2,150 个 token），选择命名空间后通过嵌入在命名空间路由器主体中的路由表路由到具体子技能。命名空间技能是可叠加的——每个具体命令仍可直接调用，这里也和BMAD一样，因为本质上都是skill，自然可以直接调用。
 
 什么意思呢？我们将其跟BMAD进行对比着来看。当我们在对话框（codex或者其他的）中输入mary时，模型会知道mary对应的是哪一个skill，然后在这个skill目录下定义了mary可以调用的其他skill，包括description和skill，然后会根据我们的需求去和description对应再调取相应的skill。gsd的层级路由和这个的思路也是一样的。
 
@@ -90,7 +90,7 @@ Invoke the matched skill directly using the Skill tool.
 
 ### 不同之处
 
-当一个AI工具启动时，它会去扫描skills目录下的所有已安装的skill（这里不同的AI工具定义的目录名不同，但是基本路径是一样的），然后将这些skill的SKILL.md文件的YAML部分加载到当前上下文当中，这也就造成了一个问题，如果安装的skill太多，是否会占很多token？答案是不会，因为一般AI工具都会给skill所占的上下文有一个最大限制。那么又有一个新问题了，当skill过多，可能会有某些skill没有被扫描到或者某些的skill加载到上下文中的YAML被截断（或者其他的问题，主要看AI工具如何设计）。
+**当一个AI工具启动时，它会去扫描skills目录下的所有已安装的skill（这里不同的AI工具定义的目录名不同，但是基本路径是一样的），然后将这些skill的SKILL.md文件的YAML部分加载到当前上下文当中**，这也就造成了一个问题，如果安装的skill太多，是否会占很多token？答案是不会，因为一般AI工具都会给skill所占的上下文有一个最大限制。那么又有一个新问题了，当skill过多，可能会有某些skill没有被扫描到或者某些的skill加载到上下文中的YAML被截断（或者其他的问题，主要看AI工具如何设计）。
 
 gsd的层级路由可以一定程度上解决这个问题，虽然AI工具会扫描skills目录来加载skill，但是一般只扫描顶级目录，gsd就是利用这个来节省skill加载的token的。在它安装的时候，只把gsd-workflow、gsd-project、gsd-quality、gsd-context、gsd-manage、gsd-ideate安装在顶级目录中，其他的skill则安装到嵌套路由中，同时路由表被改写（如下表），因为这些skill不会被扫描到所以需要告诉大模型去哪里找到它们。这样就实现了作者说的“模型看到的是 6 个命名空间路由器（约 120 个 token），而非扁平的 86 个技能列表（约 2,150 个 token）”。
 
@@ -143,7 +143,7 @@ gsd的层级路由可以一定程度上解决这个问题，虽然AI工具会扫
 
 就像我上文说的先从一个例子来看。这里选取了gsd-new-project来看，我直接把gsd-core\workflows\new-project.md粘贴进来了，原文两千多行，对于某些不重要的部分我使用...省略...来标识了。
 
-值得注意的是，gsd的md文档中使用了xml语法，md文档大家都很清楚是跟LLM交流时的通用实践，既能让AI看懂也能让人看懂。对于xml语法，我有查到claude对xml标记的提示词做了特殊优化，可以让AI更加好的理解结构，反正就是有好处，以后可以试一下用xml语法向AI下指令。
+值得注意的是，**gsd的md文档中使用了xml语法，md文档大家都很清楚是跟LLM交流时的通用实践，既能让AI看懂也能让人看懂。对于xml语法，我有查到claude对xml标记的提示词做了特殊优化，可以让AI更加好的理解结构，反正就是有好处，以后可以试一下用xml语法向AI下指令。**
 
 ### SKILL.md
 
@@ -194,7 +194,7 @@ allowed-tools:
 \</required\_reading>
 
 \<available\_agent\_types>
-以下时这个当前这个工作流将会用到的子agent
+以下是这个当前这个工作流将会用到的子agent
 Valid GSD subagent types (use exact names — do not fall back to 'general-purpose'):
 
 - gsd-project-researcher — Researches project-level technical decisions
@@ -206,16 +206,16 @@ Valid GSD subagent types (use exact names — do not fall back to 'general-purpo
 
 \<auto\_mode>
 
-<!-- gsd:section id="auto-mode-detection" when="flag:--auto" -->注意这里使用了HTML语法的注释，目的是为了跟xml标签区别出来。
+<!-- gsd:section id="auto-mode-detection" when="flag:--auto" -->**注意这里使用了HTML语法的注释，目的是为了跟xml标签区别出来。**
 
 section\_manifest在buildSectionManifestField函数中生成，在init.cts中定义的，顾名思义是在初始化时调用的，section\_manifest中有included字段，只要是在当前窗口中执行的脚本，其产生的变量就可以被调用，比如section\_manifest
 If `section_manifest` is `null` or `"auto-mode-detection"` is in its `included` list: read and execute `gsd-core/workflows/new-project/steps/auto-mode-detection.md`. Otherwise skip — do not read the file.
 
 <!-- /gsd:section -->\</auto\_mode>
 
-读这一段时可能会困惑<!-- gsd:section id="auto-mode-detection" when="flag:--auto" -->是用来干啥的？刚开始我也很困惑这里的含义，后来跟AI进行了多轮对话，才搞清楚了一些。这里并不是给模型看的，而是为了在打包之前能够被精准识别到形成section-manifest.json文件，并且删除这行注释。
+读这一段时可能会困惑<!-- gsd:section id="auto-mode-detection" when="flag:--auto" -->是用来干啥的？刚开始我也很困惑这里的含义，后来跟AI进行了多轮对话，才搞清楚了一些。**这里并不是给模型看的，而是为了在打包之前能够被精准识别到形成section-manifest.json文件，并且删除这行注释。**
 
-如果你在安装gsd之后打开当前这个工作流文件，你会发现没有这一行注释。但是你会发现在workflows目录下有一个section-manifest.json。这个section-manifest.json主要是用于标识每个工作流文件中都有哪些step，用于标识不同的阶段需要去读什么文件。
+**如果你在安装gsd之后打开当前这个工作流文件，你会发现没有这一行注释。但是你会发现在workflows目录下有一个section-manifest.json。这个section-manifest.json主要是用于标识每个工作流文件中都有哪些step，用于标识不同的阶段需要去读什么文件。**
 比如当前这个工作流，有3个step那么在section-manifest.json中就会有3个，如下。
 
 ```JSON
@@ -314,18 +314,19 @@ Parse JSON for: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `co
 ...省略...
 
 除此之外还获取到了gsd-tools.cjs文件所在的位置并且定义了gsd_run函数，可以说所有的初始化行为都在这个函数中。
-如果看了这个脚本的解释，你会看到这一行命令gsd_run query init.new-project $AUTO_PARAM，通过这一行调用就可以获取到上面需要使用的section_manifest字段（包含included和excluded字段），也就是在HTML注释之间的内容。
+如果看了这个脚本的解释，你会看到**这一行命令`gsd_run query init.new-project $AUTO_PARAM`，通过这一行调用就可以获取到上面需要使用的section_manifest字段（包含included和excluded字段），也就是在HTML注释之间的内容。**
 在生成这个字段的时候会用到section-manifest.json文件，这就跟上面的问题联系上了。生成这个字段主要用到3个规则：
-1、脚本执行时gsd_run query init.new-project $AUTO_PARAM命令：通过init.后面的new-project来选择从section-manifest.json中相对应的steps数组
-2、用户输入是否有--auto参数：上文中有说过，如果用户输入了--auto参数，那么会将其存入$ARGUMENTS变量中，脚本在执行的时候会将其存到$AUTO_PARAM变量中然后通过gsd_run query init.new-project $AUTO_PARAM传入给init.cjs中相对应的函数。在这个函数中如果由auto参数输入才会将auto-mode-detection加入到included字段中。
-3、之前的产出：init.cjs会扫描磁盘判断都产出了什么文件，对于当前这个工作流会检查是否有代码映射文件，有的话就将codebase-map-offer加入到included字段中
+**1、脚本执行时gsd_run query init.new-project $AUTO_PARAM命令：通过init.后面的new-project来选择从section-manifest.json中相对应的steps数组**
+**2、用户输入是否有--auto参数：上文中有说过，如果用户输入了--auto参数，那么会将其存入$ARGUMENTS变量中，脚本在执行的时候会将其存到$AUTO_PARAM变量中然后通过gsd_run query init.new-project $AUTO_PARAM传入给init.cjs中相对应的函数。在这个函数中如果由auto参数输入才会将auto-mode-detection加入到included字段中。**
+**3、之前的产出：init.cjs会扫描磁盘判断都产出了什么文件，对于当前这个工作流会检查是否有代码映射文件，有的话就将codebase-map-offer加入到included字段中**
+
 那么section_manifest有什么用呢？我们反向来想一下，如果没有这个字段怎么办？
 那么上文中的这句If `section_manifest` is `null` or `"auto-mode-detection"` is in its `included` list: read and execute `gsd-core/workflows/new-project/steps/auto-mode-detection.md`. Otherwise skip — do not read the file.就会变成：如果是自动模式就去读取auto-mode-detection.md文件，否则跳过。那么LLM如何判断什么是自动模式呢？它可能会去读取当前的输入或者去读取用户的语气来自己判断是否是自动模式，从而多读取一些不需要的部分，但是有这个字段就只用看看included是否有auto-mode-detection就行了，可能这个省token的体感不是很强烈。那再举一个例子，后文中有一句这样的命令：If `section_manifest` is `null` or `"codebase-map-offer"` is in its `included` list: read and execute `gsd-core/workflows/new-project/steps/codebase-map-offer.md`. Otherwise skip — do not read the file.如果没有section_manifest字段，这句命令就要这样写：如果已经有了代码映射文件就读取和执行gsd-core/workflows/new-project/steps/codebase-map-offer.md。那么LLM为了判断是否有代码映射文件可能回去啊扫描当前项目中是否有类似的代码映射文件，从而消耗大量token。
-所以section_manifest的作用就是在初始化的时候让LLM尽可能的少去做判断，而是直接执行。那么我们后续在做属于自己的skill的时候也可以参考这种做法。
+**所以section_manifest的作用就是在初始化的时候让LLM尽可能的少去做判断，而是直接执行。那么我们后续在做属于自己的skill的时候也可以参考这种做法。**
 
-除此之外还需要注意的是，在这个工作流文件中，第一次使用section_manifest字段的时候还没有执行获取section_manifest字段的脚本，那么是否意味着这个工作流文件的顺序不对呢？答案是错误的。LLM在读取的时候不像我们平常写的程序那样，变量不能在声明之前使用。他不是程序解释器，它的工作流程是先读取整个文件，然后形成任务计划，再根据任务计划来执行，所以说它的执行顺序并不是读一段执行一段,读一段执行一段。对于LLM来说section_manifest是未来会产生的变量而不是现在必须存在的变量。
+除此之外还需要注意的是，在这个工作流文件中，第一次使用section_manifest字段的时候还没有执行获取section_manifest字段的脚本，那么是否意味着这个工作流文件的顺序不对呢？答案是错误的。**LLM在读取的时候不像我们平常写的程序那样，变量不能在声明之前使用。他不是程序解释器，它的工作流程是先读取整个文件，然后形成任务计划，再根据任务计划来执行，所以说它的执行顺序并不是读一段执行一段,读一段执行一段。对于LLM来说section_manifest是未来会产生的变量而不是现在必须存在的变量。**
 
-那万一LLM没有先读取section_manifest就直接去执行那条命令了呢？真的，大神就是大神，人家的设计就是天衣无缝。如果先执行那条命令，那么就会读取gsd-core/workflows/new-project/steps/auto-mode-detection.md，我们看一下这个文件，人家开头就写了Check if `--auto` flag is present in $ARGUMENTS.如果没有就不会继续向下执行，进行双重校验。
+那万一LLM没有先读取section_manifest就直接去执行那条命令了呢？真的，大神就是大神，人家的设计就是天衣无缝。如果先执行那条命令，那么就会读取gsd-core/workflows/new-project/steps/auto-mode-detection.md，我们看一下这个文件，人家开头就写了Check if `--auto` flag is present in $ARGUMENTS.如果没有就不会继续向下执行，进行**双重校验**。
 判断gsd运行在什么工具下，这里的作用主要是确定我们要使用的skill的目录，因为不同的AI工具定义的skill存放目录不同
 **Detect runtime and set instruction file name:**
 
@@ -372,7 +373,7 @@ All subsequent references to the project instruction file use `$INSTRUCTION_FILE
 
 同样就像上文所述，这里的HTML注释在安装gsd时是没有的，只有源码中有
 <!-- gsd:section id="codebase-map-offer" when="state:needs-codebase-map" -->
-如果已经有了代码映射，表示这不是一个新项目，直接执行codebase-map-offer.md文件，继续往下看会发现它执行的是\gsd-map-codebase，最终的工作流由gsd-core\workflows\map-codebase.md决定，这里需要注意的是并没有开子agent。
+如果已经有了代码映射，表示这不是一个新项目，直接执行codebase-map-offer.md文件，继续往下看会发现它执行的是\gsd-map-codebase，最终的工作流由gsd-core\workflows\map-codebase.md决定，**这里需要注意的是并没有开子agent**。
 If `section_manifest` is `null` or `"codebase-map-offer"` is in its `included` list: read and execute `gsd-core/workflows/new-project/steps/codebase-map-offer.md`. Otherwise skip — do not read the file.
 <!-- /gsd:section -->
 
@@ -388,7 +389,7 @@ If `section_manifest` is `null` or `"auto-mode-config"` is in its `included` lis
 
 ## 2b. Prior Spike/Sketch Detection
 
-检测已有的探索成果，会通过脚本查找是否有已经包装好的skill，避免 AI 重新分析已经做过的探索，这也是省token的一个方式。
+**检测已有的探索成果，会通过脚本查找是否有已经包装好的skill，避免 AI 重新分析已经做过的探索，这也是省token的一个方式。**
 Check for existing spike and sketch work that should inform project setup:
 
 ```bash
@@ -422,7 +423,7 @@ If spike/sketch findings skills exist, read their SKILL.md files to inform the q
 接着就进入到深入交流阶段,这个阶段来判断用户需要构建什么样的项目。
 ...省略...
 **Open the conversation:**
-这里注明了不要使用AskUserQuestion，使用freeform的提问。因为AskUserQuestion是AI工具自带的api，他有固定的输入格式，会限制用户只能选择选项，而freeform的提问可以更灵活地获取用户的信息。这里注意freeform的提问规则实在questioning.md中定义的，而这个文件是一个必读的上下文文件。
+这里注明了不要使用AskUserQuestion，使用freeform的提问。因为**AskUserQuestion是AI工具自带的api，他有固定的输入格式，会限制用户只能选择选项，而freeform的提问可以更灵活地获取用户的信息。这里注意freeform的提问规则实在questioning.md中定义的，而这个文件是一个必读的上下文文件**。
 Ask inline (freeform, NOT AskUserQuestion):
 
 "What do you want to build?"
@@ -433,7 +434,7 @@ Wait for their response. This gives you the context needed to ask intelligent fo
 **Research-before-questions mode:** Check if `workflow.research_before_questions` is enabled in `.planning/config.json` (or the config from init context). When enabled, before asking follow-up questions about a topic area:
 
 1. Do a brief web search for best practices related to what the user described
-这里比较关键，是让模型将搜索的结果揉进问题里文用户，这样得到的结果更加具体。
+**这里比较关键，是让模型将搜索的结果揉进问题里问用户，这样得到的结果更加具体。**
 2. Mention key findings naturally as you ask questions (e.g., "Most projects like this use X — is that what you're thinking, or something different?")
 3. This makes questions more informed without changing the conversational flow
 
@@ -485,7 +486,7 @@ Loop until "Create PROJECT.md" selected.
 **For greenfield projects:**
 
 ...省略...
-以下这个思考模板也很值得学习，在我们开发的时候让AI遵循这个模板来开发，这样我们就知道当前的开发进度了。
+**以下这个思考模板也很值得学习，在我们开发的时候让AI遵循这个模板来开发，这样我们就知道当前的开发进度了。**
 ```markdown
 ## Requirements
 
@@ -504,7 +505,7 @@ Loop until "Create PROJECT.md" selected.
 - [Exclusion 1] — [why]
 - [Exclusion 2] — [why]
 ```
-**All Active requirements are hypotheses until shipped and validated.**这句话的意思是所有"进行中"需求在发布并验证之前都是假设。也就是Active中的需求都是不确定的，我老感觉这里也挺重要的，但是不知道为什么。
+**All Active requirements are hypotheses until shipped and validated.****这句话的意思是所有"进行中"需求在发布并验证之前都是假设。也就是Active中的需求都是不确定的，我老感觉这里也挺重要的，但是不知道为什么。**
 **For brownfield projects (codebase map exists):**
 Infer Validated requirements from existing code:
 这是两个上下文文件，
@@ -515,7 +516,7 @@ Infer Validated requirements from existing code:
 ...省略...
 
 **Key Decisions:**
-这里也挺重要的，就是记录下之前深度提问环节的所有决策，并且标记上这个决策的状态，有利于项目的进度管理，以后写比较大型的skill也可以考虑使用。我的写小说的skill完全就可以妇科gsd的思想来进行进度管理和记忆管理，而不是多个skill的堆砌。
+这里也挺重要的，就是记录下之前深度提问环节的所有决策，并且标记上这个决策的状态，有利于项目的进度管理，以后写比较大型的skill也可以考虑使用。我的写小说的skill完全就可以复刻gsd的思想来进行**进度管理和记忆管理，而不是多个skill的堆砌**。
 Initialize with any decisions made during questioning:
 
 ```markdown
@@ -533,7 +534,7 @@ Initialize with any decisions made during questioning:
 ```
 
 **Evolution section** (include at the end of PROJECT.md, before the footer):
-其实这个环节也挺重要的，可以之后去看一下，我把它复制过来就仅仅是翻译一下。好像都挺重要的，提问：文章中有几个挺重要的🤣？
+其实这个环节也挺重要的，可以之后去看一下，如果把它复制过来就仅仅是翻译一下，没必要。好像都挺重要的，提问：文章中有几个挺重要的🤣？
 **Commit PROJECT.md:**
 最后写入时使用脚本而不是自然语言也在一定程度上减少token的消耗。
 ```bash
@@ -545,12 +546,12 @@ gsd_run query commit "docs: initialize project" --files .planning/PROJECT.md
 主要是根据`~/.gsd/defaults.json`中的配置信息展示给用户让用户修改或者确认这些配置。
 如果存在这个配置文件，走一个路径：
 ...省略...
-这里对于不同的运行时，跟用户交互的方式也不同。因为如果使用AskUserQuestion，claude会对选项有上限（4个），而默认的配置项有9个，所以对于claude，作者采取先路由（yes/no）然后再根据不同的路由来展示不同的选项。除此之外不同的AI工具的提问api也不同，但是在安装的时候会根据你选择的要安装到什么工具对这个进行适配改造，估计这个是作者后增的，所以这里直接如果是其他运行时，直接把所有的选项展示出来，让用户直接输入要改什么。
+这里对于不同的运行时，跟用户交互的方式也不同。**因为如果使用AskUserQuestion，claude会对选项有上限（4个），而默认的配置项有9个，所以对于claude，作者采取先路由（yes/no）然后再根据不同的路由来展示不同的选项。除此之外不同的AI工具的提问api也不同，但是在安装的时候会根据你选择的要安装到什么工具对这个进行适配改造，**估计这个是作者后增的，所以这里直接如果是其他运行时，直接把所有的选项展示出来，让用户直接输入要改什么。
 如果不是claude：
 **If TEXT\_MODE is active** (non-Claude runtimes): display a numbered list and ask the user to type the numbers of settings they want to change (comma-separated). Parse the response and proceed.
 如果是claude：
 ...省略...
-如果没有这个配置文件将会走几轮对话来确定配置，这里可以去看一下源码学习一下如何设置跟用户的对话。还有需要注意的是第一轮对话questions中只有4个问题，是因为claude的AskUserQuestion最多一次只能问4个问题。
+如果没有这个配置文件将会走几轮对话来确定配置，这里可以去看一下源码学习一下如何设置跟用户的对话。还有需要注意的是第一轮对话questions中只有4个问题，是因为**claude的AskUserQuestion最多一次只能问4个问题。**
 ## 5.1. Sub-Repo Detection
 
 因为gsd后续可能会自执行git命令，所以要判断那些是属于这个项目的，哪些是gsd可以管理的
@@ -582,7 +583,7 @@ Spawn 4 parallel gsd-project-researcher agents with path references:
 
 <!-- #2517 model-omit-on-inherit -->
 
-当researcher\_model，synthesizer\_model，roadmapper\_model（这三个参数也是上文配置config阶段询问得到的结果）为inherit时，打开子agent时不用将其传递给子agent，而是直接由你的AI工具决定。这里不懂的可以继续往下看
+当**researcher\_model，synthesizer\_model，roadmapper\_model（这三个参数也是上文配置config阶段询问得到的结果）为inherit时，打开子agent时不用将其传递给子agent，而是直接由你的AI工具决定。**这里不懂的可以继续往下看
 
 > **Model omission (#2517).** Omit the `model` parameter entirely when the value it would carry (`researcher_model`, `synthesizer_model`, `roadmapper_model`) is `"inherit"` or empty. An empty value 404s on runtimes without native tier aliases — the default on non-Claude runtimes. Omitting it inherits the orchestrator's model. See @gsd-core/references/model-profile-resolution.md.
 
@@ -672,7 +673,7 @@ ${AGENT_SKILLS_RESEARCHER}  ← Persona 注入
 ...省略...
 ```
 这里也比较重要，是让当前agent去等待所有子agent返回结果，同时向AI强调在等待子agent返回结果时，不能自己去读取子agent的文件，也不能自己去综合子agent的输出，只能等待子agent返回结果后再继续执行。
-这一条是专门针对codex运行时的，前面说过GSD将Agent()转化为codex下的spawn\_agent()来开启子agent,spawn\_agent()开启子agent后会立马返回一个agentId，而不会让当前的agent等待子agent结束，所以这里需要特别强调。
+**这一条是专门针对codex运行时的，前面说过GSD将Agent()转化为codex下的spawn\_agent()来开启子agent,spawn\_agent()开启子agent后会立马返回一个agentId，而不会让当前的agent等待子agent结束，所以这里需要特别强调。**
 
 > **ORCHESTRATOR RULE — CODEX RUNTIME**: After calling all 4 researcher Agent() calls above, do NOT read research files or synthesize content independently while the subagents are active. Wait for all 4 researchers to complete before spawning the synthesizer. This prevents duplicate work and wasted context.
 
@@ -705,7 +706,7 @@ Commit after writing.
 
 > **ORCHESTRATOR RULE — CODEX RUNTIME**: After calling Agent() above, stop working on this task immediately. Do not read more files, edit code, or run tests related to this task while the subagent is active. Wait for the subagent to return its result. This prevents duplicate work, conflicting edits, and wasted context. Only resume when the subagent result is available.
 
-这里有点像一个bug的修复方案，同步的时候本应该把研究结果写入 .planning/research/SUMMARY.md 文件，然后只返回一个简短确认；但是有时 LLM 会误以为自己不能写文件，于是把整个 SUMMARY.md 内容直接输出在聊天响应里，导致磁盘没有文件。下面这段就是保证orchestrator必须检测并自动修复，而不能直接进入 roadmap 阶段。
+这里有点像一个bug的修复方案，同步的时候本应该把研究结果写入 .planning/research/SUMMARY.md 文件，然后只返回一个简短确认；但是**有时 LLM 会误以为自己不能写文件，于是把整个 SUMMARY.md 内容直接输出在聊天响应里，导致磁盘没有文件。**下面这段就是保证orchestrator必须检测并自动修复，而不能直接进入 roadmap 阶段。
 
 **Synthesizer output self-heal (#222) — verify SUMMARY.md materialized:** The synthesizer's canonical output is `.planning/research/SUMMARY.md` on disk; its brief structured return (`## SYNTHESIS COMPLETE` plus a few `###` confirmation lines) is NOT the file content. A known LLM false-refusal (issue #222) sometimes makes the agent return the full SUMMARY.md document inline — fabricating a write restriction (e.g. "the runtime is blocking file writes") — instead of writing the file. Prompt hardening alone does not fully eliminate it, so the orchestrator MUST absorb the failure deterministically before spawning `gsd-roadmapper`:
 第一步：判断这个文件是否在当前项目中，同时检测它是否合法。

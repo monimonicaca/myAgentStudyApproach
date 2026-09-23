@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>myAgentStudyApproach 学习成果汇报</title>
+<style>
+  :root{
+    --bg:#F6F4EF;--ink:#20242B;--ink2:#5A6270;--line:#E2DFD6;
+    --navy:#1F3A5F;--navy2:#2E5079;--teal:#2E86AB;--amber:#B98A2E;--red:#B04A48;--card:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Arial,sans-serif;line-height:1.7;font-size:15px;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+  header{background:var(--navy);color:#F4F1EA;padding:52px 0 44px;}
+  header .kicker{font-size:12.5px;letter-spacing:.18em;color:#B9C7DA;text-transform:uppercase;margin-bottom:12px;}
+  header h1{font-size:clamp(26px,4.5vw,40px);font-weight:800;line-height:1.2;}
+  header .sub{margin-top:12px;font-size:15px;color:#D6DFEC;max-width:640px;}
+  .stats{display:flex;flex-wrap:wrap;gap:0;margin-top:30px;border-top:1px solid rgba(255,255,255,.18);padding-top:22px;}
+  .stat{flex:1 1 130px;min-width:115px;padding-right:18px;}
+  .stat .n{font-size:26px;font-weight:800;color:#fff;}
+  .stat .l{font-size:12px;color:#AFC0D8;margin-top:2px;}
+  section{padding:40px 0 4px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;}
+  .sec-no{font-size:12.5px;font-weight:700;color:var(--teal);letter-spacing:.1em;}
+  .sec-title{font-size:21px;font-weight:800;color:var(--navy);}
+  .sec-line{flex:1;height:1px;background:var(--line);}
+  /* 时间轴 */
+  .timeline{position:relative;padding-left:30px;}
+  .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--navy2);}
+  .tl-item{position:relative;padding-bottom:26px;}
+  .tl-item:last-child{padding-bottom:4px;}
+  .tl-dot{position:absolute;left:-30px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--navy);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--navy);}
+  .tl-dot.teal{background:var(--teal);box-shadow:0 0 0 2px var(--teal);}
+  .tl-dot.amber{background:var(--amber);box-shadow:0 0 0 2px var(--amber);}
+  .tl-phase{display:inline-block;font-size:11.5px;font-weight:700;color:var(--navy);background:#E7EDF5;border-radius:20px;padding:1px 11px;margin-bottom:6px;letter-spacing:.04em;}
+  .tl-item h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:4px;}
+  .tl-item p{color:var(--ink2);font-size:13.5px;max-width:820px;}
+  .tl-files{margin-top:7px;font-size:12px;color:var(--navy2);}
+  /* 表格 */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tbl-scroll table{min-width:640px;width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px;}
+  th{background:var(--navy);color:#EDF1F7;text-align:left;padding:8px 13px;font-size:12.5px;font-weight:700;}
+  td{padding:8px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  tr:nth-child(even) td{background:#FBFAF7;}
+  td .k{font-weight:700;color:var(--navy);white-space:nowrap;}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:0 7px;}
+  .pill.done{color:#1E6B4A;background:#E2F0E8;}
+  .pill.wip{color:var(--amber);background:#F6EBD6;}
+  .pill.todo{color:var(--ink2);background:#ECEAE4;}
+  /* 成果卡 */
+  .cards{display:flex;flex-wrap:wrap;gap:12px;}
+  .card{flex:1 1 280px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .card .t{font-size:14px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .card .type{font-size:10.5px;font-weight:700;color:var(--teal);background:#E4F0F6;border-radius:4px;padding:1px 6px;letter-spacing:.04em;}
+  .card ul{margin:6px 0 0 15px;font-size:12.5px;color:var(--ink2);}
+  .card li{margin-bottom:2px;}
+  .card .meta{font-size:11.5px;color:var(--ink2);margin-top:7px;border-top:1px dashed var(--line);padding-top:6px;}
+  /* 不足 */
+  .issue{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:flex-start;}
+  .issue:last-child{border-bottom:none;}
+  .sev{flex:0 0 40px;height:20px;border-radius:4px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+  .sev.high{background:#F3E1E0;color:var(--red);}
+  .sev.mid{background:#F6EBD6;color:var(--amber);}
+  .sev.low{background:#E4F0F6;color:var(--teal);}
+  .issue .txt{flex:1;min-width:0;}
+  .issue h4{font-size:14px;font-weight:700;color:var(--ink);display:inline;}
+  .issue p{font-size:12.5px;color:var(--ink2);margin-top:2px;}
+  .issue .fix{font-size:12.5px;color:var(--navy);margin-top:4px;}
+  /* 结论 */
+  .conclusion{margin:36px 0 4px;background:var(--navy);color:#EDF1F7;border-radius:14px;padding:26px 30px 24px;}
+  .conclusion h2{font-size:19px;font-weight:800;color:#fff;margin-bottom:8px;}
+  .conclusion p{font-size:13.5px;color:#D2DCEC;}
+  .next{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;}
+  .next span{font-size:12px;color:var(--navy);background:#F4F1EA;border-radius:20px;padding:4px 12px;font-weight:600;}
+  footer{padding:26px 0 40px;color:var(--ink2);font-size:12px;}
+  footer .line{border-top:1px solid var(--line);padding-top:14px;}
+  @media (max-width:640px){.issue{flex-direction:column;gap:6px;}section{padding:32px 0 2px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Learning Report · 2026.07 – 2026.09</div>
+    <h1>myAgentStudyApproach · 学习成果汇报</h1>
+    <p class="sub">AI 编程方法论学习与落地：从环境搭建、框架研究，到产出 4 个自有 Skills 与 1 个自定义智能体的完整闭环。</p>
+    <div class="stats">
+      <div class="stat"><div class="n">27</div><div class="l">Git 提交</div></div>
+      <div class="stat"><div class="n">33</div><div class="l">项目文件</div></div>
+      <div class="stat"><div class="n">~4,300</div><div class="l">内容行数</div></div>
+      <div class="stat"><div class="n">11</div><div class="l">学习笔记</div></div>
+      <div class="stat"><div class="n">4+1</div><div class="l">Skills·Agent</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 01 学习路径 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">01</span><h2 class="sec-title">学习路径</h2><div class="sec-line"></div></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <span class="tl-phase">阶段一 · 环境与基建</span>
+        <h3>打通 Windows / WSL / GitHub / Docker 开发链路</h3>
+        <p>问答式澄清 7 个核心疑惑（GitHub≠Git、/mnt/c 挂载、ext4.vhdx、SSH Fake IP 等）；Maven 私服 + IDEA 连 Docker 三连坑。</p>
+        <div class="tl-files">codex迁移到wsl.md 442 行 · 后端项目.md 125 行</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot teal"></span>
+        <span class="tl-phase">阶段二 · 方法论探索</span>
+        <h3>MCP → BMAD → GSD → SDD，从入门到源码级</h3>
+        <p>掌握 MCP 协议与 SKILL 机制；研究 BMAD 人设化智能体；深入 GSD 的层级路由、子 Agent 隔离上下文、runtime 适配与 hook 系统；学习 OpenSpec 规范驱动开发。</p>
+        <div class="tl-files">new-project.md 1042 行（逐行精读）· gsd.md 512 行 · BMAD.md · SDD学习.md · agent.md</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot amber"></span>
+        <span class="tl-phase">阶段三 · 实践落地</span>
+        <h3>把方法论沉淀为 4 个 Skills + 1 个 Agent</h3>
+        <p>将「人设、规则文件、工作流、评测」模式落地为可用资产，每个技能都配 evals 评测样例。</p>
+        <div class="tl-files">skills/ · 4 个技能 ~2,000 行 · agent/ · monideui</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 核心产出 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">02</span><h2 class="sec-title">核心产出</h2><div class="sec-line"></div></div>
+    <div class="cards">
+      <div class="card">
+        <div class="t">api-rules <span class="type">Skill</span></div>
+        <ul>
+          <li>后端 API 统一规范：信封最小化 {data}/{error}+meta</li>
+          <li>结构化错误、RESTful 版本化、分页、Bearer Token</li>
+          <li>DTO 省略标准 + common 模块共享，附 Java 示例</li>
+        </ul>
+        <div class="meta">371 行 · evals</div>
+      </div>
+      <div class="card">
+        <div class="t">moni-app-skill <span class="type">Skill</span></div>
+        <ul>
+          <li>Android Compose + MVVM 构建规范</li>
+          <li>自写 scan_logging_utils.js 扫描工具 + 单元测试</li>
+          <li>主题参数化、严格范围控制</li>
+        </ul>
+        <div class="meta">323 行 · 工具+测试</div>
+      </div>
+      <div class="card">
+        <div class="t">profession-commentor <span class="type">Skill</span></div>
+        <ul>
+          <li>Java 中文 Javadoc 规范（@author moni）</li>
+          <li>注释讲 why 不讲 what；字段自明不注释</li>
+          <li>3 个 Java 评测样例</li>
+        </ul>
+        <div class="meta">329 行 · evals+样例</div>
+      </div>
+      <div class="card">
+        <div class="t">writeself_app_style_rules <span class="type">Skill</span></div>
+        <ul>
+          <li>WriteSelf 设计系统：6 个独立规则文件</li>
+          <li>9 步审计流程 + 15 个违规案例，逐条可溯源</li>
+          <li>含设计系统内部冲突裁决规则</li>
+        </ul>
+        <div class="meta">937 行 · 规则库最完整</div>
+      </div>
+      <div class="card">
+        <div class="t">monideui <span class="type">Agent</span></div>
+        <ul>
+          <li>UI 视觉设计师智能体，复刻 BMAD 命名结构</li>
+          <li>customize.toml 人设（Dieter Rams + Don Norman）</li>
+          <li>8 步激活流程 + 中英双语文档</li>
+        </ul>
+        <div class="meta">125 行 · toml+SKILL.md/zh</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 笔记概况 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">03</span><h2 class="sec-title">笔记概况</h2><div class="sec-line"></div></div>
+    <div class="tbl-scroll">
+    <table>
+      <tr><th>笔记</th><th>行数</th><th>内容</th><th>状态</th></tr>
+      <tr><td class="k">new-project.md</td><td>1042</td><td>GSD new-project 工作流逐行精读</td><td><span class="pill wip">进行中</span></td></tr>
+      <tr><td class="k">gsd.md</td><td>512</td><td>GSD 框架整体研究（路由/子Agent/hook）</td><td><span class="pill done">较完整</span></td></tr>
+      <tr><td class="k">codex迁移到wsl.md</td><td>442</td><td>WSL 环境 7 个疑惑的问答整理</td><td><span class="pill done">已完成</span></td></tr>
+      <tr><td class="k">tuide_tools_prompt.md</td><td>206</td><td>Python 工具开发需求文档（10 模块）</td><td><span class="pill todo">有需求无实现</span></td></tr>
+      <tr><td class="k">BMAD.md / SDD学习.md / 后端项目.md / agent.md</td><td>474</td><td>BMAD 人设机制 / OpenSpec 四步 / 私服+Docker 排坑 / MCP 入门</td><td><span class="pill done">较完整</span></td></tr>
+      <tr><td class="k">README / ponytail / 通信.md</td><td>3</td><td>项目说明（过简）/ 链接收藏 / 空文件</td><td><span class="pill todo">待补写</span></td></tr>
+    </table>
+    </div>
+  </section>
+
+  <!-- 04 不足与建议 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">04</span><h2 class="sec-title">不足与建议</h2><div class="sec-line"></div></div>
+    <div class="issues">
+      <div class="issue">
+        <span class="sev high">高</span>
+        <div class="txt">
+          <h4>知识无索引</h4><p>README 仅 2 行，11 篇笔记无目录无导航。</p>
+          <div class="fix">重写 README 为知识地图，每篇笔记补摘要与状态。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev high">高</span>
+        <div class="txt">
+          <h4>明文凭据入库</h4><p>后端项目.md 含 Maven 私服账号密码。</p>
+          <div class="fix">移除凭据改环境变量，评估重置密码。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>笔记疑问未回填、两版重复</h4><p>new-project.md 大量「?:」未解答，与 gsd.md 内容重复割裂。</p>
+          <div class="fix">合并去重，已解答回填，未解答集中为待研究清单。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>技能与学习仓库混杂、路径硬编码</h4><p>SKILL.md 硬编码 d:\myAgentStudyApproach\...，换机即失效。</p>
+          <div class="fix">技能迁移全局目录，路径改相对引用。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>空文件与未完成项</h4><p>通信.md 0 行；ponytail 仅链接；tuide 无实现。</p>
+          <div class="fix">补写通信机制笔记（GSD 核心收获），未完成项标 TODO。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev low">低</span>
+        <div class="txt">
+          <h4>验证与复盘不足</h4><p>evals 覆盖有限、无测试运行记录、无阶段复盘、转述多判断少。</p>
+          <div class="fix">扩充 evals 用例，建立定期复盘机制。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 结论 -->
+  <div class="conclusion">
+    <h2>总体评价</h2>
+    <p>投入集中在 GSD/BMAD 源码级研究，并落地为 4 个带评测的技能与 1 个自定义智能体，形成「输入→消化→产出」闭环，工程素养扎实。短板在组织与收尾：缺导航、有凭据、有未完成项。补齐后即可从「学习草稿箱」升级为「可复用资产库」。</p>
+    <div class="next">
+      <span>1 · 重写 README 知识地图</span>
+      <span>2 · 凭据脱敏</span>
+      <span>3 · 技能迁移全局</span>
+      <span>4 · 回填疑问补空档</span>
+      <span>5 · 定期复盘</span>
+    </div>
+  </div>
+
+  <footer>
+    <div class="line">基于 D:\myAgentStudyApproach 全仓逐份阅读统计 · 数据截至 2026-09-08 · v3 精炼版</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>myAgentStudyApproach 学习成果汇报</title>
+<style>
+  :root{
+    --bg:#F6F4EF;--ink:#20242B;--ink2:#5A6270;--line:#E2DFD6;
+    --navy:#1F3A5F;--navy2:#2E5079;--teal:#2E86AB;--amber:#B98A2E;--red:#B04A48;--card:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Arial,sans-serif;line-height:1.75;font-size:15px;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+  section{padding:40px 0 4px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;}
+  .sec-no{font-size:12.5px;font-weight:700;color:var(--teal);letter-spacing:.1em;}
+  .sec-title{font-size:21px;font-weight:800;color:var(--navy);}
+  .sec-line{flex:1;height:1px;background:var(--line);}
+  /* 时间轴 */
+  .timeline{position:relative;padding-left:30px;}
+  .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--navy2);}
+  .tl-item{position:relative;padding-bottom:26px;}
+  .tl-item:last-child{padding-bottom:4px;}
+  .tl-dot{position:absolute;left:-30px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--navy);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--navy);}
+  .tl-dot.teal{background:var(--teal);box-shadow:0 0 0 2px var(--teal);}
+  .tl-dot.amber{background:var(--amber);box-shadow:0 0 0 2px var(--amber);}
+  .tl-dot.rose{background:#8A6BBE;box-shadow:0 0 0 2px #8A6BBE;}
+  .tl-dot.olive{background:#6A8F4E;box-shadow:0 0 0 2px #6A8F4E;}
+  .tl-phase{display:inline-block;font-size:11.5px;font-weight:700;color:var(--navy);background:#E7EDF5;border-radius:20px;padding:1px 11px;margin-bottom:6px;letter-spacing:.04em;}
+  .tl-item h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:4px;}
+  .tl-item p{color:var(--ink2);font-size:13.5px;max-width:820px;}
+  .tl-files{margin-top:7px;font-size:12px;color:var(--navy2);}
+  /* 成果卡 */
+  .cards{display:flex;flex-wrap:wrap;gap:14px;}
+  .card{flex:1 1 100%;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .card .t{font-size:15px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .card .type{font-size:10.5px;font-weight:700;color:var(--teal);background:#E4F0F6;border-radius:4px;padding:1px 6px;letter-spacing:.04em;}
+  .card .type.standby{color:#8A6D1D;background:#F6EBD6;}
+  .card .role{font-size:13px;color:var(--ink);margin-top:6px;font-weight:600;}
+  .card p{font-size:13.5px;color:var(--ink2);margin-top:6px;}
+  .card p b{color:var(--ink);font-weight:700;}
+  .card .eg{font-size:12.5px;color:var(--navy);background:#EEF3FA;border-left:3px solid var(--navy2);margin-top:8px;padding:7px 11px;border-radius:0 6px 6px 0;}
+  .card .meta{font-size:11.5px;color:var(--ink2);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px;}
+  /* 表格 */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tbl-scroll table{min-width:640px;width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px;}
+  th{background:var(--navy);color:#EDF1F7;text-align:left;padding:8px 13px;font-size:12.5px;font-weight:700;}
+  td{padding:8px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  tr:nth-child(even) td{background:#FBFAF7;}
+  td .k{font-weight:700;color:var(--navy);white-space:nowrap;}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:0 7px;}
+  .pill.done{color:#1E6B4A;background:#E2F0E8;}
+  .pill.wip{color:var(--amber);background:#F6EBD6;}
+  .pill.todo{color:var(--ink2);background:#ECEAE4;}
+  /* 不足 */
+  .issue{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:flex-start;}
+  .issue:last-child{border-bottom:none;}
+  .sev{flex:0 0 40px;height:20px;border-radius:4px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+  .sev.high{background:#F3E1E0;color:var(--red);}
+  .sev.mid{background:#F6EBD6;color:var(--amber);}
+  .sev.low{background:#E4F0F6;color:var(--teal);}
+  .issue .txt{flex:1;min-width:0;}
+  .issue h4{font-size:14px;font-weight:700;color:var(--ink);display:inline;}
+  .issue p{font-size:12.5px;color:var(--ink2);margin-top:2px;}
+  .issue .fix{font-size:12.5px;color:var(--navy);margin-top:4px;}
+  /* 结论 */
+  .conclusion{margin:36px 0 4px;background:var(--navy);color:#EDF1F7;border-radius:14px;padding:26px 30px 24px;}
+  .conclusion h2{font-size:19px;font-weight:800;color:#fff;margin-bottom:8px;}
+  .conclusion p{font-size:13.5px;color:#D2DCEC;}
+  .next{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;}
+  .next span{font-size:12px;color:var(--navy);background:#F4F1EA;border-radius:20px;padding:4px 12px;font-weight:600;}
+  footer{padding:26px 0 40px;color:var(--ink2);font-size:12px;}
+  footer .line{border-top:1px solid var(--line);padding-top:14px;}
+  @media (max-width:640px){.issue{flex-direction:column;gap:6px;}section{padding:32px 0 2px;}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- 01 学习路径 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">01</span><h2 class="sec-title">学了什么</h2><div class="sec-line"></div></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <span class="tl-phase">1 · 把环境弄顺</span>
+        <h3>Maven 私服配置 + IDEA 连 Docker 排坑</h3>
+        <p>填了 Maven 私服配置的坑（settings.xml 的 id 和仓库地址要对齐）+ IDEA 连 Docker 的三连坑：命名管道怎么通信、本地连接和 Registry 登录是两回事、端口映射后才能在 Database 面板里跑 SQL。</p>
+        <div class="tl-files">后端项目.md 191 行</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot teal"></span>
+        <span class="tl-phase">2 · 读框架</span>
+        <h3>MCP → BMAD → GSD → SDD，从看热闹到读源码</h3>
+        <p>先看 MCP 协议和 SKILL 到底是什么；再研究 BMAD 怎么给 AI 立人设；然后啃 GSD 的机制——层级路由怎么省 token、子 Agent 怎么各干各的活不互相污染、怎么适配不同运行时、hook 怎么挂；最后看 OpenSpec 那套「先定规矩再写代码」。其中 gsd.md 还把 hook 的上下文监控链路（statusLine / PostToolUse / SessionStart 三个事件 + 桥接文件）完整整理了出来。</p>
+        <div class="tl-files">gsd.md 791 行 · BMAD.md · SDD学习.md · agent.md</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot amber"></span>
+        <span class="tl-phase">3 · 做成自己的东西</span>
+        <h3>把学到的变成 4 个技能 + 1 个智能体</h3>
+        <p>把「立人设、写规则文件、定工作流」这几招照搬到自己身上：写后端、写 Android、写注释、做界面设计，各有一套规范。</p>
+        <div class="tl-files">skills/ · 4 个技能 ~2,600 行 · agent/ · monideui 133 行</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot rose"></span>
+        <span class="tl-phase">4 · 顺手在项目里搞懂直播</span>
+        <h3>FLV vs HLS：一条靠拆包换装，一条靠切片列表</h3>
+        <p>做直播播放器时把两条流协议的原理弄懂了。FLV 靠 HTTP 长连接持续推 Tag 字节流，浏览器不认这格式，全靠 flv.js 把 Tag 拆出 H.264/AAC 帧、重封装成 fMP4 塞进 MSE，随到随播、延迟 1~3s；HLS 是「m3u8 清单 + 2~10s 分片」，播放器每几秒轮询一次清单、发现新分片就下载按序播，延迟 10~30s，但分片是静态文件，全端兼容、随便走 CDN。</p>
+        <div class="eg">怎么选：要实时（监控、对讲、内网）走 FLV；要兼容和分发（公网、手机、点播）走 HLS。对应项目里就是两套播放器并存——FlvPlayer.vue（flv.js）扛低延迟，VideoPlayer.vue（EasyPlayer）兜底 iPhone 和 RTSP/HLS。</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot olive"></span>
+        <span class="tl-phase">5 · 在项目里搞懂 Vue hooks</span>
+        <h3>核心收获：用 hook 复用一个业务的通用逻辑，重点是 usePageListHook</h3>
+        <p>Vue 逻辑复用从全写进页面 → mixins → hooks 一路演进，项目正处在 mixins → hooks 迁移中途（老页面走 mixins，审批模块走 hooks）。这轮最大的收获不是学会了 hooks 语法，而是想明白了一件事：可以把一个业务里反复要写的逻辑抽成一个 hook，页面传个参数就能用。最典型的就是 usePageListHook——以前每个列表页都要自己写一遍查询参数、分页、loading、勾选、删除确认，现在全收进这个 hook 里，页面只传个 getListApi 就行。</p>
+        <div class="cards">
+          <div class="card">
+            <div class="t">usePageListHook <span class="type">在用 · 重点</span></div>
+            <div class="role">把列表页反复要写的逻辑抽成 hook：查询参数、分页、loading、勾选跨页回显、删除确认，全由这个 hook 管着。</div>
+            <div class="eg">页面只需要传 getListApi（必传）；hook 返回 list、pagination、loadingList、search、getList、resetQuery、selectedRecords、confirm；表格和容器的 ref 名约定好用 tableRef 和 tableWrapperRef。</div>
+          </div>
+          <div class="card">
+            <div class="t">useTableHeight <span class="type">在用</span></div>
+            <div class="role">按容器算表格高度，fixHeight 补偿（36/40/60 各页不同），resizeTable 手动重算。</div>
+          </div>
+          <div class="card">
+            <div class="t">useDialogHook <span class="type standby">备用</span></div>
+            <div class="role">弹窗表单的一整套逻辑：传 form 和 formRef 进去，跟 mixins 版的 dialog.js 是一回事。</div>
+          </div>
+          <div class="card">
+            <div class="t">useButtonPermissionHook <span class="type standby">备用</span></div>
+            <div class="role">hasButtonPermission('菜单code:按钮code')，三级判断（开关 → 超管 → auths Map），等价 button-permission.js。</div>
+          </div>
+        </div>
+        <div class="eg">一句话现状：usePageListHook + useTableHeight 是审批模块在用的新方案；useDialogHook、useButtonPermissionHook 逻辑已写好但业务仍走等价 mixins 版，处于迁移中途。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 做出来的东西 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">02</span><h2 class="sec-title">做出来的东西，都是干什么用的</h2><div class="sec-line"></div></div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="t">api-rules <span class="type">Skill</span></div>
+        <div class="role">管后端接口怎么写的一套规矩，AI 写代码时自动套用。</div>
+        <p>起因是想统一前端和后端的代码风格，让前端拿到的数据跟后端接口对得上。这套规范定了：成功只返回 {data}，出错返回 {error:{code,message}}，分页才加 meta；错误码用字符串（比如 INVALID_PASSWORD）而不是数字；URL 统一走 /api/v1/；时间用 ISO 8601；token 放 Authorization 头。</p>
+        <p>还写清楚了 DTO 什么时候该建、什么时候可以省，公共类型必须放 common 模块不许各模块各抄一份。</p>
+        <div class="eg">例子：密码错了 → HTTP 401 + {error:{code:"INVALID_PASSWORD", message:"邮箱或密码错误"}}；列表接口 → {data:[...], meta:{page:1, pageSize:20, total:200}}。</div>
+        <div class="meta">498 行 · 附 Java 完整示例</div>
+      </div>
+
+      <div class="card">
+        <div class="t">moni-app-skill <span class="type">Skill</span></div>
+        <div class="role">Android 写界面的规范，Kotlin + Compose + MVVM。</div>
+        <p>强制每个页面拆成 <b>Screen / ViewModel / UiState</b> 三个文件，ViewModel 里不许碰 View；颜色、字号、间距不许写死，全部走主题。用户说「加个登录页」，就只生成这三件套，不多加没用的文件。</p>
+        <p>还特意写了个 <b>scan_logging_utils.js</b> 脚本：写日志之前先扫一遍项目有没有自己的日志工具，有就跟着用，没有就别硬塞 android.util.Log——避免往别人的项目里乱加东西。</p>
+        <div class="eg">这套脚本自己配了单元测试（test_scan_logging_utils.js），属于「工具 + 验证」都做齐了。</div>
+        <div class="meta">400 行 · SKILL + JS 工具 + 单测</div>
+      </div>
+
+      <div class="card">
+        <div class="t">profession-commentor <span class="type">Skill</span></div>
+        <div class="role">Java 代码怎么写注释的规矩，用中文。</div>
+        <p>核心就一句话：<b>代码讲「做了什么」，注释讲「为什么这么做」</b>。类和方法要写 Javadoc（带 @author moni），方法写清楚参数、返回值、可能抛的异常，DTO 的每个字段都要说明。</p>
+        <p>反过来，字段名一看就懂的就别注释；「// 创建用户」这种废话注释被当成反面教材写进了规范里。</p>
+        <div class="eg">例子：注释「按创建时间倒序排序，让最新日记显示在最前面」可以；注释「对日记进行排序」不行。</div>
+        <div class="meta">270 行 · 附 3 个 Java 注释示例</div>
+      </div>
+
+      <div class="card">
+        <div class="t">writeself_app_style_rules <span class="type">Skill</span></div>
+        <div class="role">WriteSelf 这个 App 的设计规范，体量最大的一件。</div>
+        <p>拆成 6 个文件各管一摊：颜色体系、组件样式、页面怎么排、什么信息该用什么组件展示、跨页间距、总规则。AI 生成界面最爱犯的毛病全列了——<b>时间戳被包成 Chip、卡片带阴影、主按钮用纯色、错误提示用灰字弱化、登录页做成双栏仪表盘</b>……</p>
+        <p>规范给了 9 步检查流程，每步指向具体规则文件的章节，改完哪一条都查得到依据；规则文件之间打架时（比如总规则说卡片可以有柔阴影，组件规则说先不做），明确以更细的组件规则为准。另配 15 个「错误写法 → 正确写法」案例。</p>
+        <div class="eg">例子：主按钮必须用 #B18BFC→#8F7AE5 的水平渐变，纯色直接判违规；时间戳、天气这类信息必须是纯文字，套 Chip 算违规。</div>
+        <div class="meta">1,250 行 · 6 规则文件 + 9 步流程 + 15 案例</div>
+      </div>
+
+      <div class="card">
+        <div class="t">monideui <span class="type">Agent</span></div>
+        <div class="role">一个「UI 视觉设计师」智能体——把 BMAD 立人设的做法复刻了一遍。</div>
+        <p>customize.toml 里给它立了个人设：以 Dieter Rams 和 Don Norman 的设计观为原型，极简、克制、以用户为中心。用户找它做界面时，它会先走 8 步激活流程，再按页面设计风格分发任务——目前按 WriteSelf 风格出设计时调 writeself-app-style-rules 技能，后续可以扩展成不同设计风格调用不同的 skill。</p>
+        <div class="eg">相当于给 AI 雇了个「设计总监」：先想清楚这个界面的气质，再动手。</div>
+        <div class="meta">133 行 · customize.toml 人设 + SKILL.md</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 还没做好的地方 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">03</span><h2 class="sec-title">还没做好的地方</h2><div class="sec-line"></div></div>
+    <div class="issues">
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>技能混在学习仓库里，路径写死</h4><p>SKILL.md 里硬编码了 d:\myAgentStudyApproach\... 绝对路径，换台电脑就失效。</p>
+          <div class="fix">把成熟的技能挪到全局技能目录，路径改成相对引用。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>GSD 的好思路还没用到自己的 skill 里</h4><p>现在 4 个 skill 都是触发就全读的静态规则。GSD 里有几套思路值得抄：规则文件按需加载（section_manifest，让 AI 少判断、省 token）、自动开子代理完成任务（隔离上下文、避免腐化）、用 XML 标签结构化任务、深度提问挖需求、把关键决策记录在案。</p>
+          <div class="fix">先挑最简单的落地：把 writeself 的规则改成按页面类型只读对应章节。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>还没借鉴 GSD 的 hook 做上下文监控</h4><p>GSD 用 statusLine、PostToolUse、SessionStart 三个 hook 事件，把上下文还剩多少写进一个桥接文件，快用完时自动把提醒塞进下一轮，防止上下文越用越乱。</p>
+          <div class="fix">后续可以借鉴这套：上下文快满时自动提醒，该收尾的收尾、该切换任务的切换任务。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>有空文件和没做完的事</h4><p>「主agent和子agent之间的通信.md」是空文件；ponytail 只有个链接。</p>
+          <div class="fix">通信机制这篇正好是 GSD 研究的核心收获，最值得补上；没做完的标 TODO。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev low">低</span>
+        <div class="txt">
+          <h4>skill 的测试还没成体系</h4><p>目前只有 moni-app-skill 配了单测（test_scan_logging_utils.js），其余几个技能还没有固定的验证方式。</p>
+          <div class="fix">后续统一用「真实任务 + 规则对照」来测：让 AI 按规范产出，再拿规则文件逐条核对；规则每改一处，案例库同步更新。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>后端还没形成自己的 skill</h4><p>现在只有 api-rules 管接口写法，缺一层「后端架构 + 常用技术栈」的整体规范。</p>
+          <div class="fix">后续系统学一遍后端基础架构和常用技术栈，沉淀成自己的后端 skill。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="line">基于 D:\myAgentStudyApproach 全仓文件统计 · 数据截至 2026-09-08 · v5</div>
+  </footer>
+
+</div>
+</body>
+</html>

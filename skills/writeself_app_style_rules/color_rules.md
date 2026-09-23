@@ -10,15 +10,16 @@
 
 | Name | Hex | Usage |
 |------|-----|-------|
-| Primary Background | `linear-gradient(135deg, #E9E4EA, rgba(215, 204, 236, 0.85))` | Full‑screen background – gradient from light grey‑lavender `#E9E4EA` to translucent lavender `rgba(215,204,236,0.85)` (was solid `#F5F2FA`); replaces olive green |
+| Primary Background | `#F5F2FA` | Full‑screen background – solid light lavender‑white, set via `MaterialTheme.colorScheme.background` (`AppBg`). LoginScreen / RegisterScreen render it as a solid colour, not a gradient. |
 | Secondary Background | `#FAF8F5` | Optional warm‑white for special sections |
 
 ### 1.2 Brand Colours
 
 | Name | Hex | Usage |
 |------|-----|-------|
-| Primary (Soft Lavender) | `#A98BFF` | AI features, selected states, emotional highlights, brand identity |
-| Primary Button | `#B18BFC` | Primary buttons, primary action gradients |
+| Primary (Soft Lavender) | `#A98BFF` | AI features, selected states, emotional highlights, brand identity, primary button gradient start |
+| Primary Button Dark | `#8F7AE5` | Primary button gradient end (`LavenderDark`). The login/register primary button uses `Brush.horizontalGradient(#A98BFF, #8F7AE5)`. |
+| Primary Button | `#B18BFC` | Legacy label — retained for reference; the actual primary action gradient uses `#A98BFF → #8F7AE5` (see `Primary Button Gradient` in §2). |
 | Secondary (Soft Sage) | `#A8D5BA` | Growth, calmness, save actions, positive states (e.g., "Save entry", "Complete") |
 
 ### 1.3 Accent Colours
@@ -40,12 +41,12 @@
 
 | Name | Value | Usage |
 |------|-------|-------|
-| Card Background | `#ECEBF1` with 0.85 opacity | **Only** for standard floating card containers (corner radius 24–28dp). Must NOT be used as a background for interactive elements (chips, buttons). |
+| Card Background | `CardGradient` — translucent lavender gradient (see §2 Gradient System) | Used via `Card(containerColor = Color.Transparent)` with `.background(CardGradient, shape)`. Represents the floating card surface on login/register pages. Must NOT be used as a background for interactive elements (chips, buttons). |
 | Glass Surface | `rgba(255,255,255,0.7)` | Translucent overlays only (modals, popovers, tooltips) — never standard cards |
-| Chip Background (Default) | `Color.Transparent` | **Explicitly use transparent** for unselected chips. Do NOT rely on the `surfaceVariant` theme alias, as it may resolve to the same grey as `surface_card`. |
+| Chip Background (Default) | `Color.Transparent` | **Explicitly use transparent** for unselected chips. Do NOT rely on the `surfaceVariant` theme alias, as it may resolve to the same grey as the card background. |
 | Interactive Pill Background | `Color.Transparent` (default) / emotion colour with alpha (selected) | For `FilterChip` or `AssistChip` — selected state uses `moodColor.copy(alpha = 0.2f)`. |
 
-**Core principle:** `surface_card` is only for carrying **content**; it must NOT be used as the background of **clickable interactive elements**, otherwise the visual hierarchy collapses.
+**Core principle:** the card background (`CardGradient`, historically `surface_card`) is only for carrying **content**; it must NOT be used as the background of **clickable interactive elements**, otherwise the visual hierarchy collapses.
 
 ### 1.6 Semantic Colours
 
@@ -55,8 +56,8 @@
 | Error (dark theme) | `#F2B8B5` | Error info on dark backgrounds |
 | On Error | `#FFFFFF` (light) / `#601410` (dark) | Text on error colour blocks/buttons |
 | Missing‑field warning | `#B3261A` | Border and hint for unfilled required fields—shares error colour to ensure visibility |
-| On Primary (default / unclicked) | `#252332` | Primary button text in default state — dark text on lavender/gradient background for high contrast |
-| On Primary (pressed / clicked) | `#FFFFFF` | Primary button text in pressed state — switches to light text as press feedback |
+| On Primary (default / unclicked) | `#252332` | Primary button text in default state — dark text on lavender/gradient background for high contrast. LoginScreen keeps `#252332` across default and pressed states (no pressed-state colour switch). |
+| On Primary (pressed / clicked) | `#252332` | Primary button text in pressed state. LoginScreen does **not** switch to light text on press; it stays `#252332`. (Earlier spec proposed `#FFFFFF` on press — not currently implemented.) |
 
 ### 1.7 Illustration Colours
 
@@ -72,9 +73,10 @@ Use pastel gradients instead of solid colour blocks to enhance emotion and depth
 
 | Name | Gradient Definition | Usage |
 |------|---------------------|-------|
+| Card Gradient | `linear-gradient(135deg, #E9E4EA, #D7CCEC)` — implemented in code as `Brush.linearGradient(listOf(Color(0x90E9E4EA), Color(0x90D7CCEC)))` (translucent ~56% alpha stops) | Floating card surface on login/register pages; replaces the solid `#ECEBF1` card background |
 | AI Card Gradient | `linear-gradient(135deg, #E8DEFF, #F5EEFF)` | AI insights, AI rewriting cards |
 | Mood Card Gradient | `linear-gradient(135deg, #F5F0FF, #FFFFFF)` | Daily journal cards, mood picker |
-| Primary Button Gradient | `linear-gradient(90deg, #B18BFC, #8F7AE5)` | Save, submit, AI‑generate actions |
+| Primary Button Gradient | `linear-gradient(90deg, #A98BFF, #8F7AE5)` | Save, submit, AI‑generate actions. Implemented as `Brush.horizontalGradient(#A98BFF, #8F7AE5)` (`ButtonGradient`). |
 | Journal Entry Gradient | `linear-gradient(135deg, #FAF8F5, #FFFFFF)` | Entry list items, history |
 
 ---

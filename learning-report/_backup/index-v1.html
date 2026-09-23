@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>myAgentStudyApproach 学习成果汇报</title>
+<style>
+  :root{
+    --bg:#F6F4EF;
+    --ink:#20242B;
+    --ink2:#5A6270;
+    --line:#E2DFD6;
+    --navy:#1F3A5F;
+    --navy2:#2E5079;
+    --teal:#2E86AB;
+    --amber:#B98A2E;
+    --red:#B04A48;
+    --card:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Arial,sans-serif;
+    line-height:1.7;
+    font-size:15px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  /* ===== 顶部 ===== */
+  header{
+    background:var(--navy);
+    color:#F4F1EA;
+    padding:64px 0 56px;
+  }
+  header .kicker{
+    font-size:13px;letter-spacing:.18em;color:#B9C7DA;
+    text-transform:uppercase;margin-bottom:14px;
+  }
+  header h1{
+    font-size:clamp(30px,5vw,46px);
+    font-weight:800;letter-spacing:.01em;line-height:1.2;
+  }
+  header .sub{
+    margin-top:14px;font-size:16px;color:#D6DFEC;max-width:640px;
+  }
+  .stats{
+    display:flex;flex-wrap:wrap;gap:0;
+    margin-top:36px;border-top:1px solid rgba(255,255,255,.18);
+    padding-top:28px;
+  }
+  .stat{flex:1 1 150px;min-width:130px;padding-right:20px;}
+  .stat .n{font-size:30px;font-weight:800;color:#fff;}
+  .stat .l{font-size:12.5px;color:#AFC0D8;margin-top:2px;}
+  /* ===== 区块 ===== */
+  section{padding:52px 0 8px;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:26px;}
+  .sec-no{
+    font-size:13px;font-weight:700;color:var(--teal);
+    letter-spacing:.1em;
+  }
+  .sec-title{font-size:24px;font-weight:800;color:var(--navy);}
+  .sec-line{flex:1;height:1px;background:var(--line);}
+  /* ===== 时间轴 ===== */
+  .timeline{position:relative;padding-left:34px;margin-top:8px;}
+  .timeline::before{
+    content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;
+    background:var(--navy2);
+  }
+  .tl-item{position:relative;padding-bottom:38px;}
+  .tl-item:last-child{padding-bottom:8px;}
+  .tl-dot{
+    position:absolute;left:-34px;top:6px;width:18px;height:18px;
+    border-radius:50%;background:var(--navy);border:3px solid var(--bg);
+    box-shadow:0 0 0 2px var(--navy);
+  }
+  .tl-dot.teal{background:var(--teal);box-shadow:0 0 0 2px var(--teal);}
+  .tl-dot.amber{background:var(--amber);box-shadow:0 0 0 2px var(--amber);}
+  .tl-phase{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--navy);
+    background:#E7EDF5;border-radius:20px;padding:2px 12px;margin-bottom:8px;
+    letter-spacing:.04em;
+  }
+  .tl-item h3{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  .tl-item p{color:var(--ink2);font-size:14px;max-width:780px;}
+  .tl-tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{
+    font-size:12px;color:var(--ink2);background:var(--card);
+    border:1px solid var(--line);border-radius:20px;padding:2px 10px;
+  }
+  /* ===== 成果条 ===== */
+  .bars{margin-top:6px;}
+  .bar-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .bar-name{flex:0 0 128px;font-size:13.5px;color:var(--ink);text-align:right;}
+  .bar-track{flex:1;height:22px;background:#ECE9E1;border-radius:4px;overflow:hidden;}
+  .bar-fill{
+    height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--navy2),var(--teal));
+    display:flex;align-items:center;justify-content:flex-end;padding-right:8px;
+    min-width:0;
+  }
+  .bar-fill .v{font-size:11.5px;color:#fff;font-weight:600;white-space:nowrap;}
+  .bar-note{flex:0 0 130px;font-size:12px;color:var(--ink2);}
+  /* ===== 成果卡 ===== */
+  .cards{display:flex;flex-wrap:wrap;gap:16px;}
+  .card{
+    flex:1 1 240px;min-width:0;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;
+  }
+  .card .t{font-size:15px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px;}
+  .card .type{
+    font-size:11px;font-weight:700;color:var(--teal);background:#E4F0F6;
+    border-radius:4px;padding:1px 7px;letter-spacing:.04em;
+  }
+  .card .d{font-size:13px;color:var(--ink2);margin-top:8px;line-height:1.65;}
+  .card .meta{font-size:12px;color:var(--ink2);margin-top:10px;border-top:1px dashed var(--line);padding-top:8px;}
+  /* ===== 不足表 ===== */
+  .issues{margin-top:6px;}
+  .issue{
+    display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);
+    align-items:flex-start;
+  }
+  .issue:last-child{border-bottom:none;}
+  .sev{
+    flex:0 0 46px;height:22px;border-radius:4px;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .sev.high{background:#F3E1E0;color:var(--red);}
+  .sev.mid{background:#F6EBD6;color:var(--amber);}
+  .sev.low{background:#E4F0F6;color:var(--teal);}
+  .issue .txt{flex:1;min-width:0;}
+  .issue h4{font-size:14.5px;font-weight:700;color:var(--ink);}
+  .issue p{font-size:13px;color:var(--ink2);margin-top:3px;}
+  .issue .fix{
+    margin-top:7px;font-size:12.5px;color:var(--navy);
+    background:#EEF3FA;border-left:3px solid var(--navy2);
+    padding:7px 11px;border-radius:0 6px 6px 0;
+  }
+  /* ===== 结论 ===== */
+  .conclusion{
+    margin:48px 0 8px;background:var(--navy);color:#EDF1F7;
+    border-radius:14px;padding:34px 34px 30px;
+  }
+  .conclusion h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;}
+  .conclusion p{font-size:14.5px;color:#D2DCEC;max-width:820px;}
+  .next{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px;}
+  .next span{
+    font-size:12.5px;color:var(--navy);background:#F4F1EA;
+    border-radius:20px;padding:5px 14px;font-weight:600;
+  }
+  footer{padding:34px 0 48px;color:var(--ink2);font-size:12.5px;}
+  footer .line{border-top:1px solid var(--line);padding-top:18px;}
+  @media (max-width:640px){
+    .bar-name{flex-basis:92px;font-size:12.5px;}
+    .bar-note{display:none;}
+    .issue{flex-direction:column;gap:8px;}
+    section{padding:40px 0 4px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Learning Report · 2026.07 – 2026.09</div>
+    <h1>myAgentStudyApproach<br>AI 编程方法学习与落地汇报</h1>
+    <p class="sub">从环境搭建到方法论研究，再到自有 Skills 与智能体的实践产出——一条完整的「AI Agent 编程」自救与成长路径。</p>
+    <div class="stats">
+      <div class="stat"><div class="n">27</div><div class="l">Git 提交次数</div></div>
+      <div class="stat"><div class="n">33</div><div class="l">项目文件</div></div>
+      <div class="stat"><div class="n">~4,300</div><div class="l">累计内容行数</div></div>
+      <div class="stat"><div class="n">4+1</div><div class="l">自定义 Skills 与 Agent</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== 学习路径 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2 class="sec-title">学习路径</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"></span>
+        <span class="tl-phase">阶段一 · 环境与基建</span>
+        <h3>打通 Windows / WSL / 远程仓库 / Docker 的完整开发链路</h3>
+        <p>以问答式笔记澄清了 WSL2 迁移到 D 盘、GitHub 与 Git 的关系、/mnt/c 挂载原理、SSH 代理 Fake IP 等 7 个核心疑惑；并完成 Maven 私服配置与 IDEA 连接 Docker 的实战排坑（命名管道通信、Registry 与本地连接解耦、端口映射运行 SQL）。</p>
+        <div class="tl-tags">
+          <span class="tag">codex迁移到wsl.md · 442 行</span>
+          <span class="tag">后端项目.md · 125 行</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot teal"></span>
+        <span class="tl-phase">阶段二 · 方法论探索</span>
+        <h3>MCP → BMAD → GSD → SDD，从概念入门走向源码级理解</h3>
+        <p>先掌握 MCP 协议与 SKILL 机制；再研究 BMAD 的「命名智能体 + 人设文件」设计；随后深入 GSD 框架，理解层级路由省 token、子 Agent 隔离上下文、跨运行时适配与 hook 系统；最后学习 OpenSpec 规范驱动开发。其中 new-project.md 对 GSD 工作流逐行精读，是最用力的学习投入。</p>
+        <div class="tl-tags">
+          <span class="tag">new-project.md · 1042 行</span>
+          <span class="tag">gsd.md · 512 行</span>
+          <span class="tag">BMAD.md · 175 行</span>
+          <span class="tag">SDD学习.md · 144 行</span>
+          <span class="tag">agent.md · 30 行</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot amber"></span>
+        <span class="tl-phase">阶段三 · 实践落地</span>
+        <h3>将方法论转化为 4 个 Skills 与 1 个自定义智能体</h3>
+        <p>把学到的「人设、规则文件、工作流、评测」模式落地为可用资产：后端 API 规范、Android 构建规范（含自写工具与单元测试）、Java 注释规范、WriteSelf 设计系统规则，以及基于 BMAD 结构打造的 UI 视觉设计师智能体 monideui。</p>
+        <div class="tl-tags">
+          <span class="tag">skills/ · 4 个技能 · ~2,000 行</span>
+          <span class="tag">agent/ · monideui</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 项目构成 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2 class="sec-title">项目构成</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-name">new-project.md</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"><span class="v">1042</span></div></div>
+        <div class="bar-note">GSD 工作流精读</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">writeself 规则</div>
+        <div class="bar-track"><div class="bar-fill" style="width:66%"><span class="v">937</span></div></div>
+        <div class="bar-note">设计系统技能</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">gsd.md</div>
+        <div class="bar-track"><div class="bar-fill" style="width:39%"><span class="v">512</span></div></div>
+        <div class="bar-note">框架研究笔记</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">codex迁移</div>
+        <div class="bar-track"><div class="bar-fill" style="width:34%"><span class="v">442</span></div></div>
+        <div class="bar-note">环境排坑记录</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">api-rules</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%"><span class="v">394</span></div></div>
+        <div class="bar-note">API 规范技能</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">moni-app-skill</div>
+        <div class="bar-track"><div class="bar-fill" style="width:25%"><span class="v">323</span></div></div>
+        <div class="bar-note">Android 技能+工具</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">profession-commentor</div>
+        <div class="bar-track"><div class="bar-fill" style="width:25%"><span class="v">329</span></div></div>
+        <div class="bar-note">Java 注释技能</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">tuide_tools_prompt</div>
+        <div class="bar-track"><div class="bar-fill" style="width:16%"><span class="v">206</span></div></div>
+        <div class="bar-note">工具需求文档</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">其余笔记/配置</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%"><span class="v">308</span></div></div>
+        <div class="bar-note">BMAD/后端/agent 等</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 成果盘点 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">03</span>
+      <h2 class="sec-title">核心成果：4 个 Skills + 1 个 Agent</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="t">api-rules <span class="type">Skill</span></div>
+        <div class="d">后端 API 统一设计规范：最小化响应信封、结构化错误、RESTful 版本化 URL、分页、Token 认证、DTO 与 DDD 调用链，附 Java 代码示例与评测集。</div>
+        <div class="meta">371 行 · evals 评测</div>
+      </div>
+      <div class="card">
+        <div class="t">moni-app-skill <span class="type">Skill</span></div>
+        <div class="d">Android Compose + MVVM 构建规范，主题参数化、响应式布局、严格范围控制；并自写 scan_logging_utils.js 扫描工具及配套单元测试。</div>
+        <div class="meta">323 行 · 含工具+测试</div>
+      </div>
+      <div class="card">
+        <div class="t">profession-commentor <span class="type">Skill</span></div>
+        <div class="d">Java 中文 Javadoc 注释规范：类/接口/方法/DTO/Controller 分元素规则、注释「why 不写 what」原则，附 3 个 Java 评测样例。</div>
+        <div class="meta">329 行 · evals+样例</div>
+      </div>
+      <div class="card">
+        <div class="t">writeself_app_style_rules <span class="type">Skill</span></div>
+        <div class="d">WriteSelf 产品设计系统：6 个独立规则文件（颜色/组件/语义/页面构成）+ 优化工作流 + 15 个违规案例，逐条可溯源到规则文件。</div>
+        <div class="meta">937 行 · 规则库最完整</div>
+      </div>
+      <div class="card">
+        <div class="t">monideui <span class="type">Agent</span></div>
+        <div class="d">UI 视觉设计师智能体：customize.toml 人设（Dieter Rams + Don Norman）+ 8 步激活流程 + 菜单分发，中英双语文档，完全复刻 BMAD 命名智能体结构。</div>
+        <div class="meta">125 行 · SKILL.md/zh + toml</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 不足与建议 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">04</span>
+      <h2 class="sec-title">不足与改进建议</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="issues">
+      <div class="issue">
+        <span class="sev high">高</span>
+        <div class="txt">
+          <h4>知识无索引，缺乏导航</h4>
+          <p>README 仅一句话「记录前端自救之路」，11 篇笔记无目录、无知识地图、无优先级标注，新读者与未来的自己都难以快速定位。</p>
+          <div class="fix">建议：重写 README 为知识地图（按「环境/方法论/实践」三类索引各文件并附一句话摘要）；为每篇笔记补充顶部摘要。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev high">高</span>
+        <div class="txt">
+          <h4>明文敏感凭据入库</h4>
+          <p>后端项目.md 中明文保存了 Maven 私服账号与密码。无论是否测试账号，凭据入 Git 仓库都会随推送扩散，存在泄露风险。</p>
+          <div class="fix">建议：立即从文档中移除真实凭据，改用环境变量或本地 settings.xml 引用；历史提交中的凭据需评估是否重置密码。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>笔记消化不彻底，疑问未回填</h4>
+          <p>new-project.md 中保留大量「?:」自问自答标记，其中部分疑问（如 execution_context 的来源）在 gsd.md 中已解答，但原笔记未回填更新，两份文档内容重复且口径割裂。</p>
+          <div class="fix">建议：以 gsd.md 为准合并去重；将已解答的疑问回填结论、未解答的集中成一个「待研究清单」。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>技能与学习仓库职责混杂、路径硬编码</h4>
+          <p>4 个产品级 Skills 混放在学习仓库中；writeself_app_style_rules/SKILL.md 还硬编码了绝对路径 d:\myAgentStudyApproach\...，换机或迁移即失效，且这些技能本应服务于具体产品项目。</p>
+          <div class="fix">建议：将成熟 Skills 迁移到全局技能目录（如 ~/.claude/skills 或项目独立仓库），路径改用 {skill-root} 相对引用。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev mid">中</span>
+        <div class="txt">
+          <h4>存在空文件与未完成项</h4>
+          <p>主agent和子agent之间的通信.md 为 0 行（标题已立、内容未写）；ponytail.md 仅 1 行链接；tuide_tools_prompt.md 只有需求文档、未见实现代码。</p>
+          <div class="fix">建议：补写通信机制笔记（结合 GSD 源码结论）；为未完成项标注 TODO 状态或移除占位文件。</div>
+        </div>
+      </div>
+      <div class="issue">
+        <span class="sev low">低</span>
+        <div class="txt">
+          <h4>验证覆盖有限，缺少阶段复盘</h4>
+          <p>各 Skill 的 evals 仅 20+ 行，覆盖场景有限；scan_logging_utils.js 的测试是否有持续运行记录不明；仓库缺少一篇总结阶段性收获与转折点的复盘文档。</p>
+          <div class="fix">建议：扩充 evals 用例并记录测试执行结果；定期（如每月）写一篇复盘，固化「学到了什么、走通了什么、卡在哪里」。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 结论 ===== -->
+  <div class="conclusion">
+    <h2>总体评价</h2>
+    <p>这是一份质量被低估的学习档案：投入集中在 GSD/BMAD 等框架的源码级研究上，且没有停留在「看懂」，而是亲手产出了 4 个带评测的技能与 1 个自定义智能体，形成了「输入 → 消化 → 产出」的完整闭环，工程习惯（git 规范提交、工具自测、双语文档）也相当扎实。主要的短板不在学习本身，而在知识的组织与收尾：缺导航、有凭据、有未完成项。补齐这些，仓库就能从「学习草稿箱」升级为「可复用资产库」。</p>
+    <div class="next">
+      <span>下一步 1 · 重写 README 知识地图</span>
+      <span>下一步 2 · 敏感信息脱敏</span>
+      <span>下一步 3 · 技能迁移至全局目录</span>
+      <span>下一步 4 · 回填疑问、补写空文档</span>
+      <span>下一步 5 · 建立定期复盘机制</span>
+    </div>
+  </div>
+
+  <footer>
+    <div class="line">
+      汇报基于 D:\myAgentStudyApproach 全仓文件逐份阅读与行数统计生成 · 数据截至 2026-09-08 · 行数为文件统计口径，不含 .git
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

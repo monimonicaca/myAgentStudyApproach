@@ -116,7 +116,6 @@
 
 **Must Adhere To:**
 
-- ✅ Soft shadow on cards
 - ✅ Generous whitespace, content breathes
 - ✅ **Highlight errors and required-field misses prominently**—thicken border to 2dp, sync label/placeholder/helper text, show specific missing reason; must be visible at a glance
 

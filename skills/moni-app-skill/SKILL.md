@@ -44,6 +44,8 @@ Never hard-code colors, text sizes, or dimensions. Use Material 3 theme systems 
 - Strings → `stringResource(R.string....)` or `@string/...` in `res/values/strings.xml`
 - Shapes → `MaterialTheme.shapes` (define in `Shape.kt` / `Theme.kt`)
 
+Page-specific resources (colors, strings, dimens) should live in separate per-page files rather than one shared file — e.g. `res/values/strings_login.xml`, `res/values/colors_profile.xml`, `res/values/dimens_home.xml`. This keeps each screen's overrides isolated and easy to diff. Exception: if existing resources were already placed in a shared file, leave them as-is — do not migrate. Only new additions follow the per-page file rule.
+
 This lets the user tune the look by editing theme files without touching individual screens.
 
 ## Layouts: Responsive

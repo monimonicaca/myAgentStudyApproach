@@ -1,0 +1,24 @@
+{
+  "name": "moni-backend-develop-skill",
+  "version": "0.0.1",
+  "description": "",
+  "main": "",
+  "bin": {},
+  "files": [],
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "repository": {},
+  "homepage": "",
+  "bugs": {},
+  "publishConfig": {},
+  "engines": {},
+  "dependencies": {
+    "@opencode-ai/plugin": "1.18.18"
+  },
+  "devDependencies": {},
+  "overrides": {},
+  "optionalDependencies": {},
+  "allowScripts": {},
+  "scripts": {}
+}

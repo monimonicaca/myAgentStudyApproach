@@ -1,18 +1,18 @@
 ---
 name: backend-develop-skill
 description: 后端开发通用规范与工作流技能，覆盖后端架构设计、接口开发、异常处理、数据访问、鉴权、参数校验、测试和代码质量。Use this skill whenever the user asks to build, modify, review, or debug backend services, REST APIs, Spring Boot projects, controllers, services, repositories, DTOs, exception handling, authentication, or database integration, even when they do not explicitly mention this skill.
-compatibility: "[待补充：运行环境、框架版本、依赖或必需工具]"
-metadata:
-  author: "[待补充]"
-  version: "[待补充]"
-  language: zh-CN
-  framework: "[待补充：例如 Spring Boot]"
-  scope: backend
-  tags:
-    - backend
-    - api
-    - architecture
-    - testing
+tools:
+  -question
+  -edit
+  -read
+  -grep
+  -glob
+  -skill
+  -todowrite
+  -webfetch
+  -websearch
+  -bash
+
 ---
 
 # Backend Development Skill

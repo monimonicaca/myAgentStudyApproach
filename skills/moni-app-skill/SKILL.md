@@ -7,6 +7,12 @@ description: >
   navigation, or Jetpack libraries. Also use it when the user mentions
   "Android app", "mobile app", "MVVM", "Compose", or wants to build a screen in an
   Android context, even if they don't explicitly say "use MVVM" or "use Compose".
+allowed-tools:
+  - Read
+  - Bash
+  - Write
+  - Agent
+  - AskUserQuestion
 ---
 
 Workflow:
@@ -61,7 +67,7 @@ This lets the user tune the look by editing theme files without touching individ
 
 ## Logging
 
-Before adding any logs, run `scan_logging_utils.js` from the active project root to detect whether the project already defines its own log util in `util` / `utils`.
+Before adding any logs, run `script/scan_logging_utils.js` from the active project root to detect whether the project already defines its own log util in `util` / `utils`.
 
 - If a project log util exists, use that util only.
 - If no project log util exists, do not introduce `android.util.Log`, `java.util.logging.Logger`, or any other official logging API.
@@ -93,6 +99,16 @@ Button(onClick = {
 ## Strict Scope
 
 Only create, modify, or delete files the user explicitly asks for. Do not add "nice to have" files (tests, documentation, extra screens, helper classes) without consent. If you think something is needed, ask first.
+
+## Before Implementation: Clarify Page vs. Component
+
+Before starting to implement anything, use the AskQuestion tool to ask the user whether what they want to build is a **Page** or a **Component**.
+
+- If the user picks **Page**, implement it as a full screen with its own route in the `NavHost` (e.g. `FeatureScreen.kt`, `FeatureViewModel.kt`, `FeatureUiState.kt`).
+- If the user picks **Component**, implement it as a reusable `@Composable` piece that can be embedded inside other screens, without adding a new navigation route.
+- If the user says it is neither a Page nor a Component, ask them to describe in their own words what they want to build, and follow that description.
+
+This clarification must happen before any code is written.
 
 ## Project Minimums
 

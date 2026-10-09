@@ -1,3 +1,5 @@
+> 触发条件：交付形态 = **打包**且平台 = Windows 时。
+
 # Windows 打包
 
 ## 1. Electron

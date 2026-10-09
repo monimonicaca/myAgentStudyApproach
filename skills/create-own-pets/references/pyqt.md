@@ -1,3 +1,6 @@
+> 触发条件：技术选型 = **PyQt / PySide**（Python 生态）时。
+> 示例代码为参考，窗口尺寸、动画参数按实际调整。
+
 # PyQt / PySide 技术栈：透明置顶桌宠实现要点
 
 > 适用：用户选 Python 生态（PyQt5 / PyQt6 / PySide6）。

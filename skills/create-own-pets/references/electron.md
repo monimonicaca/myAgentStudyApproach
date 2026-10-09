@@ -1,3 +1,6 @@
+> 触发条件：技术选型 = **Electron**（或未指定用默认）时，§5 窗口层/交互层按本文实现。
+> 示例参数（尺寸、置顶级别等）可按平台与角色调整。
+
 # Electron 技术栈：透明置顶桌宠实现要点
 
 > 适用：用户选 Electron（或未指定时默认）。完整可复制示例见 `example-electron.md`；坑见 `electron-pitfalls.md`。

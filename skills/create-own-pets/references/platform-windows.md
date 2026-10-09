@@ -1,3 +1,5 @@
+> 触发条件：目标平台 = **Windows** 时（无终端启动/日志目录/开机自启/透明窗口注意）。
+
 # Windows 平台适配（platform-windows）
 
 > 桌宠在 Windows 上的特有做法。适用于 Electron/Tauri/PyQt 各栈的通用部分。

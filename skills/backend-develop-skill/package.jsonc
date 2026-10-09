@@ -1,0 +1,45 @@
+{
+  // npm 包名称；当前模板项目暂不设置。
+  "name": "",
+  // npm 包版本；当前模板项目暂不设置。
+  "version": "",
+  // npm 包描述；用于 npm 页面和包检索。
+  "description": "",
+  // 包的默认入口文件。
+  "main": "",
+  // 可执行命令名称与对应脚本文件的映射。
+  "bin": {},
+  // 发布到 npm 时需要包含的文件和目录。
+  "files": [],
+  // npm 搜索关键词。
+  "keywords": [],
+  // 包作者信息。
+  "author": "",
+  // 包的开源许可证。
+  "license": "",
+  // 源代码仓库信息，通常包含 type 和 url。
+  "repository": {},
+  // 项目主页地址。
+  "homepage": "",
+  // issue 反馈地址。
+  "bugs": {},
+  // npm 发布配置，例如公开发布权限。
+  "publishConfig": {},
+  // 运行该项目所需的 Node.js、npm 等版本范围。
+  "engines": {},
+  // 运行时依赖；当前项目保留已有的 OpenCode 插件依赖。
+  "dependencies": {
+    // OpenCode 插件开发与运行依赖。
+    "@opencode-ai/plugin": "1.18.18"
+  },
+  // 仅开发、测试或构建阶段需要的依赖。
+  "devDependencies": {},
+  // 覆盖传递依赖版本的规则。
+  "overrides": {},
+  // 可选运行时依赖；安装失败时通常不会阻断安装。
+  "optionalDependencies": {},
+  // npm 生命周期脚本和项目自定义命令。
+  "scripts": {},
+  // 允许执行的依赖安装脚本配置。
+  "allowScripts": {}
+}

@@ -1,6 +1,6 @@
 ---
 name: desktop-pet
-description: 生成通用桌面宠物。支持 Electron/Tauri/PyQt/WebView 等技术栈，Windows/macOS/Linux 平台，Q版/像素/写实/3D 等风格，1/4/8 方向，程序化/帧动画/骨骼/Live2D 动画。默认 Electron + Windows + Q版 + 程序化待机 + 帧动画，其他方案见 references。触发词："做/生成/创建 桌宠/桌面宠物"、"桌宠"、"desktop pet"。
+description: 生成通用桌面宠物。支持 Electron/Tauri/PyQt/WebView 等技术栈，Windows/macOS/Linux 平台，Q版/像素/写实 等风格（3D 暂不实现），1/4/8 方向，程序化/帧动画/骨骼/Live2D 动画。默认 Electron + Windows + Q版 + 程序化待机 + 帧动画，其他方案见 references。触发词："做/生成/创建 桌宠/桌面宠物"、"桌宠"、"desktop pet"。
 ---
 
 # 桌面宠物生成 Skill
@@ -20,7 +20,7 @@ description: 生成通用桌面宠物。支持 Electron/Tauri/PyQt/WebView 等�
 
 - **平台**：Windows / macOS / Linux
 - **技术栈**：Electron / Tauri / PyQt / WebView / 其他
-- **角色风格**：Q版 / 像素 / 写实 / 3D / 用户自带素材
+- **角色风格**：Q版 / 像素 / 写实 / 用户自带素材（**3D 暂不实现**）
 - **方向数**：1 / 4 / 8 / 自定义
 - **动画方式**：程序化 / 帧动画 / 骨骼 / Live2D / Spine
 - **交互**（可多选）：拖拽 / 双击 / 右键菜单 / 窗口跟随 / 点击穿透 / 多宠
@@ -40,7 +40,7 @@ description: 生成通用桌面宠物。支持 Electron/Tauri/PyQt/WebView 等�
 | 小体积、低内存 | Tauri | `references/tauri.md` |
 | Python 生态 | PyQt / PySide | `references/pyqt.md` |
 | 纯网页 / 已有 WebView | WebView 包装（推荐直接用 Electron 的 WebView 容器，复用 `references/electron.md`） | 参考 `references/electron.md` |
-| **3D 角色** | Electron/Tauri + three.js（透明窗口复用 + 模型渲染） | `references/3d.md` |
+| ~~3D 角色~~（**暂不实现**） | —（当前不提供，见 `references/3d.md` 存档备查） | `references/3d.md` |
 
 > 技术栈只影响**窗口层**与**打包层**；资产规格、动画逻辑、交互逻辑、状态机尽量与技术栈解耦，先抽象再落地。
 
@@ -53,7 +53,7 @@ description: 生成通用桌面宠物。支持 Electron/Tauri/PyQt/WebView 等�
 ```
 desktop-pet/
 ├── pet.config.json   # 唯一事实源：资产映射、方向、动画、交互、窗口
-├── images/           # 2D 贴图；3D 项目改为 assets/（模型 glb + 动画 clip）
+├── images/           # 2D 贴图
 ├── src/              # 渲染/动画逻辑（只读配置，不写死任何方向/帧序列）
 ├── main/             # 窗口层（按技术栈实现）
 └── (打包产物由打包层产出)
@@ -61,7 +61,7 @@ desktop-pet/
 
 ## 4. 角色资产生产
 
-> **风格分支**：2D 风格（Q版/像素/写实）走本节贴图流程；**3D 风格走 `references/3d.md`**（模型+动画 clip，不做抠图，方向用模型朝向）。
+> **风格分支**：2D 风格（Q版/像素/写实）走本节贴图流程；**3D 风格暂不实现**（相关方案存档于 `references/3d.md`，未来恢复时再启用）。
 
 ### 4.1 资产规格说明书（先出配置，再产图）
 
@@ -89,7 +89,7 @@ desktop-pet/
 
 ### 4.2 生成 / 抠图 / 命名
 
-- **生成**：任意图像生成工具均可；以"先精调确认**锚点资产**"为基准，其余方向/姿势基于它生成，保证形象一致（锚点按风格选：Q版=正面图 / 像素=基准 sprite / 3D=基准模型 / Live2D=基准表情）。
+- **生成**：任意图像生成工具均可；以"先精调确认**锚点资产**"为基准，其余方向/姿势基于它生成，保证形象一致（锚点按风格选：Q版=正面图 / 像素=基准 sprite / Live2D=基准表情）。
 - **抠图**：任意抠图工具，**只要求输出透明 PNG**。示例工具与命令见 `references/asset-generation.md`。
 - **校验**：边缘干净、无残留背景、底部无残影、人物在画布中占比统一（用 scaleMap 兜底微调）。
 
@@ -128,7 +128,7 @@ desktop-pet/
 
 - 用互斥状态位（命名按启用能力自定，如 `isDragging / isJumping / isSitting ...`）+ 定时器管理，避免并发冲突；
 - 动画可混合：程序化（呼吸/浮动/跳跃抛物线）与帧动画（关键帧序列）可同用；
-- 动画方式选型参考 `references/animation.md`；**3D 动画（骨骼 clip/模型朝向）见 `references/3d.md`**。
+- 动画方式选型参考 `references/animation.md`（骨骼/Live2D 属 2D 表现，正常可用）。
 
 ## 6. 打包发布
 
@@ -149,7 +149,7 @@ desktop-pet/
 ### 必做（所有桌宠）
 
 - [ ] 窗口：透明、无边框、置顶、不进任务栏（按平台能力）
-- [ ] 贴图：透明 PNG、无阴影、人物大小统一（3D 项目改为：模型可加载、动画循环、透明渲染，见 `references/3d.md`）
+- [ ] 贴图：透明 PNG、无阴影、人物大小统一
 - [ ] 配置驱动：方向列表/降级链/缩放表来自 `pet.config.json`，代码无硬编码
 - [ ] 基础运行：启动不报错、无未捕获异常、日志可排查
 
@@ -181,7 +181,7 @@ desktop-pet/
 
 | 文件 | 内容 | 触发条件 |
 |---|---|---|
-| `3d.md` | 3D 桌宠实现（模型+动画+渲染） | 风格=3D 时（覆盖 §4 / §5.4） |
+| `3d.md` | 3D 桌宠实现（模型+动画+渲染） | **暂不启用**（3D 暂不实现，仅存档备查） |
 | `example-electron.md` | 完整 Electron 桌宠实现（参考规范） | 需要一份完整可运行的参考实现时 |
 | `electron.md` | Electron 实现要点 | 技术栈=Electron（默认） |
 | `tauri.md` | Tauri 实现要点 | 技术栈=Tauri |

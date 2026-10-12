@@ -5,7 +5,7 @@ export const contextMonitor = async (a) => {
       service: "contextMonitor",
         level: "info",
         message: "Context monitor plugin initialized",
-        extra: { a  },
+
     },
     })
   /* await client.app.log({
@@ -48,6 +48,7 @@ export const contextMonitor = async (a) => {
 
   return {
     // Hook implementations go here
+
   }
 }
 

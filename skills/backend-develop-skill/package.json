@@ -13,6 +13,7 @@
   "bugs": {},
   "publishConfig": {},
   "engines": {},
+  "type": "module",
   "dependencies": {
     "@opencode-ai/plugin": "1.18.18"
   },
@@ -20,5 +21,7 @@
   "overrides": {},
   "optionalDependencies": {},
   "allowScripts": {},
-  "scripts": {}
+  "scripts": {
+    "postinstall": "node bin/install.js"
+  }
 }

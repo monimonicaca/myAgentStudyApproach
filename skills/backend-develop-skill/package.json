@@ -4,7 +4,12 @@
   "description": "",
   "main": "",
   "bin": {},
-  "files": [],
+  "files": [
+    "agents/",
+    "bin/",
+    "plugins/",
+    "skills/"
+  ],
   "keywords": [],
   "author": "moni",
   "license": "",

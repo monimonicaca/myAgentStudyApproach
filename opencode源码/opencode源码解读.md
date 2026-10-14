@@ -80,3 +80,17 @@ POST /v1/chat/completions
 ————————————————
 版权声明：本文为CSDN博主「HIT_Weston」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/nobigdeal00/article/details/159487736
+
+OpenCode 客户端是先将请求发送给本地代理，本地代理可以在转发前，自动重写请求体，比如在代理中修改(本地服务器)
+
+此时无需再 OpenCode 中填写 DashScope 特有的模型名，保持配置通用，也能用上供应商的特定模型
+
+其次是统一认证管理（安全&便捷）：如果直接在 OpenCode 中填写 DashScope Key，有两点不便
+1、Key 会明文暴露在 IDE 配置中（不安全），上篇 blog 【Agent】【OpenCode】模型配置（配置 Qwen 模型） 里有提到，敏感信息会存放在 auth.json，需要加权限进行限制
+2、换 Key 时，需要修改所有客户端配置
+此时代理的第二个作用就出来了，客户端只需要填一个假 Key（比如 sk_proxy），然后代理在转发过程中，可以自动替换成真实的 DASHSCOPE_API_KEY，这样可以集中管理 Key，避免泄露，更换也方便
+
+
+https://weston-wyh.blog.csdn.net/article/details/159844154
+
+https://weston-wyh.blog.csdn.net/article/details/159852807

@@ -7,12 +7,7 @@ description: >
   navigation, or Jetpack libraries. Also use it when the user mentions
   "Android app", "mobile app", "MVVM", "Compose", or wants to build a screen in an
   Android context, even if they don't explicitly say "use MVVM" or "use Compose".
-allowed-tools:
-  - Read
-  - Bash
-  - Write
-  - Agent
-  - AskUserQuestion
+
 ---
 
 Workflow:
@@ -31,6 +26,9 @@ Every screen follows this structure:
 ```
 feature/
 ├── FeatureScreen.kt          — @Composable UI, observes ViewModel, renders state
+├── components/               — Screen-specific composables only used by this screen
+│   ├── HeaderSection.kt
+│   └── ...
 ├── FeatureViewModel.kt       — Holds UI state, exposes StateFlow (or LiveData)
 ├── FeatureUiState.kt         — Data class for the screen's state
 ```
@@ -56,7 +54,9 @@ This lets the user tune the look by editing theme files without touching individ
 
 ## Layouts: Responsive
 
-- When a screen has more than 3-4 distinct visual sections, decompose it into private `@Composable` functions (e.g. `ProfileHeader()`, `ProfileDetails()`, `ProfileActions()`). Each sub-composable handles one logical piece. Don't over-split — a single `Text` doesn't need its own function. The main screen composable becomes a readable outline of the page structure.
+- Place all screen-specific sub-composables inside the `components/` directory. Keep their filenames descriptive (e.g. `ProfileHeader.kt`, `ProfileActions.kt`).
+- When a screen has more than 3-4 distinct visual sections, decompose it into private `@Composable` functions (e.g. `ProfileHeader()`, `ProfileDetails()`, `ProfileActions()`) stored in their own files inside `components/`. Each sub-composable handles one logical piece. Don't over-split — a single `Text` doesn't need its own function. The main screen composable becomes a readable outline of the page structure.
+- If a component starts handling more than four responsibilities (inputs, actions, states, or visual regions), split it into smaller composables sitting in the same `components/` directory.
 - Use `Modifier.fillMaxWidth()` and `Modifier.fillMaxSize()` to fill available space.
 - Use `Modifier.weight()` inside `Row`/`Column` for proportional distribution.
 - Use `Modifier.padding()` with `dimensionResource(R.dimen....)` references, never hard-coded `dp` values.
@@ -64,6 +64,12 @@ This lets the user tune the look by editing theme files without touching individ
 - For lists, use `LazyColumn` or `LazyVerticalGrid`.
 - Use `ConstraintLayout` composable from `androidx.constraintlayout:constraintlayout-compose` only when you need complex constraint relationships. For most cases, `Column`/`Row`/`Box` with modifiers suffice.
 - Separate logical sections with `HorizontalDivider()` (Material 3) between groups of fields, or wrap related fields in a `Card` with distinct elevation. Do not just stack fields with uniform spacing — visually group and separate them so the user can tell where one section ends and the next begins.
+
+## Previews
+
+- Provide at least one `@Preview` (or `@PreviewLightDark`) composable for every screen and every component file under `components/`. Place the preview in the same file as the composable it renders so future edits stay in sync.
+- Previews should supply mock `UiState` data and pass no-op lambdas for callbacks so the layout renders without runtime dependencies.
+- When a component accepts multiple states, add extra previews (`@Preview(name = "Loading")`, etc.) to cover the key variations the design expects.
 
 ## Logging
 
@@ -124,8 +130,9 @@ User says: "Add a login screen with email and password fields and a login button
 What gets created:
 
 1. `LoginScreen.kt` — `@Composable` with `OutlinedTextField` for email, password, and a `Button`
-2. `LoginViewModel.kt` — holds `LoginUiState(email, password, isLoading)` as `MutableStateFlow`, exposes via `StateFlow`
-3. `LoginUiState.kt` — data class with email, password, isLoading
-4. Updates `NavHost` in `MainActivity.kt` — adds the login route
+2. `components/LoginForm.kt` — `@Composable` rendering the text fields and button, with its own preview
+3. `LoginViewModel.kt` — holds `LoginUiState(email, password, isLoading)` as `MutableStateFlow`, exposes via `StateFlow`
+4. `LoginUiState.kt` — data class with email, password, isLoading
+5. Updates `NavHost` in `MainActivity.kt` — adds the login route
 
 No extra files. No "for later" abstractions. Just the feature.

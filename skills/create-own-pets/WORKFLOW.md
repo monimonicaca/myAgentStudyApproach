@@ -137,6 +137,7 @@ curl.exe -sL -o "images\<文件名>.png" $result.image_url
 | 随机混合 | 多个待机动作随机触发 | 上述资产之和 |
 
 > 待机动画写入 `pet.config.json` 的 `idle` 段，进 idle 状态时按配置执行。
+> 规则文档：`references/idle.md` 单文件（模式速查/通用规范/六模式细则/错误总表/通用验收），按所选模式一节执行与验收。
 
 ### 4.1 起床动画序列（12帧）
 

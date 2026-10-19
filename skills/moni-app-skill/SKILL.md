@@ -108,7 +108,7 @@ Only create, modify, or delete files the user explicitly asks for. Do not add "n
 
 ## Before Implementation: Clarify Page vs. Component
 
-Before starting to implement anything, use the AskQuestion tool to ask the user whether what they want to build is a **Page** or a **Component**.
+Before starting to implement anything, ask the user whether what they want to build is a **Page** or a **Component**.
 
 - If the user picks **Page**, implement it as a full screen with its own route in the `NavHost` (e.g. `FeatureScreen.kt`, `FeatureViewModel.kt`, `FeatureUiState.kt`).
 - If the user picks **Component**, implement it as a reusable `@Composable` piece that can be embedded inside other screens, without adding a new navigation route.

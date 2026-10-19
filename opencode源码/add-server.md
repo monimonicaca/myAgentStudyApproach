@@ -104,7 +104,7 @@ async function handleAdd(value: string) {
       type: "http",
       http: { url: normalized },
     }
-    //opencode使用的是react来构建页面，使用MVVM：当用户在输入框中输入时，这个值自动绑定到这个组件的value值上面，下面这几行代码就是将用户输入的值赋值给上一步创建的连接对象的属性上
+    //当用户在输入框中输入时，这个值自动绑定到这个组件的value值上面，下面这几行代码就是将用户输入的值赋值给上一步创建的连接对象的属性上
     if (store.addServer.name.trim()) conn.displayName = store.addServer.name.trim()
     if (store.addServer.password) conn.http.password = store.addServer.password
     if (store.addServer.password && store.addServer.username) conn.http.username = store.addServer.username

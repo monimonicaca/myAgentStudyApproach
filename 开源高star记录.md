@@ -7,3 +7,9 @@ https://github.com/vllm-project/vllm
 https://github.com/stablyai/orca
 4、ponytail永居高位，172k
 https://github.com/DietrichGebert/ponytail
+
+# 26.10.26-20.11.01
+## 26.10.26
+1、https://github.com/Nutlope/hallmark
+A design skill for Claude Code, Codex, Cursor and OpenCode that refuses to look AI-generated.（没有opencode？）
+2、https://github.com/cloudflare/security-audit-skill

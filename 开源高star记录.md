@@ -10,6 +10,11 @@ https://github.com/DietrichGebert/ponytail
 
 # 26.10.26-20.11.01
 ## 26.10.26
-1、https://github.com/Nutlope/hallmark
 A design skill for Claude Code, Codex, Cursor and OpenCode that refuses to look AI-generated.（没有opencode？）
+1、https://github.com/Nutlope/hallmark
+
 2、https://github.com/cloudflare/security-audit-skill
+
+## 26.10.27
+金融分析多agent，117k
+https://github.com/TauricResearch/TradingAgents

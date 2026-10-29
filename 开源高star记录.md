@@ -18,3 +18,7 @@ A design skill for Claude Code, Codex, Cursor and OpenCode that refuses to look 
 ## 26.10.27
 金融分析多agent，117k
 https://github.com/TauricResearch/TradingAgents
+
+## 26.10.28
+1、superpowers一直没有评鉴过，什么时候宠幸一下
+https://github.com/obra/superpowers

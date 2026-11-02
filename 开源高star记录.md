@@ -22,3 +22,7 @@ https://github.com/TauricResearch/TradingAgents
 ## 26.10.28
 1、superpowers一直没有评鉴过，什么时候宠幸一下
 https://github.com/obra/superpowers
+
+# 26.11.02-26.11.08
+1、紫微斗数 · 开源排盘引擎
+https://github.com/Renhuai123/ziwei-doushu

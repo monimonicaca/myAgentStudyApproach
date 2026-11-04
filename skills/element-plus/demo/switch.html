@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switch 开关 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Switch 开关</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Switch 开关</h1>
+<p>表示两种相互对立的状态间的切换，多用于触发「开/关」。</p>
+<h2>基础用法</h2>
+<p>绑定 <code>v-model</code> 到一个 <code>Boolean</code> 类型的变量。可以使用 <code>--el-switch-on-color</code> 属性与 <code>--el-switch-off-color</code> 属性来设置开关的背景色。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch v-model=&quot;value1&quot; /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value2&quot;
+
+    class=&quot;ml-2&quot;
+
+    style=&quot;--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref(true)
+
+const value2 = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>尺寸</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value&quot;
+
+    size=&quot;large&quot;
+
+    active-text=&quot;Open&quot;
+
+    inactive-text=&quot;Close&quot;
+
+  /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-switch v-model=&quot;value&quot; active-text=&quot;Open&quot; inactive-text=&quot;Close&quot; /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value&quot;
+
+    size=&quot;small&quot;
+
+    active-text=&quot;Open&quot;
+
+    inactive-text=&quot;Close&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>文字描述</h2>
+<p>使用<code>active-text</code>属性与<code>inactive-text</code>属性来设置开关的文字描述。使用 <code>inline-prompt</code> 属性来控制文本是否显示在点内。</p>
+<p>使用<code>active-text</code>属性与<code>inactive-text</code>属性来设置开关的文字描述。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value1&quot;
+
+    class=&quot;mb-2&quot;
+
+    active-text=&quot;Pay by month&quot;
+
+    inactive-text=&quot;Pay by year&quot;
+
+  /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value2&quot;
+
+    class=&quot;mb-2&quot;
+
+    style=&quot;--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949&quot;
+
+    active-text=&quot;Pay by month&quot;
+
+    inactive-text=&quot;Pay by year&quot;
+
+  /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value3&quot;
+
+    inline-prompt
+
+    active-text=&quot;是&quot;
+
+    inactive-text=&quot;否&quot;
+
+  /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value4&quot;
+
+    class=&quot;ml-2&quot;
+
+    inline-prompt
+
+    style=&quot;--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949&quot;
+
+    active-text=&quot;Y&quot;
+
+    inactive-text=&quot;N&quot;
+
+  /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value6&quot;
+
+    class=&quot;ml-2&quot;
+
+    width=&quot;60&quot;
+
+    inline-prompt
+
+    active-text=&quot;超出省略&quot;
+
+    inactive-text=&quot;超出省略&quot;
+
+  /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value5&quot;
+
+    class=&quot;ml-2&quot;
+
+    inline-prompt
+
+    style=&quot;--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949&quot;
+
+    active-text=&quot;完整展示多个内容&quot;
+
+    inactive-text=&quot;多个内容&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref(true)
+
+const value2 = ref(true)
+
+const value3 = ref(true)
+
+const value4 = ref(true)
+
+const value5 = ref(true)
+
+const value6 = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>显示自定义图标</h2>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>使用 <code>inactive-icon</code> 和 <code>active-icon</code> 属性来添加图标。您可以传递组件名称的字符串（提前注册）或组件本身是一个 SVG Vue 组件。 Element Plus 提供了一套图标，你可以在 <a href="./icon">icon</a> 找到它们。</p>
+</blockquote>
+<p>使用 <code>inactive-icon</code> 和 <code>active-icon</code> 属性来添加图标。使用 <code>inline-prompt</code> 属性来控制图标显示在点内。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch v-model=&quot;value1&quot; :active-icon=&quot;Check&quot; :inactive-icon=&quot;Close&quot; /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value2&quot;
+
+    class=&quot;mt-2&quot;
+
+    style=&quot;margin-left: 24px&quot;
+
+    inline-prompt
+
+    :active-icon=&quot;Check&quot;
+
+    :inactive-icon=&quot;Close&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { Check, Close } from '@element-plus/icons-vue'
+
+const value1 = ref(true)
+
+const value2 = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>扩展的 value 类型</h2>
+<p>你可以设置 <code>active-value</code> 和 <code>inactive-value</code> 属性，它们接受 <code>Boolean</code>、<code>String</code> 或 <code>Number</code> 类型的值。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip :content=&quot;'Switch value: ' + value&quot; placement=&quot;top&quot;&gt;
+
+    &lt;el-switch
+
+      v-model=&quot;value&quot;
+
+      style=&quot;--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949&quot;
+
+      active-value=&quot;100&quot;
+
+      inactive-value=&quot;0&quot;
+
+    /&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('100')
+
+&lt;/script&gt;
+</code></pre>
+<h2>禁用状态</h2>
+<p>设置<code>disabled</code>属性，接受一个<code>Boolean</code>，设置<code>true</code>即可禁用。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch v-model=&quot;value1&quot; disabled /&gt;
+
+  &lt;el-switch v-model=&quot;value2&quot; class=&quot;ml-2&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref(true)
+
+const value2 = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>加载状态</h2>
+<p>设置<code>loading</code>属性，接受一个<code>Boolean</code>，设置<code>true</code>即加载中状态。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch v-model=&quot;value1&quot; loading /&gt;
+
+  &lt;el-switch v-model=&quot;value2&quot; loading class=&quot;ml-2&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref(true)
+
+const value2 = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>阻止切换</h2>
+<p>设置<code>beforeChange</code>属性，若返回 false 或者返回 Promise 且被 reject，则停止切换。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value1&quot;
+
+    :loading=&quot;loading1&quot;
+
+    :before-change=&quot;beforeChange1&quot;
+
+  /&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value2&quot;
+
+    class=&quot;ml-2&quot;
+
+    :loading=&quot;loading2&quot;
+
+    :before-change=&quot;beforeChange2&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElMessage } from 'element-plus'
+
+const value1 = ref(false)
+
+const value2 = ref(false)
+
+const loading1 = ref(false)
+
+const loading2 = ref(false)
+
+const beforeChange1 = (): Promise&lt;boolean&gt; =&gt; {
+
+  loading1.value = true
+
+  return new Promise((resolve) =&gt; {
+
+    setTimeout(() =&gt; {
+
+      loading1.value = false
+
+      ElMessage.success('Switch success')
+
+      return resolve(true)
+
+    }, 1000)
+
+  })
+
+}
+
+const beforeChange2 = (): Promise&lt;boolean&gt; =&gt; {
+
+  loading2.value = true
+
+  return new Promise((_, reject) =&gt; {
+
+    setTimeout(() =&gt; {
+
+      loading2.value = false
+
+      ElMessage.error('Switch failed')
+
+      return reject(new Error('Error'))
+
+    }, 1000)
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义动作图标 2.3.9</h2>
+<p>使用 <code>inactive-action-icon</code> 和 <code>active-action-icon</code> 属性来添加图标。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch
+
+    v-model=&quot;value1&quot;
+
+    :active-action-icon=&quot;View&quot;
+
+    :inactive-action-icon=&quot;Hide&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { Hide, View } from '@element-plus/icons-vue'
+
+const value1 = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义操作图标 2.4.4</h2>
+<p>使用 <code>active-action</code> 和 <code>inactive-action</code> 属性来添加图标。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-switch v-model=&quot;value1&quot;&gt;
+
+    &lt;template #active-action&gt;
+
+      &lt;span class=&quot;custom-active-action&quot;&gt;T&lt;/span&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #inactive-action&gt;
+
+      &lt;span class=&quot;custom-inactive-action&quot;&gt;F&lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-switch&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>绑定值，必须等于 <code>active-value</code> 或 <code>inactive-value</code>，默认为 <code>Boolean</code> 类型</td>
+<td><code>boolean</code> / <code>string</code> / <code>number</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>loading</td>
+<td>是否显示加载中</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>size</td>
+<td>switch 的大小</td>
+<td><code>enum</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>width</td>
+<td>switch 的宽度</td>
+<td><code>number</code> / <code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>inline-prompt</td>
+<td>无论图标或文本是否显示在点内，只会呈现文本的第一个字符</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>active-icon</td>
+<td>switch 状态为 <code>on</code> 时所显示图标，设置此项会忽略 <code>active-text</code></td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>inactive-icon</td>
+<td>switch 状态为 <code>off</code> 时所显示图标，设置此项会忽略 <code>inactive-text</code></td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>active-action-icon 2.3.9</td>
+<td><code>on</code>状态下显示的图标组件</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>inactive-action-icon 2.3.9</td>
+<td><code>off</code>状态下显示的图标组件</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>active-text</td>
+<td>switch 打开时的文字描述</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>inactive-text</td>
+<td>switch 的状态为 <code>off</code> 时的文字描述</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>active-value</td>
+<td>switch 状态为 <code>on</code> 时的值</td>
+<td><code>boolean</code> / <code>string</code> / <code>number</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>inactive-value</td>
+<td>switch的状态为 <code>off</code> 时的值</td>
+<td><code>boolean</code> / <code>string</code> / <code>number</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>name</td>
+<td>switch 对应的 name 属性</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>validate-event</td>
+<td>是否触发表单验证</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>before-change</td>
+<td>switch 状态改变前的钩子，返回 <code>false</code> 或者返回 <code>Promise</code> 且被 reject 则停止切换</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>id</td>
+<td>input 的 id</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>tabindex</td>
+<td>input 的 tabindex</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>aria-label a11y 2.7.2</td>
+<td>等价于原生 input <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>active-color deprecated</td>
+<td>当在 <code>on</code> 状态时的背景颜色(推荐使用 CSS var <code>--el-switch-on-color</code> )</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>inactive-color deprecated</td>
+<td><code>off</code> 状态时的背景颜色(推荐使用 CSS var <code>--el-switch-off-color</code> )</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>border-color deprecated</td>
+<td>开关的边框颜色 ( 推荐使用 CSS var <code>--el-switch-border-color</code> )</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>label a11y deprecated</td>
+<td>等价于原生 input <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>switch 状态发生变化时的回调函数</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Switch Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>active-action 2.4.4</td>
+<td>自定义 active 行为</td>
+</tr>
+<tr>
+<td>inactive-action 2.4.4</td>
+<td>自定义 inactive 行为</td>
+</tr>
+<tr>
+<td>active 2.13.0</td>
+<td>自定义 on 状态的内容</td>
+</tr>
+<tr>
+<td>inactive 2.13.0</td>
+<td>自定义 off 状态的内容</td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>详情</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>手动 focus 到 switch 组件</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-switch v-model="value" /><el-switch v-model="value2" active-text="开" inactive-text="关" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const value = Vue.ref(true); const value2 = Vue.ref(false); return { value, value2 };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

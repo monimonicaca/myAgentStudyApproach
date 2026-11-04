@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Affix 固钉 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Affix 固钉</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Affix 固钉</h1>
+<p>将页面元素固定在特定可视区域。</p>
+<h2>基础用法</h2>
+<p>固钉默认固定在页面顶部。</p>
+<p>通过设置 <code>offset</code> 属性来改变吸顶距离，默认值为 0。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-affix :offset=&quot;120&quot;&gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Offset top 120px&lt;/el-button&gt;
+
+  &lt;/el-affix&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>指定容器</h2>
+<p>通过设置 <code>target</code> 属性，让固钉始终保持在容器内，超过范围则隐藏。</p>
+<p>请注意容器避免出现滚动条。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;affix-container&quot;&gt;
+
+    &lt;el-affix target=&quot;.affix-container&quot; :offset=&quot;80&quot;&gt;
+
+      &lt;el-button type=&quot;primary&quot;&gt;Target container&lt;/el-button&gt;
+
+    &lt;/el-affix&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.affix-container {
+
+  text-align: center;
+
+  height: 400px;
+
+  border-radius: 4px;
+
+  background: var(--el-color-primary-light-9);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>固定位置</h2>
+<p>Affix 组件提供 2 个固定的位置参数 <code>top</code> 和 <code>bottom</code>。</p>
+<p>通过设置 <code>position</code> 属性来改变固定位置，默认值为 <code>top</code> 。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-affix position=&quot;bottom&quot; :offset=&quot;20&quot;&gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Offset bottom 20px&lt;/el-button&gt;
+
+  &lt;/el-affix&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>API</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>offset</td>
+<td>偏移距离</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>position</td>
+<td>固钉位置</td>
+<td><code>enum</code></td>
+<td>top</td>
+</tr>
+<tr>
+<td>target</td>
+<td>指定容器（CSS 选择器）</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>z-index</td>
+<td><code>z-index</code></td>
+<td><code>number</code></td>
+<td>100</td>
+</tr>
+<tr>
+<td>teleported 2.13.0</td>
+<td>Affix 元素是否使用 teleport 特性，设置为 <code>true</code> 将会使得该元素“传送”至 <code>append-to</code> 设置的位置</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>append-to 2.13.0</td>
+<td>Affix 元素将被挂载至哪个元素</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>body</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>固钉状态改变时触发的事件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>scroll</td>
+<td>滚动时触发的事件</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>插槽</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table>
+<h3>暴露</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>update</td>
+<td>手动更新固钉状态</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>updateRoot</td>
+<td>手动更新根元素的盒模型信息</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<div style="height:120px;overflow:auto"><div style="height:500px"><el-affix :offset="20"><el-button type="primary">固定顶部</el-button></el-affix><p style="height:240px"></p></div></div>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+return { ...ElementPlusIconsVue };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

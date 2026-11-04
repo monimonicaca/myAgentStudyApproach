@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mention 提及 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Mention 提及</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Mention 提及</h1>
+<p>用于在输入中提及某人或某事。</p>
+<h2>基础用法</h2>
+<p>最简单的用法。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value&quot;
+
+    :options=&quot;options&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;Please input&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const value = ref('@')
+
+const options = ref([
+
+  {
+
+    label: 'Fuphoenixes',
+
+    value: 'Fuphoenixes',
+
+  },
+
+  {
+
+    label: 'kooriookami',
+
+    value: 'kooriookami',
+
+  },
+
+  {
+
+    label: 'Jeremy',
+
+    value: 'Jeremy',
+
+  },
+
+  {
+
+    label: 'btea',
+
+    value: 'btea',
+
+  },
+
+])
+
+&lt;/script&gt;
+</code></pre>
+<h2>Props 2.11.3</h2>
+<p>你可以通过 <code>props</code> 属性自定义 <code>options</code> 的别名。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value&quot;
+
+    :options=&quot;options&quot;
+
+    :props=&quot;props&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;Please input&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const value = ref('@')
+
+const props = { label: 'name', value: 'id', disabled: 'unable' }
+
+const options = ref([
+
+  {
+
+    name: 'Fuphoenixes',
+
+    id: 'Fuphoenixes',
+
+    unable: true,
+
+  },
+
+  {
+
+    name: 'kooriookami',
+
+    id: 'kooriookami',
+
+  },
+
+  {
+
+    name: 'Jeremy',
+
+    id: 'Jeremy',
+
+    unable: true,
+
+  },
+
+  {
+
+    name: 'btea',
+
+    id: 'btea',
+
+  },
+
+])
+
+&lt;/script&gt;
+</code></pre>
+<h2>Textarea</h2>
+<p>输入类型可以设置为 <code>textarea</code> 。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value&quot;
+
+    type=&quot;textarea&quot;
+
+    :options=&quot;options&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;Please input&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = ref([
+
+  {
+
+    label: 'Fuphoenixes',
+
+    value: 'Fuphoenixes',
+
+  },
+
+  {
+
+    label: 'kooriookami',
+
+    value: 'kooriookami',
+
+  },
+
+  {
+
+    label: 'Jeremy',
+
+    value: 'Jeremy',
+
+  },
+
+  {
+
+    label: 'btea',
+
+    value: 'btea',
+
+  },
+
+])
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义标签</h2>
+<p>使用 "label" 自定义标签。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value&quot;
+
+    :options=&quot;options&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;Please input&quot;
+
+  &gt;
+
+    &lt;template #label=&quot;{ item }&quot;&gt;
+
+      &lt;div style=&quot;display: flex; align-items: center&quot;&gt;
+
+        &lt;el-avatar :size=&quot;24&quot; :src=&quot;item.avatar&quot; /&gt;
+
+        &lt;span style=&quot;margin-left: 6px&quot;&gt;{{ item.value }}&lt;/span&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-mention&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = ref([
+
+  {
+
+    value: 'Fuphoenixes',
+
+    avatar: 'https://avatars.githubusercontent.com/u/27912232',
+
+  },
+
+  {
+
+    value: 'kooriookami',
+
+    avatar: 'https://avatars.githubusercontent.com/u/38392315',
+
+  },
+
+  {
+
+    value: 'Jeremy',
+
+    avatar: 'https://avatars.githubusercontent.com/u/15975785',
+
+  },
+
+  {
+
+    value: 'btea',
+
+    avatar: 'https://avatars.githubusercontent.com/u/24516654',
+
+  },
+
+])
+
+&lt;/script&gt;
+</code></pre>
+<h2>加载远程选项</h2>
+<p>异步加载选项。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value&quot;
+
+    :options=&quot;options&quot;
+
+    :loading=&quot;loading&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;Please input&quot;
+
+    @search=&quot;handleSearch&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { onBeforeUnmount, ref } from 'vue'
+
+import type { MentionOption } from 'element-plus'
+
+const value = ref('')
+
+const loading = ref(false)
+
+const options = ref&lt;MentionOption[]&gt;([])
+
+let timer: ReturnType&lt;typeof setTimeout&gt;
+
+const handleSearch = (pattern: string) =&gt; {
+
+  if (timer) clearTimeout(timer)
+
+  loading.value = true
+
+  timer = setTimeout(() =&gt; {
+
+    options.value = ['Fuphoenixes', 'kooriookami', 'Jeremy', 'btea'].map(
+
+      (item) =&gt; ({
+
+        label: pattern + item,
+
+        value: pattern + item,
+
+      })
+
+    )
+
+    loading.value = false
+
+  }, 1500)
+
+}
+
+onBeforeUnmount(() =&gt; {
+
+  if (timer) clearTimeout(timer)
+
+})
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义触发字段</h2>
+<p>通过 <code>prefix</code> 属性 自定义触发字段。默认为 <code>@</code>, <code>Array&lt;string&gt;</code> 。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value&quot;
+
+    :options=&quot;options&quot;
+
+    :prefix=&quot;['@', '#']&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;input @ to mention people, # to mention tag&quot;
+
+    @search=&quot;handleSearch&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import type { MentionOption } from 'element-plus'
+
+const MOCK_DATA: Record&lt;string, string[]&gt; = {
+
+  '@': ['Fuphoenixes', 'kooriookami', 'Jeremy', 'btea'],
+
+  '#': ['1.0', '2.0', '3.0'],
+
+}
+
+const value = ref('')
+
+const options = ref&lt;MentionOption[]&gt;([])
+
+const handleSearch = (_: string, prefix: string) =&gt; {
+
+  options.value = (MOCK_DATA[prefix] || []).map((value) =&gt; ({
+
+    value,
+
+  }))
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>整体删除</h2>
+<p>将<code>whole</code>属性设置为 <code>true</code>，当您按下退格键时，此处的 mention 区域将作为一个整体被删除。设置 "check-is-whole" 属性来自定义检查逻辑。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value1&quot;
+
+    whole
+
+    :options=&quot;options1&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;Please input&quot;
+
+  /&gt;
+
+  &lt;el-divider /&gt;
+
+  &lt;el-mention
+
+    v-model=&quot;value2&quot;
+
+    :options=&quot;options2&quot;
+
+    :prefix=&quot;['@', '#']&quot;
+
+    whole
+
+    :check-is-whole=&quot;checkIsWhole&quot;
+
+    style=&quot;width: 320px&quot;
+
+    placeholder=&quot;input @ to mention people, # to mention tag&quot;
+
+    @search=&quot;handleSearch&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import type { MentionOption } from 'element-plus'
+
+const MOCK_DATA: Record&lt;string, string[]&gt; = {
+
+  '@': ['Fuphoenixes', 'kooriookami', 'Jeremy', 'btea'],
+
+  '#': ['1.0', '2.0', '3.0'],
+
+}
+
+const value1 = ref('')
+
+const value2 = ref('')
+
+const options1 = ref&lt;MentionOption[]&gt;(
+
+  MOCK_DATA['@'].map((value) =&gt; ({ value }))
+
+)
+
+const options2 = ref&lt;MentionOption[]&gt;([])
+
+const handleSearch = (_: string, prefix: string) =&gt; {
+
+  options2.value = (MOCK_DATA[prefix] || []).map((value) =&gt; ({
+
+    value,
+
+  }))
+
+}
+
+const checkIsWhole = (pattern: string, prefix: string) =&gt; {
+
+  return (MOCK_DATA[prefix] || []).includes(pattern)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>在表单里使用</h2>
+<p>与 <code>el-form</code> 一起使用</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-form
+
+    ref=&quot;ruleFormRef&quot;
+
+    style=&quot;max-width: 600px&quot;
+
+    :model=&quot;ruleForm&quot;
+
+    :rules=&quot;rules&quot;
+
+  &gt;
+
+    &lt;el-form-item label=&quot;name&quot; prop=&quot;name&quot;&gt;
+
+      &lt;el-mention v-model=&quot;ruleForm.name&quot; :options=&quot;options&quot; /&gt;
+
+    &lt;/el-form-item&gt;
+
+    &lt;el-form-item label=&quot;desc&quot; prop=&quot;desc&quot;&gt;
+
+      &lt;el-mention v-model=&quot;ruleForm.desc&quot; type=&quot;textarea&quot; :options=&quot;options&quot; /&gt;
+
+    &lt;/el-form-item&gt;
+
+    &lt;el-form-item&gt;
+
+      &lt;el-button type=&quot;primary&quot; @click=&quot;submitForm(ruleFormRef)&quot;&gt;
+
+        Submit
+
+      &lt;/el-button&gt;
+
+      &lt;el-button @click=&quot;resetForm(ruleFormRef)&quot;&gt;Reset&lt;/el-button&gt;
+
+    &lt;/el-form-item&gt;
+
+  &lt;/el-form&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { reactive, ref } from 'vue'
+
+import type { FormInstance, FormRules } from 'element-plus'
+
+interface RuleForm {
+
+  name: string
+
+  desc: string
+
+}
+
+const ruleFormRef = ref&lt;FormInstance&gt;()
+
+const ruleForm = reactive&lt;RuleForm&gt;({
+
+  name: '',
+
+  desc: '',
+
+})
+
+const options = ref([
+
+  {
+
+    label: 'Fuphoenixes',
+
+    value: 'Fuphoenixes',
+
+  },
+
+  {
+
+    label: 'kooriookami',
+
+    value: 'kooriookami',
+
+  },
+
+  {
+
+    label: 'Jeremy',
+
+    value: 'Jeremy',
+
+  },
+
+  {
+
+    label: 'btea',
+
+    value: 'btea',
+
+  },
+
+])
+
+const rules = reactive&lt;FormRules&lt;RuleForm&gt;&gt;({
+
+  name: [{ required: true, message: 'Please input name', trigger: 'blur' }],
+
+  desc: [{ required: true, message: 'Please input desc', trigger: 'blur' }],
+
+})
+
+const submitForm = async (formEl: FormInstance | undefined) =&gt; {
+
+  if (!formEl) return
+
+  await formEl.validate((valid, fields) =&gt; {
+
+    if (valid) {
+
+      console.log('submit!')
+
+    } else {
+
+      console.log('error submit!', fields)
+
+    }
+
+  })
+
+}
+
+const resetForm = (formEl: FormInstance | undefined) =&gt; {
+
+  if (!formEl) return
+
+  formEl.resetFields()
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>由于这个组件是基于<a href="./input#attributes"><code>el-input</code></a>派生的，他们的原始属性未被更改，故不在此重复。请跳转查看原组件的相应文档。</p>
+</blockquote>
+<h2>API</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>options</td>
+<td>提及选项列表</td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td>props 2.11.3</td>
+<td>options 的配置</td>
+<td><code>object</code></td>
+<td><code>{value: 'value', label: 'label', disabled: 'disabled'}</code></td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>触发字段的前缀。字符串长度必须且只能为 1</td>
+<td><code>string</code></td>
+<td><code>array</code></td>
+</tr>
+<tr>
+<td>split</td>
+<td>用于拆分提及的字符。字符串长度必须且只能为 1</td>
+<td><code>string</code></td>
+<td><code>' '</code></td>
+</tr>
+<tr>
+<td>filter-option</td>
+<td>定制筛选器选项逻辑</td>
+<td><code>false</code></td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>placement</td>
+<td>设置弹出位置</td>
+<td><code>string</code></td>
+<td><code>'bottom'</code></td>
+</tr>
+<tr>
+<td>show-arrow</td>
+<td>下拉菜单的内容是否有箭头</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>offset</td>
+<td>下拉面板偏移量</td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>whole</td>
+<td>当退格键被按下做删除操作时，是否将提及部分作为整体删除</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>check-is-whole</td>
+<td>当退格键被按下做删除操作时，检查是否将提及部分作为整体删除</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>loading</td>
+<td>提及的下拉面板是否处于加载状态</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>model-value / v-model</td>
+<td>输入值</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>自定义浮层类名</td>
+<td><code>string</code> / <code>object</code></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>popper-style 2.11.5</td>
+<td>自定义浮层类名</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td><a href="https://popper.js.org/docs/v2/">popper.js</a> 参数</td>
+<td><code>object</code> refer to <a href="https://popper.js.org/docs/v2/">popper.js doc</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td><a href="./input#attributes">input props</a></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>search</td>
+<td>按下触发字段时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>select</td>
+<td>当用户选择选项时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>whole-remove 2.10.4</td>
+<td>当整个 mention 被移除，且 <code>whole</code> 为 <code>true</code> 或 <code>check-is-whole</code> 为 <code>true</code> 时触发。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td><a href="./input#events">input events</a></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>label</td>
+<td>自定义标签内容</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>loading</td>
+<td>自定义 loading内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>header</td>
+<td>下拉列表顶部的内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>下拉列表底部的内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td><a href="./input#slots">input slots</a></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>input</td>
+<td>el-input 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>tooltip</td>
+<td>el-tooltip 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>dropdownVisible 2.8.5</td>
+<td>tooltip 显示状态</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h2>类型声明</h2>
+<p>显示类型声明ts`type MentionOption = {</p>
+<p>value?: string</p>
+<p>label?: string</p>
+<p>disabled?: boolean</p>
+<p>}</p>
+<p>type MentionOptionProps = {</p>
+<p>value?: string</p>
+<p>label?: string</p>
+<p>disabled?: string</p>
+<p><a href="any">key: string</a>: string | undefined</p>
+<p>}`</p></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-mention v-model="value" :options="options" placeholder="输入 @ 触发" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const value = Vue.ref(""); const options = [{label:"用户A",value:"a"},{label:"用户B",value:"b"},{label:"用户C",value:"c"}];return { value, options };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

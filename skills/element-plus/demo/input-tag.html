@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InputTag 标签输入框 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>InputTag 标签输入框</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>InputTag 标签输入框</h1>
+<p>InputTag 组件允许用户添加内容作为标签</p>
+<h2>基础用法</h2>
+<p>按Enter回车键添加输入内容为标签</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag
+
+    v-model=&quot;input&quot;
+
+    placeholder=&quot;Please input&quot;
+
+    aria-label=&quot;Please click the Enter key after input&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;()
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义触发器</h2>
+<p>您可以自定义用于触发输入标签的键位，默认是Enter 回车键</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-segmented v-model=&quot;trigger&quot; :options=&quot;options&quot; /&gt;
+
+  &lt;/div&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; :trigger=&quot;trigger&quot; placeholder=&quot;Please input&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { EVENT_CODE } from 'element-plus'
+
+const trigger = ref&lt;'Enter' | 'Space'&gt;('Space')
+
+const input = ref&lt;string[]&gt;()
+
+const options = [EVENT_CODE.enter, EVENT_CODE.space]
+
+&lt;/script&gt;
+</code></pre>
+<h2>最大标签数</h2>
+<p>您可以设置可以添加的标签数量限制。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; :max=&quot;3&quot; placeholder=&quot;enter up to 3 tags&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;()
+
+&lt;/script&gt;
+</code></pre>
+<h2>折叠标签2.11.0</h2>
+<p>使用折叠标签属性将它们合并成一块文本。您可以使用折叠标签工具提示属性来启用悬停在折叠文本上的行为来显示特定的选定值。使用折叠标签工具提示属性会使最大属性无效。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;m-4&quot;&gt;
+
+    &lt;p&gt;use collapse-tags&lt;/p&gt;
+
+    &lt;el-input-tag
+
+      v-model=&quot;input1&quot;
+
+      collapse-tags
+
+      placeholder=&quot;Please input&quot;
+
+      aria-label=&quot;Please click the Enter key after input&quot;
+
+    /&gt;
+
+    &lt;p&gt;use collapse-tags-tooltip&lt;/p&gt;
+
+    &lt;el-input-tag
+
+      v-model=&quot;input2&quot;
+
+      collapse-tags
+
+      collapse-tags-tooltip
+
+      placeholder=&quot;Please input&quot;
+
+      aria-label=&quot;Please click the Enter key after input&quot;
+
+    /&gt;
+
+    &lt;p&gt;use max-collapse-tags&lt;/p&gt;
+
+    &lt;el-input-tag
+
+      v-model=&quot;input3&quot;
+
+      collapse-tags
+
+      collapse-tags-tooltip
+
+      :max-collapse-tags=&quot;3&quot;
+
+      placeholder=&quot;Please input&quot;
+
+      aria-label=&quot;Please click the Enter key after input&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input1 = ref&lt;string[]&gt;()
+
+const input2 = ref&lt;string[]&gt;()
+
+const input3 = ref&lt;string[]&gt;()
+
+&lt;/script&gt;
+</code></pre>
+<h2>禁用状态</h2>
+<p>您可以设置 InputTag 被禁用。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; disabled placeholder=&quot;Please input&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;(['tag1', 'tag2', 'tag3'])
+
+&lt;/script&gt;
+</code></pre>
+<h2>可清空</h2>
+<p>您可以设置是否显示清除按钮。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; clearable placeholder=&quot;Please input&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;(['tag1', 'tag2', 'tag3'])
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义清除图标2.11.0</h2>
+<p>你可以通过<code>clear-icon</code>属性自定义清除图标</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag
+
+    v-model=&quot;input&quot;
+
+    clearable
+
+    :clear-icon=&quot;CloseBold&quot;
+
+    placeholder=&quot;Custom clear icon&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { CloseBold } from '@element-plus/icons-vue'
+
+const input = ref&lt;string[]&gt;(['custom', 'clear', 'icon'])
+
+&lt;/script&gt;
+</code></pre>
+<h2>可拖放</h2>
+<p>您可以设置是否可以拖动标签。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; draggable placeholder=&quot;Please input&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;(['tag1', 'tag2', 'tag3'])
+
+&lt;/script&gt;
+</code></pre>
+<h2>分隔符2.9.9</h2>
+<p>当一个分隔符匹配时，您可以添加一个标签。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag
+
+    v-model=&quot;input&quot;
+
+    draggable
+
+    placeholder=&quot;Try to separate words with ,&quot;
+
+    delimiter=&quot;,&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;([])
+
+&lt;/script&gt;
+</code></pre>
+<h2>尺寸</h2>
+<p>使用 <code>size</code> 属性改变输入框大小。除了默认大小外，还有另外两个选项： <code>large</code>, <code>small</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; size=&quot;large&quot; placeholder=&quot;Please input&quot; /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; placeholder=&quot;Please input&quot; /&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; size=&quot;small&quot; placeholder=&quot;Please input&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const input = ref&lt;string[]&gt;()
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义标签</h2>
+<p>您可以通过<code>tag</code>插槽自定义标签内容。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-segmented v-model=&quot;tagType&quot; :options=&quot;type&quot; class=&quot;mr-5&quot; /&gt;
+
+    &lt;el-segmented v-model=&quot;tagEffect&quot; :options=&quot;effect&quot; /&gt;
+
+  &lt;/div&gt;
+
+  &lt;br /&gt;
+
+  &lt;el-input-tag
+
+    v-model=&quot;input&quot;
+
+    :tag-type=&quot;tagType&quot;
+
+    :tag-effect=&quot;tagEffect&quot;
+
+    placeholder=&quot;Please input&quot;
+
+  &gt;
+
+    &lt;template #tag=&quot;{ value }&quot;&gt;
+
+      &lt;div class=&quot;flex items-center&quot;&gt;
+
+        &lt;el-icon class=&quot;mr-1&quot;&gt;
+
+          &lt;ElementPlus /&gt;
+
+        &lt;/el-icon&gt;
+
+        &lt;span&gt;{{ value }}&lt;/span&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-input-tag&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElementPlus } from '@element-plus/icons-vue'
+
+import type { TagProps } from 'element-plus'
+
+const type: Array&lt;TagProps['type']&gt; = [
+
+  'primary',
+
+  'success',
+
+  'info',
+
+  'warning',
+
+  'danger',
+
+]
+
+const effect: Array&lt;TagProps['effect']&gt; = ['light', 'dark', 'plain']
+
+const tagType = ref&lt;TagProps['type']&gt;('primary')
+
+const tagEffect = ref&lt;TagProps['effect']&gt;('plain')
+
+const input = ref&lt;string[]&gt;(['tag1', 'tag2', 'tag3'])
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义前缀和后缀</h2>
+<p>您可以通过<code>prefix</code>和 <code>suffix</code> 插槽自定义 InputTag 的前缀和后缀。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input-tag v-model=&quot;input&quot; clearable placeholder=&quot;Please input&quot;&gt;
+
+    &lt;template #prefix&gt;
+
+      &lt;el-icon&gt;&lt;ElementPlus /&gt;&lt;/el-icon&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #suffix&gt;
+
+      &lt;el-icon&gt;&lt;Search /&gt;&lt;/el-icon&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-input-tag&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElementPlus, Search } from '@element-plus/icons-vue'
+
+const input = ref&lt;string[]&gt;()
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>绑定值</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>max</td>
+<td>可添加标签的最大数量</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>tag-type</td>
+<td>标签类型</td>
+<td><code>enum</code></td>
+<td>info</td>
+</tr>
+<tr>
+<td>tag-effect</td>
+<td>标签效果</td>
+<td><code>enum</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>effect 2.13.2</td>
+<td>tooltip 主题，内置了 <code>dark</code> / <code>light</code> 两种</td>
+<td><code>enum``'dark' | 'light'</code> / <code>string</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>触发输入标签的按键</td>
+<td><code>enum</code></td>
+<td>Enter</td>
+</tr>
+<tr>
+<td>draggable</td>
+<td>是否可以拖动标签</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>delimiter 2.9.9</td>
+<td>在匹配分隔符时添加标签</td>
+<td><code>string</code> / <code>regex</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>size</td>
+<td>输入框尺寸</td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>collapse-tags 2.11.0</td>
+<td>多选时是否将选中值按文字的形式展示</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>collapse-tags-tooltip 2.11.0</td>
+<td>当鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。要使用此功能，<code>collapse-tags</code>的值必须为true</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>save-on-blur 2.9.7</td>
+<td>当输入失去焦点时是否保存输入值</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>clearable</td>
+<td>是否显示清除按钮</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>clear-icon 2.11.0</td>
+<td>自定义清除图标</td>
+<td><code>string</code> / <code>object</code></td>
+<td>CircleClose</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>validate-event</td>
+<td>是否触发表单验证</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>readonly</td>
+<td>等价于原生 <code>readonly</code> 属性</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>autofocus</td>
+<td>等价于原生 <code>autofocus</code> 属性</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>id</td>
+<td>等价于原生 input <code>id</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>tabindex</td>
+<td>等价于原生 <code>tabindex</code> 属性</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>max-collapse-tags 2.11.0</td>
+<td>需要显示的 Tag 的最大数量要使用此功能，<code>collapse-tags</code>的值必须为true</td>
+<td><code>number</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>maxlength</td>
+<td>等价于原生 <code>maxlength</code> 属性</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>minlength</td>
+<td>等价于原生 <code>minlength</code> 属性</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>输入框占位文本</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>autocomplete</td>
+<td>等价于原生 <code>autocomplete</code> 属性</td>
+<td><code>string</code></td>
+<td>off</td>
+</tr>
+<tr>
+<td>aria-label a11y</td>
+<td>等价于原生 <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>绑定值变化时触发的事件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>input</td>
+<td>在 Input 值改变时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>add-tag</td>
+<td>tag 被添加时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>remove-tag</td>
+<td>tag 被移除时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>drag-tag 2.11.3</td>
+<td>tag 被拖动时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>在 Input 获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>在 Input 失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clear</td>
+<td>点击清除图标时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tag</td>
+<td>作为tag的内容</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>InputTag 头部内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>InputTag 尾部内容</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>对外暴露的方法</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>使 input 获取焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>使 input 失去焦点</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-input-tag v-model="tags" placeholder="输入后回车" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const tags = Vue.ref(["Element","Plus"]); return { tags };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

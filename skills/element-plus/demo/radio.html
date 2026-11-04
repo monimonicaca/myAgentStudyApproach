@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radio 单选框 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Radio 单选框</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Radio 单选框</h1>
+<p>在一组备选项中进行单选</p>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>label</code> 作为 <code>value</code> 来使用已经被 <strong>废弃</strong>, 建议<code>label</code> 只用来表示展示的文字，这个被废弃的用法<strong>将会在</strong> 3.0.0 版本被移除，请考虑使用新 API 替换.</p>
+<p><strong>TIP</strong></p>
+<p>新的 API <code>value</code> 已在 2.6.0 版本添加，文档中的示例都将使用 <code>value</code>。如果您使用的版本 <strong>低于</strong> 2.6.0，请参考：</p>
+</blockquote>
+<p>vue</p>
+<p>`<template></p>
+<p><el-radio-group v-model="radio1"></p>
+<pre><code>&lt;!-- works when &gt;=2.6.0, recommended ✔️ not work when &lt;2.6.0 ❌ --&gt;
+
+&lt;el-radio value="Value 1"&gt;Option 1&lt;/el-radio&gt;
+
+&lt;!-- works when &lt;2.6.0, deprecated act as value when &gt;=3.0.0 --&gt;
+
+&lt;el-radio label="Label 2 &amp; Value 2"&gt;Option 2&lt;/el-radio&gt;
+</code></pre>
+<p></el-radio-group></p>
+<p></template>`</p>
+<h2>基础用法</h2>
+<p>单选框不应该有太多的可选项，如果你有很多的可选项你应该使用选择框而不是单选框。</p>
+<p>要使用 Radio 组件，只需要设置<code>v-model</code>绑定变量，选中意味着变量的值为相应 Radio <code>value</code>属性的值， <code>value</code>可以是<code>String</code>、<code>Number</code> 或 <code>Boolean</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;mb-2 ml-4&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio1&quot;&gt;
+
+      &lt;el-radio value=&quot;1&quot; size=&quot;large&quot;&gt;Option 1&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot; size=&quot;large&quot;&gt;Option 2&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;my-2 ml-4&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio2&quot;&gt;
+
+      &lt;el-radio value=&quot;1&quot;&gt;Option 1&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot;&gt;Option 2&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;my-4 ml-4&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio3&quot;&gt;
+
+      &lt;el-radio value=&quot;1&quot; size=&quot;small&quot;&gt;Option 1&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot; size=&quot;small&quot;&gt;Option 2&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const radio1 = ref('1')
+
+const radio2 = ref('1')
+
+const radio3 = ref('1')
+
+&lt;/script&gt;
+</code></pre>
+<h2>禁用状态</h2>
+<p><code>disabled</code> 属性可以用来控制单选框的禁用状态。</p>
+<p>你只需要为单选框设置 <code>disabled</code> 属性就能控制其禁用状态。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-radio v-model=&quot;radio&quot; disabled value=&quot;disabled&quot;&gt;Option A&lt;/el-radio&gt;
+
+  &lt;el-radio v-model=&quot;radio&quot; disabled value=&quot;selected and disabled&quot;&gt;
+
+    Option B
+
+  &lt;/el-radio&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const radio = ref('selected and disabled')
+
+&lt;/script&gt;
+</code></pre>
+<h2>单选框组</h2>
+<p>适用于在多个互斥的选项中选择的场景</p>
+<p>结合<code>el-radio-group</code>元素和子元素<code>el-radio</code>可以实现单选组，为 <code>el-radio-group</code> 绑定 <code>v-model</code>，再为 每一个 <code>el-radio</code> 设置好 <code>label</code> 属性即可，另外，还可以通过 <code>change</code> 事件来响应变化，它会传入一个参数 <code>value</code> 来表示改变之后的值。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-radio-group v-model=&quot;radio&quot;&gt;
+
+    &lt;el-radio :value=&quot;3&quot;&gt;Option A&lt;/el-radio&gt;
+
+    &lt;el-radio :value=&quot;6&quot;&gt;Option B&lt;/el-radio&gt;
+
+    &lt;el-radio :value=&quot;9&quot;&gt;Option C&lt;/el-radio&gt;
+
+  &lt;/el-radio-group&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const radio = ref(3)
+
+&lt;/script&gt;
+</code></pre>
+<h2>带有边框</h2>
+<p>设置 <code>border</code> 属性为 true 可以渲染为带有边框的单选框。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-radio-group v-model=&quot;radio1&quot;&gt;
+
+      &lt;el-radio value=&quot;1&quot; size=&quot;large&quot; border&gt;Option A&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot; size=&quot;large&quot; border&gt;Option B&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;margin-top: 20px&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio2&quot;&gt;
+
+      &lt;el-radio value=&quot;1&quot; border&gt;Option A&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot; border&gt;Option B&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;margin-top: 20px&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio3&quot; size=&quot;small&quot;&gt;
+
+      &lt;el-radio value=&quot;1&quot; border&gt;Option A&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot; border disabled&gt;Option B&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;margin-top: 20px&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio4&quot; size=&quot;small&quot; disabled&gt;
+
+      &lt;el-radio value=&quot;1&quot; border&gt;Option A&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;2&quot; border&gt;Option B&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const radio1 = ref('1')
+
+const radio2 = ref('1')
+
+const radio3 = ref('1')
+
+const radio4 = ref('1')
+
+&lt;/script&gt;
+</code></pre>
+<h2>Options 属性 2.11.2</h2>
+<p>基础用法 <code>el-radio-group</code> 的快捷示例。您可以通过 <code>props</code> 属性自定义 <code>options</code> 的别名。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-radio-group v-model=&quot;radio&quot; :options=&quot;options&quot; :props=&quot;props&quot; /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const radio = ref(3)
+
+const props = { value: 'id', label: 'name', disabled: 'unable' }
+
+const options = [
+
+  {
+
+    id: 3,
+
+    name: 'Option A',
+
+  },
+
+  {
+
+    id: 6,
+
+    name: 'Option B',
+
+  },
+
+  {
+
+    id: 9,
+
+    name: 'Option C',
+
+    unable: true,
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>单选按钮</h2>
+<p>带有按钮组视觉效果的单选框</p>
+<p>只需要把 <code>el-radio</code> 元素换成 <code>el-radio-button</code> 元素即可， :::demo 您可以使用 <code>填充</code> 和 <code>文本颜色</code> 设置按钮的样式。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-radio-group v-model=&quot;radio&quot; size=&quot;large&quot; fill=&quot;#409eff&quot;&gt;
+
+      &lt;el-radio-button label=&quot;New York&quot; value=&quot;New York&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Washington&quot; value=&quot;Washington&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Los Angeles&quot; value=&quot;Los Angeles&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Chicago&quot; value=&quot;Chicago&quot; /&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;margin-top: 20px&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio&quot; text-color=&quot;#fff&quot; fill=&quot;#6c6cff&quot;&gt;
+
+      &lt;el-radio-button label=&quot;New York&quot; value=&quot;New York&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Washington&quot; value=&quot;Washington&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Los Angeles&quot; value=&quot;Los Angeles&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Chicago&quot; value=&quot;Chicago&quot; /&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;margin-top: 20px&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;radio&quot; size=&quot;small&quot;&gt;
+
+      &lt;el-radio-button label=&quot;New York&quot; value=&quot;New York&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Washington&quot; value=&quot;Washington&quot; disabled /&gt;
+
+      &lt;el-radio-button label=&quot;Los Angeles&quot; value=&quot;Los Angeles&quot; /&gt;
+
+      &lt;el-radio-button label=&quot;Chicago&quot; value=&quot;Chicago&quot; /&gt;
+
+    &lt;/el-radio-group&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const radio = ref('New York')
+
+&lt;/script&gt;
+</code></pre>
+<h2>Radio API</h2>
+<h3>Radio Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>选中项绑定值</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value 2.6.0</td>
+<td>单选框的值</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code></td>
+<td>:::</td>
+</tr>
+<tr>
+<td>label</td>
+<td>单选框的 label 如果<code>value</code>没有值， <code>label</code>则作为<code>value</code>使用</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code></td>
+<td>:::</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用单选框</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>border</td>
+<td>是否显示边框</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>size</td>
+<td>单选框的尺寸</td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td>原始 <code>name</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Radio Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>绑定值变化时触发的事件</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Radio Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table>
+<h2>RadioGroup API</h2>
+<h3>RadioGroup Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>绑定值</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>size</td>
+<td>单选框按钮或边框按钮的大小</td>
+<td><code>string</code></td>
+<td>default</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>validate-event</td>
+<td>输入时是否触发表单的校验</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>text-color</td>
+<td>按钮形式的 Radio 激活时的文本颜色</td>
+<td><code>string</code></td>
+<td>#ffffff</td>
+</tr>
+<tr>
+<td>fill</td>
+<td>按钮形式的 Radio 激活时的填充色和边框色</td>
+<td><code>string</code></td>
+<td>#409eff</td>
+</tr>
+<tr>
+<td>aria-label a11y 2.7.2</td>
+<td>与 RadioGroup 中的 <code>aria-label</code> 属性相同</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td>原生 <code>name</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>id</td>
+<td>原生 <code>id</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>label a11y deprecated</td>
+<td>与 RadioGroup 中的 <code>aria-label</code> 属性相同</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>options 2.11.2</td>
+<td>选项的数据源， <code>value</code> 的 key 和 <code>label</code> 和 <code>disabled</code>可以通过 <code>props</code>自定义.</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>props 2.11.2</td>
+<td>options 的配置</td>
+<td><code>object</code></td>
+<td><code>{value: 'value', label: 'label', disabled: 'disabled'}</code></td>
+</tr>
+<tr>
+<td>type 2.11.5</td>
+<td>用于渲染选项的组件类型（例如 <code>'button'</code>）</td>
+<td><code>enum</code></td>
+<td>'radio'</td>
+</tr>
+</tbody>
+</table>
+<h3>RadioGroup Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>绑定值变化时触发的事件</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>RadioGroup Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+<td>Radio / RadioButton</td>
+</tr>
+</tbody>
+</table>
+<h2>RadioButton API</h2>
+<h3>RadioButton Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value 2.6.0</td>
+<td>单选框的值</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>label</td>
+<td>单选框的 label 如果没有 value， <code>label</code>则作为<code>value</code>使用</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用单选框</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>name</td>
+<td>原生 name 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>RadioButton Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>默认插槽内容</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-radio-group v-model="value"><el-radio value="a">选项A</el-radio><el-radio value="b">选项B</el-radio><el-radio value="c">选项C</el-radio></el-radio-group>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const value = Vue.ref("a"); return { value };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

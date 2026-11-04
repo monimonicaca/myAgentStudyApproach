@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Header 页头 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Page Header 页头</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Page Header 页头</h1>
+<p>如果页面的路径比较简单，推荐使用页头组件而非面包屑组件。</p>
+<h2>完整示例</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div aria-label=&quot;A complete example of page header&quot;&gt;
+
+    &lt;el-page-header @back=&quot;onBack&quot;&gt;
+
+      &lt;template #breadcrumb&gt;
+
+        &lt;el-breadcrumb separator=&quot;/&quot;&gt;
+
+          &lt;el-breadcrumb-item :to=&quot;{ path: './page-header.html' }&quot;&gt;
+
+            homepage
+
+          &lt;/el-breadcrumb-item&gt;
+
+          &lt;el-breadcrumb-item&gt;
+
+            &lt;a href=&quot;./page-header.html&quot;&gt;route 1&lt;/a&gt;
+
+          &lt;/el-breadcrumb-item&gt;
+
+          &lt;el-breadcrumb-item&gt;route 2&lt;/el-breadcrumb-item&gt;
+
+        &lt;/el-breadcrumb&gt;
+
+      &lt;/template&gt;
+
+      &lt;template #content&gt;
+
+        &lt;div class=&quot;flex items-center&quot;&gt;
+
+          &lt;el-avatar
+
+            class=&quot;mr-3&quot;
+
+            :size=&quot;32&quot;
+
+            src=&quot;https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png&quot;
+
+          /&gt;
+
+          &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+          &lt;span
+
+            class=&quot;text-sm mr-2&quot;
+
+            style=&quot;color: var(--el-text-color-regular)&quot;
+
+          &gt;
+
+            Sub title
+
+          &lt;/span&gt;
+
+          &lt;el-tag&gt;Default&lt;/el-tag&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+      &lt;template #extra&gt;
+
+        &lt;div class=&quot;flex items-center&quot;&gt;
+
+          &lt;el-button&gt;Print&lt;/el-button&gt;
+
+          &lt;el-button type=&quot;primary&quot; class=&quot;ml-2&quot;&gt;Edit&lt;/el-button&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+      &lt;el-descriptions :column=&quot;3&quot; size=&quot;small&quot; class=&quot;mt-4&quot;&gt;
+
+        &lt;el-descriptions-item label=&quot;Username&quot;&gt;
+
+          kooriookami
+
+        &lt;/el-descriptions-item&gt;
+
+        &lt;el-descriptions-item label=&quot;Telephone&quot;&gt;
+
+          18100000000
+
+        &lt;/el-descriptions-item&gt;
+
+        &lt;el-descriptions-item label=&quot;Place&quot;&gt;Suzhou&lt;/el-descriptions-item&gt;
+
+        &lt;el-descriptions-item label=&quot;Remarks&quot;&gt;
+
+          &lt;el-tag size=&quot;small&quot;&gt;School&lt;/el-tag&gt;
+
+        &lt;/el-descriptions-item&gt;
+
+        &lt;el-descriptions-item label=&quot;Address&quot;&gt;
+
+          No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+
+        &lt;/el-descriptions-item&gt;
+
+      &lt;/el-descriptions&gt;
+
+      &lt;p class=&quot;mt-4 text-sm&quot;&gt;
+
+        Element Plus team uses &lt;b&gt;weekly&lt;/b&gt; release strategy under normal
+
+        circumstance, but critical bug fixes would require hotfix so the actual
+
+        release number &lt;b&gt;could be&lt;/b&gt; more than 1 per week.
+
+      &lt;/p&gt;
+
+    &lt;/el-page-header&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ElNotification as notify } from 'element-plus'
+
+const onBack = () =&gt; {
+
+  notify('Back')
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>基础用法</h2>
+<p>简单场景下的标准页头。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-page-header @back=&quot;goBack&quot;&gt;
+
+    &lt;template #content&gt;
+
+      &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-page-header&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const goBack = () =&gt; {
+
+  console.log('go back')
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义图标</h2>
+<p>默认图标可能无法满足您的需求，您可以通过设置<code>icon</code>属性来自定义图标，示例如下。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-page-header :icon=&quot;ArrowLeft&quot;&gt;
+
+    &lt;template #content&gt;
+
+      &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-page-header&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ArrowLeft } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+</code></pre>
+<h2>无图标</h2>
+<p>有时，页面全是元素，您可能不想展示页面上方的图标，您可以设置<code>icon</code>属性值为<code>""</code>来去除它。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-page-header icon=&quot;&quot;&gt;
+
+    &lt;template #content&gt;
+
+      &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-page-header&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>面包屑导航</h2>
+<p>使用页头组件，您可以通过添加插槽 <code>breadcrumb</code> 来设置面包屑路由导航。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-page-header&gt;
+
+    &lt;template #breadcrumb&gt;
+
+      &lt;el-breadcrumb separator=&quot;/&quot;&gt;
+
+        &lt;el-breadcrumb-item :to=&quot;{ path: './page-header.html' }&quot;&gt;
+
+          homepage
+
+        &lt;/el-breadcrumb-item&gt;
+
+        &lt;el-breadcrumb-item
+
+          &gt;&lt;a href=&quot;./page-header.html&quot;&gt;route 1&lt;/a&gt;&lt;/el-breadcrumb-item
+
+        &gt;
+
+        &lt;el-breadcrumb-item&gt;route 2&lt;/el-breadcrumb-item&gt;
+
+      &lt;/el-breadcrumb&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #content&gt;
+
+      &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-page-header&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>额外操作部分</h2>
+<p>头部可能会变得很复杂，您可以在头部添加更多的区块，以允许丰富的交互。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-page-header icon=&quot;&quot;&gt;
+
+    &lt;template #content&gt;
+
+      &lt;div class=&quot;flex items-center&quot;&gt;
+
+        &lt;el-avatar
+
+          :size=&quot;32&quot;
+
+          class=&quot;mr-3&quot;
+
+          src=&quot;https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png&quot;
+
+        /&gt;
+
+        &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+        &lt;span class=&quot;text-sm mr-2&quot; style=&quot;color: var(--el-text-color-regular)&quot;&gt;
+
+          Sub title
+
+        &lt;/span&gt;
+
+        &lt;el-tag&gt;Default&lt;/el-tag&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #extra&gt;
+
+      &lt;div class=&quot;flex items-center&quot;&gt;
+
+        &lt;el-button&gt;Print&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; class=&quot;ml-2&quot;&gt;Edit&lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-page-header&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>主要内容</h2>
+<p>有时我们想让页头显示一些协同响应内容，我们可以使用 <code>default</code> 插槽。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-page-header&gt;
+
+    &lt;template #content&gt;
+
+      &lt;span class=&quot;text-large font-600 mr-3&quot;&gt; Title &lt;/span&gt;
+
+    &lt;/template&gt;
+
+    &lt;div class=&quot;mt-4 text-sm font-bold&quot;&gt;
+
+      Your additional content can be added with default slot, You may put as
+
+      many content as you want here.
+
+    &lt;/div&gt;
+
+  &lt;/el-page-header&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>组件插槽结构</h2>
+<p>本组件由这些部件构成：</p>
+<p>vue</p>
+<p>`<template></p>
+<p><el-page-header></p>
+<pre><code>&lt;!-- Line 1 --&gt;
+
+&lt;template #breadcrumb /&gt;
+
+&lt;!-- Line 2 --&gt;
+
+&lt;template #icon /&gt;
+
+&lt;template #title /&gt;
+
+&lt;template #content /&gt;
+
+&lt;template #extra /&gt;
+
+&lt;!-- Lines after 2 --&gt;
+
+&lt;template #default /&gt;
+</code></pre>
+<p></el-page-header></p>
+<p></template>`</p>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>icon</td>
+<td>Page Header 的图标 Icon 组件</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>Back</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Page Header 的主标题，默认是 Back (内置 a11y)</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>content</td>
+<td>Page Header 的内容</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>back</td>
+<td>点击左侧区域触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>插槽</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>icon</td>
+<td>图标内容</td>
+</tr>
+<tr>
+<td>title</td>
+<td>标题内容</td>
+</tr>
+<tr>
+<td>content</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>extra</td>
+<td>扩展设置</td>
+</tr>
+<tr>
+<td>breadcrumb</td>
+<td>面包屑导航内容</td>
+</tr>
+<tr>
+<td>default</td>
+<td>默认内容</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-page-header @back="onBack"><template #content><span class="text-sm font-semibold">详情页</span></template><div class="text-sm text-gray-500">内容</div></el-page-header>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+function onBack(){ ElementPlus.ElMessage("返回"); } return { onBack };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

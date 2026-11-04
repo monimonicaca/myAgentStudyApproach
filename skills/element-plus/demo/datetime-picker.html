@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DateTimePicker 日期时间选择器 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>DateTimePicker 日期时间选择器</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>DateTimePicker 日期时间选择器</h1>
+<p>在同一个选择器里选择日期和时间</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>日期时间选择器来自日期选择器和时间选择器的组合。关于属性的更详细解释，请参阅日期选择器和时间选择器。</p>
+</blockquote>
+<h2>日期和时间点</h2>
+<p>通过设置<code>type</code>属性为<code>datetime</code>，即可在同一个选择器里同时进行日期和时间的选择。快捷方式的使用方法与 Date Picker 相同。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-datetime-picker&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Default&lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value1&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Select date and time&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;With shortcuts&lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value2&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Select date and time&quot;
+
+        :shortcuts=&quot;shortcuts&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;With default time&lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value3&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Select date and time&quot;
+
+        :default-time=&quot;defaultTime&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref('')
+
+const value2 = ref('')
+
+const value3 = ref('')
+
+const defaultTime = new Date(2000, 1, 1, 12, 0, 0)
+
+const shortcuts = [
+
+  {
+
+    text: 'Today',
+
+    value: new Date(),
+
+  },
+
+  {
+
+    text: 'Yesterday',
+
+    value: () =&gt; {
+
+      const date = new Date()
+
+      date.setDate(date.getDate() - 1)
+
+      return date
+
+    },
+
+  },
+
+  {
+
+    text: 'A week ago',
+
+    value: () =&gt; {
+
+      const date = new Date()
+
+      date.setDate(date.getDate() - 7)
+
+      return date
+
+    },
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-datetime-picker {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+}
+
+.demo-datetime-picker .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  flex: 1;
+
+  min-width: 300px;
+
+}
+
+.demo-datetime-picker .block:last-child {
+
+  border-right: none;
+
+}
+
+.demo-datetime-picker .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+@media (max-width: 768px) {
+
+  .demo-datetime-picker .block {
+
+    flex: 100%;
+
+    border-right: none;
+
+    border-bottom: solid 1px var(--el-border-color);
+
+  }
+
+  .demo-datetime-picker .block:last-child {
+
+    border-bottom: none;
+
+  }
+
+  :deep(.el-date-editor.el-input) {
+
+    width: 100%;
+
+  }
+
+  :deep(.el-date-editor.el-input__wrapper) {
+
+    width: 100%;
+
+    max-width: 300px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>日期时间格式</h2>
+<p>使用<code>format</code>指定输入框的格式。使用<code>value-format</code>指定绑定值的格式。</p>
+<p>默认情况下，组件接受并返回<code>Date</code>对象。</p>
+<p>在 <a href="https://day.js.org/docs/en/display/format#list-of-all-available-formats">这里</a> 查看 Day.js 支持的所有格式。</p>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p>请一定要注意传入参数的大小写是否正确</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-datetime-picker&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Emits Date object&lt;/span&gt;
+
+      &lt;div class=&quot;demonstration&quot;&gt;Value: {{ value1 }}&lt;/div&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value1&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Pick a Date&quot;
+
+        format=&quot;YYYY/MM/DD HH:mm:ss&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Use value-format&lt;/span&gt;
+
+      &lt;div class=&quot;demonstration&quot;&gt;Value：{{ value2 }}&lt;/div&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value2&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Pick a Date&quot;
+
+        format=&quot;YYYY/MM/DD hh:mm:ss&quot;
+
+        value-format=&quot;YYYY-MM-DD h:m:s a&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Timestamp&lt;/span&gt;
+
+      &lt;div class=&quot;demonstration&quot;&gt;Value：{{ value3 }}&lt;/div&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value3&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Pick a Date&quot;
+
+        format=&quot;YYYY/MM/DD hh:mm:ss&quot;
+
+        value-format=&quot;x&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref('')
+
+const value2 = ref('')
+
+const value3 = ref('')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-datetime-picker {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+}
+
+.demo-datetime-picker .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  flex: 1;
+
+  min-width: 300px;
+
+}
+
+.demo-datetime-picker .block:last-child {
+
+  border-right: none;
+
+}
+
+.demo-datetime-picker .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+@media (max-width: 768px) {
+
+  .demo-datetime-picker .block {
+
+    flex: 100%;
+
+    border-right: none;
+
+    border-bottom: solid 1px var(--el-border-color);
+
+  }
+
+  .demo-datetime-picker .block:last-child {
+
+    border-bottom: none;
+
+  }
+
+  :deep(.el-date-editor.el-input) {
+
+    width: 100%;
+
+  }
+
+  :deep(.el-date-editor.el-input__wrapper) {
+
+    width: 100%;
+
+    max-width: 300px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>下拉列表中的日期和时间格式</h2>
+<p>使用 <code>date-format</code> 和 <code>time-format</code> 控制下拉列表面板输入框中显示的文本格式</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-datetime-picker&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value1&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Pick a Date&quot;
+
+        format=&quot;YYYY-MM-DD HH:mm:ss&quot;
+
+        date-format=&quot;MMM DD, YYYY&quot;
+
+        time-format=&quot;HH:mm&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;line&quot; /&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value2&quot;
+
+        type=&quot;datetimerange&quot;
+
+        start-placeholder=&quot;Start date&quot;
+
+        end-placeholder=&quot;End date&quot;
+
+        format=&quot;YYYY-MM-DD HH:mm:ss&quot;
+
+        date-format=&quot;YYYY/MM/DD ddd&quot;
+
+        time-format=&quot;A hh:mm:ss&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref('')
+
+const value2 = ref('')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-datetime-picker {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+  justify-content: space-around;
+
+  align-items: stretch;
+
+}
+
+.demo-datetime-picker .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  min-width: 300px;
+
+  flex: 1;
+
+}
+
+.line {
+
+  width: 1px;
+
+  background-color: var(--el-border-color);
+
+}
+
+@media (max-width: 768px) {
+
+  .demo-datetime-picker .block {
+
+    flex: 100%;
+
+    border-bottom: solid 1px var(--el-border-color);
+
+  }
+
+  .demo-datetime-picker .block:last-child {
+
+    border-bottom: none;
+
+  }
+
+  .line {
+
+    display: none;
+
+  }
+
+  :deep(.el-date-editor.el-input) {
+
+    width: 100%;
+
+  }
+
+  :deep(.el-date-editor.el-input__wrapper) {
+
+    width: 100%;
+
+    max-width: 300px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>日期和时间范围</h2>
+<p>设置<code>type</code>为<code>datetimerange</code>即可选择日期和时间范围</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-datetime-picker&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Default&lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value1&quot;
+
+        type=&quot;datetimerange&quot;
+
+        range-separator=&quot;To&quot;
+
+        start-placeholder=&quot;Start date&quot;
+
+        end-placeholder=&quot;End date&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;With shortcuts&lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value2&quot;
+
+        type=&quot;datetimerange&quot;
+
+        :shortcuts=&quot;shortcuts&quot;
+
+        range-separator=&quot;To&quot;
+
+        start-placeholder=&quot;Start date&quot;
+
+        end-placeholder=&quot;End date&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref&lt;[Date, Date]&gt;([
+
+  new Date(2000, 10, 10, 10, 10),
+
+  new Date(2000, 10, 11, 10, 10),
+
+])
+
+const value2 = ref('')
+
+const shortcuts = [
+
+  {
+
+    text: 'Last week',
+
+    value: () =&gt; {
+
+      const end = new Date()
+
+      const start = new Date()
+
+      start.setDate(start.getDate() - 7)
+
+      return [start, end]
+
+    },
+
+  },
+
+  {
+
+    text: 'Last month',
+
+    value: () =&gt; {
+
+      const end = new Date()
+
+      const start = new Date()
+
+      start.setMonth(start.getMonth() - 1)
+
+      return [start, end]
+
+    },
+
+  },
+
+  {
+
+    text: 'Last 3 months',
+
+    value: () =&gt; {
+
+      const end = new Date()
+
+      const start = new Date()
+
+      start.setMonth(start.getMonth() - 3)
+
+      return [start, end]
+
+    },
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-datetime-picker {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+}
+
+.block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  flex: 1;
+
+  min-width: 300px;
+
+}
+
+.block:last-child {
+
+  border-right: none;
+
+}
+
+.block .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+@media (max-width: 768px) {
+
+  .block {
+
+    flex: 100%;
+
+    border-right: none;
+
+    border-bottom: solid 1px var(--el-border-color);
+
+  }
+
+  .block:last-child {
+
+    border-bottom: none;
+
+  }
+
+  :deep(.el-date-editor.el-input) {
+
+    width: 100%;
+
+  }
+
+  :deep(.el-date-editor.el-input__wrapper) {
+
+    width: 100%;
+
+    max-width: 300px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>单个面板 2.14.0</h2>
+<p>默认日期选择器范围有两个面板。如果你想要一个面板设置 <code>single-panel</code> 属性。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-date-picker&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;single-panel&lt;/span&gt;
+
+      &lt;el-date-picker v-model=&quot;value1&quot; type=&quot;datetimerange&quot; single-panel /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref()
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-date-picker {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+}
+
+.demo-date-picker .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  flex: 1;
+
+}
+
+.demo-date-picker .block:last-child {
+
+  border-right: none;
+
+}
+
+.demo-date-picker .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>默认的起始与结束时刻</h2>
+<p>使用<code>datetimerange</code>进行范围选择时，在日期选择面板中选定起始与结束的日期，默认会使用该日期的<code>00:00:00</code>作为起始与结束的时刻；通过选项<code>default-time</code>可以控制选中起始与结束日期时所使用的具体时刻。我们可以使用 <code>default-time</code> 属性来控制它。 <code>default-time</code>接受一个数组，其中第一项控制起始日期的具体时刻，第二项控制结束日期的具体时刻。第一项控制开始日期的时间值，第二项控制结束日期的时间值。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-datetime-picker&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Start and end date time 12:00:00&lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value1&quot;
+
+        type=&quot;datetimerange&quot;
+
+        start-placeholder=&quot;Start Date&quot;
+
+        end-placeholder=&quot;End Date&quot;
+
+        :default-time=&quot;defaultTime1&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;
+
+        Start date time 12:00:00, end date time 08:00:00
+
+      &lt;/span&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value2&quot;
+
+        type=&quot;datetimerange&quot;
+
+        start-placeholder=&quot;Start Date&quot;
+
+        end-placeholder=&quot;End Date&quot;
+
+        :default-time=&quot;defaultTime2&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref('')
+
+const value2 = ref('')
+
+const defaultTime1 = new Date(2000, 1, 1, 12, 0, 0) // '12:00:00'
+
+const defaultTime2: [Date, Date] = [
+
+  new Date(2000, 1, 1, 12, 0, 0),
+
+  new Date(2000, 2, 1, 8, 0, 0),
+
+] // '12:00:00', '08:00:00'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-datetime-picker {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+}
+
+.block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  flex: 1;
+
+  min-width: 300px;
+
+}
+
+.block:last-child {
+
+  border-right: none;
+
+}
+
+.block .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+@media (max-width: 768px) {
+
+  .block {
+
+    flex: 100%;
+
+    border-right: none;
+
+    border-bottom: solid 1px var(--el-border-color);
+
+  }
+
+  .block:last-child {
+
+    border-bottom: none;
+
+  }
+
+  :deep(.el-date-editor.el-input) {
+
+    width: 100%;
+
+  }
+
+  :deep(.el-date-editor.el-input__wrapper) {
+
+    width: 100%;
+
+    max-width: 300px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义图标 2.8.0</h2>
+<p>使用插槽自定义图标。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-datetime-picker-icon&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value1&quot;
+
+        type=&quot;datetime&quot;
+
+        placeholder=&quot;Pick a Date&quot;
+
+        format=&quot;YYYY-MM-DD HH:mm:ss&quot;
+
+        date-format=&quot;MMM DD, YYYY&quot;
+
+        time-format=&quot;HH:mm&quot;
+
+      &gt;
+
+        &lt;template #prev-month&gt;
+
+          &lt;el-icon&gt;&lt;CaretLeft /&gt;&lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #next-month&gt;
+
+          &lt;el-icon&gt;&lt;CaretRight /&gt;&lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #prev-year&gt;
+
+          &lt;el-icon&gt;
+
+            &lt;svg
+
+              viewBox=&quot;0 0 20 20&quot;
+
+              version=&quot;1.1&quot;
+
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+
+            &gt;
+
+              &lt;g stroke-width=&quot;1&quot; fill-rule=&quot;evenodd&quot;&gt;
+
+                &lt;g fill=&quot;currentColor&quot;&gt;
+
+                  &lt;path
+
+                    d=&quot;M8.73171,16.7949 C9.03264,17.0795 9.50733,17.0663 9.79196,16.7654 C10.0766,16.4644 10.0634,15.9897 9.76243,15.7051 L4.52339,10.75 L17.2471,10.75 C17.6613,10.75 17.9971,10.4142 17.9971,10 C17.9971,9.58579 17.6613,9.25 17.2471,9.25 L4.52112,9.25 L9.76243,4.29275 C10.0634,4.00812 10.0766,3.53343 9.79196,3.2325 C9.50733,2.93156 9.03264,2.91834 8.73171,3.20297 L2.31449,9.27241 C2.14819,9.4297 2.04819,9.62981 2.01448,9.8386 C2.00308,9.89058 1.99707,9.94459 1.99707,10 C1.99707,10.0576 2.00356,10.1137 2.01585,10.1675 C2.05084,10.3733 2.15039,10.5702 2.31449,10.7254 L8.73171,16.7949 Z&quot;
+
+                  /&gt;
+
+                &lt;/g&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #next-year&gt;
+
+          &lt;el-icon&gt;
+
+            &lt;svg
+
+              viewBox=&quot;0 0 20 20&quot;
+
+              version=&quot;1.1&quot;
+
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+
+            &gt;
+
+              &lt;g stroke-width=&quot;1&quot; fill-rule=&quot;evenodd&quot;&gt;
+
+                &lt;g fill=&quot;currentColor&quot;&gt;
+
+                  &lt;path
+
+                    d=&quot;M11.2654,3.20511 C10.9644,2.92049 10.4897,2.93371 10.2051,3.23464 C9.92049,3.53558 9.93371,4.01027 10.2346,4.29489 L15.4737,9.25 L2.75,9.25 C2.33579,9.25 2,9.58579 2,10.0000012 C2,10.4142 2.33579,10.75 2.75,10.75 L15.476,10.75 L10.2346,15.7073 C9.93371,15.9919 9.92049,16.4666 10.2051,16.7675 C10.4897,17.0684 10.9644,17.0817 11.2654,16.797 L17.6826,10.7276 C17.8489,10.5703 17.9489,10.3702 17.9826,10.1614 C17.994,10.1094 18,10.0554 18,10.0000012 C18,9.94241 17.9935,9.88633 17.9812,9.83246 C17.9462,9.62667 17.8467,9.42976 17.6826,9.27455 L11.2654,3.20511 Z&quot;
+
+                  /&gt;
+
+                &lt;/g&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-date-picker&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;line&quot; /&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;el-date-picker
+
+        v-model=&quot;value2&quot;
+
+        type=&quot;datetimerange&quot;
+
+        start-placeholder=&quot;Start date&quot;
+
+        end-placeholder=&quot;End date&quot;
+
+        format=&quot;YYYY-MM-DD HH:mm:ss&quot;
+
+        date-format=&quot;YYYY/MM/DD ddd&quot;
+
+        time-format=&quot;A hh:mm:ss&quot;
+
+        unlink-panels
+
+      &gt;
+
+        &lt;template #prev-month&gt;
+
+          &lt;el-icon&gt;&lt;CaretLeft /&gt;&lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #next-month&gt;
+
+          &lt;el-icon&gt;&lt;CaretRight /&gt;&lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #prev-year&gt;
+
+          &lt;el-icon&gt;
+
+            &lt;svg
+
+              viewBox=&quot;0 0 20 20&quot;
+
+              version=&quot;1.1&quot;
+
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+
+            &gt;
+
+              &lt;g stroke-width=&quot;1&quot; fill-rule=&quot;evenodd&quot;&gt;
+
+                &lt;g fill=&quot;currentColor&quot;&gt;
+
+                  &lt;path
+
+                    d=&quot;M8.73171,16.7949 C9.03264,17.0795 9.50733,17.0663 9.79196,16.7654 C10.0766,16.4644 10.0634,15.9897 9.76243,15.7051 L4.52339,10.75 L17.2471,10.75 C17.6613,10.75 17.9971,10.4142 17.9971,10 C17.9971,9.58579 17.6613,9.25 17.2471,9.25 L4.52112,9.25 L9.76243,4.29275 C10.0634,4.00812 10.0766,3.53343 9.79196,3.2325 C9.50733,2.93156 9.03264,2.91834 8.73171,3.20297 L2.31449,9.27241 C2.14819,9.4297 2.04819,9.62981 2.01448,9.8386 C2.00308,9.89058 1.99707,9.94459 1.99707,10 C1.99707,10.0576 2.00356,10.1137 2.01585,10.1675 C2.05084,10.3733 2.15039,10.5702 2.31449,10.7254 L8.73171,16.7949 Z&quot;
+
+                  /&gt;
+
+                &lt;/g&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #next-year&gt;
+
+          &lt;el-icon&gt;
+
+            &lt;svg
+
+              viewBox=&quot;0 0 20 20&quot;
+
+              version=&quot;1.1&quot;
+
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+
+            &gt;
+
+              &lt;g stroke-width=&quot;1&quot; fill-rule=&quot;evenodd&quot;&gt;
+
+                &lt;g fill=&quot;currentColor&quot;&gt;
+
+                  &lt;path
+
+                    d=&quot;M11.2654,3.20511 C10.9644,2.92049 10.4897,2.93371 10.2051,3.23464 C9.92049,3.53558 9.93371,4.01027 10.2346,4.29489 L15.4737,9.25 L2.75,9.25 C2.33579,9.25 2,9.58579 2,10.0000012 C2,10.4142 2.33579,10.75 2.75,10.75 L15.476,10.75 L10.2346,15.7073 C9.93371,15.9919 9.92049,16.4666 10.2051,16.7675 C10.4897,17.0684 10.9644,17.0817 11.2654,16.797 L17.6826,10.7276 C17.8489,10.5703 17.9489,10.3702 17.9826,10.1614 C17.994,10.1094 18,10.0554 18,10.0000012 C18,9.94241 17.9935,9.88633 17.9812,9.83246 C17.9462,9.62667 17.8467,9.42976 17.6826,9.27455 L11.2654,3.20511 Z&quot;
+
+                  /&gt;
+
+                &lt;/g&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-date-picker&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { CaretLeft, CaretRight } from '@element-plus/icons-vue'
+
+const value1 = ref('')
+
+const value2 = ref('')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-datetime-picker-icon {
+
+  display: flex;
+
+  width: 100%;
+
+  padding: 0;
+
+  flex-wrap: wrap;
+
+  justify-content: space-around;
+
+  align-items: stretch;
+
+}
+
+.demo-datetime-picker-icon .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  min-width: 300px;
+
+  flex: 1;
+
+}
+
+.line {
+
+  width: 1px;
+
+  background-color: var(--el-border-color);
+
+}
+
+@media (max-width: 768px) {
+
+  .demo-datetime-picker-icon .block {
+
+    flex: 100%;
+
+    border-bottom: solid 1px var(--el-border-color);
+
+  }
+
+  .demo-datetime-picker-icon .block:last-child {
+
+    border-bottom: none;
+
+  }
+
+  .line {
+
+    display: none;
+
+  }
+
+  :deep(.el-date-editor.el-input) {
+
+    width: 100%;
+
+  }
+
+  :deep(.el-date-editor.el-input__wrapper) {
+
+    width: 100%;
+
+    max-width: 300px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>绑定值，如果是 <code>range</code> 选择器，数组长度应为 2</td>
+<td><code>number</code> / <code>string</code> / <code>Date</code> / <code>array</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>readonly</td>
+<td>只读</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>editable</td>
+<td>文本框可输入</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>clearable</td>
+<td>是否显示清除按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>size</td>
+<td>输入框尺寸</td>
+<td><code>enum</code></td>
+<td>default</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>非范围选择时的占位内容</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>start-placeholder</td>
+<td>范围选择时开始日期的占位内容</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>end-placeholder</td>
+<td>范围选择时结束日期的占位内容</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>arrow-control</td>
+<td>是否使用箭头进行时间选择</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>type</td>
+<td>显示类型</td>
+<td><code>enum</code></td>
+<td>date</td>
+</tr>
+<tr>
+<td>format</td>
+<td>显示在输入框中的格式</td>
+<td><code>string</code> 参考 <a href="./date-picker#date-formats">日期格式</a></td>
+<td>YYYY-MM-DD HH:mm:ss</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>DateTimePicker 下拉框的类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-style</td>
+<td>弹出内容的自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td>自定义 popper 选项，更多请参考 <a href="https://popper.js.org/docs/v2/">popper.js</a></td>
+<td><code>object</code></td>
+<td>{}</td>
+</tr>
+<tr>
+<td>fallback-placements 2.8.4</td>
+<td>Tooltip 可用的 positions 请查看<a href="https://popper.js.org/docs/v2/modifiers/flip/#fallbackplacements">popper.js 文档</a></td>
+<td><code>array</code></td>
+<td>['bottom', 'top', 'right', 'left']</td>
+</tr>
+<tr>
+<td>placement 2.8.4</td>
+<td>下拉框出现的位置</td>
+<td><code>展示位置</code></td>
+<td>bottom</td>
+</tr>
+<tr>
+<td>range-separator</td>
+<td>选择范围时的分隔符</td>
+<td><code>string</code></td>
+<td>'-'</td>
+</tr>
+<tr>
+<td>default-value</td>
+<td>可选，选择器打开时默认显示的时间</td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>default-time</td>
+<td>选择日期后的默认时间值。如未指定则默认时间值为 <code>00:00:00</code></td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-format</td>
+<td>可选，绑定值的格式。不指定则绑定值为 Date 对象</td>
+<td><code>string</code> see <a href="https://day.js.org/docs/en/display/format">date formats</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>date-format 2.4.0</td>
+<td>可选，输入框内部面板中显示的日期格式</td>
+<td><code>string</code> see <a href="https://day.js.org/docs/en/display/format">date formats</a></td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>time-format 2.4.0</td>
+<td>可选，输入框内部面板中显示的时间格式</td>
+<td><code>string</code> see <a href="https://day.js.org/docs/en/display/format">date formats</a></td>
+<td>HH:mm:ss</td>
+</tr>
+<tr>
+<td>id</td>
+<td>等价于原生 input <code>id</code> 属性</td>
+<td><code>string</code> / <code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td>等价于原生 input <code>name</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>unlink-panels</td>
+<td>在范围选择器里取消两个日期面板之间的联动</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>single-panel 2.14.0</td>
+<td>在范围选择器中只显示一个面板</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>prefix-icon</td>
+<td>自定义前缀图标组件</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>Date</td>
+</tr>
+<tr>
+<td>clear-icon</td>
+<td>自定义清除图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>CircleClose</td>
+</tr>
+<tr>
+<td>shortcuts</td>
+<td>设置快捷选项，需要传入数组对象</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled-date</td>
+<td>一个用来判断该日期是否被禁用的函数，接受一个 Date 对象作为参数。应该返回一个 Boolean 值。</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled-hours</td>
+<td>禁止选择部分小时选项</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled-minutes</td>
+<td>禁止选择部分分钟选项</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled-seconds</td>
+<td>禁止选择部分秒选项</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>cell-class-name</td>
+<td>设置自定义类名</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否将 datetime-picker 的下拉列表插入至 body 元素</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>empty-values 2.7.0</td>
+<td>组件的空值配置， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-on-clear 2.7.0</td>
+<td>清空选项的值， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>show-now 2.8.7</td>
+<td>是否显示 now 按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>show-footer 2.10.5</td>
+<td>是否在日期选择器中显示页脚 ^[enum]<code>'datetime' | 'datetimerange'</code></td>
+<td><code>boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td>show-confirm 2.11.0</td>
+<td>是否显示确定按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>show-week-number 2.10.3</td>
+<td>显示周数(除周外)</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>回调参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>当用户确认值或点击外部时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>在组件 Input 失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>在组件 Input 获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clear 2.7.7</td>
+<td>当点击清除按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>calendar-change</td>
+<td>如果用户没有选择日期，那默认展示当前日的月份。仅用于 <code>range</code></td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>panel-change</td>
+<td>当日期面板改变时触发。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>visible-change</td>
+<td>当 DateTimePicker 的下拉列表出现/消失时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义单元格内容</td>
+</tr>
+<tr>
+<td>range-separator</td>
+<td>自定义范围分割符内容</td>
+</tr>
+<tr>
+<td>prev-month 2.8.0</td>
+<td>上个月的图标</td>
+</tr>
+<tr>
+<td>next-month 2.8.0</td>
+<td>下个月的图标</td>
+</tr>
+<tr>
+<td>prev-year 2.8.0</td>
+<td>上一年图标</td>
+</tr>
+<tr>
+<td>next-year 2.8.0</td>
+<td>下一年图标</td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>使组件获取焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur 2.8.7</td>
+<td>使组件失去焦点</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Type Declarations</h2>
+<p>Show declarationsts`type Placement =</p>
+<p>| 'top'</p>
+<p>| 'top-start'</p>
+<p>| 'top-end'</p>
+<p>| 'bottom'</p>
+<p>| 'bottom-start'</p>
+<p>| 'bottom-end'</p>
+<p>| 'left'</p>
+<p>| 'left-start'</p>
+<p>| 'left-end'</p>
+<p>| 'right'</p>
+<p>| 'right-start'</p>
+<p>| 'right-end'`</p></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-date-picker v-model="dt" type="datetime" placeholder="选择日期时间" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const dt = Vue.ref(""); return { dt };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

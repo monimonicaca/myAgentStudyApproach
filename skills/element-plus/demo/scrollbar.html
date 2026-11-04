@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrollbar 滚动条 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Scrollbar 滚动条</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Scrollbar 滚动条</h1>
+<p>用于替换浏览器原生滚动条。</p>
+<h2>基础用法</h2>
+<p>通过 <code>height</code> 属性设置滚动条高度，若不设置则根据父容器高度自适应。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-scrollbar height=&quot;400px&quot;&gt;
+
+    &lt;p v-for=&quot;item in 20&quot; :key=&quot;item&quot; class=&quot;scrollbar-demo-item&quot;&gt;{{ item }}&lt;/p&gt;
+
+  &lt;/el-scrollbar&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.scrollbar-demo-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  margin: 10px;
+
+  text-align: center;
+
+  border-radius: 4px;
+
+  background: var(--el-color-primary-light-9);
+
+  color: var(--el-color-primary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>横向滚动</h2>
+<p>当元素宽度大于滚动条宽度时，会显示横向滚动条。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-scrollbar&gt;
+
+    &lt;div class=&quot;scrollbar-flex-content&quot;&gt;
+
+      &lt;p v-for=&quot;item in 50&quot; :key=&quot;item&quot; class=&quot;scrollbar-demo-item&quot;&gt;
+
+        {{ item }}
+
+      &lt;/p&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-scrollbar&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.scrollbar-flex-content {
+
+  display: flex;
+
+  width: fit-content;
+
+}
+
+.scrollbar-demo-item {
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100px;
+
+  height: 50px;
+
+  margin: 10px;
+
+  text-align: center;
+
+  border-radius: 4px;
+
+  background: var(--el-color-danger-light-9);
+
+  color: var(--el-color-danger);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>最大高度</h2>
+<p>当元素高度超过最大高度，才会显示滚动条。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button @click=&quot;add&quot;&gt;Add Item&lt;/el-button&gt;
+
+  &lt;el-button @click=&quot;onDelete&quot;&gt;Delete Item&lt;/el-button&gt;
+
+  &lt;el-scrollbar max-height=&quot;400px&quot;&gt;
+
+    &lt;p v-for=&quot;item in count&quot; :key=&quot;item&quot; class=&quot;scrollbar-demo-item&quot;&gt;
+
+      {{ item }}
+
+    &lt;/p&gt;
+
+  &lt;/el-scrollbar&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const count = ref(3)
+
+const add = () =&gt; {
+
+  count.value++
+
+}
+
+const onDelete = () =&gt; {
+
+  if (count.value &gt; 0) {
+
+    count.value--
+
+  }
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.scrollbar-demo-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  margin: 10px;
+
+  text-align: center;
+
+  border-radius: 4px;
+
+  background: var(--el-color-primary-light-9);
+
+  color: var(--el-color-primary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>手动滚动</h2>
+<p>通过使用 <code>setScrollTop</code> 与 <code>setScrollLeft</code> 方法，可以手动控制滚动条滚动。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-scrollbar ref=&quot;scrollbarRef&quot; height=&quot;400px&quot; always @scroll=&quot;scroll&quot;&gt;
+
+    &lt;div ref=&quot;innerRef&quot;&gt;
+
+      &lt;p v-for=&quot;item in 20&quot; :key=&quot;item&quot; class=&quot;scrollbar-demo-item&quot;&gt;
+
+        {{ item }}
+
+      &lt;/p&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-scrollbar&gt;
+
+  &lt;el-slider
+
+    v-model=&quot;value&quot;
+
+    :max=&quot;max&quot;
+
+    :format-tooltip=&quot;formatTooltip&quot;
+
+    @input=&quot;inputSlider&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+import type { ScrollbarInstance } from 'element-plus'
+
+type Arrayable&lt;T&gt; = T | T[]
+
+const max = ref(0)
+
+const value = ref(0)
+
+const innerRef = ref&lt;HTMLDivElement&gt;()
+
+const scrollbarRef = ref&lt;ScrollbarInstance&gt;()
+
+onMounted(() =&gt; {
+
+  max.value = innerRef.value!.clientHeight - 380
+
+})
+
+const inputSlider = (value: Arrayable&lt;number&gt;) =&gt; {
+
+  scrollbarRef.value!.setScrollTop(value as number)
+
+}
+
+const scroll = ({ scrollTop }: { scrollTop: number }) =&gt; {
+
+  value.value = scrollTop
+
+}
+
+const formatTooltip = (value: number) =&gt; `${value} px`
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.scrollbar-demo-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  margin: 10px;
+
+  text-align: center;
+
+  border-radius: 4px;
+
+  background: var(--el-color-primary-light-9);
+
+  color: var(--el-color-primary);
+
+}
+
+.el-slider {
+
+  margin-top: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>无限滚动2.10.0</h2>
+<p><code>end-reached</code> 是在滚动条到达底部时触发的。它可以用作无限滚动。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-scrollbar height=&quot;400px&quot; @end-reached=&quot;loadMore&quot;&gt;
+
+    &lt;p v-for=&quot;item in num&quot; :key=&quot;item&quot; class=&quot;scrollbar-demo-item&quot;&gt;
+
+      {{ item }}
+
+    &lt;/p&gt;
+
+  &lt;/el-scrollbar&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { ScrollbarDirection } from 'element-plus'
+
+const num = ref(30)
+
+const loadMore = (direction: ScrollbarDirection) =&gt; {
+
+  if (direction === 'bottom') {
+
+    num.value += 5
+
+  }
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.scrollbar-demo-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  margin: 10px;
+
+  text-align: center;
+
+  border-radius: 4px;
+
+  background: var(--el-color-primary-light-9);
+
+  color: var(--el-color-primary);
+
+}
+
+.el-slider {
+
+  margin-top: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>height</td>
+<td>滚动条高度</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>max-height</td>
+<td>滚动条最大高度</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>native</td>
+<td>是否使用原生滚动条样式</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>wrap-style</td>
+<td>包裹容器的自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>wrap-class</td>
+<td>包裹容器的自定义类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>view-style</td>
+<td>视图的自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>view-class</td>
+<td>视图的自定义类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>noresize</td>
+<td>不响应容器尺寸变化，如果容器尺寸不会发生变化，最好设置它可以优化性能</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>tag</td>
+<td>视图的元素标签</td>
+<td><code>string</code></td>
+<td>div</td>
+</tr>
+<tr>
+<td>always</td>
+<td>滚动条总是显示</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>min-size</td>
+<td>滚动条最小尺寸</td>
+<td><code>number</code></td>
+<td>20</td>
+</tr>
+<tr>
+<td>id 2.4.0</td>
+<td>视图ID</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>role 2.4.0 a11y</td>
+<td>视图的角色</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>aria-label 2.4.0 a11y</td>
+<td>视图的 aria-label</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>aria-orientation 2.4.0 a11y</td>
+<td>视图的 aria-orientation</td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>tabindex 2.8.3</td>
+<td>容器的tabindex</td>
+<td><code>number</code> / <code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>distance 2.10.5</td>
+<td>触发到达底部事件的距离（像素）</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3>Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scroll</td>
+<td>当触发滚动事件时，返回滚动的距离</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>end-reached 2.10.0</td>
+<td>触发滚动结束时的触发器</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>handleScroll</td>
+<td>触发滚动事件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>scrollTo</td>
+<td>滚动到一组特定坐标</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>setScrollTop</td>
+<td>设置滚动条到顶部的距离</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>setScrollLeft</td>
+<td>设置滚动条到左边的距离</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>update</td>
+<td>手动更新滚动条状态</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>wrapRef</td>
+<td>滚动条包裹的 ref 对象</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-scrollbar height="220px" style="border:1px solid #eee;padding:12px"><p v-for="i in 30" :key="i" style="margin:6px 0">第 {{ i }} 行</p></el-scrollbar>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+return { ...ElementPlusIconsVue };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

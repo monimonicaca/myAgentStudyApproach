@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space 间距 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Space 间距</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Space 间距</h1>
+<p>虽然我们拥有 <a href="./divider">Divider 组件</a>，但很多时候我们需要不是一个被 <a href="./divider">Divider 组件</a> 分割开的页面结构，因此我们会重复的使用很多的 <a href="./divider">Divider 组件</a>，这在我们的开发效率上造成了一定的困扰。<strong>间距组件</strong>就是为了解决这种困扰应运而生的。</p>
+<h2>基础用法</h2>
+<p>最基础的用法，通过这个组件来给组件之间提供统一的间距。</p>
+<p>通过间距组件来给多个组件之间提供间距</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-space wrap&gt;
+
+    &lt;el-card v-for=&quot;i in 3&quot; :key=&quot;i&quot; class=&quot;box-card&quot; style=&quot;width: 250px&quot;&gt;
+
+      &lt;template #header&gt;
+
+        &lt;div class=&quot;card-header&quot;&gt;
+
+          &lt;span&gt;Card name&lt;/span&gt;
+
+          &lt;el-button class=&quot;button&quot; text&gt;Operation button&lt;/el-button&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+      &lt;div v-for=&quot;o in 4&quot; :key=&quot;o&quot; class=&quot;text item&quot;&gt;
+
+        {{ 'List item ' + o }}
+
+      &lt;/div&gt;
+
+    &lt;/el-card&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>垂直布局</h2>
+<p>使用 <code>direction</code> 来控制布局的方式, 背后实际上是利用了 <code>flex-direction</code> 来控制.</p>
+<p>我们也提供垂直布局方式。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-space direction=&quot;vertical&quot;&gt;
+
+    &lt;el-card v-for=&quot;i in 2&quot; :key=&quot;i&quot; class=&quot;box-card&quot; style=&quot;width: 250px&quot;&gt;
+
+      &lt;template #header&gt;
+
+        &lt;div class=&quot;card-header&quot;&gt;
+
+          &lt;span&gt;Card name&lt;/span&gt;
+
+          &lt;el-button class=&quot;button&quot; text&gt;Operation button&lt;/el-button&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+      &lt;div v-for=&quot;o in 4&quot; :key=&quot;o&quot; class=&quot;text item&quot;&gt;
+
+        {{ 'List item ' + o }}
+
+      &lt;/div&gt;
+
+    &lt;/el-card&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>控制间距的大小</h2>
+<p>通过调整 <code>size</code> 的值来控制间距的大小</p>
+<p>你可以使用内置的尺寸 <code>small</code>、<code>default</code>、<code>large</code> 来设置大小，这些尺寸分别对应 <code>8px</code>、<code>12px</code>、<code>16px</code>。 默认的间距大小为 <code>small</code>，也就是 <code>8px</code>。</p>
+<p>您也可以通过自定义的 size 来控制大小，参见下一个部分。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-space direction=&quot;vertical&quot; alignment=&quot;start&quot; :size=&quot;30&quot;&gt;
+
+    &lt;el-radio-group v-model=&quot;size&quot;&gt;
+
+      &lt;el-radio value=&quot;large&quot;&gt;Large&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;default&quot;&gt;Default&lt;/el-radio&gt;
+
+      &lt;el-radio value=&quot;small&quot;&gt;Small&lt;/el-radio&gt;
+
+    &lt;/el-radio-group&gt;
+
+    &lt;el-space wrap :size=&quot;size&quot;&gt;
+
+      &lt;el-card v-for=&quot;i in 3&quot; :key=&quot;i&quot; class=&quot;box-card&quot; style=&quot;width: 250px&quot;&gt;
+
+        &lt;template #header&gt;
+
+          &lt;div class=&quot;card-header&quot;&gt;
+
+            &lt;span&gt;Card name&lt;/span&gt;
+
+            &lt;el-button class=&quot;button&quot; text&gt;Operation button&lt;/el-button&gt;
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+        &lt;div v-for=&quot;o in 4&quot; :key=&quot;o&quot; class=&quot;text item&quot;&gt;
+
+          {{ 'List item ' + o }}
+
+        &lt;/div&gt;
+
+      &lt;/el-card&gt;
+
+    &lt;/el-space&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { ComponentSize } from 'element-plus'
+
+const size = ref&lt;ComponentSize&gt;('default')
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义 Size</h2>
+<p>很多时候，内建的大小不满足设计师的要求，我们可以通过传入自己定义的大小 (数值类型) 来设置。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-slider v-model=&quot;size&quot; /&gt;
+
+  &lt;el-space wrap :size=&quot;size&quot;&gt;
+
+    &lt;el-card v-for=&quot;i in 2&quot; :key=&quot;i&quot; class=&quot;box-card&quot; style=&quot;width: 250px&quot;&gt;
+
+      &lt;template #header&gt;
+
+        &lt;div class=&quot;card-header&quot;&gt;
+
+          &lt;span&gt;Card name&lt;/span&gt;
+
+          &lt;el-button class=&quot;button&quot; text&gt;Operation button&lt;/el-button&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+      &lt;div v-for=&quot;o in 4&quot; :key=&quot;o&quot; class=&quot;text item&quot;&gt;
+
+        {{ 'List item ' + o }}
+
+      &lt;/div&gt;
+
+    &lt;/el-card&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const size = ref(20)
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>不要让 <code>ElSpace</code> 与使用依赖父元素百分比宽度（或高度）的元素一起使用（例如 <code>ElSlider</code>），这样会造成光标不同步。</p>
+</blockquote>
+<h2>自动换行</h2>
+<p>在 <strong>水平 (horizontal) ** 模式下，通过使用 <code>wrap</code>（</strong>布尔类型**）来控制自动换行行为。</p>
+<p>利用 <code>wrap</code> 属性控制换行</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-space wrap&gt;
+
+    &lt;div v-for=&quot;i in 20&quot; :key=&quot;i&quot;&gt;
+
+      &lt;el-button text&gt; Text button &lt;/el-button&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>行间分隔符</h2>
+<p>有时候，仅仅在行间加空白并不能满足我们的日常需求，此时分隔符 (spacer) 就可以发挥非常好的作用了。</p>
+<h2>字母数字类型分隔符</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-space :size=&quot;size&quot; spacer=&quot;|&quot;&gt;
+
+    &lt;div v-for=&quot;i in 2&quot; :key=&quot;i&quot;&gt;
+
+      &lt;el-button&gt; button {{ i }} &lt;/el-button&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const size = ref(10)
+
+&lt;/script&gt;
+</code></pre>
+<h2>分隔符还可以是 VNode 类型</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-space :size=&quot;size&quot; :spacer=&quot;spacer&quot;&gt;
+
+    &lt;div v-for=&quot;i in 2&quot; :key=&quot;i&quot;&gt;
+
+      &lt;el-button&gt; button {{ i }} &lt;/el-button&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-space&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h, ref } from 'vue'
+
+import { ElDivider } from 'element-plus'
+
+const size = ref(10)
+
+const spacer = h(ElDivider, { direction: 'vertical' })
+
+&lt;/script&gt;
+</code></pre>
+<h2>对齐方式</h2>
+<p>设置该值可以调整所有子节点在容器内的对齐方式，可设置的值与 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-items">align-items </a>一致。</p>
+<p>使用 <code>alignment</code> 属性来对齐</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;alignment-container&quot;&gt;
+
+    &lt;el-space&gt;
+
+      string
+
+      &lt;el-button&gt; button &lt;/el-button&gt;
+
+      &lt;el-card&gt;
+
+        &lt;template #header&gt; header &lt;/template&gt;
+
+        body
+
+      &lt;/el-card&gt;
+
+    &lt;/el-space&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;alignment-container&quot;&gt;
+
+    &lt;el-space alignment=&quot;flex-start&quot;&gt;
+
+      string
+
+      &lt;el-button&gt; button &lt;/el-button&gt;
+
+      &lt;el-card&gt;
+
+        &lt;template #header&gt; header &lt;/template&gt;
+
+        body
+
+      &lt;/el-card&gt;
+
+    &lt;/el-space&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;alignment-container&quot;&gt;
+
+    &lt;el-space alignment=&quot;flex-end&quot;&gt;
+
+      string
+
+      &lt;el-button&gt; button &lt;/el-button&gt;
+
+      &lt;el-card&gt;
+
+        &lt;template #header&gt; header &lt;/template&gt;
+
+        body
+
+      &lt;/el-card&gt;
+
+    &lt;/el-space&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style&gt;
+
+.alignment-container {
+
+  width: 240px;
+
+  margin-bottom: 20px;
+
+  padding: 8px;
+
+  border: 1px solid var(--el-border-color);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>填充容器</h2>
+<p>通过 <code>fill</code><strong>（布尔类型）</strong>参数，您可以控制子节点是否自动填充容器。</p>
+<p>下面的例子中，当设置为 <code>fill</code> 时，子节点的宽度会自动适配容器的宽度。</p>
+<p>用 fill 属性让子节点自动填充容器</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;div style=&quot;margin-bottom: 15px&quot;&gt;fill: &lt;el-switch v-model=&quot;fill&quot; /&gt;&lt;/div&gt;
+
+    &lt;el-space :fill=&quot;fill&quot; wrap&gt;
+
+      &lt;el-card v-for=&quot;i in 3&quot; :key=&quot;i&quot; class=&quot;box-card&quot;&gt;
+
+        &lt;template #header&gt;
+
+          &lt;div class=&quot;card-header&quot;&gt;
+
+            &lt;span&gt;Card name&lt;/span&gt;
+
+            &lt;el-button class=&quot;button&quot; text&gt;Operation button&lt;/el-button&gt;
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+        &lt;div v-for=&quot;o in 4&quot; :key=&quot;o&quot; class=&quot;text item&quot;&gt;
+
+          {{ 'List item ' + o }}
+
+        &lt;/div&gt;
+
+      &lt;/el-card&gt;
+
+    &lt;/el-space&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const fill = ref(true)
+
+&lt;/script&gt;
+</code></pre>
+<p>也可以使用 <code>fillRatio</code> 参数，自定义填充的比例，默认值为 <code>100</code>，代表基于父容器宽度的 <code>100%</code> 进行填充</p>
+<p>需要注意的是，水平布局和垂直布局的表现形式稍有不同，具体的效果可以查看下面的例子</p>
+<p>用 fillRatio 自定义填充比例</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;div style=&quot;margin-bottom: 15px&quot;&gt;
+
+      direction:
+
+      &lt;el-radio v-model=&quot;direction&quot; value=&quot;horizontal&quot;&gt;horizontal&lt;/el-radio&gt;
+
+      &lt;el-radio v-model=&quot;direction&quot; value=&quot;vertical&quot;&gt;vertical&lt;/el-radio&gt;
+
+    &lt;/div&gt;
+
+    &lt;div style=&quot;margin-bottom: 15px&quot;&gt;
+
+      fillRatio:&lt;el-slider v-model=&quot;fillRatio&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;el-space
+
+      fill
+
+      wrap
+
+      :fill-ratio=&quot;fillRatio&quot;
+
+      :direction=&quot;direction&quot;
+
+      style=&quot;width: 100%&quot;
+
+    &gt;
+
+      &lt;el-card v-for=&quot;i in 5&quot; :key=&quot;i&quot; class=&quot;box-card&quot;&gt;
+
+        &lt;template #header&gt;
+
+          &lt;div class=&quot;card-header&quot;&gt;
+
+            &lt;span&gt;Card name&lt;/span&gt;
+
+            &lt;el-button class=&quot;button&quot; text&gt;Operation button&lt;/el-button&gt;
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+        &lt;div v-for=&quot;o in 4&quot; :key=&quot;o&quot; class=&quot;text item&quot;&gt;
+
+          {{ 'List item ' + o }}
+
+        &lt;/div&gt;
+
+      &lt;/el-card&gt;
+
+    &lt;/el-space&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { SpaceInstance } from 'element-plus'
+
+const direction = ref&lt;SpaceInstance['direction']&gt;('horizontal')
+
+const fillRatio = ref(30)
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alignment</td>
+<td>对齐的方式</td>
+<td><code>enum</code>** <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-items">align-items</a></td>
+<td>center</td>
+</tr>
+<tr>
+<td>class</td>
+<td>className</td>
+<td><code>string</code> / <code>object</code> / <code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>direction</td>
+<td>排列的方向</td>
+<td><code>enum</code></td>
+<td>horizontal</td>
+</tr>
+<tr>
+<td>prefix-cls</td>
+<td>给 space-items 的类名前缀</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>style</td>
+<td>额外样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>spacer</td>
+<td>间隔符</td>
+<td><code>string</code> / <code>number</code> / <code>VNode</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>size</td>
+<td>间隔大小</td>
+<td><code>enum</code>** / <code>number</code> / <code>array</code></td>
+<td>small</td>
+</tr>
+<tr>
+<td>wrap</td>
+<td>设置是否自动折行</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>fill</td>
+<td>子元素是否填充父容器</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>fill-ratio</td>
+<td>填充父容器的比例</td>
+<td><code>number</code></td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>需要添加间隔的元素</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-space direction="vertical" :size="16"><el-button>按钮1</el-button><el-button type="primary">按钮2</el-button><el-button type="success">按钮3</el-button></el-space>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+return { ...ElementPlusIconsVue };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

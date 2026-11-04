@@ -1,0 +1,3411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Select 选择器 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Select 选择器</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Select 选择器</h1>
+<p>当选项过多时，使用下拉菜单展示并选择内容。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>在版本 <code>2.5.0</code>之后， <code>el-select</code> 的默认宽度更改为 <code>100%</code> 当使用内联形式时，宽度将显示异常。为了保持显示正常, 您需要手动配置 <code>el-select</code> 的宽度 (如: <a href="https://github.com/element-plus/element-plus/issues/15834#issuecomment-1936919229">例子</a>).</p>
+</blockquote>
+<h2>基础用法</h2>
+<p>适用广泛的基础单选 <code>v-model</code> 的值为当前被选中的 <code>el-option</code> 的 value 属性值</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>Options 属性 2.10.5</h2>
+<p><code>el-option</code> 基本用法。您可以通过 <code>props</code> 属性自定义 <code>options</code> 的别名。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select
+
+    v-model=&quot;value&quot;
+
+    :options=&quot;options&quot;
+
+    :props=&quot;props&quot;
+
+    placeholder=&quot;Select&quot;
+
+    style=&quot;width: 240px&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const props = {
+
+  value: 'id',
+
+  label: 'label',
+
+  options: 'options',
+
+  disabled: 'disabled',
+
+}
+
+const options = [
+
+  {
+
+    id: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    id: 'Option2',
+
+    label: 'Option2',
+
+    disabled: true,
+
+  },
+
+  {
+
+    id: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    id: 'Option4',
+
+    label: 'Option4',
+
+    disabled: true,
+
+  },
+
+  {
+
+    id: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>有禁用选项</h2>
+<p>在 <code>el-option</code> 中，设定 <code>disabled</code> 值为 true，即可禁用该选项</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+      :disabled=&quot;item.disabled&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+    disabled: true,
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>禁用状态</h2>
+<p>禁用整个选择器组件</p>
+<p>为 <code>el-select</code> 设置 <code>disabled</code>属性，则整个选择器不可用。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; disabled placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>可清空</h2>
+<p>您可以使用清除图标来清除选择。</p>
+<p>为 <code>el-select</code> 设置 <code>clearable</code> 属性，则可将选择器清空。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select
+
+    v-model=&quot;value&quot;
+
+    clearable
+
+    placeholder=&quot;Select&quot;
+
+    style=&quot;width: 240px&quot;
+
+  &gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>尺寸</h2>
+<p>使用 <code>size</code> 属性改变选择器大小。除了默认大小外，还有另外两个选项： <code>large</code>, <code>small</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-4 items-center&quot;&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value&quot;
+
+      placeholder=&quot;Select&quot;
+
+      size=&quot;large&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+    &lt;el-select v-model=&quot;value&quot; placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value&quot;
+
+      placeholder=&quot;Select&quot;
+
+      size=&quot;small&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>基础多选</h2>
+<p>多选选择器使用 tag 组件来展示已选中的选项。</p>
+<p>为 <code>el-select</code> 设置 <code>multiple</code> 属性即可启用多选，此时 <code>v-model</code> 的值为当前选中值所组成的数组。默认情况下选中值会以 Tag 组件的形式展现，你也可以设置 <code>collapse-tags</code> 属性将它们合并为一段文字。您可以使用 <code>collapse-tags-tooltip</code> 属性来启用鼠标悬停折叠文字以显示具体所选值的行为。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;m-4&quot;&gt;
+
+    &lt;p&gt;default&lt;/p&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value1&quot;
+
+      multiple
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;m-4&quot;&gt;
+
+    &lt;p&gt;use collapse-tags&lt;/p&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value2&quot;
+
+      multiple
+
+      collapse-tags
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;m-4&quot;&gt;
+
+    &lt;p&gt;use collapse-tags-tooltip&lt;/p&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value3&quot;
+
+      multiple
+
+      collapse-tags
+
+      collapse-tags-tooltip
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;m-4&quot;&gt;
+
+    &lt;p&gt;use max-collapse-tags&lt;/p&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value4&quot;
+
+      multiple
+
+      collapse-tags
+
+      collapse-tags-tooltip
+
+      :max-collapse-tags=&quot;3&quot;
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref([])
+
+const value2 = ref([])
+
+const value3 = ref([])
+
+const value4 = ref([])
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义模板</h2>
+<p>你可以自定义如何来渲染每一个选项。</p>
+<p>将自定义的 HTML 模板插入 <code>el-option</code> 的 slot 中即可。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in cities&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    &gt;
+
+      &lt;span style=&quot;float: left&quot;&gt;{{ item.label }}&lt;/span&gt;
+
+      &lt;span
+
+        style=&quot;
+
+          float: right;
+
+          color: var(--el-text-color-secondary);
+
+          font-size: 13px;
+
+        &quot;
+
+      &gt;
+
+        {{ item.value }}
+
+      &lt;/span&gt;
+
+    &lt;/el-option&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const cities = [
+
+  {
+
+    value: 'Beijing',
+
+    label: 'Beijing',
+
+  },
+
+  {
+
+    value: 'Shanghai',
+
+    label: 'Shanghai',
+
+  },
+
+  {
+
+    value: 'Nanjing',
+
+    label: 'Nanjing',
+
+  },
+
+  {
+
+    value: 'Chengdu',
+
+    label: 'Chengdu',
+
+  },
+
+  {
+
+    value: 'Shenzhen',
+
+    label: 'Shenzhen',
+
+  },
+
+  {
+
+    value: 'Guangzhou',
+
+    label: 'Guangzhou',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义下拉菜单的头部 2.4.3</h2>
+<p>您可以自定义下拉菜单的头部。</p>
+<p>Use slot to customize the content.</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select
+
+    v-model=&quot;value&quot;
+
+    multiple
+
+    clearable
+
+    collapse-tags
+
+    placeholder=&quot;Select&quot;
+
+    popper-class=&quot;custom-header&quot;
+
+    :max-collapse-tags=&quot;1&quot;
+
+    style=&quot;width: 240px&quot;
+
+  &gt;
+
+    &lt;template #header&gt;
+
+      &lt;el-checkbox
+
+        v-model=&quot;checkAll&quot;
+
+        :indeterminate=&quot;indeterminate&quot;
+
+        @change=&quot;handleCheckAll&quot;
+
+      &gt;
+
+        All
+
+      &lt;/el-checkbox&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in cities&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref, watch } from 'vue'
+
+import type { CheckboxValueType } from 'element-plus'
+
+const checkAll = ref(false)
+
+const indeterminate = ref(false)
+
+const value = ref&lt;CheckboxValueType[]&gt;([])
+
+const cities = ref([
+
+  {
+
+    value: 'Beijing',
+
+    label: 'Beijing',
+
+  },
+
+  {
+
+    value: 'Shanghai',
+
+    label: 'Shanghai',
+
+  },
+
+  {
+
+    value: 'Nanjing',
+
+    label: 'Nanjing',
+
+  },
+
+  {
+
+    value: 'Chengdu',
+
+    label: 'Chengdu',
+
+  },
+
+  {
+
+    value: 'Shenzhen',
+
+    label: 'Shenzhen',
+
+  },
+
+  {
+
+    value: 'Guangzhou',
+
+    label: 'Guangzhou',
+
+  },
+
+])
+
+watch(value, (val) =&gt; {
+
+  if (val.length === 0) {
+
+    checkAll.value = false
+
+    indeterminate.value = false
+
+  } else if (val.length === cities.value.length) {
+
+    checkAll.value = true
+
+    indeterminate.value = false
+
+  } else {
+
+    indeterminate.value = true
+
+  }
+
+})
+
+const handleCheckAll = (val: CheckboxValueType) =&gt; {
+
+  indeterminate.value = false
+
+  if (val) {
+
+    value.value = cities.value.map((_) =&gt; _.value)
+
+  } else {
+
+    value.value = []
+
+  }
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.custom-header {
+
+  .el-checkbox {
+
+    display: flex;
+
+    height: unset;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义下拉菜单的底部 2.4.3</h2>
+<p>您可以自定义下拉菜单的底部。</p>
+<p>使用slot 自定义内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in cities&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;el-button v-if=&quot;!isAdding&quot; text bg size=&quot;small&quot; @click=&quot;onAddOption&quot;&gt;
+
+        Add an option
+
+      &lt;/el-button&gt;
+
+      &lt;template v-else&gt;
+
+        &lt;el-input
+
+          v-model=&quot;optionName&quot;
+
+          class=&quot;option-input&quot;
+
+          placeholder=&quot;input option name&quot;
+
+          size=&quot;small&quot;
+
+        /&gt;
+
+        &lt;el-button type=&quot;primary&quot; size=&quot;small&quot; @click=&quot;onConfirm&quot;&gt;
+
+          confirm
+
+        &lt;/el-button&gt;
+
+        &lt;el-button size=&quot;small&quot; @click=&quot;clear&quot;&gt;cancel&lt;/el-button&gt;
+
+      &lt;/template&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { CheckboxValueType } from 'element-plus'
+
+const isAdding = ref(false)
+
+const value = ref&lt;CheckboxValueType[]&gt;([])
+
+const optionName = ref('')
+
+const cities = ref([
+
+  {
+
+    value: 'Beijing',
+
+    label: 'Beijing',
+
+  },
+
+  {
+
+    value: 'Shanghai',
+
+    label: 'Shanghai',
+
+  },
+
+  {
+
+    value: 'Nanjing',
+
+    label: 'Nanjing',
+
+  },
+
+  {
+
+    value: 'Chengdu',
+
+    label: 'Chengdu',
+
+  },
+
+  {
+
+    value: 'Shenzhen',
+
+    label: 'Shenzhen',
+
+  },
+
+  {
+
+    value: 'Guangzhou',
+
+    label: 'Guangzhou',
+
+  },
+
+])
+
+const onAddOption = () =&gt; {
+
+  isAdding.value = true
+
+}
+
+const onConfirm = () =&gt; {
+
+  if (optionName.value) {
+
+    cities.value.push({
+
+      label: optionName.value,
+
+      value: optionName.value,
+
+    })
+
+    clear()
+
+  }
+
+}
+
+const clear = () =&gt; {
+
+  optionName.value = ''
+
+  isAdding.value = false
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.option-input {
+
+  width: 100%;
+
+  margin-bottom: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>将选项进行分组</h2>
+<p>你可以为选项进行分组来区分不同的选项</p>
+<p>使用 <code>el-option-group</code> 对备选项进行分组，它的 <code>label</code> 属性为分组名</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option-group
+
+      v-for=&quot;group in options&quot;
+
+      :key=&quot;group.label&quot;
+
+      :label=&quot;group.label&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in group.options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-option-group&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    label: 'Popular cities',
+
+    options: [
+
+      {
+
+        value: 'Shanghai',
+
+        label: 'Shanghai',
+
+      },
+
+      {
+
+        value: 'Beijing',
+
+        label: 'Beijing',
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'City name',
+
+    options: [
+
+      {
+
+        value: 'Chengdu',
+
+        label: 'Chengdu',
+
+      },
+
+      {
+
+        value: 'Shenzhen',
+
+        label: 'Shenzhen',
+
+      },
+
+      {
+
+        value: 'Guangzhou',
+
+        label: 'Guangzhou',
+
+      },
+
+      {
+
+        value: 'Dalian',
+
+        label: 'Dalian',
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>筛选选项</h2>
+<p>可以利用筛选功能快速查找选项。</p>
+<p>为<code>el-select</code>添加<code>filterable</code>属性即可启用搜索功能。默认情况下，Select 会找出所有 <code>label</code> 属性包含输入值的选项。如果希望使用其他的搜索逻辑，可以通过传入一个 <code>filter-method</code> 来实现。 <code>filter-method</code> 为一个 <code>Function</code>，它会在输入值发生变化时调用，参数为当前输入值。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select
+
+    v-model=&quot;value&quot;
+
+    filterable
+
+    placeholder=&quot;Select&quot;
+
+    style=&quot;width: 240px&quot;
+
+  &gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>远程搜索</h2>
+<p>输入关键字以从远程服务器中查找数据。</p>
+<p>从服务器搜索数据，输入关键字进行查找。为了启用远程搜索，需要将<code>filterable</code>和<code>remote</code>设置为<code>true</code>，同时传入一个<code>remote-method</code>。 <code>remote-method</code>为一个<code>Function</code>，它会在输入值发生变化时调用，参数为当前输入值。需要注意的是，如果 <code>el-option</code> 是通过 <code>v-for</code> 指令渲染出来的，此时需要为 <code>el-option</code> 添加 <code>key</code> 属性，且其值需具有唯一性，比如这个例子中的 <code>item.value</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap&quot;&gt;
+
+    &lt;div class=&quot;m-4&quot;&gt;
+
+      &lt;p&gt;default&lt;/p&gt;
+
+      &lt;el-select
+
+        v-model=&quot;value&quot;
+
+        multiple
+
+        filterable
+
+        remote
+
+        reserve-keyword
+
+        placeholder=&quot;Please enter a keyword&quot;
+
+        :remote-method=&quot;remoteMethod&quot;
+
+        :loading=&quot;loading&quot;
+
+        style=&quot;width: 240px&quot;
+
+      &gt;
+
+        &lt;el-option
+
+          v-for=&quot;item in options&quot;
+
+          :key=&quot;item.value&quot;
+
+          :label=&quot;item.label&quot;
+
+          :value=&quot;item.value&quot;
+
+        /&gt;
+
+      &lt;/el-select&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;m-4&quot;&gt;
+
+      &lt;p&gt;use remote-show-suffix&lt;/p&gt;
+
+      &lt;el-select
+
+        v-model=&quot;value&quot;
+
+        multiple
+
+        filterable
+
+        remote
+
+        reserve-keyword
+
+        placeholder=&quot;Please enter a keyword&quot;
+
+        remote-show-suffix
+
+        :remote-method=&quot;remoteMethod&quot;
+
+        :loading=&quot;loading&quot;
+
+        style=&quot;width: 240px&quot;
+
+      &gt;
+
+        &lt;el-option
+
+          v-for=&quot;item in options&quot;
+
+          :key=&quot;item.value&quot;
+
+          :label=&quot;item.label&quot;
+
+          :value=&quot;item.value&quot;
+
+        /&gt;
+
+      &lt;/el-select&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+interface ListItem {
+
+  value: string
+
+  label: string
+
+}
+
+const list = ref&lt;ListItem[]&gt;([])
+
+const options = ref&lt;ListItem[]&gt;([])
+
+const value = ref&lt;string[]&gt;([])
+
+const loading = ref(false)
+
+onMounted(() =&gt; {
+
+  list.value = states.map((item) =&gt; {
+
+    return { value: `value:${item}`, label: `label:${item}` }
+
+  })
+
+})
+
+const remoteMethod = (query: string) =&gt; {
+
+  if (query) {
+
+    loading.value = true
+
+    setTimeout(() =&gt; {
+
+      loading.value = false
+
+      options.value = list.value.filter((item) =&gt; {
+
+        return item.label.toLowerCase().includes(query.toLowerCase())
+
+      })
+
+    }, 200)
+
+  } else {
+
+    options.value = []
+
+  }
+
+}
+
+const states = [
+
+  'Alabama',
+
+  'Alaska',
+
+  'Arizona',
+
+  'Arkansas',
+
+  'California',
+
+  'Colorado',
+
+  'Connecticut',
+
+  'Delaware',
+
+  'Florida',
+
+  'Georgia',
+
+  'Hawaii',
+
+  'Idaho',
+
+  'Illinois',
+
+  'Indiana',
+
+  'Iowa',
+
+  'Kansas',
+
+  'Kentucky',
+
+  'Louisiana',
+
+  'Maine',
+
+  'Maryland',
+
+  'Massachusetts',
+
+  'Michigan',
+
+  'Minnesota',
+
+  'Mississippi',
+
+  'Missouri',
+
+  'Montana',
+
+  'Nebraska',
+
+  'Nevada',
+
+  'New Hampshire',
+
+  'New Jersey',
+
+  'New Mexico',
+
+  'New York',
+
+  'North Carolina',
+
+  'North Dakota',
+
+  'Ohio',
+
+  'Oklahoma',
+
+  'Oregon',
+
+  'Pennsylvania',
+
+  'Rhode Island',
+
+  'South Carolina',
+
+  'South Dakota',
+
+  'Tennessee',
+
+  'Texas',
+
+  'Utah',
+
+  'Vermont',
+
+  'Virginia',
+
+  'Washington',
+
+  'West Virginia',
+
+  'Wisconsin',
+
+  'Wyoming',
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>创建新的选项</h2>
+<p>创建并选中未包含在初始选项中的条目。</p>
+<p>通过使用 <code>allow-create</code> 属性，用户可以通过输入框创建新项目。为了使 <code>allow-create</code> 正常工作， <code>filterable</code> 的值必须为 <code>true</code>。本例还使用了 <code>default-first-option</code> 属性，在该属性为 <code>true</code> 的情况下，按下回车就可以选中当前选项列表中的第一个选项，无需使用鼠标或键盘方向键进行定位。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select
+
+    v-model=&quot;value&quot;
+
+    multiple
+
+    filterable
+
+    allow-create
+
+    default-first-option
+
+    :reserve-keyword=&quot;false&quot;
+
+    placeholder=&quot;Choose tags for your article&quot;
+
+    style=&quot;width: 240px&quot;
+
+  &gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref&lt;string[]&gt;([])
+
+const options = [
+
+  {
+
+    value: 'HTML',
+
+    label: 'HTML',
+
+  },
+
+  {
+
+    value: 'CSS',
+
+    label: 'CSS',
+
+  },
+
+  {
+
+    value: 'JavaScript',
+
+    label: 'JavaScript',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>使用值键 value-key 属性</h2>
+<p>如果 Select 的绑定值为对象类型，请务必指定 <code>value-key</code> 作为它的唯一性标识。</p>
+<p>通过使用 <code>value-key</code> 属性，可以正确处理带有重复label的数据。这样虽然<code>label</code> 是重复的，但任可通过 <code>id</code> 来确认唯一性。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;m-4&quot;&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value&quot;
+
+      value-key=&quot;id&quot;
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+    &gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.id&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+    &lt;p&gt;
+
+      selected option's description:
+
+      {{ value ? value.desc : 'no select' }}
+
+    &lt;/p&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+type Option = {
+
+  id: number
+
+  label: string
+
+  desc: string
+
+}
+
+const value = ref&lt;Option&gt;()
+
+const options = ref([
+
+  { id: 1, label: 'Option A', desc: 'Option A - 230506' },
+
+  { id: 2, label: 'Option B', desc: 'Option B - 230506' },
+
+  { id: 3, label: 'Option C', desc: 'Option C - 230506' },
+
+  { id: 4, label: 'Option A', desc: 'Option A - 230507' },
+
+])
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义标签 2.5.0</h2>
+<p>您可以自定义标签。</p>
+<p>将自定义的标签插入 <code>el-select</code> 的 slot 中即可。 <code>collapse-tags</code>, <code>collapse-tags-tooltip</code>, <code>max-collapse-tags</code> 在此模式下不生效.</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select v-model=&quot;value&quot; multiple placeholder=&quot;Select&quot; style=&quot;width: 240px&quot;&gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in colors&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    &gt;
+
+      &lt;div class=&quot;flex items-center&quot;&gt;
+
+        &lt;el-tag :color=&quot;item.value&quot; style=&quot;margin-right: 8px&quot; size=&quot;small&quot; /&gt;
+
+        &lt;span :style=&quot;{ color: item.value }&quot;&gt;{{ item.label }}&lt;/span&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-option&gt;
+
+    &lt;template #tag&gt;
+
+      &lt;el-tag v-for=&quot;color in value&quot; :key=&quot;color&quot; :color=&quot;color&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref&lt;string[]&gt;([])
+
+const colors = [
+
+  {
+
+    value: '#E63415',
+
+    label: 'red',
+
+  },
+
+  {
+
+    value: '#FF6600',
+
+    label: 'orange',
+
+  },
+
+  {
+
+    value: '#FFDE0A',
+
+    label: 'yellow',
+
+  },
+
+  {
+
+    value: '#1EC79D',
+
+    label: 'green',
+
+  },
+
+  {
+
+    value: '#14CCCC',
+
+    label: 'cyan',
+
+  },
+
+  {
+
+    value: '#4167F0',
+
+    label: 'blue',
+
+  },
+
+  {
+
+    value: '#6222C9',
+
+    label: 'purple',
+
+  },
+
+]
+
+colors.forEach((color) =&gt; {
+
+  value.value.push(color.value)
+
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.el-tag {
+
+  border: none;
+
+  aspect-ratio: 1;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义加载 2.5.2</h2>
+<p>修改加载区域内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap&quot;&gt;
+
+    &lt;div class=&quot;m-4&quot;&gt;
+
+      &lt;p&gt;loading icon1&lt;/p&gt;
+
+      &lt;el-select
+
+        v-model=&quot;value&quot;
+
+        multiple
+
+        filterable
+
+        remote
+
+        reserve-keyword
+
+        placeholder=&quot;Please enter a keyword&quot;
+
+        :remote-method=&quot;remoteMethod&quot;
+
+        :loading=&quot;loading&quot;
+
+        style=&quot;width: 240px&quot;
+
+      &gt;
+
+        &lt;el-option
+
+          v-for=&quot;item in options&quot;
+
+          :key=&quot;item.value&quot;
+
+          :label=&quot;item.label&quot;
+
+          :value=&quot;item.value&quot;
+
+        /&gt;
+
+        &lt;template #loading&gt;
+
+          &lt;svg class=&quot;circular&quot; viewBox=&quot;0 0 50 50&quot;&gt;
+
+            &lt;circle class=&quot;path&quot; cx=&quot;25&quot; cy=&quot;25&quot; r=&quot;20&quot; fill=&quot;none&quot; /&gt;
+
+          &lt;/svg&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-select&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;m-4&quot;&gt;
+
+      &lt;p&gt;loading icon2&lt;/p&gt;
+
+      &lt;el-select
+
+        v-model=&quot;value&quot;
+
+        multiple
+
+        filterable
+
+        remote
+
+        reserve-keyword
+
+        placeholder=&quot;Please enter a keyword&quot;
+
+        :remote-method=&quot;remoteMethod&quot;
+
+        :loading=&quot;loading&quot;
+
+        style=&quot;width: 240px&quot;
+
+      &gt;
+
+        &lt;el-option
+
+          v-for=&quot;item in options&quot;
+
+          :key=&quot;item.value&quot;
+
+          :label=&quot;item.label&quot;
+
+          :value=&quot;item.value&quot;
+
+        /&gt;
+
+        &lt;template #loading&gt;
+
+          &lt;el-icon class=&quot;is-loading&quot;&gt;
+
+            &lt;svg class=&quot;circular&quot; viewBox=&quot;0 0 20 20&quot;&gt;
+
+              &lt;g
+
+                class=&quot;path2 loading-path&quot;
+
+                stroke-width=&quot;0&quot;
+
+                style=&quot;animation: none; stroke: none&quot;
+
+              &gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot1&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot2&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot4&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot3&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-select&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+interface ListItem {
+
+  value: string
+
+  label: string
+
+}
+
+const list = ref&lt;ListItem[]&gt;([])
+
+const options = ref&lt;ListItem[]&gt;([])
+
+const value = ref&lt;string[]&gt;([])
+
+const loading = ref(false)
+
+onMounted(() =&gt; {
+
+  list.value = states.map((item) =&gt; {
+
+    return { value: `value:${item}`, label: `label:${item}` }
+
+  })
+
+})
+
+const remoteMethod = (query: string) =&gt; {
+
+  if (query) {
+
+    loading.value = true
+
+    setTimeout(() =&gt; {
+
+      loading.value = false
+
+      options.value = list.value.filter((item) =&gt; {
+
+        return item.label.toLowerCase().includes(query.toLowerCase())
+
+      })
+
+    }, 3000)
+
+  } else {
+
+    options.value = []
+
+  }
+
+}
+
+const states = [
+
+  'Alabama',
+
+  'Alaska',
+
+  'Arizona',
+
+  'Arkansas',
+
+  'California',
+
+  'Colorado',
+
+  'Connecticut',
+
+  'Delaware',
+
+  'Florida',
+
+  'Georgia',
+
+  'Hawaii',
+
+  'Idaho',
+
+  'Illinois',
+
+  'Indiana',
+
+  'Iowa',
+
+  'Kansas',
+
+  'Kentucky',
+
+  'Louisiana',
+
+  'Maine',
+
+  'Maryland',
+
+  'Massachusetts',
+
+  'Michigan',
+
+  'Minnesota',
+
+  'Mississippi',
+
+  'Missouri',
+
+  'Montana',
+
+  'Nebraska',
+
+  'Nevada',
+
+  'New Hampshire',
+
+  'New Jersey',
+
+  'New Mexico',
+
+  'New York',
+
+  'North Carolina',
+
+  'North Dakota',
+
+  'Ohio',
+
+  'Oklahoma',
+
+  'Oregon',
+
+  'Pennsylvania',
+
+  'Rhode Island',
+
+  'South Carolina',
+
+  'South Dakota',
+
+  'Tennessee',
+
+  'Texas',
+
+  'Utah',
+
+  'Vermont',
+
+  'Virginia',
+
+  'Washington',
+
+  'West Virginia',
+
+  'Wisconsin',
+
+  'Wyoming',
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-select-dropdown__loading {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  height: 100px;
+
+  font-size: 20px;
+
+}
+
+.circular {
+
+  display: inline;
+
+  height: 30px;
+
+  width: 30px;
+
+  animation: loading-rotate 2s linear infinite;
+
+}
+
+.path {
+
+  animation: loading-dash 1.5s ease-in-out infinite;
+
+  stroke-dasharray: 90, 150;
+
+  stroke-dashoffset: 0;
+
+  stroke-width: 2;
+
+  stroke: var(--el-color-primary);
+
+  stroke-linecap: round;
+
+}
+
+.loading-path .dot1 {
+
+  transform: translate(3.75px, 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+}
+
+.loading-path .dot2 {
+
+  transform: translate(calc(100% - 3.75px), 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.4s;
+
+}
+
+.loading-path .dot3 {
+
+  transform: translate(3.75px, calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 1.2s;
+
+}
+
+.loading-path .dot4 {
+
+  transform: translate(calc(100% - 3.75px), calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.8s;
+
+}
+
+@keyframes loading-rotate {
+
+  to {
+
+    transform: rotate(360deg);
+
+  }
+
+}
+
+@keyframes loading-dash {
+
+  0% {
+
+    stroke-dasharray: 1, 200;
+
+    stroke-dashoffset: 0;
+
+  }
+
+  50% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -40px;
+
+  }
+
+  100% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -120px;
+
+  }
+
+}
+
+@keyframes custom-spin-move {
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>空值配置2.7.0</h2>
+<p>若想配置如空字符串为有效值而不是空值，可以配置 <code>empty-values</code> 为 <code>[null, undefined]</code>.</p>
+<p>如果您想要将清空值更改为 <code>null</code>, 请设置 <code>value-on-clear</code> 为 <code>null</code></p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-select
+
+    v-model=&quot;value&quot;
+
+    :empty-values=&quot;[null, undefined]&quot;
+
+    :value-on-clear=&quot;null&quot;
+
+    clearable
+
+    placeholder=&quot;Select&quot;
+
+    style=&quot;width: 240px&quot;
+
+    @clear=&quot;handleClear&quot;
+
+  &gt;
+
+    &lt;el-option
+
+      v-for=&quot;item in options&quot;
+
+      :key=&quot;item.value&quot;
+
+      :label=&quot;item.label&quot;
+
+      :value=&quot;item.value&quot;
+
+    /&gt;
+
+  &lt;/el-select&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElMessage } from 'element-plus'
+
+const value = ref('')
+
+const options = [
+
+  {
+
+    value: '',
+
+    label: 'All',
+
+  },
+
+  {
+
+    value: 'Option1',
+
+    label: 'Option1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Option2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Option3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Option4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Option5',
+
+  },
+
+]
+
+const handleClear = () =&gt; {
+
+  ElMessage.info(`The clear value is: ${value.value}`)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义标签 2.7.4</h2>
+<p>您可以自定义标签</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-4 items-center&quot;&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value1&quot;
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+      clearable
+
+    &gt;
+
+      &lt;template #label=&quot;{ label, value }&quot;&gt;
+
+        &lt;span&gt;{{ label }}: &lt;/span&gt;
+
+        &lt;span style=&quot;font-weight: bold&quot;&gt;{{ value }}&lt;/span&gt;
+
+      &lt;/template&gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+    &lt;el-select
+
+      v-model=&quot;value2&quot;
+
+      placeholder=&quot;Select&quot;
+
+      style=&quot;width: 240px&quot;
+
+      clearable
+
+      multiple
+
+    &gt;
+
+      &lt;template #label=&quot;{ label, value }&quot;&gt;
+
+        &lt;span&gt;{{ label }}: &lt;/span&gt;
+
+        &lt;span style=&quot;font-weight: bold&quot;&gt;{{ value }}&lt;/span&gt;
+
+      &lt;/template&gt;
+
+      &lt;el-option
+
+        v-for=&quot;item in options&quot;
+
+        :key=&quot;item.value&quot;
+
+        :label=&quot;item.label&quot;
+
+        :value=&quot;item.value&quot;
+
+      /&gt;
+
+    &lt;/el-select&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref&lt;string&gt;('Option1')
+
+const value2 = ref&lt;string[]&gt;(['Option1'])
+
+const options = [
+
+  {
+
+    value: 'Option1',
+
+    label: 'Label1',
+
+  },
+
+  {
+
+    value: 'Option2',
+
+    label: 'Label2',
+
+  },
+
+  {
+
+    value: 'Option3',
+
+    label: 'Label3',
+
+  },
+
+  {
+
+    value: 'Option4',
+
+    label: 'Label4',
+
+  },
+
+  {
+
+    value: 'Option5',
+
+    label: 'Label5',
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;&lt;/style&gt;
+</code></pre>
+<h2>Select API</h2>
+<h3>Select Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>选中项绑定值</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code> / <code>object</code> / <code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>multiple</td>
+<td>是否多选</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>options 2.10.5</td>
+<td>选项的数据源， <code>value</code> 的 key 和 <code>label</code> 和 <code>disabled</code>可以通过 <code>props</code>自定义.</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><a href="#props">props</a> 2.10.5</td>
+<td>options 的配置</td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>value-key</td>
+<td>作为 value 唯一标识的键名，绑定值为对象类型时必填</td>
+<td><code>string</code></td>
+<td>value</td>
+</tr>
+<tr>
+<td>size</td>
+<td>输入框尺寸</td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>clearable</td>
+<td>是否可以清空选项</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>collapse-tags</td>
+<td>多选时是否将选中值按文字的形式展示</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>collapse-tags-tooltip 2.3.0</td>
+<td>当鼠标悬停于折叠标签的文本时，是否显示所有选中的标签。要使用此属性，<code>collapse-tags</code>属性必须设定为 true</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td><a href="#tag-tooltip">tag-tooltip</a> 2.13.3</td>
+<td>折叠标签工具提示的配置对象。要使用此项， <code>collapse-tags</code> 和 <code>collapse-tags-tooltip</code> 必须为 true</td>
+<td><code>object</code></td>
+<td>{}</td>
+</tr>
+<tr>
+<td>multiple-limit</td>
+<td><code>multiple</code> 属性设置为 <code>true</code> 时，代表多选场景下用户最多可以选择的项目数，为 0 则不限制</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>id</td>
+<td>原生 input 的 id</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Select 输入框的原生 name 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>effect</td>
+<td>tooltip 主题，内置了 <code>dark</code> / <code>light</code> 两种</td>
+<td><code>enum</code>** / <code>string</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>autocomplete</td>
+<td>Select 输入框的原生 autocomplete 属性</td>
+<td><code>string</code></td>
+<td>off</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>占位符，默认为“Select”</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>filterable</td>
+<td>Select 组件是否可筛选</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>allow-create</td>
+<td>是否允许用户创建新条目，当<code>filterable</code>设置为 true 时才会生效</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>filter-method</td>
+<td>自定义筛选方法的第一个参数是当前输入的值。只有当 <code>filterable</code> 设置为 true 时才会生效。</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>remote</td>
+<td>其中的选项是否从服务器远程加载</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>debounce 2.11.7</td>
+<td>远程搜索时的防抖延迟（以毫秒为单位）</td>
+<td><code>number</code></td>
+<td>300</td>
+</tr>
+<tr>
+<td>remote-method</td>
+<td>当输入值发生变化时触发的函数。它的参数就是当前的输入值。当<code>filterable</code>设置为 true 时才会生效</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>remote-show-suffix</td>
+<td>远程搜索方法显示后缀图标</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>loading</td>
+<td>是否正在从远程获取数据</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>loading-text</td>
+<td>从服务器加载数据时显示的文本，默认为“Loading”</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>no-match-text</td>
+<td>搜索条件无匹配时显示的文字，也可以使用 <code>empty</code> 插槽设置，默认是 “No matching data'”</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>no-data-text</td>
+<td>无选项时显示的文字，也可以使用 <code>empty</code> 插槽设置自定义内容，默认是 “No data”</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>为 Select 下拉菜单和标签提示设置自定义类名</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>popper-style 2.11.0</td>
+<td>为 Select 下拉菜单和标签提示设置自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>reserve-keyword</td>
+<td>当 <code>multiple</code> 和 <code>filterable</code>被设置为 true 时，是否在选中一个选项后保留当前的搜索关键词</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>default-first-option</td>
+<td>是否在输入框按下回车时，选择第一个匹配项。需配合 <code>filterable</code> 或 <code>remote</code> 使用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否使用 teleport。设置成 <code>true</code>则会被追加到 <code>append-to</code> 的位置</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>append-to 2.8.4</td>
+<td>下拉框挂载到哪个 DOM 元素</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>persistent</td>
+<td>当下拉选择器未被激活并且<code>persistent</code>设置为<code>false</code>，选择器会被删除。</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>automatic-dropdown</td>
+<td>对于不可搜索的 Select，是否在输入框获得焦点后自动弹出选项菜单</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>clear-icon</td>
+<td>自定义清除图标</td>
+<td><code>string</code> / <code>object</code></td>
+<td>CircleClose</td>
+</tr>
+<tr>
+<td>fit-input-width</td>
+<td>下拉框的宽度是否与输入框相同</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>suffix-icon</td>
+<td>自定义后缀图标组件</td>
+<td><code>string</code> / <code>object</code></td>
+<td>ArrowDown</td>
+</tr>
+<tr>
+<td>tag-type</td>
+<td>标签类型</td>
+<td><code>enum</code></td>
+<td>info</td>
+</tr>
+<tr>
+<td>tag-effect 2.7.7</td>
+<td>标签效果</td>
+<td><code>enum</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>validate-event</td>
+<td>是否触发表单验证</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>offset 2.8.8</td>
+<td>下拉面板偏移量</td>
+<td><code>number</code></td>
+<td>12</td>
+</tr>
+<tr>
+<td>show-arrow 2.8.8</td>
+<td>下拉菜单的内容是否有箭头</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>placement 2.2.17</td>
+<td>下拉框出现的位置</td>
+<td><code>enum</code></td>
+<td>bottom-start</td>
+</tr>
+<tr>
+<td>fallback-placements 2.5.6</td>
+<td>dropdown 可用的 positions 请查看<a href="https://popper.js.org/docs/v2/modifiers/flip/#fallbackplacements">popper.js 文档</a></td>
+<td><code>array</code></td>
+<td>['bottom-start', 'top-start', 'right', 'left']</td>
+</tr>
+<tr>
+<td>max-collapse-tags 2.3.0</td>
+<td>需要显示的 Tag 的最大数量只有当 <code>collapse-tags</code> 设置为 true 时才会生效。</td>
+<td><code>number</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td><a href="https://popper.js.org/docs/v2/">popper.js</a> 参数</td>
+<td><code>object</code>refer to <a href="https://popper.js.org/docs/v2/">popper.js</a> doc</td>
+<td>{}</td>
+</tr>
+<tr>
+<td>aria-label a11y</td>
+<td>等价于原生 input <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>empty-values 2.7.0</td>
+<td>组件的空值配置， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-on-clear 2.7.0</td>
+<td>清空选项的值， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>suffix-transition deprecated</td>
+<td>下拉菜单显示/消失时后缀图标的动画</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>tabindex 2.9.0</td>
+<td>input 的 tabindex</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>suffix-transition</code> 已被 <strong>弃用</strong>, 并 <strong>将会</strong> 在2.4.0中删除, 请使用覆盖样式方案。</p>
+</blockquote>
+<h3>Props</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>说明</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>指定选项的值为选项对象的某个属性值</td>
+<td><code>string</code></td>
+<td>value</td>
+</tr>
+<tr>
+<td>label</td>
+<td>指定节点标签为节点对象的某个属性值</td>
+<td><code>string</code></td>
+<td>label</td>
+</tr>
+<tr>
+<td>options 2.11.0</td>
+<td>指定选项的子选项为选项对象的某个属性值</td>
+<td><code>string</code></td>
+<td>options</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>指定选项的禁用为选项对象的某个属性值</td>
+<td><code>string</code></td>
+<td>disabled</td>
+</tr>
+</tbody>
+</table>
+<h3>tag-tooltip 2.13.3</h3>
+<blockquote>
+<p><strong>备用机制</strong></p>
+<p>标签工具提示中的属性遵循此优先级顺序：</p>
+<ol>
+<li>
+<p>在标签工具提示对象中明确定义的字段。</p>
+</li>
+<li>
+<p>从 el-select 继承的共享属性（例如 effect、popper-class、popper-style、teleported、append-to、popper-options）。</p>
+</li>
+<li>
+<p>底层 el-tooltip 组件的默认值。这样，您就可以覆盖标签的特定工具提示行为，同时保持与默认的“选择”下拉菜单的一致性。</p>
+</li>
+</ol>
+<p><strong>自定义容器位置</strong></p>
+<p>当将 Tooltip 添加到自定义容器时（通过 <code>append-to</code> 属性），应将容器配置为 <code>position: relative</code> 或 <code>position: absolute</code>，以确保准确定位。此外，如果需要防止工具提示超出其边界，可以对容器应用 <code>overflow: hidden</code>。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>append-to</td>
+<td>指示 Tooltip 的内容将附加在哪一个网页元素上</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>Tooltip 组件出现的位置</td>
+<td><code>enum</code></td>
+<td>bottom</td>
+</tr>
+<tr>
+<td>fallback-placements</td>
+<td>Tooltip 可用的 positions 请查看<a href="https://popper.js.org/docs/v2/modifiers/flip/#fallbackplacements">popper.js 文档</a></td>
+<td><code>array</code></td>
+<td>['bottom', 'top', 'right', 'left']</td>
+</tr>
+<tr>
+<td>effect</td>
+<td>文字提示（Tooltip）的主题，内置<code>dark</code>和<code>light</code>两种。</td>
+<td><code>enum</code>** / <code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>为 Tooltip 的 popper 添加自定义类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-style</td>
+<td>为 Tooltip 的 popper 添加自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>transition</td>
+<td>Tooltip 所应用过渡动画的名称</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否使用 teleport。设置成 <code>true</code>则会被追加到 <code>append-to</code> 的位置</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td><a href="https://popper.js.org/docs/v2/">popper.js</a> 参数</td>
+<td><code>object</code>refer to <a href="https://popper.js.org/docs/v2/">popper.js</a> doc</td>
+<td>—</td>
+</tr>
+<tr>
+<td>show-after</td>
+<td>在触发后多久显示内容，单位毫秒</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>hide-after</td>
+<td>关闭时的延迟</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>auto-close</td>
+<td>tooltip 出现后自动隐藏延时，单位毫秒</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Tooltip 出现位置的偏移量</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Select Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>选中值发生变化时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>visible-change</td>
+<td>下拉框出现/隐藏时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>remove-tag</td>
+<td>多选模式下移除tag时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clear</td>
+<td>可清空的单选模式下用户点击清空按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>当 input 失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>当 input 获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>popup-scroll 2.9.4</td>
+<td>下拉滚动时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>end-reached 2.14.0</td>
+<td>下拉滚动到结束时触发器</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Select Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>option 组件列表</td>
+<td>Option Group / Option</td>
+</tr>
+<tr>
+<td>header 2.4.3</td>
+<td>下拉列表顶部的内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>footer 2.4.3</td>
+<td>下拉列表底部的内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>Select 组件头部内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>empty</td>
+<td>无选项时的列表</td>
+<td>:::</td>
+</tr>
+<tr>
+<td>tag 2.5.0</td>
+<td>作为 Select 组件的内容时，子标签 <code>data</code>、<code>selectDisabled</code> 和 <code>deleteTag</code> 是在版本 2.10.3 中新增的。</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>loading 2.5.2</td>
+<td>select 组件自定义 loading内容</td>
+<td>—</td>
+</tr>
+<tr>
+<td>label 2.7.4</td>
+<td>select 组件自定义标签内容 <code>index</code> 引入于2.11.2</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Select Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>使选择器的输入框获取焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>使选择器的输入框失去焦点，并隐藏下拉框</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>selectedLabel 2.8.5</td>
+<td>获取当前选中的标签</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Option Group API</h2>
+<h3>Option Group Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>label</td>
+<td>分组的名称</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否将该分组下所有选项置为禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>Option Group Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>Subtags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+<td>Option</td>
+</tr>
+</tbody>
+</table>
+<h2>Option API</h2>
+<h3>Option Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>描述</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>选项的值</td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>label</td>
+<td>选项的标签，若不设置则默认与<code>value</code>相同</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用该选项</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>Option Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>默认插槽内容</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-select v-model="value" placeholder="请选择" style="width:240px" clearable><el-option v-for="item in options" :key="item" :label="item" :value="item" /></el-select>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const value = Vue.ref(""); const options = ["北京","上海","广州","深圳"]; return { value, options };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

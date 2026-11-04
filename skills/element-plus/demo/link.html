@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Link 链接 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Link 链接</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Link 链接</h1>
+<p>文字超链接</p>
+<blockquote>
+<p><strong>安全警告hrefprop 将会直接渲染到<a>标签内部。如果你传递类似javascript:alert(1)这样的值或恶意 URL，可能会导致XSS或开放重定向漏洞。</strong></p>
+<p>在使用前始终验证并净化 URL。例如：</p>
+</blockquote>
+<h2>基础用法</h2>
+<p>基础的文字链接用法。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-link href=&quot;https://element-plus.org&quot; target=&quot;_blank&quot;&gt;default&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;primary&quot;&gt;primary&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;success&quot;&gt;success&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;warning&quot;&gt;warning&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;danger&quot;&gt;danger&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;info&quot;&gt;info&lt;/el-link&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.el-link {
+
+  margin-right: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>禁用状态</h2>
+<p>文字链接不可用状态。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-link disabled&gt;default&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;primary&quot; disabled&gt;primary&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;success&quot; disabled&gt;success&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;warning&quot; disabled&gt;warning&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;danger&quot; disabled&gt;danger&lt;/el-link&gt;
+
+    &lt;el-link type=&quot;info&quot; disabled&gt;info&lt;/el-link&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.el-link {
+
+  margin-right: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>下划线</h2>
+<p>控制下划线是否出现</p>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p>属性 <code>boolean</code> 值 <strong>将在</strong> 3.0.0 版本中被<strong>移除</strong>，请考虑切换至新的 API。</p>
+<p><strong>TIP</strong></p>
+<p>从 2.9.9 开始，你可以使用 <code>'always' | 'hover' | 'never'</code> 来控制是否显示下划线。文档中的示例将都使用这些值。如果您使用的版本 <strong>低于</strong> 2.9.9，请参考：</p>
+</blockquote>
+<p>vue</p>
+<p>`<template></p>
+<!-- works before 2.9.9, use 'hover' after, removed in 3.0.0 -->
+
+<p><el-link underline>link</el-link></p>
+<!-- works before 2.9.9, use 'never' after, removed in 3.0.0 -->
+
+<p><el-link :underline="false">link</el-link></p>
+<p></template>`</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-link&gt;default&lt;/el-link&gt;
+
+    &lt;el-link underline=&quot;always&quot;&gt;always&lt;/el-link&gt;
+
+    &lt;el-link underline=&quot;hover&quot;&gt;hover&lt;/el-link&gt;
+
+    &lt;el-link underline=&quot;never&quot;&gt;never&lt;/el-link&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.el-link {
+
+  margin-right: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>图标</h2>
+<p>带图标的链接</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>使用 <code>icon</code> 属性来为按钮添加图标。您可以传递组件名称的字符串（提前注册）或组件本身是一个 SVG Vue 组件。 Element Plus 提供了一套图标，您可以在 <a href="./icon">icon</a> 找到它们。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-link :icon=&quot;Edit&quot;&gt;Edit&lt;/el-link&gt;
+
+    &lt;el-link&gt;
+
+      Check&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;icon-view /&gt;&lt;/el-icon&gt;
+
+    &lt;/el-link&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { Edit, View as IconView } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.el-link {
+
+  margin-right: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>Link API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>类型</td>
+<td><code>enum</code></td>
+<td>default</td>
+</tr>
+<tr>
+<td>underline</td>
+<td>控制下划线是否出现</td>
+<td><code>enum</code></td>
+<td>hover</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用状态</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>href</td>
+<td>原生 href 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>target</td>
+<td>同原生 <code>target</code>属性</td>
+<td><code>enum</code></td>
+<td>_self</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>图标组件</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>自定义图标组件</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-link :underline="false">链接</el-link><el-link type="primary">主要链接</el-link><el-link type="success">成功</el-link><el-link type="warning">警告</el-link><el-link type="danger">危险</el-link><el-link disabled>禁用</el-link>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+return { ...ElementPlusIconsVue };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

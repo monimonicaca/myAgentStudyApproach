@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watermark 水印 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Watermark 水印</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Watermark 水印</h1>
+<p>在页面上添加文本或图片等水印信息</p>
+<h2>基础用法</h2>
+<p>最简单的用法。</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { reactive, watch } from 'vue'
+
+import { isDark } from '~/composables/dark'
+
+const font = reactive({
+
+  color: 'rgba(0, 0, 0, .15)',
+
+})
+
+watch(
+
+  isDark,
+
+  () =&gt; {
+
+    font.color = isDark.value
+
+      ? 'rgba(255, 255, 255, .15)'
+
+      : 'rgba(0, 0, 0, .15)'
+
+  },
+
+  {
+
+    immediate: true,
+
+  }
+
+)
+
+&lt;/script&gt;
+
+&lt;template&gt;
+
+  &lt;el-watermark :font=&quot;font&quot;&gt;
+
+    &lt;div style=&quot;height: 500px&quot; /&gt;
+
+  &lt;/el-watermark&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>多行水印</h2>
+<p>使用 <code>content</code>设置一个字符串数组来指定多行文本水印内容</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { reactive, watch } from 'vue'
+
+import { isDark } from '~/composables/dark'
+
+const font = reactive({
+
+  color: 'rgba(0, 0, 0, .15)',
+
+})
+
+watch(
+
+  isDark,
+
+  () =&gt; {
+
+    font.color = isDark.value
+
+      ? 'rgba(255, 255, 255, .15)'
+
+      : 'rgba(0, 0, 0, .15)'
+
+  },
+
+  {
+
+    immediate: true,
+
+  }
+
+)
+
+&lt;/script&gt;
+
+&lt;template&gt;
+
+  &lt;el-watermark :font=&quot;font&quot; :content=&quot;['Element+', 'Element Plus']&quot;&gt;
+
+    &lt;div style=&quot;height: 500px&quot; /&gt;
+
+  &lt;/el-watermark&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>图片水印</h2>
+<p>通过 <code>image</code> 指定图像地址。为了确保图像清晰展示而不是被拉伸，请设置宽度和高度，建议使用至少两倍的宽度和高度的图片来保证显示效果。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-watermark
+
+    :width=&quot;130&quot;
+
+    :height=&quot;30&quot;
+
+    image=&quot;https://element-plus.org/images/element-plus-logo.svg&quot;
+
+  &gt;
+
+    &lt;div style=&quot;height: 500px&quot; /&gt;
+
+  &lt;/el-watermark&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>自定义配置</h2>
+<p>配置自定义参数预览水印效果。</p>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { reactive, watch } from 'vue'
+
+import { isDark } from '~/composables/dark'
+
+const config = reactive({
+
+  content: 'Element Plus',
+
+  font: {
+
+    fontSize: 16,
+
+    color: 'rgba(0, 0, 0, 0.15)',
+
+  },
+
+  zIndex: -1,
+
+  rotate: -22,
+
+  gap: [100, 100] as [number, number],
+
+  offset: [] as unknown as [number, number],
+
+})
+
+watch(
+
+  isDark,
+
+  (value) =&gt; {
+
+    config.font.color = value
+
+      ? 'rgba(255, 255, 255, .15)'
+
+      : 'rgba(0, 0, 0, .15)'
+
+  },
+
+  { immediate: true }
+
+)
+
+&lt;/script&gt;
+
+&lt;template&gt;
+
+  &lt;div class=&quot;wrapper&quot;&gt;
+
+    &lt;el-watermark
+
+      class=&quot;watermark&quot;
+
+      :content=&quot;config.content&quot;
+
+      :font=&quot;config.font&quot;
+
+      :z-index=&quot;config.zIndex&quot;
+
+      :rotate=&quot;config.rotate&quot;
+
+      :gap=&quot;config.gap&quot;
+
+      :offset=&quot;config.offset&quot;
+
+    &gt;
+
+      &lt;div class=&quot;watermark-container&quot;&gt;
+
+        &lt;h1&gt;Element Plus&lt;/h1&gt;
+
+        &lt;h2&gt;A Vue 3 based component library for designers and developers&lt;/h2&gt;
+
+        &lt;img src=&quot;/images/hamburger.png&quot; alt=&quot;示例图片&quot; /&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-watermark&gt;
+
+    &lt;el-form
+
+      class=&quot;form&quot;
+
+      :model=&quot;config&quot;
+
+      label-position=&quot;top&quot;
+
+      label-width=&quot;50px&quot;
+
+    &gt;
+
+      &lt;el-form-item label=&quot;Content&quot;&gt;
+
+        &lt;el-input v-model=&quot;config.content&quot; /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;Color&quot;&gt;
+
+        &lt;el-color-picker v-model=&quot;config.font.color&quot; show-alpha /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;FontSize&quot;&gt;
+
+        &lt;el-slider v-model=&quot;config.font.fontSize&quot; /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;zIndex&quot;&gt;
+
+        &lt;el-slider v-model=&quot;config.zIndex&quot; /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;Rotate&quot;&gt;
+
+        &lt;el-slider v-model=&quot;config.rotate&quot; :min=&quot;-180&quot; :max=&quot;180&quot; /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;Gap&quot;&gt;
+
+        &lt;el-space&gt;
+
+          &lt;el-input-number v-model=&quot;config.gap[0]&quot; controls-position=&quot;right&quot; /&gt;
+
+          &lt;el-input-number v-model=&quot;config.gap[1]&quot; controls-position=&quot;right&quot; /&gt;
+
+        &lt;/el-space&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;Offset&quot;&gt;
+
+        &lt;el-space&gt;
+
+          &lt;el-input-number
+
+            v-model=&quot;config.offset[0]&quot;
+
+            placeholder=&quot;offsetLeft&quot;
+
+            controls-position=&quot;right&quot;
+
+          /&gt;
+
+          &lt;el-input-number
+
+            v-model=&quot;config.offset[1]&quot;
+
+            placeholder=&quot;offsetTop&quot;
+
+            controls-position=&quot;right&quot;
+
+          /&gt;
+
+        &lt;/el-space&gt;
+
+      &lt;/el-form-item&gt;
+
+    &lt;/el-form&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.wrapper {
+
+  display: flex;
+
+}
+
+.watermark {
+
+  display: flex;
+
+  flex: auto;
+
+}
+
+.watermark-container {
+
+  flex: auto;
+
+}
+
+.form {
+
+  width: 330px;
+
+  margin-left: 20px;
+
+  border-left: 1px solid #eee;
+
+  padding-left: 20px;
+
+}
+
+img {
+
+  z-index: 10;
+
+  width: 100%;
+
+  max-width: 300px;
+
+  position: relative;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>API</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>描述</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>width</td>
+<td>水印的宽度， <code>content</code> 的默认值是它自己的宽度</td>
+<td><code>number</code></td>
+<td>120</td>
+</tr>
+<tr>
+<td>height</td>
+<td>水印的高度， <code>content</code> 的默认值是它自己的高度</td>
+<td><code>number</code></td>
+<td>64</td>
+</tr>
+<tr>
+<td>rotate</td>
+<td>水印的旋转角度, 单位 <code>°</code></td>
+<td><code>number</code></td>
+<td>-22</td>
+</tr>
+<tr>
+<td>z-index</td>
+<td>水印元素的z-index值</td>
+<td><code>number</code></td>
+<td>9</td>
+</tr>
+<tr>
+<td>image</td>
+<td>水印图片，建议使用 2x 或 3x 图像</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>content</td>
+<td>水印文本内容</td>
+<td><code>string</code>/<code>array</code></td>
+<td>Element Plus</td>
+</tr>
+<tr>
+<td>font</td>
+<td>文字样式</td>
+<td><a href="#font">Font</a></td>
+<td><a href="#font">字体</a></td>
+</tr>
+<tr>
+<td>gap</td>
+<td>水印之间的间距</td>
+<td><code>array</code></td>
+<td>[100, 100]</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>水印从容器左上角的偏移默认值为 <code>gap/2</code></td>
+<td><code>array</code></td>
+<td>[gap[0]/2, gap[1]/2]</td>
+</tr>
+</tbody>
+</table>
+<h3>Font</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>字体颜色</td>
+<td><code>string</code></td>
+<td>rgba(0,0,0,.15)</td>
+</tr>
+<tr>
+<td>fontSize</td>
+<td>字体大小</td>
+<td><code>number</code> / <code>string</code></td>
+<td>16</td>
+</tr>
+<tr>
+<td>fontWeight</td>
+<td>字重</td>
+<td><code>enum</code></td>
+<td>normal</td>
+</tr>
+<tr>
+<td>fontFamily</td>
+<td>字体</td>
+<td><code>string</code></td>
+<td>sans-serif</td>
+</tr>
+<tr>
+<td>fontGap 2.11.5</td>
+<td>字体间隙</td>
+<td><code>number</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td>fontStyle</td>
+<td>字体样式</td>
+<td><code>enum</code></td>
+<td>normal</td>
+</tr>
+<tr>
+<td>textAlign</td>
+<td>文本对齐</td>
+<td><code>enum</code></td>
+<td>center</td>
+</tr>
+<tr>
+<td>textBaseline</td>
+<td>文本基线</td>
+<td><code>enum</code></td>
+<td>hanging</td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>默认</td>
+<td>添加水印的容器</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<div style="height:200px;position:relative"><el-watermark :font="font" content="Element Plus"></el-watermark><div style="padding:16px">这是被水印覆盖的内容区域</div></div>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const font = { fontSize: 18 }; return { font };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

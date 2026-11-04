@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Container 布局容器 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Container 布局容器</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Container 布局容器</h1>
+<p>用于布局的容器组件，方便快速搭建页面的基本结构：</p>
+<p><code>&lt;el-container&gt;</code>：外层容器。当子元素中包含 <code>&lt;el-header&gt;</code> 或 <code>&lt;el-footer&gt;</code> 时，全部子元素会垂直上下排列，否则会水平左右排列。</p>
+<p><code>&lt;el-header&gt;</code>：顶栏容器。</p>
+<p><code>&lt;el-aside&gt;</code>：侧边栏容器。</p>
+<p><code>&lt;el-main&gt;</code>：主要区域容器。</p>
+<p><code>&lt;el-footer&gt;</code>：底栏容器。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>以上组件采用了 flex 布局，使用前请确定目标浏览器是否兼容。此外， <code>&lt;el-container&gt;</code>的直接子元素必须是后四个组件中的一个或多个。后四个组件的父元素必须是一个 <code>&lt;el-container&gt;</code></p>
+</blockquote>
+<h2>常见页面布局</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-header&gt;Header&lt;/el-header&gt;
+
+      &lt;el-main&gt;Main&lt;/el-main&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-header&gt;Header&lt;/el-header&gt;
+
+      &lt;el-main&gt;Main&lt;/el-main&gt;
+
+      &lt;el-footer&gt;Footer&lt;/el-footer&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-aside width=&quot;200px&quot;&gt;Aside&lt;/el-aside&gt;
+
+      &lt;el-main&gt;Main&lt;/el-main&gt;
+
+      &lt;el-aside width=&quot;200px&quot;&gt;Aside&lt;/el-aside&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-header&gt;Header&lt;/el-header&gt;
+
+      &lt;el-container&gt;
+
+        &lt;el-aside width=&quot;200px&quot;&gt;Aside&lt;/el-aside&gt;
+
+        &lt;el-main&gt;Main&lt;/el-main&gt;
+
+      &lt;/el-container&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-header&gt;Header&lt;/el-header&gt;
+
+      &lt;el-container&gt;
+
+        &lt;el-aside width=&quot;200px&quot;&gt;Aside&lt;/el-aside&gt;
+
+        &lt;el-container&gt;
+
+          &lt;el-main&gt;Main&lt;/el-main&gt;
+
+          &lt;el-footer&gt;Footer&lt;/el-footer&gt;
+
+        &lt;/el-container&gt;
+
+      &lt;/el-container&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-aside width=&quot;200px&quot;&gt;Aside&lt;/el-aside&gt;
+
+      &lt;el-container&gt;
+
+        &lt;el-header&gt;Header&lt;/el-header&gt;
+
+        &lt;el-main&gt;Main&lt;/el-main&gt;
+
+      &lt;/el-container&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;common-layout&quot;&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-aside width=&quot;200px&quot;&gt;Aside&lt;/el-aside&gt;
+
+      &lt;el-container&gt;
+
+        &lt;el-header&gt;Header&lt;/el-header&gt;
+
+        &lt;el-main&gt;Main&lt;/el-main&gt;
+
+        &lt;el-footer&gt;Footer&lt;/el-footer&gt;
+
+      &lt;/el-container&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>例子</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-container class=&quot;layout-container-demo&quot; style=&quot;height: 500px&quot;&gt;
+
+    &lt;el-aside width=&quot;200px&quot;&gt;
+
+      &lt;el-scrollbar&gt;
+
+        &lt;el-menu :default-openeds=&quot;['1', '3']&quot;&gt;
+
+          &lt;el-sub-menu index=&quot;1&quot;&gt;
+
+            &lt;template #title&gt;
+
+              &lt;el-icon&gt;&lt;message /&gt;&lt;/el-icon&gt;Navigator One
+
+            &lt;/template&gt;
+
+            &lt;el-menu-item-group&gt;
+
+              &lt;template #title&gt;Group 1&lt;/template&gt;
+
+              &lt;el-menu-item index=&quot;1-1&quot;&gt;Option 1&lt;/el-menu-item&gt;
+
+              &lt;el-menu-item index=&quot;1-2&quot;&gt;Option 2&lt;/el-menu-item&gt;
+
+            &lt;/el-menu-item-group&gt;
+
+            &lt;el-menu-item-group title=&quot;Group 2&quot;&gt;
+
+              &lt;el-menu-item index=&quot;1-3&quot;&gt;Option 3&lt;/el-menu-item&gt;
+
+            &lt;/el-menu-item-group&gt;
+
+            &lt;el-sub-menu index=&quot;1-4&quot;&gt;
+
+              &lt;template #title&gt;Option4&lt;/template&gt;
+
+              &lt;el-menu-item index=&quot;1-4-1&quot;&gt;Option 4-1&lt;/el-menu-item&gt;
+
+            &lt;/el-sub-menu&gt;
+
+          &lt;/el-sub-menu&gt;
+
+          &lt;el-sub-menu index=&quot;2&quot;&gt;
+
+            &lt;template #title&gt;
+
+              &lt;el-icon&gt;&lt;icon-menu /&gt;&lt;/el-icon&gt;Navigator Two
+
+            &lt;/template&gt;
+
+            &lt;el-menu-item-group&gt;
+
+              &lt;template #title&gt;Group 1&lt;/template&gt;
+
+              &lt;el-menu-item index=&quot;2-1&quot;&gt;Option 1&lt;/el-menu-item&gt;
+
+              &lt;el-menu-item index=&quot;2-2&quot;&gt;Option 2&lt;/el-menu-item&gt;
+
+            &lt;/el-menu-item-group&gt;
+
+            &lt;el-menu-item-group title=&quot;Group 2&quot;&gt;
+
+              &lt;el-menu-item index=&quot;2-3&quot;&gt;Option 3&lt;/el-menu-item&gt;
+
+            &lt;/el-menu-item-group&gt;
+
+            &lt;el-sub-menu index=&quot;2-4&quot;&gt;
+
+              &lt;template #title&gt;Option 4&lt;/template&gt;
+
+              &lt;el-menu-item index=&quot;2-4-1&quot;&gt;Option 4-1&lt;/el-menu-item&gt;
+
+            &lt;/el-sub-menu&gt;
+
+          &lt;/el-sub-menu&gt;
+
+          &lt;el-sub-menu index=&quot;3&quot;&gt;
+
+            &lt;template #title&gt;
+
+              &lt;el-icon&gt;&lt;setting /&gt;&lt;/el-icon&gt;Navigator Three
+
+            &lt;/template&gt;
+
+            &lt;el-menu-item-group&gt;
+
+              &lt;template #title&gt;Group 1&lt;/template&gt;
+
+              &lt;el-menu-item index=&quot;3-1&quot;&gt;Option 1&lt;/el-menu-item&gt;
+
+              &lt;el-menu-item index=&quot;3-2&quot;&gt;Option 2&lt;/el-menu-item&gt;
+
+            &lt;/el-menu-item-group&gt;
+
+            &lt;el-menu-item-group title=&quot;Group 2&quot;&gt;
+
+              &lt;el-menu-item index=&quot;3-3&quot;&gt;Option 3&lt;/el-menu-item&gt;
+
+            &lt;/el-menu-item-group&gt;
+
+            &lt;el-sub-menu index=&quot;3-4&quot;&gt;
+
+              &lt;template #title&gt;Option 4&lt;/template&gt;
+
+              &lt;el-menu-item index=&quot;3-4-1&quot;&gt;Option 4-1&lt;/el-menu-item&gt;
+
+            &lt;/el-sub-menu&gt;
+
+          &lt;/el-sub-menu&gt;
+
+        &lt;/el-menu&gt;
+
+      &lt;/el-scrollbar&gt;
+
+    &lt;/el-aside&gt;
+
+    &lt;el-container&gt;
+
+      &lt;el-header style=&quot;text-align: right; font-size: 12px&quot;&gt;
+
+        &lt;div class=&quot;toolbar&quot;&gt;
+
+          &lt;el-dropdown&gt;
+
+            &lt;el-icon style=&quot;margin-right: 8px; margin-top: 1px&quot;&gt;
+
+              &lt;setting /&gt;
+
+            &lt;/el-icon&gt;
+
+            &lt;template #dropdown&gt;
+
+              &lt;el-dropdown-menu&gt;
+
+                &lt;el-dropdown-item&gt;View&lt;/el-dropdown-item&gt;
+
+                &lt;el-dropdown-item&gt;Add&lt;/el-dropdown-item&gt;
+
+                &lt;el-dropdown-item&gt;Delete&lt;/el-dropdown-item&gt;
+
+              &lt;/el-dropdown-menu&gt;
+
+            &lt;/template&gt;
+
+          &lt;/el-dropdown&gt;
+
+          &lt;span&gt;Tom&lt;/span&gt;
+
+        &lt;/div&gt;
+
+      &lt;/el-header&gt;
+
+      &lt;el-main&gt;
+
+        &lt;el-scrollbar&gt;
+
+          &lt;el-table :data=&quot;tableData&quot;&gt;
+
+            &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;140&quot; /&gt;
+
+            &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;120&quot; /&gt;
+
+            &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+          &lt;/el-table&gt;
+
+        &lt;/el-scrollbar&gt;
+
+      &lt;/el-main&gt;
+
+    &lt;/el-container&gt;
+
+  &lt;/el-container&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
+
+const item = {
+
+  date: '2016-05-02',
+
+  name: 'Tom',
+
+  address: 'No. 189, Grove St, Los Angeles',
+
+}
+
+const tableData = ref(Array.from({ length: 20 }).fill(item))
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.layout-container-demo .el-header {
+
+  position: relative;
+
+  background-color: var(--el-color-primary-light-7);
+
+  color: var(--el-text-color-primary);
+
+}
+
+.layout-container-demo .el-aside {
+
+  color: var(--el-text-color-primary);
+
+  background: var(--el-color-primary-light-8);
+
+}
+
+.layout-container-demo .el-menu {
+
+  border-right: none;
+
+}
+
+.layout-container-demo .el-main {
+
+  padding: 0;
+
+}
+
+.layout-container-demo .toolbar {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 100%;
+
+  right: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>Container API</h2>
+<h3>Container Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>direction</td>
+<td>子元素的排列方向</td>
+<td><code>enum</code></td>
+<td>子元素中有 <code>el-header</code> 或 <code>el-footer</code> 时为 vertical，否则为 horizontal</td>
+</tr>
+</tbody>
+</table>
+<h3>Container Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+<td>Container / Header / Aside / Main / Footer</td>
+</tr>
+</tbody>
+</table>
+<h2>Header API</h2>
+<h3>Header Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>height</td>
+<td>顶栏高度</td>
+<td><code>string</code></td>
+<td>60px</td>
+</tr>
+</tbody>
+</table>
+<h3>Header Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table>
+<h2>Aside API</h2>
+<h3>Aside Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>width</td>
+<td>侧边栏宽度</td>
+<td><code>string</code></td>
+<td>300px</td>
+</tr>
+</tbody>
+</table>
+<h3>Aside Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table>
+<h2>Main API</h2>
+<h3>Main Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table>
+<h2>Footer API</h2>
+<h3>Footer Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>height</td>
+<td>底栏高度</td>
+<td><code>string</code></td>
+<td>60px</td>
+</tr>
+</tbody>
+</table>
+<h3>Footer Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-container><el-aside width="160px" class="bg-el">Sidebar</el-aside><el-container><el-header class="bg-el">Header</el-header><el-main class="bg-el">Main Content</el-main><el-footer class="bg-el">Footer</el-footer></el-container></el-container>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+return {};
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tooltip 文字提示 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Tooltip 文字提示</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Tooltip 文字提示</h1>
+<p>常用于展示鼠标 hover 时的提示信息。</p>
+<h2>基础用法</h2>
+<p>在这里我们提供 9 种不同方向的展示方式，可以通过以下完整示例来理解，选择你要的效果。</p>
+<p>使用 <code>content</code> 属性来决定 <code>hover</code> 时的提示信息。由 <code>placement</code> 属性决定展示效果： <code>placement</code>属性值为：<code>[方向]-[对齐位置]</code>；四个方向：<code>top</code>、<code>left</code>、<code>right</code>、<code>bottom</code>；三种对齐位置：<code>start</code>, <code>end</code>，默认为空。如 <code>placement="left-end"</code>，则提示信息出现在目标元素的左侧，且提示信息的底部与目标元素的底部对齐。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;tooltip-base-box&quot;&gt;
+
+    &lt;div class=&quot;row center&quot;&gt;
+
+      &lt;el-tooltip
+
+        class=&quot;box-item&quot;
+
+        effect=&quot;dark&quot;
+
+        content=&quot;Top Left prompts info&quot;
+
+        placement=&quot;top-start&quot;
+
+      &gt;
+
+        &lt;el-button&gt;top-start&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip
+
+        class=&quot;box-item&quot;
+
+        effect=&quot;dark&quot;
+
+        content=&quot;Top Center prompts info&quot;
+
+        placement=&quot;top&quot;
+
+      &gt;
+
+        &lt;el-button&gt;top&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip
+
+        class=&quot;box-item&quot;
+
+        effect=&quot;dark&quot;
+
+        content=&quot;Top Right prompts info&quot;
+
+        placement=&quot;top-end&quot;
+
+      &gt;
+
+        &lt;el-button&gt;top-end&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;el-tooltip class=&quot;box-item&quot; effect=&quot;dark&quot; placement=&quot;left-start&quot;&gt;
+
+        &lt;template #content&gt;
+
+          Left Top
+
+          &lt;br /&gt;
+
+          prompts info
+
+        &lt;/template&gt;
+
+        &lt;el-button&gt;left-start&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip class=&quot;box-item&quot; effect=&quot;dark&quot; placement=&quot;right-start&quot;&gt;
+
+        &lt;template #content&gt;
+
+          Right Top
+
+          &lt;br /&gt;
+
+          prompts info
+
+        &lt;/template&gt;
+
+        &lt;el-button&gt;right-start&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;el-tooltip class=&quot;box-item&quot; effect=&quot;dark&quot; placement=&quot;left&quot;&gt;
+
+        &lt;template #content&gt;
+
+          Left Center
+
+          &lt;br /&gt;
+
+          prompts info
+
+        &lt;/template&gt;
+
+        &lt;el-button class=&quot;mt-3 mb-3&quot;&gt;left&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip class=&quot;box-item&quot; effect=&quot;dark&quot; placement=&quot;right&quot;&gt;
+
+        &lt;template #content&gt;
+
+          Right Center
+
+          &lt;br /&gt;
+
+          prompts info
+
+        &lt;/template&gt;
+
+        &lt;el-button&gt;right&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;el-tooltip class=&quot;box-item&quot; effect=&quot;dark&quot; placement=&quot;left-end&quot;&gt;
+
+        &lt;template #content&gt;
+
+          Left Bottom
+
+          &lt;br /&gt;
+
+          prompts info
+
+        &lt;/template&gt;
+
+        &lt;el-button&gt;left-end&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip class=&quot;box-item&quot; effect=&quot;dark&quot; placement=&quot;right-end&quot;&gt;
+
+        &lt;template #content&gt;
+
+          Right Bottom
+
+          &lt;br /&gt;
+
+          prompts info
+
+        &lt;/template&gt;
+
+        &lt;el-button&gt;right-end&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row center&quot;&gt;
+
+      &lt;el-tooltip
+
+        class=&quot;box-item&quot;
+
+        effect=&quot;dark&quot;
+
+        content=&quot;Bottom Left prompts info&quot;
+
+        placement=&quot;bottom-start&quot;
+
+      &gt;
+
+        &lt;el-button&gt;bottom-start&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip
+
+        class=&quot;box-item&quot;
+
+        effect=&quot;dark&quot;
+
+        content=&quot;Bottom Center prompts info&quot;
+
+        placement=&quot;bottom&quot;
+
+      &gt;
+
+        &lt;el-button&gt;bottom&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+      &lt;el-tooltip
+
+        class=&quot;box-item&quot;
+
+        effect=&quot;dark&quot;
+
+        content=&quot;Bottom Right prompts info&quot;
+
+        placement=&quot;bottom-end&quot;
+
+      &gt;
+
+        &lt;el-button&gt;bottom-end&lt;/el-button&gt;
+
+      &lt;/el-tooltip&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style&gt;
+
+.tooltip-base-box {
+
+  width: 600px;
+
+}
+
+.tooltip-base-box .row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+.tooltip-base-box .center {
+
+  justify-content: center;
+
+}
+
+.tooltip-base-box .box-item {
+
+  width: 110px;
+
+  margin-top: 10px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>主题</h2>
+<p>Tooltip 组件内置了两个主题：<code>dark</code>和<code>light</code>。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>要使用自定义主题，您必须知道您的工具提示在哪里渲染， 如果您的工具提示被呈现为根元素，您将需要全局设置css规则。</p>
+<p>建议您使用自定义主题并同时显示箭头时不使用线性渐变背景颜色。 因为弹出箭头和内容是两个不同的元素， 弹出箭头的样式需要单独设置， 当它到渐变背景颜色时，会看起来很奇怪。</p>
+</blockquote>
+<p>通过设置 <code>effect</code> 来修改主题，默认值为 <code>dark</code>.</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip content=&quot;Top center&quot; placement=&quot;top&quot;&gt;
+
+    &lt;el-button&gt;Dark&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+  &lt;el-tooltip content=&quot;Bottom center&quot; placement=&quot;bottom&quot; effect=&quot;light&quot;&gt;
+
+    &lt;el-button&gt;Light&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+  &lt;el-tooltip content=&quot;Bottom center&quot; effect=&quot;customized&quot;&gt;
+
+    &lt;el-button&gt;Customized theme&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;style&gt;
+
+.el-popper.is-customized {
+
+  /* Set padding to ensure the height is 32px */
+
+  padding: 6px 12px;
+
+  background: linear-gradient(90deg, rgb(159, 229, 151), rgb(204, 229, 129));
+
+}
+
+.el-popper.is-customized .el-popper__arrow::before {
+
+  background: linear-gradient(45deg, #b2e68d, #bce689);
+
+  right: 0;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>更多内容的文字提示</h2>
+<p>展示多行文本或者是设置文本内容的格式</p>
+<p>用具名 slot <code>content</code>，替代<code>tooltip</code>中的<code>content</code>属性。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip placement=&quot;top&quot;&gt;
+
+    &lt;template #content&gt; multiple lines&lt;br /&gt;second line &lt;/template&gt;
+
+    &lt;el-button&gt;Top center&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>高级扩展</h2>
+<p>除了这些基本设置外，还有一些属性可以让使用者更好的定制自己的效果：</p>
+<p><code>transition</code> 属性可以定制显隐的动画效果，默认为<code>fade-in-linear</code>。</p>
+<p>如果需要关闭 <code>tooltip</code> 功能，<code>disabled</code> 属性可以满足这个需求，你只需要将其设置为 <code>true</code>。</p>
+<p>事实上，Tooltip 是一个基于 <a href="https://github.com/element-plus/element-plus/tree/dev/packages/components/popper">ElPopper</a> 的扩展，您可以使用 ElPopper 中允许的任何属性。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip
+
+    :disabled=&quot;disabled&quot;
+
+    content=&quot;click to close tooltip function&quot;
+
+    placement=&quot;bottom&quot;
+
+    effect=&quot;light&quot;
+
+  &gt;
+
+    &lt;el-button @click=&quot;disabled = !disabled&quot;&gt;
+
+      click to {{ disabled ? 'active' : 'close' }} tooltip function
+
+    &lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const disabled = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>Tooltip 内不支持 <code>router-link</code> 组件，请使用 <code>vm.$router.push</code> 代替。</p>
+<p>tooltip 内不支持 disabled form 元素，参考 <a href="https://developer.mozilla.org/en-US/docs/Web/Events/mouseenter">MDN</a>，请在 disabled form 元素外层添加一层包裹元素。</p>
+</blockquote>
+<h2>显示 HTML 内容</h2>
+<p>内容属性可以设置为 HTML 字符串。</p>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>content</code> 属性虽然支持传入 HTML 片段，但是在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS 攻击</a>。因此在 <code>raw-content</code> 打开的情况下，请确保 <code>content</code> 的内容是可信的，<strong>永远不要</strong>将用户提交的内容赋值给 <code>content</code> 属性。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip
+
+    content=&quot;&lt;span&gt;The content can be &lt;strong&gt;HTML&lt;/strong&gt;&lt;/span&gt;&quot;
+
+    raw-content
+
+  &gt;
+
+    &lt;el-button&gt;hover me&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>虚拟触发</h2>
+<p>有时候我们想把 tooltip 的触发元素放在别的地方，而不需要写在一起，这时候就可以使用虚拟触发。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>需要注意的是，虚拟触发的 tooltip 是受控组件，因此你必须自己去控制 tooltip 是否显示，<strong>你将无法</strong>通过点击空白处来关闭 tooltip。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip
+
+    :visible=&quot;visible&quot;
+
+    content=&quot;Bottom center&quot;
+
+    placement=&quot;bottom&quot;
+
+    effect=&quot;light&quot;
+
+    trigger=&quot;click&quot;
+
+    virtual-triggering
+
+    :virtual-ref=&quot;triggerRef&quot;
+
+  /&gt;
+
+  &lt;el-button @click=&quot;visible = !visible&quot;&gt;test&lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { onMounted, onUnmounted, ref } from 'vue'
+
+const visible = ref(false)
+
+const position = ref({
+
+  top: 0,
+
+  left: 0,
+
+  bottom: 0,
+
+  right: 0,
+
+} as DOMRect)
+
+const triggerRef = ref({
+
+  getBoundingClientRect: () =&gt; position.value,
+
+})
+
+const mousemoveHandler = ({ clientX, clientY }: MouseEvent) =&gt; {
+
+  position.value = DOMRect.fromRect({
+
+    x: clientX,
+
+    y: clientY,
+
+  })
+
+}
+
+onMounted(() =&gt; {
+
+  document.addEventListener('mousemove', mousemoveHandler)
+
+})
+
+onUnmounted(() =&gt; {
+
+  document.removeEventListener('mousemove', mousemoveHandler)
+
+})
+
+&lt;/script&gt;
+</code></pre>
+<h2>单例模式</h2>
+<p>Tooltip 可以作为单例，也就是是说你可以同时有多个触发同一个 tooltip 的触发元素，这个功能是在 <code>虚拟触发</code> 的基础上开发的。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>已知问题：使用单例模式时，弹出窗口会从意料之外的位置弹出。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-button
+
+      v-for=&quot;i in 3&quot;
+
+      :key=&quot;i&quot;
+
+      @mouseover=&quot;(e) =&gt; (buttonRef = e.currentTarget)&quot;
+
+      @click=&quot;visible = !visible&quot;
+
+      &gt;Click to open tooltip&lt;/el-button
+
+    &gt;
+
+  &lt;/div&gt;
+
+  &lt;el-tooltip
+
+    ref=&quot;tooltipRef&quot;
+
+    :visible=&quot;visible&quot;
+
+    :popper-options=&quot;{
+
+      modifiers: [
+
+        {
+
+          name: 'computeStyles',
+
+          options: {
+
+            adaptive: false,
+
+            enabled: false,
+
+          },
+
+        },
+
+      ],
+
+    }&quot;
+
+    :virtual-ref=&quot;buttonRef&quot;
+
+    virtual-triggering
+
+    popper-class=&quot;singleton-tooltip&quot;
+
+  &gt;
+
+    &lt;template #content&gt;
+
+      &lt;span&gt; Some content &lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const buttonRef = ref()
+
+const tooltipRef = ref()
+
+const visible = ref(false)
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.singleton-tooltip {
+
+  transition: transform 0.3s var(--el-transition-function-fast-bezier);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>受控模式</h2>
+<p>Tooltip 可以通过父组件使用 <code>:visible</code> 来控制它的显示与关闭。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip :visible=&quot;visible&quot;&gt;
+
+    &lt;template #content&gt;
+
+      &lt;span&gt;Content&lt;/span&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-button @mouseenter=&quot;visible = true&quot; @mouseleave=&quot;visible = false&quot;&gt;
+
+      Hover me
+
+    &lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const visible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义动画</h2>
+<p>Tooltip 可以自定义动画，您可以使用 <code>transition</code> 设置所需的动画效果。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>过渡效果的更多信息可以在 <a href="https://vuejs.org/guide/built-ins/transition.html#css-based-transitions">Vue 过渡效果</a> 中找到。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip content=&quot;I am an el-tooltip&quot; transition=&quot;slide-fade&quot;&gt;
+
+    &lt;el-button&gt;trigger me&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;&lt;/script&gt;
+
+&lt;style&gt;
+
+.slide-fade-enter-active {
+
+  transition: all 0.3s ease-out;
+
+}
+
+.slide-fade-leave-active {
+
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+
+}
+
+.slide-fade-enter-from,
+
+.slide-fade-leave-to {
+
+  transform: translateX(120px);
+
+  opacity: 0;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>使用 <code>append-to</code></h2>
+<p>您必须等待 DOM 加载后才能使用 <code>targetElement</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tooltip
+
+    :append-to=&quot;targetElement&quot;
+
+    trigger=&quot;click&quot;
+
+    content=&quot;Append to .target&quot;
+
+    placement=&quot;top&quot;
+
+  &gt;
+
+    &lt;el-button class=&quot;target&quot;&gt;Click to open tooltip&lt;/el-button&gt;
+
+  &lt;/el-tooltip&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+const targetElement = ref('')
+
+onMounted(() =&gt; {
+
+  targetElement.value = '.target'
+
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.target {
+
+  position: relative;
+
+  margin-top: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>append-to</td>
+<td>指示 Tooltip 的内容将附加在哪一个网页元素上</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>effect</td>
+<td>Tooltip 主题，内置了 <code>dark</code> / <code>light</code> 两种</td>
+<td><code>enum</code></td>
+<td>dark</td>
+</tr>
+<tr>
+<td>content</td>
+<td>显示的内容，也可被 <code>slot#content</code> 覆盖</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>raw-content</td>
+<td><code>content</code> 中的内容是否作为 HTML 字符串处理</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>Tooltip 组件出现的位置</td>
+<td><code>enum</code></td>
+<td>bottom</td>
+</tr>
+<tr>
+<td>fallback-placements</td>
+<td>Tooltip 可用的 positions 请查看<a href="https://popper.js.org/docs/v2/modifiers/flip/#fallbackplacements">popper.js 文档</a></td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>visible / v-model:visible</td>
+<td>Tooltip 组件可见性</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>Tooltip 组件是否禁用</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Tooltip 出现位置的偏移量</td>
+<td><code>number</code></td>
+<td>12</td>
+</tr>
+<tr>
+<td>transition</td>
+<td>动画名称</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td><a href="https://popper.js.org/docs/v2/">popper.js</a> 参数</td>
+<td><code>object</code> 请参考 <a href="https://popper.js.org/docs/v2/">popper.js</a> 文档</td>
+<td>{}</td>
+</tr>
+<tr>
+<td>arrow-offset 2.9.10</td>
+<td>控制Tooltip的箭头相对于弹出窗口的偏移(添加)。</td>
+<td><code>number</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td>show-after</td>
+<td>延迟显示时间（以毫秒为单位），在受控模式下无效。</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>show-arrow</td>
+<td>tooltip 的内容是否有箭头</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>hide-after</td>
+<td>消失延迟时间（以毫秒为单位），在受控模式下无效。</td>
+<td><code>number</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>auto-close</td>
+<td>隐藏提示框的超时时间（以毫秒为单位），在受控模式下无效。</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>为 Tooltip 的 popper 添加自定义类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-style</td>
+<td>为 Tooltip 的 popper 添加自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>enterable</td>
+<td>鼠标是否可进入到 tooltip 中</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否使用 teleport。设置成 <code>true</code>则会被追加到 <code>append-to</code> 的位置</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>提示框的触发方式（用于显示），在受控模式下无效。</td>
+<td><code>enum</code>** / <code>array</code></td>
+<td>hover</td>
+</tr>
+<tr>
+<td>virtual-triggering</td>
+<td>用来标识虚拟触发是否被启用</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>virtual-ref</td>
+<td>标识虚拟触发时的触发元素</td>
+<td><code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>trigger-keys</td>
+<td>当通过鼠标点击使触发元素获得焦点时，可以定义一组键盘按键代码，通过键盘控制提示框的显示，在受控模式下无效。</td>
+<td><code>Array</code></td>
+<td>['Enter','Space']</td>
+</tr>
+<tr>
+<td>persistent</td>
+<td>当tooltip未激活且 <code>persistent</code> 为 <code>false</code> 时，tooltip将被销毁。</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>aria-label a11y</td>
+<td>和 <code>aria-label</code> 属性保持一致</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>focus-on-target 2.11.2</td>
+<td>当通过悬停触发提示时，是否聚焦触发元素，以提升可访问性</td>
+<td>false</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>before-show</td>
+<td>在显示提示框之前触发。 将触发原因作为参数传入。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>show</td>
+<td>在提示框显示时触发。 将触发原因作为参数传入。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>before-hide</td>
+<td>在提示框隐藏之前触发。 将触发原因作为参数传入。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>hide</td>
+<td>在提示框隐藏时触发。 将触发原因作为参数传入。</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>提示框触发及参考元素，只接受单个根元素。</td>
+</tr>
+<tr>
+<td>content</td>
+<td>自定义内容</td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>详情</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>popperRef</td>
+<td>el-popper 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>contentRef</td>
+<td>el-tooltip-content 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>isFocusInsideContent</td>
+<td>验证当前焦点事件是否在 el-tooltip-content 中触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>updatePopper</td>
+<td>更新 el-popper组件实例</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>onOpen</td>
+<td>onClose 方法控制 el-tooltip 显示状态</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>onClose</td>
+<td>onClose 方法控制 el-tooltip 显示状态</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>hide</td>
+<td>提供 hide 方法</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>FAQ</h2>
+<h4>如何在嵌套了 tooltip 的情况下允许输入框输入空格？</h4>
+<p>典型问题： <a href="https://github.com/element-plus/element-plus/issues/20907">#20907</a></p>
+<p>vue</p>
+<p>`<template></p>
+<p><el-tooltip content="tooltip content" placement="top" :trigger-keys="[]"></p>
+<pre><code>&lt;el-input v-model="value" placeholder="" /&gt;
+</code></pre>
+<p></el-tooltip></p>
+<p></template>`</p></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-tooltip content="这是一段提示文字" placement="top"><el-button>Hover 显示</el-button></el-tooltip><el-tooltip content="右侧提示" placement="right"><el-button>右侧</el-button></el-tooltip>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+return { ...ElementPlusIconsVue };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

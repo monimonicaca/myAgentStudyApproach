@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image 图片 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Image 图片</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Image 图片</h1>
+<p>图片容器，在保留所有原生 img 的特性下，支持懒加载，自定义占位、加载失败等</p>
+<h2>基础用法</h2>
+<p>可通过<code>fit</code>确定图片如何适应到容器框，同原生 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit">object-fit</a>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image&quot;&gt;
+
+    &lt;div v-for=&quot;fit in fits&quot; :key=&quot;fit&quot; class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;{{ fit }}&lt;/span&gt;
+
+      &lt;el-image style=&quot;width: 100px; height: 100px&quot; :src=&quot;url&quot; :fit=&quot;fit&quot; /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { ImageProps } from 'element-plus'
+
+const fits = [
+
+  'fill',
+
+  'contain',
+
+  'cover',
+
+  'none',
+
+  'scale-down',
+
+] as ImageProps['fit'][]
+
+const url =
+
+  'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-image .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  display: inline-block;
+
+  width: 20%;
+
+  min-width: 100px;
+
+  box-sizing: border-box;
+
+  vertical-align: top;
+
+}
+
+.demo-image .block:last-child {
+
+  border-right: none;
+
+}
+
+.demo-image .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>占位内容</h2>
+<p>可通过<code>slot = placeholder</code>可自定义占位内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image__placeholder&quot;&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Default&lt;/span&gt;
+
+      &lt;el-image :src=&quot;src&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;block&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;Custom&lt;/span&gt;
+
+      &lt;el-image :src=&quot;src&quot;&gt;
+
+        &lt;template #placeholder&gt;
+
+          &lt;div class=&quot;image-slot&quot;&gt;Loading&lt;span class=&quot;dot&quot;&gt;...&lt;/span&gt;&lt;/div&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-image&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const src =
+
+  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-image__placeholder .block {
+
+  padding: 30px 0;
+
+  text-align: center;
+
+  border-right: solid 1px var(--el-border-color);
+
+  display: inline-block;
+
+  width: 49%;
+
+  box-sizing: border-box;
+
+  vertical-align: top;
+
+}
+
+.demo-image__placeholder .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+.demo-image__placeholder .el-image {
+
+  padding: 0 5px;
+
+  max-width: 300px;
+
+  max-height: 200px;
+
+}
+
+.demo-image__placeholder.image-slot {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: var(--el-fill-color-light);
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+}
+
+.demo-image__placeholder .dot {
+
+  animation: dot 2s infinite steps(3, start);
+
+  overflow: hidden;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>加载失败</h2>
+<p>通过 <code>slot = error</code> and <code>slot = viewer-error</code>自定义图像加载错误时的内容。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image__error&quot; flex gap-2&gt;
+
+    &lt;el-image /&gt;
+
+    &lt;el-image&gt;
+
+      &lt;template #error&gt;
+
+        &lt;div class=&quot;image-viewer-slot image-slot&quot;&gt;
+
+          &lt;el-icon&gt;&lt;icon-picture /&gt;&lt;/el-icon&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-image&gt;
+
+    &lt;el-image :src=&quot;url&quot; :preview-src-list=&quot;srcList&quot; show-progress&gt;
+
+      &lt;template #viewer-error=&quot;{ activeIndex, src }&quot;&gt;
+
+        &lt;div class=&quot;image-slot viewer-error&quot;&gt;
+
+          &lt;el-icon&gt;&lt;icon-picture /&gt;&lt;/el-icon&gt;
+
+          &lt;span&gt;
+
+            this is viewer-error slot. current index: {{ activeIndex }}. src:
+
+            {{ src }}
+
+          &lt;/span&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-image&gt;
+
+    &lt;el-button @click=&quot;showPreview = true&quot;&gt; preview controlled &lt;/el-button&gt;
+
+    &lt;el-image-viewer
+
+      v-if=&quot;showPreview&quot;
+
+      show-progress
+
+      :url-list=&quot;srcList&quot;
+
+      @close=&quot;showPreview = false&quot;
+
+    &gt;
+
+      &lt;template #viewer-error=&quot;{ activeIndex, src }&quot;&gt;
+
+        &lt;div class=&quot;image-slot viewer-error&quot;&gt;
+
+          &lt;el-icon&gt;&lt;icon-picture /&gt;&lt;/el-icon&gt;
+
+          &lt;span&gt;
+
+            this is viewer-error slot. current index: {{ activeIndex }}. src:
+
+            {{ src }}
+
+          &lt;/span&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-image-viewer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { Picture as IconPicture } from '@element-plus/icons-vue'
+
+const showPreview = ref(false)
+
+const srcList = [
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+
+  'https://errorSrc',
+
+]
+
+const url =
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-image__error .el-image {
+
+  max-width: 300px;
+
+  max-height: 200px;
+
+  width: 100%;
+
+}
+
+.demo-image__error .image-slot {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  flex-direction: column;
+
+  font-size: 30px;
+
+  height: 200px;
+
+  background: #fff;
+
+}
+
+.demo-image__error .image-slot .el-icon {
+
+  font-size: 30px;
+
+}
+
+.image-viewer-slot {
+
+  background: var(--el-fill-color-light);
+
+}
+
+.viewer-error {
+
+  color: #000;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>懒加载</h2>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>浏览器原生支持的 <code>loading</code>属性在 2.2.3版本加入。 您可以使用 <code>loading="lazy"</code> 替换之前的<code>lazy= true</code>。</p>
+<p>如果当前浏览器支持原生图片延迟加载，则先使用原生能力，否则将使用滚动监听实现相同效果。</p>
+</blockquote>
+<p>可通过<code>lazy</code>开启懒加载功能，当图片滚动到可视范围内才会加载。可通过 <code>scroll-container</code> 来设置滚动容器，若未定义，则为最近一个 overflow 值为 auto 或 scroll 的父元素。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image__lazy&quot;&gt;
+
+    &lt;el-image v-for=&quot;url in urls&quot; :key=&quot;url&quot; :src=&quot;url&quot; lazy /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const urls = [
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
+
+]
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-image__lazy {
+
+  height: 400px;
+
+  overflow-y: auto;
+
+}
+
+.demo-image__lazy .el-image {
+
+  display: block;
+
+  min-height: 200px;
+
+  margin-bottom: 10px;
+
+}
+
+.demo-image__lazy .el-image:last-child {
+
+  margin-bottom: 0;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>图片预览</h2>
+<p>可通过 <code>previewSrcList</code> 开启预览大图的功能。你可以通过 <code>initial-index</code> 初始化第一张预览图片的位置。默认初始位置为 0。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image__preview&quot;&gt;
+
+    &lt;el-image
+
+      style=&quot;width: 100px; height: 100px&quot;
+
+      :src=&quot;url&quot;
+
+      :zoom-rate=&quot;1.2&quot;
+
+      :max-scale=&quot;7&quot;
+
+      :min-scale=&quot;0.2&quot;
+
+      :preview-src-list=&quot;srcList&quot;
+
+      show-progress
+
+      :initial-index=&quot;4&quot;
+
+      fit=&quot;cover&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const url =
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
+
+const srcList = [
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
+
+]
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-image__error .image-slot {
+
+  font-size: 30px;
+
+}
+
+.demo-image__error .image-slot .el-icon {
+
+  font-size: 30px;
+
+}
+
+.demo-image__error .el-image {
+
+  width: 100%;
+
+  height: 200px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>手动打开预览 2.9.4</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex gap-12&quot;&gt;
+
+    &lt;div class=&quot;grid gap-3&quot;&gt;
+
+      &lt;el-button @click=&quot;handleClick&quot;&gt;
+
+        openPreview with showPreview method
+
+      &lt;/el-button&gt;
+
+      &lt;el-image
+
+        ref=&quot;imageRef&quot;
+
+        style=&quot;width: 100px; height: 100px&quot;
+
+        :src=&quot;url&quot;
+
+        show-progress
+
+        :preview-src-list=&quot;srcList&quot;
+
+        fit=&quot;cover&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;el-button @click=&quot;showPreview = true&quot;&gt; preview controlled &lt;/el-button&gt;
+
+      &lt;el-image-viewer
+
+        v-if=&quot;showPreview&quot;
+
+        :url-list=&quot;srcList&quot;
+
+        show-progress
+
+        :initial-index=&quot;4&quot;
+
+        @close=&quot;showPreview = false&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { ImageInstance } from 'element-plus'
+
+const url =
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
+
+const srcList = [
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
+
+]
+
+const imageRef = ref&lt;ImageInstance&gt;()
+
+const showPreview = ref(false)
+
+const handleClick = () =&gt; {
+
+  imageRef.value!.showPreview()
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义工具栏2.9.4</h2>
+<p>可通过 <code>toolbar</code> 插槽自定义工具栏内容，自版本 2.9.7 起，插槽中添加了 <code>setActiveItem</code> 方法，用于根据索引切换图片。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image__custom-toolbar&quot;&gt;
+
+    &lt;el-image
+
+      style=&quot;width: 100px; height: 100px&quot;
+
+      :src=&quot;url&quot;
+
+      :preview-src-list=&quot;srcList&quot;
+
+      fit=&quot;cover&quot;
+
+      show-progress
+
+    &gt;
+
+      &lt;template
+
+        #toolbar=&quot;{ actions, prev, next, reset, activeIndex, setActiveItem }&quot;
+
+      &gt;
+
+        &lt;el-icon @click=&quot;prev&quot;&gt;&lt;Back /&gt;&lt;/el-icon&gt;
+
+        &lt;el-icon @click=&quot;next&quot;&gt;&lt;Right /&gt;&lt;/el-icon&gt;
+
+        &lt;el-icon @click=&quot;setActiveItem(srcList.length - 1)&quot;&gt;
+
+          &lt;DArrowRight /&gt;
+
+        &lt;/el-icon&gt;
+
+        &lt;el-icon @click=&quot;actions('zoomOut')&quot;&gt;&lt;ZoomOut /&gt;&lt;/el-icon&gt;
+
+        &lt;el-icon
+
+          @click=&quot;actions('zoomIn', { enableTransition: false, zoomRate: 2 })&quot;
+
+        &gt;
+
+          &lt;ZoomIn /&gt;
+
+        &lt;/el-icon&gt;
+
+        &lt;el-icon
+
+          @click=&quot;
+
+            actions('clockwise', { rotateDeg: 180, enableTransition: false })
+
+          &quot;
+
+        &gt;
+
+          &lt;RefreshRight /&gt;
+
+        &lt;/el-icon&gt;
+
+        &lt;el-icon @click=&quot;actions('anticlockwise')&quot;&gt;&lt;RefreshLeft /&gt;&lt;/el-icon&gt;
+
+        &lt;el-icon @click=&quot;reset&quot;&gt;&lt;Refresh /&gt;&lt;/el-icon&gt;
+
+        &lt;el-icon @click=&quot;download(activeIndex)&quot;&gt;&lt;Download /&gt;&lt;/el-icon&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-image&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElIcon } from 'element-plus'
+
+import {
+
+  Back,
+
+  DArrowRight,
+
+  Download,
+
+  Refresh,
+
+  RefreshLeft,
+
+  RefreshRight,
+
+  Right,
+
+  ZoomIn,
+
+  ZoomOut,
+
+} from '@element-plus/icons-vue'
+
+const url =
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
+
+const srcList = [
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
+
+]
+
+const download = (index: number) =&gt; {
+
+  const url = srcList[index]
+
+  const suffix = url.slice(url.lastIndexOf('.'))
+
+  const filename = Date.now() + suffix
+
+  fetch(url)
+
+    .then((response) =&gt; response.blob())
+
+    .then((blob) =&gt; {
+
+      const blobUrl = URL.createObjectURL(new Blob([blob]))
+
+      const link = document.createElement('a')
+
+      link.href = blobUrl
+
+      link.download = filename
+
+      document.body.appendChild(link)
+
+      link.click()
+
+      URL.revokeObjectURL(blobUrl)
+
+      link.remove()
+
+    })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义进度条 2.9.4</h2>
+<p>可通过 <code>show-progress</code> 控制是否在预览图片时显示进度条。自版本 2.9.8 起，进度条会在使用 <code>progress</code> 插槽时显示。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-image__custom-toolbar&quot;&gt;
+
+    &lt;el-image
+
+      style=&quot;width: 100px; height: 100px&quot;
+
+      :src=&quot;url&quot;
+
+      :preview-src-list=&quot;srcList&quot;
+
+      fit=&quot;cover&quot;
+
+    &gt;
+
+      &lt;template #progress=&quot;{ activeIndex, total }&quot;&gt;
+
+        &lt;span&gt;{{ activeIndex + 1 + '-' + total }}&lt;/span&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-image&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const url =
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
+
+const srcList = [
+
+  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+
+  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>Image API</h2>
+<h3>Image Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>src</td>
+<td>图片源地址，同原生属性一致</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>fit</td>
+<td>确定图片如何适应容器框，同原生 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit">object-fit</a></td>
+<td><code>enum</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>hide-on-click-modal</td>
+<td>当开启 preview 功能时，是否可以通过点击遮罩层关闭 preview</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>loading 2.2.3</td>
+<td>浏览器加载图像的策略，和 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading">浏览器原生</a>能力一致</td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>lazy</td>
+<td>是否使用懒加载</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>scroll-container</td>
+<td>开启懒加载功能后，监听 scroll 事件的容器默认情况下，开启懒加载功能后，监听 scroll 事件的容器</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>alt</td>
+<td>原生属性 <code>alt</code></td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>referrerpolicy</td>
+<td>原生属性 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy">referrerPolicy</a>。</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>crossorigin</td>
+<td>原生属性 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin">crossorigin</a></td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>preview-src-list</td>
+<td>开启图片预览功能</td>
+<td><code>array</code></td>
+<td>[]</td>
+</tr>
+<tr>
+<td>z-index</td>
+<td>设置图片预览的 z-index</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>initial-index</td>
+<td>初始预览图像索引，小于 <code>url-list</code> 的长度</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>close-on-press-escape</td>
+<td>是否可以通过按下 ESC 关闭 Image Viewer</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>preview-teleported</td>
+<td>image-viewer 是否插入至 body 元素上。嵌套的父元素属性会发生修改时应该将此属性设置为 <code>true</code></td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>infinite</td>
+<td>是否可以无限循环预览</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>zoom-rate</td>
+<td>图像查看器缩放事件的缩放速率。</td>
+<td><code>number</code></td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>scale 2.11.3</td>
+<td>预览图像缩放。</td>
+<td><code>number</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>min-scale 2.4.0</td>
+<td>图像查看器缩放事件的最小缩放比例</td>
+<td><code>number</code></td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>max-scale 2.4.0</td>
+<td>图像查看器缩放事件的最大缩放比例</td>
+<td><code>number</code></td>
+<td>7</td>
+</tr>
+<tr>
+<td>show-progress 2.9.4</td>
+<td>是否在预览图片时显示进度条</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>Image Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>load</td>
+<td>图片加载成功触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>error</td>
+<td>图片加载失败触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>switch</td>
+<td>切换图像时触发。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>close</td>
+<td>当点击 X 按钮或者在<code>hide-on-click-modal</code>为 true 时点击遮罩层时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>show</td>
+<td>当 Viewer 显示时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Image Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>placeholder</td>
+<td>当图像尚未加载时，自定义的占位符内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>error</td>
+<td>自定义图像加载失败的内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>viewer</td>
+<td>当图像预览时自定义内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="#image-viewer-slots">[image viewer slots](#image-viewer-slots)</a></td>
+<td>when you allow big image preview, image viewer slots all can be used, except <code>default</code>.</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3>Image Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>showPreview 2.9.4</td>
+<td>手动打开大图预览</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Image Viewer API</h2>
+<h3>Image Viewer Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>Type</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>url-list</td>
+<td>用于预览的图片链接列表</td>
+<td><code>array</code></td>
+<td>[]</td>
+</tr>
+<tr>
+<td>z-index</td>
+<td>预览时遮罩层的 z-index</td>
+<td><code>number</code> / <code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>initial-index</td>
+<td>初始预览图像索引，小于 <code>url-list</code> 的长度</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>infinite</td>
+<td>是否可以无限循环预览</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>hide-on-click-modal</td>
+<td>是否可以通过点击遮罩层关闭预览</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>image 自身是否插入至 body 元素上。嵌套的父元素属性会发生修改时应该将此属性设置为 <code>true</code></td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>zoom-rate 2.2.27</td>
+<td>图像查看器缩放事件的缩放速率。</td>
+<td><code>number</code></td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>scale 2.11.3</td>
+<td>预览图像缩放。</td>
+<td><code>number</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>min-scale 2.4.0</td>
+<td>图像查看器缩放事件的最小缩放比例</td>
+<td><code>number</code></td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>max-scale 2.4.0</td>
+<td>图像查看器缩放事件的最大缩放比例</td>
+<td><code>number</code></td>
+<td>7</td>
+</tr>
+<tr>
+<td>close-on-press-escape</td>
+<td>是否可以通过按下 ESC 关闭 Image Viewer</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>show-progress 2.9.4</td>
+<td>是否显示预览图片的进度条内容</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>Image Viewer Events</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>当点击 X 按钮或者在<code>hide-on-click-modal</code>为 true 时点击遮罩层时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>error 2.11.3</td>
+<td>图片加载失败触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>switch</td>
+<td>切换图像时触发。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>rotate 2.3.13</td>
+<td>旋转图像时触发。</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Image Viewer Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>progress 2.9.4</td>
+<td>自定义进度内容 (优先级高于 <code>show-progress</code> prop)</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>toolbar 2.9.4</td>
+<td>自定义工具栏内容</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>viewer-error 2.11.3</td>
+<td>自定义图像加载失败的内容</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Image Viewer Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setActiveItem</td>
+<td>手动切换图片</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>类型声明</h2>
+<p>Show declarationsts`type ImageViewerAction = 'zoomIn' | 'zoomOut' | 'clockwise' | 'anticlockwise'</p>
+<p>type ImageViewerActionOptions = {</p>
+<p>enableTransition?: boolean</p>
+<p>zoomRate?: number</p>
+<p>rotateDeg?: number</p>
+<p>}`</p></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-image style="width:200px;height:200px" :src="url" fit="cover" :preview-src-list="[url]" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const url = Vue.ref("https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg");return { url };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

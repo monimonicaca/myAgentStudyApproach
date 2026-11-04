@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TimeSelect 时间选择 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>TimeSelect 时间选择</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>TimeSelect 时间选择</h1>
+<p>用于选择或输入日期</p>
+<p>可用时间范围是 00:00-23:59</p>
+<h2>固定时间点</h2>
+<p>提供几个固定的时间点供用户选择</p>
+<p>使用 <code>el-time-select</code> 标签，然后通过<code>start</code>、<code>end</code>和<code>step</code>指定起始时间，结束时间和步长。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-time-select
+
+    v-model=&quot;value&quot;
+
+    style=&quot;width: 240px&quot;
+
+    start=&quot;08:30&quot;
+
+    step=&quot;00:15&quot;
+
+    end=&quot;18:30&quot;
+
+    placeholder=&quot;Select time&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+&lt;/script&gt;
+</code></pre>
+<h2>时间格式</h2>
+<p>使用 <code>format</code> 属性来控制时间格式 (小时以及分钟)。</p>
+<p>在 <a href="https://day.js.org/docs/zh-CN/display/format">这里</a> 查看 Day.js 支持的 format 参数。</p>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p>请一定要注意传入参数的大小写是否正确</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-time-select
+
+    v-model=&quot;value&quot;
+
+    style=&quot;width: 240px&quot;
+
+    start=&quot;00:00&quot;
+
+    step=&quot;00:30&quot;
+
+    end=&quot;23:59&quot;
+
+    placeholder=&quot;Select time&quot;
+
+    format=&quot;hh:mm A&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value = ref('')
+
+&lt;/script&gt;
+</code></pre>
+<h2>固定时间范围</h2>
+<p>如果先选中了开始（或结束）时间，则结束（或开始）时间的状态也将会随之改变。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-time-range flex flex-wrap gap-4&quot;&gt;
+
+    &lt;el-time-select
+
+      v-model=&quot;startTime&quot;
+
+      style=&quot;width: 240px&quot;
+
+      :max-time=&quot;endTime&quot;
+
+      placeholder=&quot;Start time&quot;
+
+      start=&quot;08:30&quot;
+
+      step=&quot;00:15&quot;
+
+      end=&quot;18:30&quot;
+
+    /&gt;
+
+    &lt;el-time-select
+
+      v-model=&quot;endTime&quot;
+
+      style=&quot;width: 240px&quot;
+
+      :min-time=&quot;startTime&quot;
+
+      placeholder=&quot;End time&quot;
+
+      start=&quot;08:30&quot;
+
+      step=&quot;00:15&quot;
+
+      end=&quot;18:30&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const startTime = ref('')
+
+const endTime = ref('')
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>选中项绑定值</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>禁用状态</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>editable</td>
+<td>文本框可输入</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>clearable</td>
+<td>是否显示清除按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>include-end-time 2.9.3</td>
+<td>是否在选项中包含<code>end</code></td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>size</td>
+<td>输入框尺寸</td>
+<td><code>enum</code></td>
+<td>default</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>非范围选择时的占位内容</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>name 2.13.3</td>
+<td>原生属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>effect</td>
+<td>Tooltip 主题，内置了 <code>dark</code> / <code>light</code> 两种主题</td>
+<td><code>string</code> / <code>enum</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>prefix-icon</td>
+<td>自定义前缀图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>Clock</td>
+</tr>
+<tr>
+<td>clear-icon</td>
+<td>自定义清除图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>CircleClose</td>
+</tr>
+<tr>
+<td>start</td>
+<td>开始时间</td>
+<td><code>string</code></td>
+<td>09:00</td>
+</tr>
+<tr>
+<td>end</td>
+<td>结束时间</td>
+<td><code>string</code></td>
+<td>18:00</td>
+</tr>
+<tr>
+<td>step</td>
+<td>间隔时间</td>
+<td><code>string</code></td>
+<td>00:30</td>
+</tr>
+<tr>
+<td>min-time</td>
+<td>最早时间点，早于该时间的时间段将被禁用</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>max-time</td>
+<td>最晚时间点，晚于该时间的时间段将被禁用</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>format</td>
+<td>设置时间格式</td>
+<td><code>string</code> see <a href="https://day.js.org/docs/en/display/format#list-of-all-available-formats">formats</a></td>
+<td>HH:mm</td>
+</tr>
+<tr>
+<td>empty-values 2.7.0</td>
+<td>组件的空值配置， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-on-clear 2.7.0</td>
+<td>清空选项的值， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-class 2.11.4</td>
+<td>为 TimeSelect 下拉面板设置自定义类名</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>popper-style 2.11.4</td>
+<td>为 TimeSelect 下拉面板设置自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>用户确认选定的值时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>在组件 Input 失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>在组件 Input 获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clear 2.7.7</td>
+<td>可清空的单选模式下用户点击清空按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>使 input 获取焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>使 input 失去焦点</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-time-select v-model="value" start="08:30" step="00:15" end="18:30" placeholder="选择时间" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const value = Vue.ref(""); return { value };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

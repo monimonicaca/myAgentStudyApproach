@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Popconfirm 气泡确认框 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Popconfirm 气泡确认框</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Popconfirm 气泡确认框</h1>
+<p>点击某个元素弹出一个简单的气泡确认框</p>
+<h2>展示位置</h2>
+<p>Popconfirm 提供 9 种展示位置。</p>
+<p>使用 <code>title</code> 属性来设置点击参考元素时显示的信息。由 <code>placement</code> 属性决定 Popconfirm 的位置。该属性值格式为：<code>[方向]-[对齐位置]</code>，可供选择的四个方向分别是<code>top</code>、<code>left</code>、<code>right</code>、<code>bottom</code>，可供选择的三种对齐方式分别是<code>start</code>、<code>end</code>、<code>null</code>，默认的对齐方式为null。以 <code>placement="left-end"</code> 为例，气泡确认框会显示在悬停元素的左侧，且提示信息的底部与悬停元素的底部对齐。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;popconfirm-base-box&quot;&gt;
+
+    &lt;div class=&quot;row center&quot;&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Top Left prompts info&quot;
+
+        placement=&quot;top-start&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;top-start&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Top Center prompts info&quot;
+
+        placement=&quot;top&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;top&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Top Right prompts info&quot;
+
+        placement=&quot;top-end&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;top-end&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Left Top prompts info&quot;
+
+        placement=&quot;left-start&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;left-start&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Right Top prompts info&quot;
+
+        placement=&quot;right-start&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;right-start&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Left Center prompts info&quot;
+
+        placement=&quot;left&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button class=&quot;mt-3 mb-3&quot;&gt;left&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Right Center prompts info&quot;
+
+        placement=&quot;right&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;right&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Left Bottom prompts info&quot;
+
+        placement=&quot;left-end&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;left-end&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Right Bottom prompts info&quot;
+
+        placement=&quot;right-end&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;right-end&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;row center&quot;&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Bottom Left prompts info&quot;
+
+        placement=&quot;bottom-start&quot;
+
+      &gt;
+
+        &lt;template #reference&gt; &lt;el-button&gt;bottom-start&lt;/el-button&gt;&lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Bottom Center prompts info&quot;
+
+        placement=&quot;bottom&quot;
+
+      &gt;
+
+        &lt;template #reference&gt; &lt;el-button&gt;bottom&lt;/el-button&gt;&lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+      &lt;el-popconfirm
+
+        class=&quot;box-item&quot;
+
+        title=&quot;Bottom Right prompts info&quot;
+
+        placement=&quot;bottom-end&quot;
+
+      &gt;
+
+        &lt;template #reference&gt;
+
+          &lt;el-button&gt;bottom-end&lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-popconfirm&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;style&gt;
+
+.popconfirm-base-box {
+
+  width: 600px;
+
+}
+
+.popconfirm-base-box .row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+.popconfirm-base-box .center {
+
+  justify-content: center;
+
+}
+
+.popconfirm-base-box .box-item {
+
+  width: 110px;
+
+  margin-top: 10px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>基础用法</h2>
+<p>Popconfirm 的属性与 Popover 很类似，因此对于重复属性，请参考 Popover 的文档，在此文档中不做详尽解释。</p>
+<p>在 Popconfirm 中，只有 <code>title</code> 属性可用，<code>content</code> 属性会被忽略。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-popconfirm title=&quot;Are you sure to delete this?&quot;&gt;
+
+    &lt;template #reference&gt;
+
+      &lt;el-button&gt;Delete&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-popconfirm&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>自定义弹出框的内容</h2>
+<p>可以在 Popconfirm 中自定义内容。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-popconfirm
+
+    width=&quot;220&quot;
+
+    :icon=&quot;InfoFilled&quot;
+
+    icon-color=&quot;#626AEF&quot;
+
+    title=&quot;Are you sure to delete this?&quot;
+
+    @cancel=&quot;onCancel&quot;
+
+  &gt;
+
+    &lt;template #reference&gt;
+
+      &lt;el-button&gt;Delete&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #actions=&quot;{ confirm, cancel }&quot;&gt;
+
+      &lt;el-button size=&quot;small&quot; @click=&quot;cancel&quot;&gt;No!&lt;/el-button&gt;
+
+      &lt;el-button
+
+        type=&quot;danger&quot;
+
+        size=&quot;small&quot;
+
+        :disabled=&quot;!clicked&quot;
+
+        @click=&quot;confirm&quot;
+
+      &gt;
+
+        Yes?
+
+      &lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-popconfirm&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { InfoFilled } from '@element-plus/icons-vue'
+
+const clicked = ref(false)
+
+function onCancel() {
+
+  clicked.value = true
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>多种让 Popconfirm 出现的方法</h2>
+<p>点击按钮触发事件</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-popconfirm
+
+    confirm-button-text=&quot;Yes&quot;
+
+    cancel-button-text=&quot;No&quot;
+
+    :icon=&quot;InfoFilled&quot;
+
+    icon-color=&quot;#626AEF&quot;
+
+    title=&quot;Are you sure to delete this?&quot;
+
+    @confirm=&quot;confirmEvent&quot;
+
+    @cancel=&quot;cancelEvent&quot;
+
+  &gt;
+
+    &lt;template #reference&gt;
+
+      &lt;el-button&gt;Delete&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-popconfirm&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { InfoFilled } from '@element-plus/icons-vue'
+
+const confirmEvent = () =&gt; {
+
+  console.log('confirm!')
+
+}
+
+const cancelEvent = () =&gt; {
+
+  console.log('cancel!')
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>标题</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>effect 2.11.2</td>
+<td>Tooltip 主题，内置了 <code>dark</code> / <code>light</code> 两种</td>
+<td><code>enum</code>** / <code>string</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>confirm-button-text</td>
+<td>确认按钮文字</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>cancel-button-text</td>
+<td>取消按钮文字</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>confirm-button-type</td>
+<td>确认按钮类型</td>
+<td><code>enum</code></td>
+<td>primary</td>
+</tr>
+<tr>
+<td>cancel-button-type</td>
+<td>取消按钮类型</td>
+<td><code>enum</code></td>
+<td>text</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>自定义图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>QuestionFilled</td>
+</tr>
+<tr>
+<td>icon-color</td>
+<td>Icon 颜色</td>
+<td><code>string</code></td>
+<td>#f90</td>
+</tr>
+<tr>
+<td>hide-icon</td>
+<td>是否隐藏 Icon</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>hide-after</td>
+<td>关闭时的延迟</td>
+<td><code>number</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否将 popover 的下拉列表插入至 body 元素</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>persistent</td>
+<td>当 popover 组件长时间不触发且 <code>persistent</code> 属性设置为 <code>false</code> 时, popover 将会被删除</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>width</td>
+<td>弹层宽度，最小宽度 150px</td>
+<td><code>string</code> / <code>number</code></td>
+<td>150</td>
+</tr>
+<tr>
+<td><a href="./tooltip#attributes">tooltip</a></td>
+<td>继承自 Tooltip 的所有属性，但不包括：<code>popper-class</code>、<code>popper-style</code>、<code>fallback-placements</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>confirm</td>
+<td>点击确认按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>cancel</td>
+<td>点击取消按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>reference</td>
+<td>触发 Popconfirm 显示的 HTML 元素</td>
+<td>—</td>
+</tr>
+<tr>
+<td>actions 2.8.1</td>
+<td>页脚的内容</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3>暴露</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>详情</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>popperRef 2.10.7</td>
+<td>el-popper 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>hide 2.10.7</td>
+<td>hide popconfirm</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-popconfirm title="确定删除这条数据吗？" @confirm="ok" @cancel="cancel"><template #reference><el-button>删除</el-button></template></el-popconfirm>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+function ok(){ ElementPlus.ElMessage("已删除"); } function cancel(){ ElementPlus.ElMessage("已取消"); }return { ok, cancel };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

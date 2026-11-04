@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dropdown 下拉菜单 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Dropdown 下拉菜单</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Dropdown 下拉菜单</h1>
+<p>将动作或菜单折叠到下拉菜单中。</p>
+<h2>基础用法</h2>
+<p>悬停在下拉菜单上以展开更多操作。</p>
+<p>通过组件 <code>slot</code> 来设置下拉触发的元素以及需要通过具名 <code>slot</code> 为 <code>dropdown</code> 来设置下拉菜单。默认情况下，只需要悬停在触发菜单的元素上即可，无需点击也会显示下拉菜单。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-dropdown&gt;
+
+    &lt;span class=&quot;el-dropdown-link&quot;&gt;
+
+      Dropdown List
+
+      &lt;el-icon class=&quot;el-icon--right&quot;&gt;
+
+        &lt;arrow-down /&gt;
+
+      &lt;/el-icon&gt;
+
+    &lt;/span&gt;
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item disabled&gt;Action 4&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item divided&gt;Action 5&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ArrowDown } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.example-showcase .el-dropdown-link {
+
+  cursor: pointer;
+
+  color: var(--el-color-primary);
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>位置</h2>
+<p>支持 6 个位置。</p>
+<p>设置 <code>placement</code> 属性，使下拉菜单出现在不同位置。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap items-center gap-4&quot;&gt;
+
+    &lt;el-dropdown placement=&quot;top-start&quot;&gt;
+
+      &lt;el-button&gt; topStart &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;The Action 1st&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 2nd&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 3rd&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+    &lt;el-dropdown placement=&quot;top&quot;&gt;
+
+      &lt;el-button&gt; top &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;The Action 1st&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 2nd&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 3rd&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+    &lt;el-dropdown placement=&quot;top-end&quot;&gt;
+
+      &lt;el-button&gt; topEnd &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;The Action 1st&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 2nd&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 3rd&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+    &lt;el-dropdown placement=&quot;bottom-start&quot;&gt;
+
+      &lt;el-button&gt; bottomStart &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;The Action 1st&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 2nd&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 3rd&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+    &lt;el-dropdown placement=&quot;bottom&quot;&gt;
+
+      &lt;el-button&gt; bottom &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;The Action 1st&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 2nd&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 3rd&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+    &lt;el-dropdown placement=&quot;bottom-end&quot;&gt;
+
+      &lt;el-button&gt; bottomEnd &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;The Action 1st&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 2nd&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;The Action 3rd&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>触发对象</h2>
+<p>可使用按钮触发下拉菜单。</p>
+<p>设置 <code>split-button</code> 属性来让触发下拉元素呈现为按钮组，左边是功能按钮，右边是触发下拉菜单的按钮，设置为 <code>true</code> 即可。如果你想要在第三和第四个选项之间添加一个分隔符，你只需要为第四个选项添加一个 <code>divided</code> 的属性。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap items-center&quot;&gt;
+
+    &lt;el-dropdown&gt;
+
+      &lt;el-button type=&quot;primary&quot;&gt;
+
+        Dropdown List&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;arrow-down /&gt;&lt;/el-icon&gt;
+
+      &lt;/el-button&gt;
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 4&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 5&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+    &lt;el-dropdown split-button type=&quot;primary&quot; @click=&quot;handleClick&quot;&gt;
+
+      Dropdown List
+
+      &lt;template #dropdown&gt;
+
+        &lt;el-dropdown-menu&gt;
+
+          &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item divided&gt;Action 4&lt;/el-dropdown-item&gt;
+
+          &lt;el-dropdown-item&gt;Action 5&lt;/el-dropdown-item&gt;
+
+        &lt;/el-dropdown-menu&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-dropdown&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ArrowDown } from '@element-plus/icons-vue'
+
+const handleClick = () =&gt; {
+
+  // eslint-disable-next-line no-alert
+
+  alert('button click')
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.example-showcase .el-dropdown + .el-dropdown {
+
+  margin-left: 15px;
+
+}
+
+.example-showcase .el-dropdown-link {
+
+  cursor: pointer;
+
+  color: var(--el-color-primary);
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>触发方式</h2>
+<p>可以配置点击激活或者悬停激活。</p>
+<p>将 <code>trigger</code> 属性设置为 click 即可，默认为 <code>hover</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row class=&quot;block-col-2&quot;&gt;
+
+    &lt;el-col :span=&quot;8&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;hover to trigger&lt;/span&gt;
+
+      &lt;el-dropdown&gt;
+
+        &lt;span class=&quot;el-dropdown-link&quot;&gt;
+
+          Dropdown List&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;arrow-down /&gt;&lt;/el-icon&gt;
+
+        &lt;/span&gt;
+
+        &lt;template #dropdown&gt;
+
+          &lt;el-dropdown-menu&gt;
+
+            &lt;el-dropdown-item :icon=&quot;Plus&quot;&gt;Action 1&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CirclePlusFilled&quot;&gt;
+
+              Action 2
+
+            &lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CirclePlus&quot;&gt;Action 3&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;Check&quot;&gt;Action 4&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CircleCheck&quot;&gt;Action 5&lt;/el-dropdown-item&gt;
+
+          &lt;/el-dropdown-menu&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-dropdown&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :span=&quot;8&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;click to trigger&lt;/span&gt;
+
+      &lt;el-dropdown trigger=&quot;click&quot;&gt;
+
+        &lt;span class=&quot;el-dropdown-link&quot;&gt;
+
+          Dropdown List&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;arrow-down /&gt;&lt;/el-icon&gt;
+
+        &lt;/span&gt;
+
+        &lt;template #dropdown&gt;
+
+          &lt;el-dropdown-menu&gt;
+
+            &lt;el-dropdown-item :icon=&quot;Plus&quot;&gt;Action 1&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CirclePlusFilled&quot;&gt;
+
+              Action 2
+
+            &lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CirclePlus&quot;&gt;Action 3&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;Check&quot;&gt;Action 4&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CircleCheck&quot;&gt;Action 5&lt;/el-dropdown-item&gt;
+
+          &lt;/el-dropdown-menu&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-dropdown&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :span=&quot;8&quot;&gt;
+
+      &lt;span class=&quot;demonstration&quot;&gt;right click to trigger&lt;/span&gt;
+
+      &lt;el-dropdown trigger=&quot;contextmenu&quot;&gt;
+
+        &lt;span class=&quot;el-dropdown-link&quot;&gt;
+
+          Dropdown List&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;arrow-down /&gt;&lt;/el-icon&gt;
+
+        &lt;/span&gt;
+
+        &lt;template #dropdown&gt;
+
+          &lt;el-dropdown-menu&gt;
+
+            &lt;el-dropdown-item :icon=&quot;Plus&quot;&gt;Action 1&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CirclePlusFilled&quot;&gt;
+
+              Action 2
+
+            &lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CirclePlus&quot;&gt;Action 3&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;Check&quot;&gt;Action 4&lt;/el-dropdown-item&gt;
+
+            &lt;el-dropdown-item :icon=&quot;CircleCheck&quot;&gt;Action 5&lt;/el-dropdown-item&gt;
+
+          &lt;/el-dropdown-menu&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-dropdown&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import {
+
+  ArrowDown,
+
+  Check,
+
+  CircleCheck,
+
+  CirclePlus,
+
+  CirclePlusFilled,
+
+  Plus,
+
+} from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.block-col-2 .demonstration {
+
+  display: block;
+
+  color: var(--el-text-color-secondary);
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+.block-col-2 .el-dropdown-link {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>菜单隐藏方式</h2>
+<p>可以通过 <code>hide-on-click</code> 属性来配置。</p>
+<p>下拉菜单默认在点击菜单项后会被隐藏，将 hide-on-click 属性设置为 false 可以关闭此功能。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-dropdown :hide-on-click=&quot;false&quot;&gt;
+
+    &lt;span class=&quot;el-dropdown-link&quot;&gt;
+
+      Dropdown List&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;arrow-down /&gt;&lt;/el-icon&gt;
+
+    &lt;/span&gt;
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item disabled&gt;Action 4&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item divided&gt;Action 5&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item divided&gt;Action 6&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ArrowDown } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.example-showcase .el-dropdown + .el-dropdown {
+
+  margin-left: 15px;
+
+}
+
+.example-showcase .el-dropdown-link {
+
+  cursor: pointer;
+
+  color: var(--el-color-primary);
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>指令事件</h2>
+<p>点击菜单项后会触发事件，用户可以通过相应的菜单项 key 进行不同的操作。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-dropdown @command=&quot;handleCommand&quot;&gt;
+
+    &lt;span class=&quot;el-dropdown-link&quot;&gt;
+
+      Dropdown List&lt;el-icon class=&quot;el-icon--right&quot;&gt;&lt;arrow-down /&gt;&lt;/el-icon&gt;
+
+    &lt;/span&gt;
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item command=&quot;a&quot;&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item command=&quot;b&quot;&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item command=&quot;c&quot;&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item command=&quot;d&quot; disabled&gt;Action 4&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item command=&quot;e&quot; divided&gt;Action 5&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+import { ArrowDown } from '@element-plus/icons-vue'
+
+const handleCommand = (command: string | number | object) =&gt; {
+
+  ElMessage(`click on item ${command}`)
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.example-showcase .el-dropdown-link {
+
+  cursor: pointer;
+
+  color: var(--el-color-primary);
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>下拉方法</h2>
+<p>您可以手动使用 <code>手动打开</code> 或 <code>手动关闭下拉菜单以打开或关闭</code></p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;font-size: 14px&quot;&gt;
+
+    &lt;p&gt;open(close) the Dropdown list2 will close(open) the Dropdown List1.&lt;/p&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;margin: 15px&quot;&gt;
+
+    &lt;el-button @click=&quot;showClick&quot;&gt;show&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dropdown ref=&quot;dropdown1&quot; trigger=&quot;contextmenu&quot; style=&quot;margin-right: 30px&quot;&gt;
+
+    &lt;span class=&quot;el-dropdown-link&quot;&gt; Dropdown List1 &lt;/span&gt;
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item disabled&gt;Action 4&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item divided&gt;Action 5&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+  &lt;el-dropdown trigger=&quot;contextmenu&quot; @visible-change=&quot;handleVisible2&quot;&gt;
+
+    &lt;span class=&quot;el-dropdown-link&quot;&gt; Dropdown List2 &lt;/span&gt;
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item disabled&gt;Action 4&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item divided&gt;Action 5&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import type { DropdownInstance } from 'element-plus'
+
+const dropdown1 = ref&lt;DropdownInstance&gt;()
+
+function handleVisible2(visible: any) {
+
+  if (!dropdown1.value) return
+
+  if (visible) {
+
+    dropdown1.value.handleClose()
+
+  } else {
+
+    dropdown1.value.handleOpen()
+
+  }
+
+}
+
+function showClick() {
+
+  if (!dropdown1.value) return
+
+  dropdown1.value.handleOpen()
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.example-showcase .el-dropdown-link {
+
+  cursor: pointer;
+
+  color: var(--el-color-primary);
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>尺寸</h2>
+<p>Dropdown 组件提供除了默认值以外的三种尺寸，可以在不同场景下选择合适的尺寸。</p>
+<p>使用 <code>size</code> 属性配置尺寸，可选的尺寸大小有: <code>large</code>, <code>default</code> 或 <code>small</code></p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-dropdown size=&quot;large&quot; split-button type=&quot;primary&quot;&gt;
+
+    Large
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 4&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+  &lt;el-dropdown split-button type=&quot;primary&quot;&gt;
+
+    Default
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 4&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+  &lt;el-dropdown size=&quot;small&quot; split-button type=&quot;primary&quot;&gt;
+
+    Small
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 2&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item&gt;Action 4&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+
+.example-showcase .el-dropdown + .el-dropdown {
+
+  margin-left: 15px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>虚拟触发2.11.3</h2>
+<p>有时候我们想把 dropdown 的触发元素放在别的地方，而不需要写在一起，这时候就可以使用虚拟触发。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-card
+
+    class=&quot;content&quot;
+
+    body-class=&quot;card-body&quot;
+
+    @click=&quot;handleClick&quot;
+
+    @contextmenu=&quot;handleContextmenu&quot;
+
+  &gt;
+
+    Right click
+
+  &lt;/el-card&gt;
+
+  &lt;el-dropdown
+
+    ref=&quot;dropdownRef&quot;
+
+    :virtual-ref=&quot;triggerRef&quot;
+
+    :show-arrow=&quot;false&quot;
+
+    :popper-options=&quot;{
+
+      modifiers: [{ name: 'offset', options: { offset: [0, 0] } }],
+
+    }&quot;
+
+    virtual-triggering
+
+    trigger=&quot;contextmenu&quot;
+
+    placement=&quot;bottom-start&quot;
+
+  &gt;
+
+    &lt;template #dropdown&gt;
+
+      &lt;el-dropdown-menu&gt;
+
+        &lt;el-dropdown-item :icon=&quot;Plus&quot;&gt;Action 1&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item :icon=&quot;CirclePlusFilled&quot;&gt; Action 2 &lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item :icon=&quot;CirclePlus&quot;&gt;Action 3&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item :icon=&quot;Check&quot;&gt;Action 4&lt;/el-dropdown-item&gt;
+
+        &lt;el-dropdown-item :icon=&quot;CircleCheck&quot;&gt;Action 5&lt;/el-dropdown-item&gt;
+
+      &lt;/el-dropdown-menu&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dropdown&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import {
+
+  Check,
+
+  CircleCheck,
+
+  CirclePlus,
+
+  CirclePlusFilled,
+
+  Plus,
+
+} from '@element-plus/icons-vue'
+
+import type { DropdownInstance } from 'element-plus'
+
+const dropdownRef = ref&lt;DropdownInstance&gt;()
+
+const position = ref({
+
+  top: 0,
+
+  left: 0,
+
+  bottom: 0,
+
+  right: 0,
+
+} as DOMRect)
+
+const triggerRef = ref({
+
+  getBoundingClientRect: () =&gt; position.value,
+
+})
+
+const handleClick = () =&gt; {
+
+  dropdownRef.value?.handleClose()
+
+}
+
+const handleContextmenu = (event: MouseEvent) =&gt; {
+
+  const { clientX, clientY } = event
+
+  position.value = DOMRect.fromRect({
+
+    x: clientX,
+
+    y: clientY,
+
+  })
+
+  event.preventDefault()
+
+  dropdownRef.value?.handleOpen()
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.content {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  height: 200px;
+
+}
+
+.content :deep(.card-body) {
+
+  flex-grow: 0;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>Dropdown API</h2>
+<h3>Dropdown Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>菜单按钮类型，同 <code>Button</code> 组件一样，仅在 <code>split-button</code> 为 true 的情况下有效。</td>
+<td><code>enum</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>size</td>
+<td>菜单尺寸，在 split-button 为 true 的情况下也对触发按钮生效。</td>
+<td><code>enum</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>button-props</td>
+<td>按钮组件的 props，参考 <a href="./button.html#button-attributes">按钮属性</a></td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>max-height</td>
+<td>菜单最大高度</td>
+<td><code>string</code> / <code>number</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>split-button</td>
+<td>下拉触发元素呈现为按钮组</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>菜单弹出位置</td>
+<td><code>enum</code></td>
+<td>bottom</td>
+</tr>
+<tr>
+<td>effect</td>
+<td>Tooltip 主题，内置了 <code>dark</code> / <code>light</code> 两种主题</td>
+<td><code>enum</code>** / <code>string</code></td>
+<td>light</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>触发下拉的行为</td>
+<td><code>enum</code>** / <code>array</code></td>
+<td>hover</td>
+</tr>
+<tr>
+<td>trigger-keys 2.9.1</td>
+<td>指定键盘上哪些按键可以触发操作</td>
+<td><code>array</code></td>
+<td><code>['Enter', 'Space', 'ArrowDown', 'NumpadEnter']</code></td>
+</tr>
+<tr>
+<td>virtual-triggering 2.11.3</td>
+<td>是否启用虚拟触发器</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>virtual-ref 2.11.3</td>
+<td>指示下拉框所依附的参考元素</td>
+<td><code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>hide-on-click</td>
+<td>是否在点击菜单项后隐藏菜单</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>show-arrow 2.11.3</td>
+<td>tooltip 的内容是否有箭头</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>show-timeout</td>
+<td>展开下拉菜单的延时，仅在 trigger 为 hover 时有效</td>
+<td><code>number</code></td>
+<td>150</td>
+</tr>
+<tr>
+<td>hide-timeout</td>
+<td>收起下拉菜单的延时（仅在 trigger 为 hover 时有效）</td>
+<td><code>number</code></td>
+<td>150</td>
+</tr>
+<tr>
+<td>role</td>
+<td>下拉菜单的 ARIA 属性。根据具体场景，您可能想要将此更改为“navigation”</td>
+<td><code>enum</code></td>
+<td>menu</td>
+</tr>
+<tr>
+<td>tabindex</td>
+<td>Dropdown 组件的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex">tabindex</a></td>
+<td><code>number</code> / <code>string</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>自定义浮层类名</td>
+<td><code>string</code> / <code>object</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>popper-style 2.11.5</td>
+<td>自定义浮层类名</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td><a href="https://popper.js.org/docs/v2/">popper.js</a> 参数</td>
+<td><code>object</code></td>
+<td><code>{modifiers: [{name: 'computeStyles',options: {gpuAcceleration: false}}]}</code></td>
+</tr>
+<tr>
+<td>teleported 2.2.20</td>
+<td>是否将下拉列表插入至 body 元素</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>append-to 2.13.0</td>
+<td>dropdown 的内容将挂载到哪一个元素上</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>persistent 2.9.5</td>
+<td>当下拉菜单处于非活动状态且 <code>persistent</code> 为 <code>false</code> 时，下拉菜单将被销毁</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<h3>Dropdown Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>下拉菜单的内容。注意：必须是有效的 html DOM 元素（例如 <code>&lt;span&gt;、&lt;button&gt;</code> 等）或 <code>el-component</code>，以附加监听触发器</td>
+<td>:::</td>
+</tr>
+<tr>
+<td>dropdown</td>
+<td>下拉列表，通常是 <code>&lt;el-dropdown-menu&gt;</code> 组件</td>
+<td>Dropdown-Menu</td>
+</tr>
+</tbody>
+</table>
+<h3>Dropdown Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>click</td>
+<td><code>split-button</code> 为 true 时，点击左侧按钮的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>command</td>
+<td>当下拉项被点击时触发，参数是从下拉菜单中发送的命令</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>visible-change</td>
+<td>当下拉菜单出现/消失时触发器, 当它出现时, 参数将是 <code>true</code>, 否则将是 <code>false</code></td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Dropdown Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>handleOpen</td>
+<td>打开下拉菜单</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleClose</td>
+<td>关闭下拉菜单</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Dropdown-Menu API</h2>
+<h3>Dropdown-Menu Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>下拉菜单的内容</td>
+<td>Dropdown-Item</td>
+</tr>
+</tbody>
+</table>
+<h2>Dropdown-Item API</h2>
+<h3>Dropdown-Item Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>Type</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>command</td>
+<td>派发到<code>command</code>回调函数的指令参数</td>
+<td><code>string</code> / <code>number</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>divided</td>
+<td>是否显示分隔符</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>自定义图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Dropdown-Item Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义Dropdown-Item内容</td>
+</tr>
+<tr>
+<td>icon 2.13.1</td>
+<td>自定义图标，它将覆盖图标prop</td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-dropdown @command="handle"><el-button type="primary">下拉菜单<el-icon class="el-icon--right"><ArrowDown /></el-icon></el-button><template #dropdown><el-dropdown-menu><el-dropdown-item command="a">菜单项一</el-dropdown-item><el-dropdown-item command="b">菜单项二</el-dropdown-item></el-dropdown-menu></template></el-dropdown>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+function handle(cmd){ ElementPlus.ElMessage("点击了 " + cmd); }return { ...ElementPlusIconsVue, handle };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

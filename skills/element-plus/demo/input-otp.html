@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InputOtp 一次性密码输入框 beta · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>InputOtp 一次性密码输入框 beta</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>InputOtp 一次性密码输入框 beta</h1>
+<p>用于输入一次性密码</p>
+<h2>基础用法</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-input-otp v-model=&quot;otp&quot; /&gt;
+
+    &lt;div style=&quot;margin-top: 20px&quot;&gt;Value: {{ otp }}&lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp = ref('123')
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义长度</h2>
+<p>输入字段长度可以通过设置<code>length</code>属性来自定义。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-input-otp&quot;&gt;
+
+    &lt;el-input-otp v-model=&quot;otp1&quot; :length=&quot;4&quot; /&gt;
+
+    &lt;el-input-otp v-model=&quot;otp2&quot; :length=&quot;8&quot; /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp1 = ref('')
+
+const otp2 = ref('')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-input-otp {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>展示类型</h2>
+<p>有三种类型可用：<code>outlined</code> （默认）、<code>filled</code> 和 <code>underlined</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-input-otp&quot;&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Outlined (Default)&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp1&quot; type=&quot;outlined&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Filled&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp2&quot; type=&quot;filled&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Underlined&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp3&quot; type=&quot;underlined&quot; /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp1 = ref('')
+
+const otp2 = ref('')
+
+const otp3 = ref('')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-input-otp {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+p {
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  color: var(--el-text-color-secondary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>调整尺寸</h2>
+<p>有三个尺寸可用：<code>large</code>、<code>default</code> 和 <code>small</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-input-otp&quot;&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Large&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp1&quot; size=&quot;large&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Default&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp2&quot; size=&quot;default&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Small&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp3&quot; size=&quot;small&quot; /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp1 = ref('')
+
+const otp2 = ref('')
+
+const otp3 = ref('')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-input-otp {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+p {
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  color: var(--el-text-color-secondary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>禁用 &amp; 只读</h2>
+<p>支持禁用和只读状态。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-input-otp&quot;&gt;
+
+    &lt;div class=&quot;type-wrap&quot;&gt;
+
+      &lt;p&gt;Disabled&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp1&quot; disabled /&gt;
+
+      &lt;el-input-otp v-model=&quot;otp1&quot; disabled type=&quot;filled&quot; /&gt;
+
+      &lt;el-input-otp v-model=&quot;otp1&quot; disabled type=&quot;underlined&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;type-wrap&quot;&gt;
+
+      &lt;p&gt;Readonly&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp2&quot; readonly /&gt;
+
+      &lt;el-input-otp v-model=&quot;otp2&quot; readonly type=&quot;filled&quot; /&gt;
+
+      &lt;el-input-otp v-model=&quot;otp2&quot; readonly type=&quot;underlined&quot; /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp1 = ref('123')
+
+const otp2 = ref('456')
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-input-otp {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+.type-wrap {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+}
+
+p {
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  color: var(--el-text-color-secondary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>密码模式</h2>
+<p>使用 <code>mask</code> 属性来隐藏输入字符。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-input-otp v-model=&quot;otp&quot; mask /&gt;
+
+    &lt;div style=&quot;margin-top: 20px&quot;&gt;Value: {{ otp }}&lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp = ref('123')
+
+&lt;/script&gt;
+</code></pre>
+<h2>分隔符</h2>
+<p>自定义OTP字段之间的分隔符。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-input-otp&quot;&gt;
+
+    &lt;el-input-otp separator=&quot;/&quot; /&gt;
+
+    &lt;el-input-otp :separator=&quot;castSeparator&quot; /&gt;
+
+    &lt;el-input-otp&gt;
+
+      &lt;template #separator&gt;•&lt;/template&gt;
+
+    &lt;/el-input-otp&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { h } from 'vue'
+
+const castSeparator = (index: number) =&gt; {
+
+  return index &amp; 1 ? h('span', null, '—') : ''
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-input-otp {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义验证</h2>
+<p>设置 <code>validator</code> 属性以验证输入字符，并使用 <code>inputmode</code> 指定键盘类型。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-input-otp&quot;&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Numbers only&lt;/p&gt;
+
+      &lt;el-input-otp
+
+        v-model=&quot;otp1&quot;
+
+        :validator=&quot;onlyAllowNumber&quot;
+
+        inputmode=&quot;numeric&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Letters only&lt;/p&gt;
+
+      &lt;el-input-otp v-model=&quot;otp2&quot; :validator=&quot;onlyAllowLetter&quot; /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+const otp1 = ref('')
+
+const otp2 = ref('')
+
+const onlyAllowNumber = (value: string) =&gt; /^\d$/.test(value)
+
+const onlyAllowLetter = (value: string) =&gt; /^[a-zA-Z]$/.test(value)
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-input-otp {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+}
+
+p {
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  color: var(--el-text-color-secondary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>应用开发接口（API）</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>详情</th>
+<th>事件参数</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>OTP字段的值。由于数字不能有前导零，<code>modelValue</code> 仅在初始化期间允许为数字。</td>
+<td><code>string</code> / <code>number</code></td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>length</td>
+<td>OTP字段长度</td>
+<td><code>number</code></td>
+<td>6</td>
+</tr>
+<tr>
+<td>validator</td>
+<td>自定义验证函数</td>
+<td><code>Function</code></td>
+<td>() =&gt; true</td>
+</tr>
+<tr>
+<td>inputmode</td>
+<td>原生 <code>inputmode</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>type</td>
+<td>OTP字段类型</td>
+<td><code>enum</code></td>
+<td>'outlined'</td>
+</tr>
+<tr>
+<td>size</td>
+<td>OTP字段的尺寸</td>
+<td><code>enum</code></td>
+<td>:::</td>
+</tr>
+<tr>
+<td>mask</td>
+<td>是否启用密码模式</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用OTP字段</td>
+<td><code>boolean</code></td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>separator</td>
+<td>OTP字段之间的分隔符</td>
+<td><code>string</code> / <code>VNode</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>validate-event</td>
+<td>是否触发表单验证</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>readonly</td>
+<td>与原生输入中的 <code>readonly</code> 相同</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>id</td>
+<td>原生 <code>id</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>aria-label a11y</td>
+<td>原生 <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Events</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>update:modelValue</td>
+<td>值更新时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>change</td>
+<td>当输入框失去焦点后且值发生变化时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>finish</td>
+<td>当所有字段都已填写时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>输入框获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>输入框失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>插槽</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>详情</th>
+<th>事件参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>separator</td>
+<td>OTP 字段之间的分隔符</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3>对外暴露的方法</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>inputRefs</td>
+<td>HTML 输入框元素数组</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>聚焦OTP输入字段</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>失焦OTP输入字段</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-input-otp :length="6" v-model="otp" />`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const otp = Vue.ref(""); return { otp };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

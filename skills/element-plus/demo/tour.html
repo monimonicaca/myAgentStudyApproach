@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tour 漫游式引导 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Tour 漫游式引导</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Tour 漫游式引导</h1>
+<p>用于分步引导用户了解产品功能的气泡组件。用来引导用户并介绍产品</p>
+<h2>基础用法</h2>
+<p>最简单的用法。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;open = true&quot;&gt;Begin Tour&lt;/el-button&gt;
+
+  &lt;el-divider /&gt;
+
+  &lt;el-space&gt;
+
+    &lt;el-button ref=&quot;ref1&quot;&gt;Upload&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref2&quot; type=&quot;primary&quot;&gt;Save&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref3&quot; :icon=&quot;MoreFilled&quot; /&gt;
+
+  &lt;/el-space&gt;
+
+  &lt;el-tour v-model=&quot;open&quot;&gt;
+
+    &lt;el-tour-step :target=&quot;ref1?.$el&quot; title=&quot;Upload File&quot;&gt;
+
+      &lt;img
+
+        style=&quot;width: 240px&quot;
+
+        src=&quot;https://element-plus.org/images/element-plus-logo.svg&quot;
+
+        alt=&quot;tour.png&quot;
+
+      /&gt;
+
+      &lt;div&gt;Put you files here.&lt;/div&gt;
+
+    &lt;/el-tour-step&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref2?.$el&quot;
+
+      title=&quot;Save&quot;
+
+      description=&quot;Save your changes&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref3?.$el&quot;
+
+      title=&quot;Other Actions&quot;
+
+      description=&quot;Click to see other&quot;
+
+    /&gt;
+
+  &lt;/el-tour&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { MoreFilled } from '@element-plus/icons-vue'
+
+import type { ButtonInstance } from 'element-plus'
+
+const ref1 = ref&lt;ButtonInstance&gt;()
+
+const ref2 = ref&lt;ButtonInstance&gt;()
+
+const ref3 = ref&lt;ButtonInstance&gt;()
+
+const open = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>非模态</h2>
+<p>使用<code>:mask="false"</code>可以将引导变为非模态，同时为了强调引导本身，建议与 type="primary" 组合使用。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;open = true&quot;&gt;Begin Tour&lt;/el-button&gt;
+
+  &lt;el-divider /&gt;
+
+  &lt;el-space&gt;
+
+    &lt;el-button ref=&quot;ref1&quot;&gt;Upload&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref2&quot; type=&quot;primary&quot;&gt;Save&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref3&quot; :icon=&quot;MoreFilled&quot; /&gt;
+
+  &lt;/el-space&gt;
+
+  &lt;el-tour v-model=&quot;open&quot; type=&quot;primary&quot; :mask=&quot;false&quot;&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref1?.$el&quot;
+
+      title=&quot;Upload File&quot;
+
+      description=&quot;Put you files here.&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref2?.$el&quot;
+
+      title=&quot;Save&quot;
+
+      description=&quot;Save your changes&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref3?.$el&quot;
+
+      title=&quot;Other Actions&quot;
+
+      description=&quot;Click to see other&quot;
+
+    /&gt;
+
+  &lt;/el-tour&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { MoreFilled } from '@element-plus/icons-vue'
+
+import type { ButtonInstance } from 'element-plus'
+
+const ref1 = ref&lt;ButtonInstance&gt;()
+
+const ref2 = ref&lt;ButtonInstance&gt;()
+
+const ref3 = ref&lt;ButtonInstance&gt;()
+
+const open = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>位置</h2>
+<p>改变引导相对于目标的位置，共有 12 种位置可供选择。当 <code>target</code> 为空时引导将会展示在正中央。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button ref=&quot;btnRef&quot; type=&quot;primary&quot; @click=&quot;open = true&quot;&gt;
+
+    Begin Tour
+
+  &lt;/el-button&gt;
+
+  &lt;el-tour v-model=&quot;open&quot;&gt;
+
+    &lt;el-tour-step
+
+      title=&quot;Center&quot;
+
+      description=&quot;Displayed in the center of screen.&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      title=&quot;Right&quot;
+
+      description=&quot;On the right of target.&quot;
+
+      placement=&quot;right&quot;
+
+      :target=&quot;btnRef?.$el&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      title=&quot;Top&quot;
+
+      description=&quot;On the top of target.&quot;
+
+      placement=&quot;top&quot;
+
+      :target=&quot;btnRef?.$el&quot;
+
+    /&gt;
+
+  &lt;/el-tour&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import type { ButtonInstance } from 'element-plus'
+
+const btnRef = ref&lt;ButtonInstance&gt;()
+
+const open = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义遮罩样式</h2>
+<p>自定义遮罩样式。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;open = true&quot;&gt;Begin Tour&lt;/el-button&gt;
+
+  &lt;el-divider /&gt;
+
+  &lt;el-space&gt;
+
+    &lt;el-button ref=&quot;ref1&quot;&gt;Upload&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref2&quot; type=&quot;primary&quot;&gt;Save&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref3&quot; :icon=&quot;MoreFilled&quot; /&gt;
+
+  &lt;/el-space&gt;
+
+  &lt;el-tour
+
+    v-model=&quot;open&quot;
+
+    :mask=&quot;{
+
+      style: {
+
+        boxShadow: 'inset 0 0 15px #333',
+
+      },
+
+      color: 'rgba(80, 255, 255, .4)',
+
+    }&quot;
+
+  &gt;
+
+    &lt;el-tour-step :target=&quot;ref1?.$el&quot; title=&quot;Upload File&quot;&gt;
+
+      &lt;img
+
+        src=&quot;https://element-plus.org/images/element-plus-logo.svg&quot;
+
+        alt=&quot;tour.png&quot;
+
+      /&gt;
+
+      &lt;div&gt;Put you files here.&lt;/div&gt;
+
+    &lt;/el-tour-step&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref2?.$el&quot;
+
+      title=&quot;Save&quot;
+
+      description=&quot;Save your changes&quot;
+
+      :mask=&quot;{
+
+        style: {
+
+          boxShadow: 'inset 0 0 15px #fff',
+
+        },
+
+        color: 'rgba(40, 0, 255, .4)',
+
+      }&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref3?.$el&quot;
+
+      title=&quot;Other Actions&quot;
+
+      description=&quot;Click to see other&quot;
+
+      :mask=&quot;false&quot;
+
+    /&gt;
+
+  &lt;/el-tour&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { MoreFilled } from '@element-plus/icons-vue'
+
+import type { ButtonInstance } from 'element-plus'
+
+const ref1 = ref&lt;ButtonInstance&gt;()
+
+const ref2 = ref&lt;ButtonInstance&gt;()
+
+const ref3 = ref&lt;ButtonInstance&gt;()
+
+const open = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义指示器</h2>
+<p>自定义指示器。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;open = true&quot;&gt;Begin Tour&lt;/el-button&gt;
+
+  &lt;el-divider /&gt;
+
+  &lt;el-space&gt;
+
+    &lt;el-button ref=&quot;ref1&quot;&gt;Upload&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref2&quot; type=&quot;primary&quot;&gt;Save&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;ref3&quot; :icon=&quot;MoreFilled&quot; /&gt;
+
+  &lt;/el-space&gt;
+
+  &lt;el-tour v-model=&quot;open&quot;&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref1?.$el&quot;
+
+      title=&quot;Upload File&quot;
+
+      description=&quot;Put you files here.&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref2?.$el&quot;
+
+      title=&quot;Save&quot;
+
+      description=&quot;Save your changes&quot;
+
+    /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;ref3?.$el&quot;
+
+      title=&quot;Other Actions&quot;
+
+      description=&quot;Click to see other&quot;
+
+    /&gt;
+
+    &lt;template #indicators=&quot;{ current, total }&quot;&gt;
+
+      &lt;span&gt;{{ current + 1 }} / {{ total }}&lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-tour&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { MoreFilled } from '@element-plus/icons-vue'
+
+import type { ButtonInstance } from 'element-plus'
+
+const ref1 = ref&lt;ButtonInstance&gt;()
+
+const ref2 = ref&lt;ButtonInstance&gt;()
+
+const ref3 = ref&lt;ButtonInstance&gt;()
+
+const open = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>目标</h2>
+<p>可以传入目标的各种类型的参数。自2.5.2以来支持字符串和函数类型。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;open = true&quot;&gt;Begin Tour&lt;/el-button&gt;
+
+  &lt;el-divider /&gt;
+
+  &lt;el-space&gt;
+
+    &lt;el-button id=&quot;btn1&quot;&gt;Upload&lt;/el-button&gt;
+
+    &lt;el-button id=&quot;btn2&quot; type=&quot;primary&quot;&gt;Save&lt;/el-button&gt;
+
+    &lt;el-button ref=&quot;btnRef&quot; :icon=&quot;MoreFilled&quot; /&gt;
+
+  &lt;/el-space&gt;
+
+  &lt;el-tour v-model=&quot;open&quot;&gt;
+
+    &lt;el-tour-step
+
+      target=&quot;#btn1&quot;
+
+      title=&quot;Upload File&quot;
+
+      description=&quot;Put you files here.&quot;
+
+    /&gt;
+
+    &lt;el-tour-step :target=&quot;el&quot; title=&quot;Save&quot; description=&quot;Save your changes&quot; /&gt;
+
+    &lt;el-tour-step
+
+      :target=&quot;btnRef?.$el&quot;
+
+      title=&quot;Other Actions&quot;
+
+      description=&quot;Click to see other&quot;
+
+    /&gt;
+
+  &lt;/el-tour&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { MoreFilled } from '@element-plus/icons-vue'
+
+import type { ButtonInstance } from 'element-plus'
+
+const el = () =&gt; document.querySelector&lt;HTMLElement&gt;('#btn2')
+
+const btnRef = ref&lt;ButtonInstance&gt;()
+
+const open = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>Tour API</h2>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>tour-step 组件上相同名称配置的优先级更高。</p>
+</blockquote>
+<h3>Tour Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>append-to</td>
+<td>挂载到哪个 DOM 元素</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td><code>body</code></td>
+</tr>
+<tr>
+<td>show-arrow</td>
+<td>是否显示箭头</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>引导卡片相对于目标元素的位置</td>
+<td><code>enum</code></td>
+<td><code>bottom</code></td>
+</tr>
+<tr>
+<td>content-style</td>
+<td>为content自定义样式</td>
+<td><code>CSSProperties</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>mask</td>
+<td>是否启用遮罩，通过自定义属性改变遮罩样式以及填充的颜色</td>
+<td><code>boolean</code></td>
+<td><code>Object</code></td>
+</tr>
+<tr>
+<td>gap</td>
+<td>遮罩和目标之间的透明的间距</td>
+<td><code>TourGap</code></td>
+<td><code>Object</code></td>
+</tr>
+<tr>
+<td>type</td>
+<td>类型，影响底色与文字颜色</td>
+<td><code>default</code></td>
+<td><code>primary</code></td>
+</tr>
+<tr>
+<td>model-value / v-model</td>
+<td>打开引导</td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>current / v-model:current</td>
+<td>当前值</td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>scroll-into-view-options</td>
+<td>是否支持当前元素滚动到视窗内，也可传入配置指定滚动视窗的相关参数</td>
+<td><code>boolean</code></td>
+<td><code>ScrollIntoViewOptions</code></td>
+</tr>
+<tr>
+<td>z-index</td>
+<td>Tour 的层级</td>
+<td><code>number</code></td>
+<td><code>2001</code></td>
+</tr>
+<tr>
+<td>show-close</td>
+<td>是否显示关闭按钮</td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>close-icon</td>
+<td>自定义关闭图标，默认Close</td>
+<td><code>string</code></td>
+<td><code>Component</code></td>
+</tr>
+<tr>
+<td>close-on-press-escape</td>
+<td>是否可以通过按下 ESC 关闭引导</td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>target-area-clickable</td>
+<td>启用蒙层时，target 元素区域是否可以点击。</td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Tour slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>tourStep 组件列表</td>
+<td>—</td>
+</tr>
+<tr>
+<td>indicators</td>
+<td>自定义指示器</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Tour events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>描述</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>关闭引导时的回调函数</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>finish</td>
+<td>引导完成时的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>change</td>
+<td>步骤改变时的回调</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>TourStep API</h2>
+<h3>TourStep Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+<th>事件参数</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>获取引导卡片指向的元素，为空时居中于屏幕。自2.5.2以来支持字符串和函数类型。字符串类型是文档.querySelector的选择器。</td>
+<td><code>HTMLElement</code></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>show-arrow</td>
+<td>是否显示箭头</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>title</td>
+<td>title</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>description</td>
+<td>description</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>引导卡片相对于目标元素的位置</td>
+<td><code>enum</code></td>
+<td><code>bottom</code></td>
+</tr>
+<tr>
+<td>content-style</td>
+<td>为content自定义样式</td>
+<td><code>CSSProperties</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>mask</td>
+<td>是否启用蒙层，也可传入配置改变蒙层样式和填充色</td>
+<td><code>boolean</code></td>
+<td><code>Object</code></td>
+</tr>
+<tr>
+<td>type</td>
+<td>类型，影响底色与文字颜色</td>
+<td><code>default</code></td>
+<td><code>primary</code></td>
+</tr>
+<tr>
+<td>next-button-props</td>
+<td>“下一步”按钮的属性</td>
+<td><code>Object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>prev-button-props</td>
+<td>“上一步”按钮的属性</td>
+<td><code>Object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>scroll-into-view-options</td>
+<td>是否支持当前元素滚动到视窗内，也可传入配置指定滚动视窗的相关参数，默认跟随 Tour 的 <code>scrollIntoViewOptions</code> 属性</td>
+<td><code>boolean</code></td>
+<td><code>ScrollIntoViewOptions</code></td>
+</tr>
+<tr>
+<td>show-close</td>
+<td>是否显示关闭按钮</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>close-icon</td>
+<td>自定义关闭图标，默认Close</td>
+<td><code>string</code></td>
+<td><code>Component</code></td>
+</tr>
+</tbody>
+</table>
+<h3>TourStep slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义描述</td>
+</tr>
+<tr>
+<td>header</td>
+<td>自定义 header 内容</td>
+</tr>
+</tbody>
+</table>
+<h3>TourStep events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>描述</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>关闭引导时的回调函数</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<div><div ref="target1" style="border:1px solid #ccc;padding:8px;display:inline-block">第一个目标</div><div ref="target2" style="border:1px solid #ccc;padding:8px;display:inline-block;margin-left:16px">第二个目标</div></div><div class="mt-4"><el-button type="primary" @click="open">开始引导</el-button></div><el-tour :model-value="visible"><el-tour-step title="第一步" description="这里是目标一" :target="targets[0]" /><el-tour-step title="第二步" description="这里是目标二" :target="targets[1]" /></el-tour>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const targets = [Vue.ref(null), Vue.ref(null)]; const visible = Vue.ref(false);function open(){ visible.value = true; } return { targets, visible, open };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

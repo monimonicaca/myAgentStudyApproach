@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabs 标签页 · Element Plus 演示</title>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #ebeef5;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.topbar h1{margin:0;font-size:18px;font-weight:600}
+.topbar .tag{margin-left:auto;font-size:12px;color:#909399}
+.topbar a{color:#409EFF;text-decoration:none;font-size:13px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #ebeef5;padding:0 20px}
+.tab{padding:12px 20px;cursor:pointer;border:none;background:none;font-size:14px;color:#606266;border-bottom:2px solid transparent}
+.tab.active{color:#409EFF;border-bottom-color:#409EFF;font-weight:600}
+.panel{display:none;padding:20px}
+.panel.active{display:block}
+.demo-card{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:20px;min-height:120px}
+.demo-card .flex{display:flex;align-items:center}
+.demo-card .gap-2{gap:8px}.demo-card .gap-3{gap:12px}.demo-card .gap-4{gap:16px}
+.demo-card .mt-2{margin-top:12px}.demo-card .mt-4{margin-top:20px}
+.demo-card .bg-el{background:#ecf5ff;border:1px solid #d3dce6;border-radius:4px;text-align:center;padding:8px}
+.demo-card .grid-content{background:#ecf5ff;border-radius:4px;text-align:center;height:36px;line-height:36px}
+.demo-card .h-full{height:100%}
+.hint{margin:14px 0 0;font-size:12px;color:#909399}
+.markdown-body{background:#fff;border:1px solid #ebeef5;border-radius:8px;padding:24px 28px;line-height:1.7;font-size:14px}
+.markdown-body h1{font-size:24px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:20px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body h4{font-size:14px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Tabs 标签页</h1>
+  <a href="index.html" style="margin-left:6px">↩ 全部组件</a>
+  <span class="tag">Element Plus 组件演示</span>
+</header>
+<div class="tabs">
+  <button class="tab active" data-t="demo">在线演示</button>
+  <button class="tab" data-t="doc">文档参考</button>
+</div>
+<section id="demo" class="panel active"><div class="demo-card"><div id="app"></div></div><p class="hint">提示：以下演示需要联网加载 Vue3 与 Element Plus CDN；展开“文档参考”可查看完整用法与 API。</p></section>
+<section id="doc" class="panel"><div class="markdown-body"><h1>Tabs 标签页</h1>
+<p>分隔内容上有关联但属于不同类别的数据集合。</p>
+<h2>基础用法</h2>
+<p>基础的、简洁的标签页。</p>
+<p>Tabs 组件提供了选项卡功能，默认选中第一个标签页，你也可以通过 <code>value</code> 属性来指定当前选中的标签页。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tabs v-model=&quot;activeName&quot; class=&quot;demo-tabs&quot; @tab-click=&quot;handleClick&quot;&gt;
+
+    &lt;el-tab-pane label=&quot;User&quot; name=&quot;first&quot;&gt;User&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Config&quot; name=&quot;second&quot;&gt;Config&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Role&quot; name=&quot;third&quot;&gt;Role&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Task&quot; name=&quot;fourth&quot;&gt;Task&lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TabsPaneContext } from 'element-plus'
+
+const activeName = ref('first')
+
+const handleClick = (tab: TabsPaneContext, event: Event) =&gt; {
+
+  console.log(tab, event)
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>卡片风格的标签</h2>
+<p>你可以设置具有卡片风格的标签。</p>
+<p>只需要设置 <code>type</code> 属性为 <code>card</code> 就可以使选项卡改变为标签风格。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tabs
+
+    v-model=&quot;activeName&quot;
+
+    type=&quot;card&quot;
+
+    class=&quot;demo-tabs&quot;
+
+    @tab-click=&quot;handleClick&quot;
+
+  &gt;
+
+    &lt;el-tab-pane label=&quot;User&quot; name=&quot;first&quot;&gt;User&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Config&quot; name=&quot;second&quot;&gt;Config&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Role&quot; name=&quot;third&quot;&gt;Role&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Task&quot; name=&quot;fourth&quot;&gt;Task&lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TabsPaneContext } from 'element-plus'
+
+const activeName = ref('first')
+
+const handleClick = (tab: TabsPaneContext, event: Event) =&gt; {
+
+  console.log(tab, event)
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>带有边框的卡片风格</h2>
+<p>你还可以设置标签页为带有边框的卡片</p>
+<p>将 <code>type</code> 设置为 <code>border-card</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tabs type=&quot;border-card&quot;&gt;
+
+    &lt;el-tab-pane label=&quot;User&quot;&gt;User&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Config&quot;&gt;Config&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Role&quot;&gt;Role&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Task&quot;&gt;Task&lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>标签位置的设置</h2>
+<p>可以通过 <code>tab-position</code> 设置标签的位置</p>
+<p>标签一共有四个方向的设置 <code>tabPosition="left|right|top|bottom"</code></p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-radio-group v-model=&quot;tabPosition&quot; style=&quot;margin-bottom: 30px&quot;&gt;
+
+    &lt;el-radio-button value=&quot;top&quot;&gt;top&lt;/el-radio-button&gt;
+
+    &lt;el-radio-button value=&quot;right&quot;&gt;right&lt;/el-radio-button&gt;
+
+    &lt;el-radio-button value=&quot;bottom&quot;&gt;bottom&lt;/el-radio-button&gt;
+
+    &lt;el-radio-button value=&quot;left&quot;&gt;left&lt;/el-radio-button&gt;
+
+  &lt;/el-radio-group&gt;
+
+  &lt;el-tabs :tab-position=&quot;tabPosition&quot; style=&quot;height: 200px&quot; class=&quot;demo-tabs&quot;&gt;
+
+    &lt;el-tab-pane label=&quot;User&quot;&gt;User&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Config&quot;&gt;Config&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Role&quot;&gt;Role&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Task&quot;&gt;Task&lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TabsInstance } from 'element-plus'
+
+const tabPosition = ref&lt;TabsInstance['tabPosition']&gt;('left')
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+.el-tabs--right .el-tabs__content,
+
+.el-tabs--left .el-tabs__content {
+
+  height: 100%;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义标签页的内容</h2>
+<p>可以通过具名插槽来实现自定义标签页的内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tabs type=&quot;border-card&quot; class=&quot;demo-tabs&quot;&gt;
+
+    &lt;el-tab-pane&gt;
+
+      &lt;template #label&gt;
+
+        &lt;span class=&quot;custom-tabs-label&quot;&gt;
+
+          &lt;el-icon&gt;&lt;calendar /&gt;&lt;/el-icon&gt;
+
+          &lt;span&gt;Route&lt;/span&gt;
+
+        &lt;/span&gt;
+
+      &lt;/template&gt;
+
+      Route
+
+    &lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Config&quot;&gt;Config&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Role&quot;&gt;Role&lt;/el-tab-pane&gt;
+
+    &lt;el-tab-pane label=&quot;Task&quot;&gt;Task&lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { Calendar } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+.demo-tabs .custom-tabs-label .el-icon {
+
+  vertical-align: middle;
+
+}
+
+.demo-tabs .custom-tabs-label span {
+
+  vertical-align: middle;
+
+  margin-left: 4px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>动态增减标签页</h2>
+<p>增减标签页按钮只能在选项卡样式的标签页下使用</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tabs
+
+    v-model=&quot;editableTabsValue&quot;
+
+    type=&quot;card&quot;
+
+    editable
+
+    class=&quot;demo-tabs&quot;
+
+    @edit=&quot;handleTabsEdit&quot;
+
+  &gt;
+
+    &lt;el-tab-pane
+
+      v-for=&quot;item in editableTabs&quot;
+
+      :key=&quot;item.name&quot;
+
+      :label=&quot;item.title&quot;
+
+      :name=&quot;item.name&quot;
+
+    &gt;
+
+      {{ item.content }}
+
+    &lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TabPaneName } from 'element-plus'
+
+let tabIndex = 2
+
+const editableTabsValue = ref('2')
+
+const editableTabs = ref([
+
+  {
+
+    title: 'Tab 1',
+
+    name: '1',
+
+    content: 'Tab 1 content',
+
+  },
+
+  {
+
+    title: 'Tab 2',
+
+    name: '2',
+
+    content: 'Tab 2 content',
+
+  },
+
+])
+
+const handleTabsEdit = (
+
+  targetName: TabPaneName | undefined,
+
+  action: 'remove' | 'add'
+
+) =&gt; {
+
+  if (action === 'add') {
+
+    const newTabName = `${++tabIndex}`
+
+    editableTabs.value.push({
+
+      title: 'New Tab',
+
+      name: newTabName,
+
+      content: 'New Tab content',
+
+    })
+
+    editableTabsValue.value = newTabName
+
+  } else if (action === 'remove') {
+
+    const tabs = editableTabs.value
+
+    let activeName = editableTabsValue.value
+
+    if (activeName === targetName) {
+
+      tabs.forEach((tab, index) =&gt; {
+
+        if (tab.name === targetName) {
+
+          const nextTab = tabs[index + 1] || tabs[index - 1]
+
+          if (nextTab) {
+
+            activeName = nextTab.name
+
+          }
+
+        }
+
+      })
+
+    }
+
+    editableTabsValue.value = activeName
+
+    editableTabs.value = tabs.filter((tab) =&gt; tab.name !== targetName)
+
+  }
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>添加按钮自定义图标 2.4.0</h2>
+<pre><code class="language-vue">addIcon
+
+&lt;template&gt;
+
+  &lt;el-tabs
+
+    v-model=&quot;editableTabsValue&quot;
+
+    type=&quot;card&quot;
+
+    class=&quot;demo-tabs&quot;
+
+    editable
+
+    @edit=&quot;handleTabsEdit&quot;
+
+  &gt;
+
+    &lt;template #add-icon&gt;
+
+      &lt;el-icon&gt;&lt;Select /&gt;&lt;/el-icon&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-tab-pane
+
+      v-for=&quot;item in editableTabs&quot;
+
+      :key=&quot;item.name&quot;
+
+      :label=&quot;item.title&quot;
+
+      :name=&quot;item.name&quot;
+
+    &gt;
+
+      {{ item.content }}
+
+    &lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { Select } from '@element-plus/icons-vue'
+
+import type { TabPaneName } from 'element-plus'
+
+let tabIndex = 2
+
+const editableTabsValue = ref('2')
+
+const editableTabs = ref([
+
+  {
+
+    title: 'Tab 1',
+
+    name: '1',
+
+    content: 'Tab 1 content',
+
+  },
+
+  {
+
+    title: 'Tab 2',
+
+    name: '2',
+
+    content: 'Tab 2 content',
+
+  },
+
+])
+
+const handleTabsEdit = (
+
+  targetName: TabPaneName | undefined,
+
+  action: 'remove' | 'add'
+
+) =&gt; {
+
+  if (action === 'add') {
+
+    const newTabName = `${++tabIndex}`
+
+    editableTabs.value.push({
+
+      title: 'New Tab',
+
+      name: newTabName,
+
+      content: 'New Tab content',
+
+    })
+
+    editableTabsValue.value = newTabName
+
+  } else if (action === 'remove') {
+
+    const tabs = editableTabs.value
+
+    let activeName = editableTabsValue.value
+
+    if (activeName === targetName) {
+
+      tabs.forEach((tab, index) =&gt; {
+
+        if (tab.name === targetName) {
+
+          const nextTab = tabs[index + 1] || tabs[index - 1]
+
+          if (nextTab) {
+
+            activeName = nextTab.name
+
+          }
+
+        }
+
+      })
+
+    }
+
+    editableTabsValue.value = activeName
+
+    editableTabs.value = tabs.filter((tab) =&gt; tab.name !== targetName)
+
+  }
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>增加标签页触发器自定义</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;margin-bottom: 20px&quot;&gt;
+
+    &lt;el-button size=&quot;small&quot; @click=&quot;addTab(editableTabsValue)&quot;&gt;
+
+      add tab
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-tabs
+
+    v-model=&quot;editableTabsValue&quot;
+
+    type=&quot;card&quot;
+
+    class=&quot;demo-tabs&quot;
+
+    closable
+
+    @tab-remove=&quot;removeTab&quot;
+
+  &gt;
+
+    &lt;el-tab-pane
+
+      v-for=&quot;item in editableTabs&quot;
+
+      :key=&quot;item.name&quot;
+
+      :label=&quot;item.title&quot;
+
+      :name=&quot;item.name&quot;
+
+    &gt;
+
+      {{ item.content }}
+
+    &lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TabPaneName } from 'element-plus'
+
+let tabIndex = 2
+
+const editableTabsValue = ref('2')
+
+const editableTabs = ref([
+
+  {
+
+    title: 'Tab 1',
+
+    name: '1',
+
+    content: 'Tab 1 content',
+
+  },
+
+  {
+
+    title: 'Tab 2',
+
+    name: '2',
+
+    content: 'Tab 2 content',
+
+  },
+
+])
+
+const addTab = (targetName: string) =&gt; {
+
+  const newTabName = `${++tabIndex}`
+
+  editableTabs.value.push({
+
+    title: 'New Tab',
+
+    name: newTabName,
+
+    content: 'New Tab content',
+
+  })
+
+  editableTabsValue.value = newTabName
+
+}
+
+const removeTab = (targetName: TabPaneName) =&gt; {
+
+  const tabs = editableTabs.value
+
+  let activeName = editableTabsValue.value
+
+  if (activeName === targetName) {
+
+    tabs.forEach((tab, index) =&gt; {
+
+      if (tab.name === targetName) {
+
+        const nextTab = tabs[index + 1] || tabs[index - 1]
+
+        if (nextTab) {
+
+          activeName = nextTab.name
+
+        }
+
+      }
+
+    })
+
+  }
+
+  editableTabsValue.value = activeName
+
+  editableTabs.value = tabs.filter((tab) =&gt; tab.name !== targetName)
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>默认值2.11.9</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tabs
+
+    v-model=&quot;activeName&quot;
+
+    class=&quot;demo-tabs&quot;
+
+    default-value=&quot;third&quot;
+
+    @tab-click=&quot;handleClick&quot;
+
+  &gt;
+
+    &lt;el-tab-pane
+
+      v-for=&quot;tab in tabs&quot;
+
+      :key=&quot;tab.name&quot;
+
+      :label=&quot;tab.label&quot;
+
+      :name=&quot;tab.name&quot;
+
+    &gt;
+
+      default-value: third
+
+      &lt;br /&gt;
+
+      active: {{ activeName }}
+
+    &lt;/el-tab-pane&gt;
+
+  &lt;/el-tabs&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TabsPaneContext } from 'element-plus'
+
+const tabs = ref([
+
+  { label: 'User', name: 'first' },
+
+  { label: 'Config', name: 'second' },
+
+  { label: 'Role', name: 'third' },
+
+  { label: 'Task', name: 'fourth' },
+
+])
+
+const activeName = ref()
+
+const handleClick = (tab: TabsPaneContext, event: Event) =&gt; {
+
+  console.log(tab, event)
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-tabs &gt; .el-tabs__content {
+
+  padding: 32px;
+
+  color: #6b778c;
+
+  font-size: 32px;
+
+  font-weight: 600;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>Tabs API</h2>
+<h3>Tabs Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>绑定值，选中选项卡的 name，默认值是第一个 tab 的 name</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>default-value 2.11.9</td>
+<td>在初始渲染时处于激活状态的标签的值。（避免初始化时变动）</td>
+<td><code>string</code> / <code>number</code></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>风格类型</td>
+<td><code>enum</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>closable</td>
+<td>标签是否可关闭</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>addable</td>
+<td>标签是否可增加</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>editable</td>
+<td>标签是否同时可增加和关闭</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>tab-position</td>
+<td>选项卡所在位置</td>
+<td><code>enum</code></td>
+<td>top</td>
+</tr>
+<tr>
+<td>stretch</td>
+<td>标签的宽度是否自撑开</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>before-leave</td>
+<td>切换标签之前的钩子函数，若返回 <code>false</code> 或者返回被 reject 的 <code>Promise</code>，则阻止切换。</td>
+<td><code>Function</code></td>
+<td>() =&gt; true</td>
+</tr>
+<tr>
+<td>tabindex 2.11.7</td>
+<td>tabs 的 tabindex</td>
+<td><code>string</code> / <code>number</code></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3>Tabs Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>回调参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tab-click</td>
+<td>tab 被选中时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>tab-change</td>
+<td><code>activeName</code> 改变时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>tab-remove</td>
+<td>点击 tab 移除按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>tab-add</td>
+<td>点击 tab 新增按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>edit</td>
+<td>点击 tab 的新增或移除按钮后触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Tabs Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>默认插槽</td>
+<td>Tab-pane</td>
+</tr>
+<tr>
+<td>add-icon 2.5.4</td>
+<td>自定义添加按钮图标</td>
+<td>—</td>
+</tr>
+<tr>
+<td>addIcon 2.4.0 deprecated</td>
+<td>自定义添加按钮图标</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Tabs Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>currentName</td>
+<td>当前活动的面板名称</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>tabNavRef 2.9.10</td>
+<td>tab-nav 组件实例</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Tab-nav API</h2>
+<h3>Tab-nav Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scrollToActiveTab</td>
+<td>滚动到活动标签</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>removeFocus</td>
+<td>移除聚焦状态</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>tabListRef 2.9.10</td>
+<td>el_tabs__nav html 元素</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>tabBarRef 2.9.10</td>
+<td>el_tabs__nav bar 实例</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Tab-bar API</h2>
+<h3>Tab-bar Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ref 2.9.10</td>
+<td>选项卡根 HTML 元素</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>update 2.9.10</td>
+<td>手动更新标签栏样式的方法，返回更新后的样式</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Tab-pane API</h2>
+<h3>Tab-pane Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>Type</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>label</td>
+<td>选项卡标题</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>name</td>
+<td>与选项卡绑定值 value 对应的标识符，表示选项卡别名。默认值是tab面板的序列号，如第一个 tab 是 0</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>closable</td>
+<td>标签是否可关闭</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>lazy</td>
+<td>标签是否延迟渲染</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>Tab-pane Slots</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>Tab-pane 的内容</td>
+</tr>
+<tr>
+<td>label</td>
+<td>Tab-pane 的标题内容</td>
+</tr>
+</tbody>
+</table>
+<h2>常见问题</h2>
+<h4>如何使用可排序/可拖动的 tabs？</h4>
+<p>我们已对外暴露了实现该功能所需的必要能力。您可以查看 <a href="https://tinyurl.com/2jkyw82j">示例</a> 来用原生的方式实现。或使用 <a href="https://github.com/SortableJS/Sortable">SortableJs</a>, <a href="https://tinyurl.com/2r8js24y">示例</a>。</p></div></section>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+})();
+</script>
+<script>
+(function() {
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) {
+    document.getElementById('app').innerHTML = '<p style="color:#F56C6C">加载 CDN 失败：请联网后重试。</p>';
+    return;
+  }
+  const tmpl = `<el-tabs v-model="active"><el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane><el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane><el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane></el-tabs>`;
+  const app = Vue.createApp({
+    template: tmpl || '<p style="color:#909399">该组件暂无在线演示，请查看“文档参考”。</p>',
+    setup() {
+const active = Vue.ref("first"); return { active };
+    }
+  });
+  app.use(ElementPlus);
+  for (const k in ElementPlusIconsVue) app.component(k, ElementPlusIconsVue[k]);
+  app.mount('#app');
+})();
+</script>
+</body>
+</html>

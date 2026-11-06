@@ -1,0 +1,87 @@
+
+.tooltip-base-box {
+
+  width: 600px;
+}
+.tooltip-base-box .row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+.tooltip-base-box .center {
+
+  justify-content: center;
+}
+.tooltip-base-box .box-item {
+
+  width: 110px;
+
+  margin-top: 10px;
+}
+
+
+
+
+.el-popper.is-customized {
+
+  /* Set padding to ensure the height is 32px */
+
+  padding: 6px 12px;
+
+  background: linear-gradient(90deg, rgb(159, 229, 151), rgb(204, 229, 129));
+}
+.el-popper.is-customized .el-popper__arrow::before {
+
+  background: linear-gradient(45deg, #b2e68d, #bce689);
+
+  right: 0;
+}
+
+
+
+
+
+
+
+
+.singleton-tooltip {
+
+  transition: transform 0.3s var(--el-transition-function-fast-bezier);
+}
+
+
+
+
+
+.slide-fade-enter-active {
+
+  transition: all 0.3s ease-out;
+}
+.slide-fade-leave-active {
+
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter-from,
+
+.slide-fade-leave-to {
+
+  transform: translateX(120px);
+
+  opacity: 0;
+}
+
+
+
+
+.target[data-v-kjspxh] {
+
+  position: relative;
+
+  margin-top: 20px;
+}
+
+
+

@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Message 消息提示 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/message.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Message 消息提示</h1>
+  <span class="count">7 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（7）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 不同状态</a>
+<a href="#ex-2">3. Plain 2.6.3</a>
+<a href="#ex-3">4. 可关闭的消息提示</a>
+<a href="#ex-4">5. 使用 HTML 片段作为正文内容</a>
+<a href="#ex-5">6. 分组消息合并</a>
+<a href="#ex-6">7. Placement 2.11.0</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open&quot;&gt;
+
+      Show message
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openVn&quot;&gt;VNode&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h } from &#x27;vue&#x27;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+const open = () =&gt; {
+
+  ElMessage(&#x27;This is a message.&#x27;)
+
+}
+
+const openVn = () =&gt; {
+
+  ElMessage({
+
+    message: h(&#x27;p&#x27;, { style: &#x27;line-height: 1; font-size: 14px&#x27; }, [
+
+      h(&#x27;span&#x27;, null, &#x27;Message can be &#x27;),
+
+      h(&#x27;i&#x27;, { style: &#x27;color: teal&#x27; }, &#x27;VNode&#x27;),
+
+    ]),
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>不同状态</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open5&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open2&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open3&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open1&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+const open1 = () =&gt; {
+
+  ElMessage(&#x27;This is a info message.&#x27;)
+
+}
+
+const open2 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;Congrats, this is a success message.&#x27;,
+
+    type: &#x27;success&#x27;,
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;Warning, this is a warning message.&#x27;,
+
+    type: &#x27;warning&#x27;,
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElMessage.error(&#x27;Oops, this is a error message.&#x27;)
+
+}
+
+const open5 = () =&gt; {
+
+  ElMessage.primary(&#x27;This is a primary message.&#x27;)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>Plain 2.6.3</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open5&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open1&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open2&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open3&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+const open1 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;Congrats, this is a success message.&#x27;,
+
+    type: &#x27;success&#x27;,
+
+    plain: true,
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;Warning, this is a warning message.&#x27;,
+
+    type: &#x27;warning&#x27;,
+
+    plain: true,
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;This is a info message.&#x27;,
+
+    type: &#x27;info&#x27;,
+
+    plain: true,
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;Oops, this is a error message.&#x27;,
+
+    type: &#x27;error&#x27;,
+
+    plain: true,
+
+  })
+
+}
+
+const open5 = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;This is a primary message.&#x27;,
+
+    type: &#x27;primary&#x27;,
+
+    plain: true,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>可关闭的消息提示</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open6&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open2&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open3&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open1&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open5&quot;&gt;
+
+      Won&#x27;t close automatically
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+const open1 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: &#x27;This is a info message.&#x27;,
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: &#x27;Congrats, this is a success message.&#x27;,
+
+    type: &#x27;success&#x27;,
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: &#x27;Warning, this is a warning message.&#x27;,
+
+    type: &#x27;warning&#x27;,
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: &#x27;Oops, this is a error message.&#x27;,
+
+    type: &#x27;error&#x27;,
+
+  })
+
+}
+
+const open5 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: &#x27;Oops, this is a message that does not automatically close.&#x27;,
+
+    duration: 0,
+
+  })
+
+}
+
+const open6 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: &#x27;This is a primary message.&#x27;,
+
+    type: &#x27;primary&#x27;,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>使用 HTML 片段作为正文内容</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button :plain=&quot;true&quot; @click=&quot;openHTML&quot;&gt;Use HTML string&lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+const openHTML = () =&gt; {
+
+  ElMessage({
+
+    dangerouslyUseHTMLString: true,
+
+    message: &#x27;&lt;strong&gt;This is &lt;i&gt;HTML&lt;/i&gt; string&lt;/strong&gt;&#x27;,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-5"><h3><span class="idx">6</span>分组消息合并</h3><div class="demo-card"><div class="mount" id="mount-5"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button :plain=&quot;true&quot; @click=&quot;open&quot;&gt;Show message&lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+const open = () =&gt; {
+
+  ElMessage({
+
+    message: &#x27;This is a message.&#x27;,
+
+    grouping: true,
+
+    type: &#x27;success&#x27;,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-6"><h3><span class="idx">7</span>Placement 2.11.0</h3><div class="demo-card"><div class="mount" id="mount-6"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg()&quot;&gt; Top &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg(&#x27;top-left&#x27;)&quot;&gt;
+
+      Top Left
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg(&#x27;top-right&#x27;)&quot;&gt;
+
+      Top Right
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg(&#x27;bottom&#x27;)&quot;&gt;
+
+      Bottom
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg(&#x27;bottom-left&#x27;)&quot;&gt;
+
+      Bottom Left
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg(&#x27;bottom-right&#x27;)&quot;&gt;
+
+      Bottom Right
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+import type { MessagePlacement, MessageType } from &#x27;element-plus&#x27;
+
+let topCount = 0
+
+let bottomCount = 0
+
+let topLeftCount = 0
+
+let topRightCount = 0
+
+let bottomLeftCount = 0
+
+let bottomRightCount = 0
+
+const openMsg = (placement: MessagePlacement = &#x27;top&#x27;) =&gt; {
+
+  let count = 0
+
+  let type: MessageType = &#x27;success&#x27;
+
+  switch (placement) {
+
+    case &#x27;top&#x27;:
+
+      count = ++topCount
+
+      type = &#x27;success&#x27;
+
+      break
+
+    case &#x27;bottom&#x27;:
+
+      count = ++bottomCount
+
+      type = &#x27;warning&#x27;
+
+      break
+
+    case &#x27;top-left&#x27;:
+
+      count = ++topLeftCount
+
+      type = &#x27;info&#x27;
+
+      break
+
+    case &#x27;top-right&#x27;:
+
+      count = ++topRightCount
+
+      type = &#x27;primary&#x27;
+
+      break
+
+    case &#x27;bottom-left&#x27;:
+
+      count = ++bottomLeftCount
+
+      type = &#x27;warning&#x27;
+
+      break
+
+    case &#x27;bottom-right&#x27;:
+
+      count = ++bottomRightCount
+
+      type = &#x27;error&#x27;
+
+      break
+
+  }
+
+  ElMessage({
+
+    message: `This is a message from the ${placement} ${count}`,
+
+    type,
+
+    placement,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Message 消息提示</h1>
+<p>常用于主动操作后的反馈提示。与 Notification 的区别是后者更多用于系统级通知的被动提醒。</p>
+<h2>基础用法</h2>
+<p>默认情况下在顶部显示并在 3 秒后消失。您可以使用 <code>placement</code> 属性控制位置。</p>
+<p>Message 在配置上与 Notification 非常类似，所以部分 options 在此不做详尽解释。文末有 options 列表，可以结合 Notification 的文档理解它们。 Element Plus 注册了一个全局的 <code>$message</code>方法用于调用。 Message 可以接收一个字符串或一个 VNode 作为参数，它会被显示为正文内容。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open&quot;&gt;
+
+      Show message
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openVn&quot;&gt;VNode&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h } from 'vue'
+
+import { ElMessage } from 'element-plus'
+
+const open = () =&gt; {
+
+  ElMessage('This is a message.')
+
+}
+
+const openVn = () =&gt; {
+
+  ElMessage({
+
+    message: h('p', { style: 'line-height: 1; font-size: 14px' }, [
+
+      h('span', null, 'Message can be '),
+
+      h('i', { style: 'color: teal' }, 'VNode'),
+
+    ]),
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>不同状态</h2>
+<p>Used to show the feedback of Primary, Success, Warning, Info and Error activities.</p>
+<p>当需要自定义更多属性时，Message 也可以接收一个对象为参数。比如，设置 <code>type</code> 字段可以定义不同的状态，默认为<code>info</code>。此时正文内容以 <code>message</code> 的值传入。同时，我们也为 Message 的各种 type 注册了方法，可以在不传入 type 字段的情况下像 <code>open4</code> 那样直接调用。 <code>primary</code> 已被添加到2.9.11。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open5&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open2&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open3&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open1&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+const open1 = () =&gt; {
+
+  ElMessage('This is a info message.')
+
+}
+
+const open2 = () =&gt; {
+
+  ElMessage({
+
+    message: 'Congrats, this is a success message.',
+
+    type: 'success',
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElMessage({
+
+    message: 'Warning, this is a warning message.',
+
+    type: 'warning',
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElMessage.error('Oops, this is a error message.')
+
+}
+
+const open5 = () =&gt; {
+
+  ElMessage.primary('This is a primary message.')
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>Plain 2.6.3</h2>
+<p>设置 <code>plain</code> 为 plain 背景。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open5&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open1&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open2&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open3&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+const open1 = () =&gt; {
+
+  ElMessage({
+
+    message: 'Congrats, this is a success message.',
+
+    type: 'success',
+
+    plain: true,
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElMessage({
+
+    message: 'Warning, this is a warning message.',
+
+    type: 'warning',
+
+    plain: true,
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElMessage({
+
+    message: 'This is a info message.',
+
+    type: 'info',
+
+    plain: true,
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElMessage({
+
+    message: 'Oops, this is a error message.',
+
+    type: 'error',
+
+    plain: true,
+
+  })
+
+}
+
+const open5 = () =&gt; {
+
+  ElMessage({
+
+    message: 'This is a primary message.',
+
+    type: 'primary',
+
+    plain: true,
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>可关闭的消息提示</h2>
+<p>可以添加关闭按钮。</p>
+<p>默认的 Message 是不可以被人工关闭的。如果你需要手动关闭功能，你可以把 <code>showClose</code> 设置为 true 此外，和 Notification 一样，Message 拥有可控的 <code>duration</code>，默认的关闭时间为 3000 毫秒，当把这个属性的值设置为<code>0</code>便表示该消息不会被自动关闭。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open6&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open2&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open3&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open1&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;open5&quot;&gt;
+
+      Won't close automatically
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+const open1 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: 'This is a info message.',
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: 'Congrats, this is a success message.',
+
+    type: 'success',
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: 'Warning, this is a warning message.',
+
+    type: 'warning',
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: 'Oops, this is a error message.',
+
+    type: 'error',
+
+  })
+
+}
+
+const open5 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: 'Oops, this is a message that does not automatically close.',
+
+    duration: 0,
+
+  })
+
+}
+
+const open6 = () =&gt; {
+
+  ElMessage({
+
+    showClose: true,
+
+    message: 'This is a primary message.',
+
+    type: 'primary',
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>使用 HTML 片段作为正文内容</h2>
+<p><code>message</code> 还支持使用 HTML 字符串作为正文内容。</p>
+<p>将<code>dangerouslyUseHTMLString</code>属性设置为 true,<code>message</code> 就会被当作 HTML 片段处理。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button :plain=&quot;true&quot; @click=&quot;openHTML&quot;&gt;Use HTML string&lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+const openHTML = () =&gt; {
+
+  ElMessage({
+
+    dangerouslyUseHTMLString: true,
+
+    message: '&lt;strong&gt;This is &lt;i&gt;HTML&lt;/i&gt; string&lt;/strong&gt;',
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>message</code> 属性虽然支持传入 HTML 片段，但是在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS 攻击</a>。因此在 <code>dangerouslyUseHTMLString</code> 打开的情况下，请确保 <code>message</code> 的内容是可信的，<strong>永远不要</strong>将用户提交的内容赋值给 <code>message</code> 属性。</p>
+</blockquote>
+<h2>分组消息合并</h2>
+<p>合并相同内容的消息。</p>
+<p>设置 <code>grouping</code> 为 true，内容相同的 <code>message</code> 将被合并。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button :plain=&quot;true&quot; @click=&quot;open&quot;&gt;Show message&lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+const open = () =&gt; {
+
+  ElMessage({
+
+    message: 'This is a message.',
+
+    grouping: true,
+
+    type: 'success',
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>Placement 2.11.0</h2>
+<p>控制消息出现的位置。消息可以显示在查看端口的顶部(默认) 或其他位置。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg()&quot;&gt; Top &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg('top-left')&quot;&gt;
+
+      Top Left
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg('top-right')&quot;&gt;
+
+      Top Right
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg('bottom')&quot;&gt;
+
+      Bottom
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg('bottom-left')&quot;&gt;
+
+      Bottom Left
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; :plain=&quot;true&quot; @click=&quot;openMsg('bottom-right')&quot;&gt;
+
+      Bottom Right
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElMessage } from 'element-plus'
+
+import type { MessagePlacement, MessageType } from 'element-plus'
+
+let topCount = 0
+
+let bottomCount = 0
+
+let topLeftCount = 0
+
+let topRightCount = 0
+
+let bottomLeftCount = 0
+
+let bottomRightCount = 0
+
+const openMsg = (placement: MessagePlacement = 'top') =&gt; {
+
+  let count = 0
+
+  let type: MessageType = 'success'
+
+  switch (placement) {
+
+    case 'top':
+
+      count = ++topCount
+
+      type = 'success'
+
+      break
+
+    case 'bottom':
+
+      count = ++bottomCount
+
+      type = 'warning'
+
+      break
+
+    case 'top-left':
+
+      count = ++topLeftCount
+
+      type = 'info'
+
+      break
+
+    case 'top-right':
+
+      count = ++topRightCount
+
+      type = 'primary'
+
+      break
+
+    case 'bottom-left':
+
+      count = ++bottomLeftCount
+
+      type = 'warning'
+
+      break
+
+    case 'bottom-right':
+
+      count = ++bottomRightCount
+
+      type = 'error'
+
+      break
+
+  }
+
+  ElMessage({
+
+    message: `This is a message from the ${placement} ${count}`,
+
+    type,
+
+    placement,
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>全局方法</h2>
+<p>Element Plus 为 <code>app.config.globalProperties</code> 添加了全局方法 <code>$message</code>。因此在 vue 实例中你可以使用当前页面中的调用方式调用 <code>Message</code></p>
+<h2>单独引用</h2>
+<p>ts</p>
+<p><code>import { ElMessage } from 'element-plus'</code></p>
+<p>此时调用方法为 <code>ElMessage(options)</code>。我们也为每个 type 定义了各自的方法，如 <code>ElMessage.success(options)</code>。并且可以调用 <code>ElMessage.closeAll()</code> 手动关闭所有实例。</p>
+<h2>应用程序上下文继承 2.0.3</h2>
+<p>现在 Message 接受一条 <code>context</code> 作为消息构造器的第二个参数，允许你将当前应用的上下文注入到 Message 中，这将允许你继承应用程序的所有属性。</p>
+<p>你可以像这样使用它：</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>如果您全局注册了 ElMessage 组件，它将自动继承应用的上下文环境。</p>
+</blockquote>
+<p>ts</p>
+<p>`import { getCurrentInstance } from 'vue'</p>
+<p>import { ElMessage } from 'element-plus'</p>
+<p>// 在你的 setup 方法中</p>
+<p>const { appContext } = getCurrentInstance()!</p>
+<p>ElMessage({}, appContext)`</p>
+<h2>API</h2>
+<h3>Message 配置项</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>message</td>
+<td>消息文字</td>
+<td><code>string</code> / <code>VNode</code> / <code>Function</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>type</td>
+<td>消息类型</td>
+<td><code>enum</code></td>
+<td>info</td>
+</tr>
+<tr>
+<td>plain 2.6.3</td>
+<td>是否纯色</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>自定义图标，该属性会覆盖 <code>type</code> 的图标。</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>dangerouslyUseHTMLString</td>
+<td>是否将 message 属性作为 HTML 片段处理</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>customClass</td>
+<td>自定义类名</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>显示时间，单位为毫秒。设为 0 则不会自动关闭</td>
+<td><code>number</code></td>
+<td>3000</td>
+</tr>
+<tr>
+<td>showClose</td>
+<td>是否显示关闭按钮</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>onClose</td>
+<td>关闭时的回调函数, 参数为被关闭的 message 实例</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>设置到视口边缘的距离（当位置为'top'时为顶部，当位置为'bottom'时为底部）</td>
+<td><code>number</code></td>
+<td>16</td>
+</tr>
+<tr>
+<td>placement 2.11.0</td>
+<td>消息放置位置</td>
+<td><code>enum</code></td>
+<td>top</td>
+</tr>
+<tr>
+<td>appendTo</td>
+<td>设置 message 的根元素，默认为 <code>document.body</code></td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>grouping</td>
+<td>合并内容相同的消息，不支持 VNode 类型的消息</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>repeatNum</td>
+<td>重复次数，类似于 Badge 。当和 <code>grouping</code> 属性一起使用时作为初始数量使用</td>
+<td><code>number</code></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3>Message 方法</h3>
+<p>调用 <code>Message</code> 或 <code>this.$message</code> 会返回当前 Message 的实例。如果需要手动关闭实例，可以调用它的 <code>close</code> 方法。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>关闭当前的 Message</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/message.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["message"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

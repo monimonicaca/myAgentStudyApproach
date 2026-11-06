@@ -1,0 +1,41 @@
+
+
+
+
+.wrapper[data-v-onoisg] {
+
+  display: flex;
+}
+.watermark[data-v-onoisg] {
+
+  display: flex;
+
+  flex: auto;
+}
+.watermark-container[data-v-onoisg] {
+
+  flex: auto;
+}
+.form[data-v-onoisg] {
+
+  width: 330px;
+
+  margin-left: 20px;
+
+  border-left: 1px solid #eee;
+
+  padding-left: 20px;
+}
+img[data-v-onoisg] {
+
+  z-index: 10;
+
+  width: 100%;
+
+  max-width: 300px;
+
+  position: relative;
+}
+
+
+

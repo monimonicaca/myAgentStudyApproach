@@ -1,0 +1,7524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virtualized Table 虚拟化表格 beta · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/table-v2.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Virtualized Table 虚拟化表格 beta</h1>
+  <span class="count">23 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（23）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 自动调整大小</a>
+<a href="#ex-2">3. 自定义单元格渲染器</a>
+<a href="#ex-3">4. 带有选择的表格</a>
+<a href="#ex-4">5. 可编辑单元格</a>
+<a href="#ex-5">6. 带状态的表格</a>
+<a href="#ex-6">7. 表格行的粘性布局</a>
+<a href="#ex-7">8. 固定列表格</a>
+<a href="#ex-8">9. 表头分组</a>
+<a href="#ex-9">10. 过滤器</a>
+<a href="#ex-10">11. 可排序表格</a>
+<a href="#ex-11">12. 受控的排序</a>
+<a href="#ex-12">13. 高亮显示鼠标悬停单元格</a>
+<a href="#ex-13">14. 横跨列</a>
+<a href="#ex-14">15. 纵跨行</a>
+<a href="#ex-15">16. 同时跨行和跨列</a>
+<a href="#ex-16">17. 树形数据</a>
+<a href="#ex-17">18. 动态高度行</a>
+<a href="#ex-18">19. 可展开的附加信息</a>
+<a href="#ex-19">20. 自定义页脚</a>
+<a href="#ex-20">21. 自定义空元素渲染器</a>
+<a href="#ex-21">22. 浮动遮罩层</a>
+<a href="#ex-22">23. 手动滚动</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 1000)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>自动调整大小</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>自定义单元格渲染器</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import dayjs from &#x27;dayjs&#x27;
+
+import {
+
+  ElButton,
+
+  ElIcon,
+
+  ElTag,
+
+  ElTooltip,
+
+  TableV2FixedDir,
+
+} from &#x27;element-plus&#x27;
+
+import { Timer } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { Column } from &#x27;element-plus&#x27;
+
+let id = 0
+
+const dataGenerator = () =&gt; ({
+
+  id: `random-id-${++id}`,
+
+  name: &#x27;Tom&#x27;,
+
+  date: &#x27;2020-10-1&#x27;,
+
+})
+
+const columns: Column&lt;any&gt;[] = [
+
+  {
+
+    key: &#x27;date&#x27;,
+
+    title: &#x27;Date&#x27;,
+
+    dataKey: &#x27;date&#x27;,
+
+    width: 150,
+
+    fixed: TableV2FixedDir.LEFT,
+
+    cellRenderer: ({ cellData: date }) =&gt; (
+
+      &lt;ElTooltip content={dayjs(date).format(&#x27;YYYY/MM/DD&#x27;)}&gt;
+
+        {
+
+          &lt;span class=&quot;flex items-center&quot;&gt;
+
+            &lt;ElIcon class=&quot;mr-3&quot;&gt;
+
+              &lt;Timer /&gt;
+
+            &lt;/ElIcon&gt;
+
+            {dayjs(date).format(&#x27;YYYY/MM/DD&#x27;)}
+
+          &lt;/span&gt;
+
+        }
+
+      &lt;/ElTooltip&gt;
+
+    ),
+
+  },
+
+  {
+
+    key: &#x27;name&#x27;,
+
+    title: &#x27;Name&#x27;,
+
+    dataKey: &#x27;name&#x27;,
+
+    width: 150,
+
+    align: &#x27;center&#x27;,
+
+    cellRenderer: ({ cellData: name }) =&gt; &lt;ElTag&gt;{name}&lt;/ElTag&gt;,
+
+  },
+
+  {
+
+    key: &#x27;operations&#x27;,
+
+    title: &#x27;Operations&#x27;,
+
+    cellRenderer: () =&gt; (
+
+      &lt;&gt;
+
+        &lt;ElButton size=&quot;small&quot;&gt;Edit&lt;/ElButton&gt;
+
+        &lt;ElButton size=&quot;small&quot; type=&quot;danger&quot;&gt;
+
+          Delete
+
+        &lt;/ElButton&gt;
+
+      &lt;/&gt;
+
+    ),
+
+    width: 150,
+
+    align: &#x27;center&#x27;,
+
+  },
+
+]
+
+const data = ref(Array.from({ length: 200 }).map(dataGenerator))
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>带有选择的表格</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref, unref } from &#x27;vue&#x27;
+
+import { ElCheckbox, useLocale } from &#x27;element-plus&#x27;
+
+import type { FunctionalComponent } from &#x27;vue&#x27;
+
+import type { CheckboxValueType, Column } from &#x27;element-plus&#x27;
+
+type SelectionCellProps = {
+
+  value: boolean
+
+  intermediate?: boolean
+
+  ariaLabel?: string
+
+  onChange: (value: CheckboxValueType) =&gt; void
+
+}
+
+const { t } = useLocale()
+
+const SelectionCell: FunctionalComponent&lt;SelectionCellProps&gt; = ({
+
+  value,
+
+  intermediate = false,
+
+  ariaLabel,
+
+  onChange,
+
+}) =&gt; {
+
+  return (
+
+    &lt;ElCheckbox
+
+      onChange={onChange}
+
+      modelValue={value}
+
+      ariaLabel={ariaLabel}
+
+      indeterminate={intermediate}
+
+    /&gt;
+
+  )
+
+}
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        checked: false,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns: Column&lt;any&gt;[] = generateColumns(10)
+
+columns.unshift({
+
+  key: &#x27;selection&#x27;,
+
+  width: 50,
+
+  cellRenderer: ({ rowData }) =&gt; {
+
+    const onChange = (value: CheckboxValueType) =&gt; (rowData.checked = value)
+
+    return (
+
+      &lt;SelectionCell
+
+        value={rowData.checked}
+
+        ariaLabel={t(&#x27;el.table.selectRowLabel&#x27;)}
+
+        onChange={onChange}
+
+      /&gt;
+
+    )
+
+  },
+
+  headerCellRenderer: () =&gt; {
+
+    const _data = unref(data)
+
+    const onChange = (value: CheckboxValueType) =&gt;
+
+      (data.value = _data.map((row) =&gt; {
+
+        row.checked = value
+
+        return row
+
+      }))
+
+    const allSelected = _data.every((row) =&gt; row.checked)
+
+    const containsChecked = _data.some((row) =&gt; row.checked)
+
+    return (
+
+      &lt;SelectionCell
+
+        value={allSelected}
+
+        intermediate={containsChecked &amp;&amp; !allSelected}
+
+        ariaLabel={t(&#x27;el.table.selectAllLabel&#x27;)}
+
+        onChange={onChange}
+
+      /&gt;
+
+    )
+
+  },
+
+})
+
+const data = ref(generateData(columns, 200))
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>可编辑单元格</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref, withKeys } from &#x27;vue&#x27;
+
+import { ElInput } from &#x27;element-plus&#x27;
+
+import type { FunctionalComponent } from &#x27;vue&#x27;
+
+import type { Column, InputInstance } from &#x27;element-plus&#x27;
+
+type SelectionCellProps = {
+
+  value: string
+
+  intermediate?: boolean
+
+  onChange: (value: string) =&gt; void
+
+  onBlur: () =&gt; void
+
+  onKeydownEnter: () =&gt; void
+
+  forwardRef: (el: InputInstance) =&gt; void
+
+}
+
+const InputCell: FunctionalComponent&lt;SelectionCellProps&gt; = ({
+
+  value,
+
+  onChange,
+
+  onBlur,
+
+  onKeydownEnter,
+
+  forwardRef,
+
+}) =&gt; {
+
+  return (
+
+    &lt;ElInput
+
+      ref={forwardRef as any}
+
+      onInput={onChange}
+
+      onBlur={onBlur}
+
+      onKeydown={withKeys(onKeydownEnter, [&#x27;enter&#x27;])}
+
+      modelValue={value}
+
+    /&gt;
+
+  )
+
+}
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        editing: false,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns: Column&lt;any&gt;[] = generateColumns(10)
+
+columns[0] = {
+
+  ...columns[0],
+
+  title: &#x27;Editable Column&#x27;,
+
+  cellRenderer: ({ rowData, column }) =&gt; {
+
+    const onChange = (value: string) =&gt; {
+
+      rowData[column.dataKey!] = value
+
+    }
+
+    const onEnterEditMode = () =&gt; {
+
+      rowData.editing = true
+
+    }
+
+    const onExitEditMode = () =&gt; (rowData.editing = false)
+
+    const input = ref()
+
+    const setRef = (el) =&gt; {
+
+      input.value = el
+
+      if (el) {
+
+        el.focus?.()
+
+      }
+
+    }
+
+    return rowData.editing ? (
+
+      &lt;InputCell
+
+        forwardRef={setRef}
+
+        value={rowData[column.dataKey!]}
+
+        onChange={onChange}
+
+        onBlur={onExitEditMode}
+
+        onKeydownEnter={onExitEditMode}
+
+      /&gt;
+
+    ) : (
+
+      &lt;div class=&quot;table-v2-inline-editing-trigger&quot; onClick={onEnterEditMode}&gt;
+
+        {rowData[column.dataKey!]}
+
+      &lt;/div&gt;
+
+    )
+
+  },
+
+}
+
+const data = ref(generateData(columns, 200))
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.table-v2-inline-editing-trigger {
+
+  border: 1px transparent dotted;
+
+  padding: 4px;
+
+}
+
+.table-v2-inline-editing-trigger:hover {
+
+  border-color: var(--el-color-primary);
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-5"><h3><span class="idx">6</span>带状态的表格</h3><div class="demo-card"><div class="mount" id="mount-5"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :row-class=&quot;rowClass&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import dayjs from &#x27;dayjs&#x27;
+
+import {
+
+  ElButton,
+
+  ElIcon,
+
+  ElTag,
+
+  ElTooltip,
+
+  TableV2FixedDir,
+
+} from &#x27;element-plus&#x27;
+
+import { Timer } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { Column, RowClassNameGetter } from &#x27;element-plus&#x27;
+
+let id = 0
+
+const dataGenerator = () =&gt; ({
+
+  id: `random-id-${++id}`,
+
+  name: &#x27;Tom&#x27;,
+
+  date: &#x27;2020-10-1&#x27;,
+
+})
+
+const columns: Column&lt;any&gt;[] = [
+
+  {
+
+    key: &#x27;date&#x27;,
+
+    title: &#x27;Date&#x27;,
+
+    dataKey: &#x27;date&#x27;,
+
+    width: 150,
+
+    fixed: TableV2FixedDir.LEFT,
+
+    cellRenderer: ({ cellData: date }) =&gt; (
+
+      &lt;ElTooltip content={dayjs(date).format(&#x27;YYYY/MM/DD&#x27;)}&gt;
+
+        {
+
+          &lt;span class=&quot;flex items-center&quot;&gt;
+
+            &lt;ElIcon class=&quot;mr-3&quot;&gt;
+
+              &lt;Timer /&gt;
+
+            &lt;/ElIcon&gt;
+
+            {dayjs(date).format(&#x27;YYYY/MM/DD&#x27;)}
+
+          &lt;/span&gt;
+
+        }
+
+      &lt;/ElTooltip&gt;
+
+    ),
+
+  },
+
+  {
+
+    key: &#x27;name&#x27;,
+
+    title: &#x27;Name&#x27;,
+
+    dataKey: &#x27;name&#x27;,
+
+    width: 150,
+
+    align: &#x27;center&#x27;,
+
+    cellRenderer: ({ cellData: name }) =&gt; &lt;ElTag&gt;{name}&lt;/ElTag&gt;,
+
+  },
+
+  {
+
+    key: &#x27;operations&#x27;,
+
+    title: &#x27;Operations&#x27;,
+
+    cellRenderer: () =&gt; (
+
+      &lt;&gt;
+
+        &lt;ElButton size=&quot;small&quot;&gt;Edit&lt;/ElButton&gt;
+
+        &lt;ElButton size=&quot;small&quot; type=&quot;danger&quot;&gt;
+
+          Delete
+
+        &lt;/ElButton&gt;
+
+      &lt;/&gt;
+
+    ),
+
+    width: 150,
+
+    align: &#x27;center&#x27;,
+
+    flexGrow: 1,
+
+  },
+
+]
+
+const data = ref(Array.from({ length: 200 }).map(dataGenerator))
+
+const rowClass = ({ rowIndex }: Parameters&lt;RowClassNameGetter&lt;any&gt;&gt;[0]) =&gt; {
+
+  if (rowIndex % 10 === 5) {
+
+    return &#x27;bg-red-100&#x27;
+
+  } else if (rowIndex % 10 === 0) {
+
+    return &#x27;bg-blue-200&#x27;
+
+  }
+
+  return &#x27;&#x27;
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-6"><h3><span class="idx">7</span>表格行的粘性布局</h3><div class="demo-card"><div class="mount" id="mount-6"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;tableData&quot;
+
+    :fixed-data=&quot;fixedData&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    :row-class=&quot;rowClass&quot;
+
+    fixed
+
+    @scroll=&quot;onScroll&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from &#x27;vue&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const rowClass = ({ rowIndex }) =&gt; {
+
+  if (rowIndex &lt; 0 || (rowIndex + 1) % 5 === 0) return &#x27;sticky-row&#x27;
+
+}
+
+const stickyIndex = ref(0)
+
+const fixedData = computed(() =&gt;
+
+  data.slice(stickyIndex.value, stickyIndex.value + 1)
+
+)
+
+const tableData = computed(() =&gt; {
+
+  return data.slice(1)
+
+})
+
+const onScroll = ({ scrollTop }) =&gt; {
+
+  stickyIndex.value = Math.floor(scrollTop / 250) * 5
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-el-table-v2__fixed-header-row {
+
+  background-color: var(--el-color-primary-light-5);
+
+  font-weight: bold;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-7"><h3><span class="idx">8</span>固定列表格</h3><div class="demo-card"><div class="mount" id="mount-7"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :sort-by=&quot;sortBy&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { TableV2FixedDir, TableV2SortOrder } from &#x27;element-plus&#x27;
+
+import type { SortBy } from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+let data = generateData(columns, 200)
+
+columns[0].fixed = true
+
+columns[1].fixed = TableV2FixedDir.LEFT
+
+columns[9].fixed = TableV2FixedDir.RIGHT
+
+for (let i = 0; i &lt; 3; i++) columns[i].sortable = true
+
+const sortBy = ref&lt;SortBy&gt;({
+
+  key: &#x27;column-0&#x27;,
+
+  order: TableV2SortOrder.ASC,
+
+})
+
+const onSort = (_sortBy: SortBy) =&gt; {
+
+  data = data.reverse()
+
+  sortBy.value = _sortBy
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-8"><h3><span class="idx">9</span>表头分组</h3><div class="demo-card"><div class="mount" id="mount-8"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    fixed
+
+    :columns=&quot;fixedColumns&quot;
+
+    :data=&quot;data&quot;
+
+    :header-height=&quot;[50, 40, 50]&quot;
+
+    :header-class=&quot;headerClass&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  &gt;
+
+    &lt;template #header=&quot;props&quot;&gt;
+
+      &lt;customized-header v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { TableV2FixedDir, TableV2Placeholder } from &#x27;element-plus&#x27;
+
+import type { FunctionalComponent } from &#x27;vue&#x27;
+
+import type {
+
+  HeaderClassNameGetter,
+
+  TableV2CustomizedHeaderSlotParam,
+
+} from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(15)
+
+const data = generateData(columns, 200)
+
+const fixedColumns = columns.map((column, columnIndex) =&gt; {
+
+  let fixed: TableV2FixedDir | undefined = undefined
+
+  if (columnIndex &lt; 3) fixed = TableV2FixedDir.LEFT
+
+  if (columnIndex &gt; 12) fixed = TableV2FixedDir.RIGHT
+
+  return { ...column, fixed, width: 100 }
+
+})
+
+const CustomizedHeader: FunctionalComponent&lt;
+
+  TableV2CustomizedHeaderSlotParam
+
+&gt; = ({ cells, columns, headerIndex }) =&gt; {
+
+  if (headerIndex === 2) return cells
+
+  const groupCells = [] as typeof cells
+
+  let width = 0
+
+  let idx = 0
+
+  columns.forEach((column, columnIndex) =&gt; {
+
+    if (column.placeholderSign === TableV2Placeholder)
+
+      groupCells.push(cells[columnIndex])
+
+    else {
+
+      width += cells[columnIndex].props!.column.width
+
+      idx++
+
+      const nextColumn = columns[columnIndex + 1]
+
+      if (
+
+        columnIndex === columns.length - 1 ||
+
+        nextColumn.placeholderSign === TableV2Placeholder ||
+
+        idx === (headerIndex === 0 ? 4 : 2)
+
+      ) {
+
+        groupCells.push(
+
+          &lt;div
+
+            class=&quot;flex items-center justify-center custom-header-cell&quot;
+
+            role=&quot;columnheader&quot;
+
+            style={{
+
+              ...cells[columnIndex].props!.style,
+
+              width: `${width}px`,
+
+            }}
+
+          &gt;
+
+            Group width {width}
+
+          &lt;/div&gt;
+
+        )
+
+        width = 0
+
+        idx = 0
+
+      }
+
+    }
+
+  })
+
+  return groupCells
+
+}
+
+const headerClass = ({
+
+  headerIndex,
+
+}: Parameters&lt;HeaderClassNameGetter&lt;any&gt;&gt;[0]) =&gt; {
+
+  if (headerIndex === 1) return &#x27;el-primary-color&#x27;
+
+  return &#x27;&#x27;
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-el-table-v2__header-row .custom-header-cell {
+
+  border-right: 1px solid var(--el-border-color);
+
+}
+
+.el-el-table-v2__header-row .custom-header-cell:last-child {
+
+  border-right: none;
+
+}
+
+.el-primary-color {
+
+  background-color: var(--el-color-primary);
+
+  color: var(--el-color-white);
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+}
+
+.el-primary-color .custom-header-cell {
+
+  padding: 0 4px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-9"><h3><span class="idx">10</span>过滤器</h3><div class="demo-card"><div class="mount" id="mount-9"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    fixed
+
+    :columns=&quot;fixedColumns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { computed, ref } from &#x27;vue&#x27;
+
+import {
+
+  ElButton,
+
+  ElCheckbox,
+
+  ElIcon,
+
+  ElPopover,
+
+  TableV2FixedDir,
+
+  useLocale,
+
+} from &#x27;element-plus&#x27;
+
+import { Filter } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { HeaderCellSlotProps } from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = ref(generateData(columns, 200))
+
+const { t } = useLocale()
+
+const shouldFilter = ref(false)
+
+const popoverRef = ref()
+
+const ariaLabel = computed(() =&gt; {
+
+  return t(&#x27;el.table.filterLabel&#x27;, { column: columns[0].title })
+
+})
+
+const onFilter = () =&gt; {
+
+  popoverRef.value.hide()
+
+  if (shouldFilter.value) {
+
+    data.value = generateData(columns, 100, &#x27;filtered-&#x27;)
+
+  } else {
+
+    data.value = generateData(columns, 200)
+
+  }
+
+}
+
+const onReset = () =&gt; {
+
+  shouldFilter.value = false
+
+  onFilter()
+
+}
+
+const handleShowPopover = () =&gt; {
+
+  const button = document.querySelector(&#x27;.el-table-v2__demo-filter button&#x27;)
+
+  ;(button as HTMLElement)?.focus()
+
+}
+
+columns[0].headerCellRenderer = (props: HeaderCellSlotProps) =&gt; {
+
+  return (
+
+    &lt;div class=&quot;flex items-center justify-center&quot;&gt;
+
+      &lt;span class=&quot;mr-2 text-xs&quot;&gt;{props.column.title}&lt;/span&gt;
+
+      &lt;ElPopover
+
+        ref={popoverRef}
+
+        trigger=&quot;click&quot;
+
+        width={200}
+
+        onAfter-enter={handleShowPopover}
+
+      &gt;
+
+        {{
+
+          default: () =&gt; (
+
+            &lt;div class=&quot;filter-wrapper&quot;&gt;
+
+              &lt;div class=&quot;filter-group&quot;&gt;
+
+                &lt;ElCheckbox v-model={shouldFilter.value}&gt;
+
+                  Filter Text
+
+                &lt;/ElCheckbox&gt;
+
+              &lt;/div&gt;
+
+              &lt;div class=&quot;el-table-v2__demo-filter&quot;&gt;
+
+                &lt;ElButton text onClick={onFilter}&gt;
+
+                  Confirm
+
+                &lt;/ElButton&gt;
+
+                &lt;ElButton text onClick={onReset}&gt;
+
+                  Reset
+
+                &lt;/ElButton&gt;
+
+              &lt;/div&gt;
+
+            &lt;/div&gt;
+
+          ),
+
+          reference: () =&gt; (
+
+            &lt;button
+
+              type=&quot;button&quot;
+
+              aria-label={ariaLabel.value}
+
+              class=&quot;el-table-v2__demo-filter-btn&quot;
+
+            &gt;
+
+              &lt;ElIcon size={14}&gt;
+
+                &lt;Filter /&gt;
+
+              &lt;/ElIcon&gt;
+
+            &lt;/button&gt;
+
+          ),
+
+        }}
+
+      &lt;/ElPopover&gt;
+
+    &lt;/div&gt;
+
+  )
+
+}
+
+const fixedColumns = columns.map((column, columnIndex) =&gt; {
+
+  let fixed: TableV2FixedDir | undefined = undefined
+
+  if (columnIndex &lt; 2) fixed = TableV2FixedDir.LEFT
+
+  if (columnIndex &gt; 9) fixed = TableV2FixedDir.RIGHT
+
+  return { ...column, fixed, width: 100 }
+
+})
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-table-v2__demo-filter {
+
+  border-top: var(--el-border);
+
+  margin: 12px -12px -12px;
+
+  padding: 0 12px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+}
+
+.el-table-v2__demo-filter-btn {
+
+  display: flex;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  margin: 0;
+
+  background-color: transparent;
+
+  appearance: none;
+
+  border: none;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-10"><h3><span class="idx">11</span>可排序表格</h3><div class="demo-card"><div class="mount" id="mount-10"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :sort-by=&quot;sortState&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { TableV2SortOrder } from &#x27;element-plus&#x27;
+
+import type { SortBy } from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+let data = generateData(columns, 200)
+
+columns[0].sortable = true
+
+const sortState = ref&lt;SortBy&gt;({
+
+  key: &#x27;column-0&#x27;,
+
+  order: TableV2SortOrder.ASC,
+
+})
+
+const onSort = (sortBy: SortBy) =&gt; {
+
+  console.log(sortBy)
+
+  data = data.reverse()
+
+  sortState.value = sortBy
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-11"><h3><span class="idx">12</span>受控的排序</h3><div class="demo-card"><div class="mount" id="mount-11"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    v-model:sort-state=&quot;sortState&quot;
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { TableV2SortOrder } from &#x27;element-plus&#x27;
+
+import type { SortBy, SortState } from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = ref(generateData(columns, 200))
+
+columns[0].sortable = true
+
+columns[1].sortable = true
+
+const sortState = ref&lt;SortState&gt;({
+
+  &#x27;column-0&#x27;: TableV2SortOrder.DESC,
+
+  &#x27;column-1&#x27;: TableV2SortOrder.ASC,
+
+})
+
+const onSort = ({ key, order }: SortBy) =&gt; {
+
+  sortState.value[key] = order
+
+  data.value = data.value.reverse()
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-12"><h3><span class="idx">13</span>高亮显示鼠标悬停单元格</h3><div class="demo-card"><div class="mount" id="mount-12"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :cell-props=&quot;cellProps&quot;
+
+          :class=&quot;kls&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+columns.unshift({
+
+  key: &#x27;column-n-1&#x27;,
+
+  width: 50,
+
+  title: &#x27;Row No.&#x27;,
+
+  cellRenderer: ({ rowIndex }) =&gt; `${rowIndex + 1}`,
+
+  align: &#x27;center&#x27;,
+
+})
+
+const data = generateData(columns, 200)
+
+const cellProps = ({ columnIndex }) =&gt; {
+
+  const key = `hovering-col-${columnIndex}`
+
+  return {
+
+    [&#x27;data-key&#x27;]: key,
+
+    onMouseenter: () =&gt; {
+
+      kls.value = key
+
+    },
+
+    onMouseleave: () =&gt; {
+
+      kls.value = &#x27;&#x27;
+
+    },
+
+  }
+
+}
+
+const kls = ref&lt;string&gt;(&#x27;&#x27;)
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.hovering-col-0 [data-key=&#x27;hovering-col-0&#x27;],
+
+.hovering-col-1 [data-key=&#x27;hovering-col-1&#x27;],
+
+.hovering-col-2 [data-key=&#x27;hovering-col-2&#x27;],
+
+.hovering-col-3 [data-key=&#x27;hovering-col-3&#x27;],
+
+.hovering-col-4 [data-key=&#x27;hovering-col-4&#x27;],
+
+.hovering-col-5 [data-key=&#x27;hovering-col-5&#x27;],
+
+.hovering-col-6 [data-key=&#x27;hovering-col-6&#x27;],
+
+.hovering-col-7 [data-key=&#x27;hovering-col-7&#x27;],
+
+.hovering-col-8 [data-key=&#x27;hovering-col-8&#x27;],
+
+.hovering-col-9 [data-key=&#x27;hovering-col-9&#x27;],
+
+.hovering-col-10 [data-key=&#x27;hovering-col-10&#x27;] {
+
+  background: var(--el-table-row-hover-bg-color);
+
+}
+
+[data-key=&#x27;hovering-col-0&#x27;] {
+
+  font-weight: bold;
+
+  user-select: none;
+
+  pointer-events: none;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-13"><h3><span class="idx">14</span>横跨列</h3><div class="demo-card"><div class="mount" id="mount-13"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2 fixed :columns=&quot;columns&quot; :data=&quot;data&quot; :width=&quot;700&quot; :height=&quot;400&quot;&gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { cloneVNode } from &#x27;vue&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const colSpanIndex = 1
+
+columns[colSpanIndex].colSpan = ({ rowIndex }) =&gt; (rowIndex % 4) + 1
+
+columns[colSpanIndex].align = &#x27;center&#x27;
+
+const Row = ({ rowData, rowIndex, cells, columns }) =&gt; {
+
+  const colSpan = columns[colSpanIndex].colSpan({ rowData, rowIndex })
+
+  if (colSpan &gt; 1) {
+
+    let width = Number.parseInt(cells[colSpanIndex].props.style.width)
+
+    for (let i = 1; i &lt; colSpan; i++) {
+
+      width += Number.parseInt(cells[colSpanIndex + i].props.style.width)
+
+      cells[colSpanIndex + i] = null
+
+    }
+
+    const style = {
+
+      ...cells[colSpanIndex].props.style,
+
+      width: `${width}px`,
+
+      backgroundColor: &#x27;var(--el-color-primary-light-3)&#x27;,
+
+    }
+
+    cells[colSpanIndex] = cloneVNode(cells[colSpanIndex], { style })
+
+  }
+
+  return cells
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-14"><h3><span class="idx">15</span>纵跨行</h3><div class="demo-card"><div class="mount" id="mount-14"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2 fixed :columns=&quot;columns&quot; :data=&quot;data&quot; :width=&quot;700&quot; :height=&quot;400&quot;&gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { cloneVNode } from &#x27;vue&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const rowSpanIndex = 0
+
+columns[rowSpanIndex].rowSpan = ({ rowIndex }) =&gt;
+
+  rowIndex % 2 === 0 &amp;&amp; rowIndex &lt;= data.length - 2 ? 2 : 1
+
+const Row = ({ rowData, rowIndex, cells, columns }) =&gt; {
+
+  const rowSpan = columns[rowSpanIndex].rowSpan({ rowData, rowIndex })
+
+  if (rowSpan &gt; 1) {
+
+    const cell = cells[rowSpanIndex]
+
+    const style = {
+
+      ...cell.props.style,
+
+      backgroundColor: &#x27;var(--el-color-primary-light-3)&#x27;,
+
+      height: `${rowSpan * 50 - 1}px`,
+
+      alignSelf: &#x27;flex-start&#x27;,
+
+      zIndex: 1,
+
+    }
+
+    cells[rowSpanIndex] = cloneVNode(cell, { style })
+
+  }
+
+  return cells
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-15"><h3><span class="idx">16</span>同时跨行和跨列</h3><div class="demo-card"><div class="mount" id="mount-15"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2 fixed :columns=&quot;columns&quot; :data=&quot;data&quot; :width=&quot;700&quot; :height=&quot;400&quot;&gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { cloneVNode } from &#x27;vue&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const colSpanIndex = 1
+
+columns[colSpanIndex].colSpan = ({ rowIndex }) =&gt; (rowIndex % 4) + 1
+
+columns[colSpanIndex].align = &#x27;center&#x27;
+
+const rowSpanIndex = 0
+
+columns[rowSpanIndex].rowSpan = ({ rowIndex }) =&gt;
+
+  rowIndex % 2 === 0 &amp;&amp; rowIndex &lt;= data.length - 2 ? 2 : 1
+
+const Row = ({ rowData, rowIndex, cells, columns }) =&gt; {
+
+  const colSpan = columns[colSpanIndex].colSpan({ rowData, rowIndex })
+
+  if (colSpan &gt; 1) {
+
+    let width = Number.parseInt(cells[colSpanIndex].props.style.width)
+
+    for (let i = 1; i &lt; colSpan; i++) {
+
+      width += Number.parseInt(cells[colSpanIndex + i].props.style.width)
+
+      cells[colSpanIndex + i] = null
+
+    }
+
+    const style = {
+
+      ...cells[colSpanIndex].props.style,
+
+      width: `${width}px`,
+
+      backgroundColor: &#x27;var(--el-color-primary-light-3)&#x27;,
+
+    }
+
+    cells[colSpanIndex] = cloneVNode(cells[colSpanIndex], { style })
+
+  }
+
+  const rowSpan = columns[rowSpanIndex].rowSpan({ rowData, rowIndex })
+
+  if (rowSpan &gt; 1) {
+
+    const cell = cells[rowSpanIndex]
+
+    const style = {
+
+      ...cell.props.style,
+
+      backgroundColor: &#x27;var(--el-color-danger-light-3)&#x27;,
+
+      height: `${rowSpan * 50}px`,
+
+      alignSelf: &#x27;flex-start&#x27;,
+
+      zIndex: 1,
+
+    }
+
+    cells[rowSpanIndex] = cloneVNode(cell, { style })
+
+  } else {
+
+    const style = cells[rowSpanIndex].props.style
+
+    // override the cell here for creating a pure node without pollute the style
+
+    cells[rowSpanIndex] = (
+
+      &lt;div style={{ ...style, width: `${style.width}px` }} /&gt;
+
+    )
+
+  }
+
+  return cells
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-16"><h3><span class="idx">17</span>树形数据</h3><div class="demo-card"><div class="mount" id="mount-16"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    v-model:expanded-row-keys=&quot;expandedRowKeys&quot;
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;treeData&quot;
+
+    :width=&quot;700&quot;
+
+    :expand-column-key=&quot;expandColumnKey&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @row-expand=&quot;onRowExpanded&quot;
+
+    @expanded-rows-change=&quot;onExpandedRowsChange&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from &#x27;vue&#x27;
+
+import { TableV2FixedDir } from &#x27;element-plus&#x27;
+
+import type { ExpandedRowsChangeHandler, RowExpandHandler } from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10).map((column, columnIndex) =&gt; {
+
+  let fixed!: TableV2FixedDir
+
+  if (columnIndex &lt; 2) fixed = TableV2FixedDir.LEFT
+
+  if (columnIndex &gt; 8) fixed = TableV2FixedDir.RIGHT
+
+  return { ...column, fixed }
+
+})
+
+const data = generateData(columns, 200)
+
+const expandColumnKey = &#x27;column-0&#x27;
+
+// add some sub items
+
+for (let i = 0; i &lt; 50; i++) {
+
+  data.push(
+
+    {
+
+      ...data[0],
+
+      id: `${data[0].id}-sub-${i}`,
+
+      parentId: data[0].id,
+
+      [expandColumnKey]: `Sub ${i}`,
+
+    },
+
+    {
+
+      ...data[2],
+
+      id: `${data[2].id}-sub-${i}`,
+
+      parentId: data[2].id,
+
+      [expandColumnKey]: `Sub ${i}`,
+
+    },
+
+    {
+
+      ...data[2],
+
+      id: `${data[2].id}-sub-sub-${i}`,
+
+      parentId: `${data[2].id}-sub-${i}`,
+
+      [expandColumnKey]: `Sub-Sub ${i}`,
+
+    }
+
+  )
+
+}
+
+function unflatten(
+
+  data: ReturnType&lt;typeof generateData&gt;,
+
+  rootId = null,
+
+  dataKey = &#x27;id&#x27;,
+
+  parentKey = &#x27;parentId&#x27;
+
+) {
+
+  const tree: any[] = []
+
+  const childrenMap = {}
+
+  for (const datum of data) {
+
+    const item = { ...datum }
+
+    const id = item[dataKey]
+
+    const parentId = item[parentKey]
+
+    if (Array.isArray(item.children)) {
+
+      childrenMap[id] = item.children.concat(childrenMap[id] || [])
+
+    } else if (!childrenMap[id]) {
+
+      childrenMap[id] = []
+
+    }
+
+    item.children = childrenMap[id]
+
+    if (parentId !== undefined &amp;&amp; parentId !== rootId) {
+
+      if (!childrenMap[parentId]) childrenMap[parentId] = []
+
+      childrenMap[parentId].push(item)
+
+    } else {
+
+      tree.push(item)
+
+    }
+
+  }
+
+  return tree
+
+}
+
+const treeData = computed(() =&gt; unflatten(data))
+
+const expandedRowKeys = ref&lt;string[]&gt;([])
+
+const onRowExpanded = ({ expanded }: Parameters&lt;RowExpandHandler&gt;[0]) =&gt; {
+
+  console.log(&#x27;Expanded:&#x27;, expanded)
+
+}
+
+const onExpandedRowsChange = (
+
+  expandedKeys: Parameters&lt;ExpandedRowsChangeHandler&gt;[0]
+
+) =&gt; {
+
+  console.log(expandedKeys)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-17"><h3><span class="idx">18</span>动态高度行</h3><div class="demo-card"><div class="mount" id="mount-17"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :sort-by=&quot;sort&quot;
+
+    :estimated-row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onColumnSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import {
+
+  ElButton,
+
+  ElTag,
+
+  TableV2FixedDir,
+
+  TableV2SortOrder,
+
+} from &#x27;element-plus&#x27;
+
+import type { Column, SortBy } from &#x27;element-plus&#x27;
+
+const longText =
+
+  &#x27;Quaerat ipsam necessitatibus eum quibusdam est id voluptatem cumque mollitia.&#x27;
+
+const midText = &#x27;Corrupti doloremque a quos vero delectus consequatur.&#x27;
+
+const shortText = &#x27;Eius optio fugiat.&#x27;
+
+const textList = [shortText, midText, longText]
+
+// generate random number in range 0 to 2
+
+let id = 0
+
+const dataGenerator = () =&gt; ({
+
+  id: `random-${++id}`,
+
+  name: &#x27;Tom&#x27;,
+
+  date: &#x27;2016-05-03&#x27;,
+
+  description: textList[Math.floor(Math.random() * 3)],
+
+})
+
+const columns: Column&lt;any&gt;[] = [
+
+  {
+
+    key: &#x27;id&#x27;,
+
+    title: &#x27;Id&#x27;,
+
+    dataKey: &#x27;id&#x27;,
+
+    width: 150,
+
+    sortable: true,
+
+    fixed: TableV2FixedDir.LEFT,
+
+  },
+
+  {
+
+    key: &#x27;name&#x27;,
+
+    title: &#x27;Name&#x27;,
+
+    dataKey: &#x27;name&#x27;,
+
+    width: 150,
+
+    align: &#x27;center&#x27;,
+
+    cellRenderer: ({ cellData: name }) =&gt; &lt;ElTag&gt;{name}&lt;/ElTag&gt;,
+
+  },
+
+  {
+
+    key: &#x27;description&#x27;,
+
+    title: &#x27;Description&#x27;,
+
+    dataKey: &#x27;description&#x27;,
+
+    width: 150,
+
+    cellRenderer: ({ cellData: description }) =&gt; (
+
+      &lt;div style=&quot;padding: 10px 0;&quot;&gt;{description}&lt;/div&gt;
+
+    ),
+
+  },
+
+  {
+
+    key: &#x27;operations&#x27;,
+
+    title: &#x27;Operations&#x27;,
+
+    cellRenderer: () =&gt; (
+
+      &lt;&gt;
+
+        &lt;ElButton size=&quot;small&quot;&gt;Edit&lt;/ElButton&gt;
+
+        &lt;ElButton size=&quot;small&quot; type=&quot;danger&quot;&gt;
+
+          Delete
+
+        &lt;/ElButton&gt;
+
+      &lt;/&gt;
+
+    ),
+
+    width: 150,
+
+    align: &#x27;center&#x27;,
+
+  },
+
+]
+
+const data = ref(
+
+  Array.from({ length: 200 })
+
+    .map(dataGenerator)
+
+    .sort((a, b) =&gt; (a.name &gt; b.name ? 1 : -1))
+
+)
+
+const sort = ref&lt;SortBy&gt;({ key: &#x27;name&#x27;, order: TableV2SortOrder.ASC })
+
+const onColumnSort = (sortBy: SortBy) =&gt; {
+
+  const order = sortBy.order === &#x27;asc&#x27; ? 1 : -1
+
+  const dataClone = [...data.value]
+
+  dataClone.sort((a, b) =&gt; (a[sortBy.key] &gt; b[sortBy.key] ? order : -order))
+
+  sort.value = sortBy
+
+  data.value = dataClone
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-18"><h3><span class="idx">19</span>可展开的附加信息</h3><div class="demo-card"><div class="mount" id="mount-18"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :estimated-row-height=&quot;50&quot;
+
+    :expand-column-key=&quot;columns[0].key&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  &gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const detailedText = `Velit sed aspernatur tempora. Natus consequatur officiis dicta vel assumenda.
+
+Itaque est temporibus minus quis. Ipsum commodiab porro vel voluptas illum.
+
+Qui quam nulla et dolore autem itaque est.
+
+Id consequatur ipsum ea fuga et odit eligendi impedit.
+
+Maiores officiis occaecati et magnam et sapiente est velit sunt.
+
+Non et tempore temporibus. Excepturi et quos. Minus distinctio aut.
+
+Voluptatem ea excepturi omnis vel. Non aperiam sit sed laboriosam eaque omnis deleniti.
+
+Est molestiae omnis non et nulla repudiandae fuga sit.`
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = ref(
+
+  generateData(columns, 200).map((data) =&gt; {
+
+    data.children = [
+
+      {
+
+        id: `${data.id}-detail-content`,
+
+        detail: detailedText,
+
+      },
+
+    ]
+
+    return data
+
+  })
+
+)
+
+const Row = ({ cells, rowData }) =&gt; {
+
+  if (rowData.detail) return &lt;div class=&quot;p-6&quot;&gt;{rowData.detail}&lt;/div&gt;
+
+  return cells
+
+}
+
+Row.inheritAttrs = false
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-table-v2__row-depth-0 {
+
+  height: 50px;
+
+}
+
+.el-table-v2__cell-text {
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-19"><h3><span class="idx">20</span>自定义页脚</h3><div class="demo-card"><div class="mount" id="mount-19"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    :footer-height=&quot;50&quot;
+
+    fixed
+
+  &gt;
+
+    &lt;template #footer
+
+      &gt;&lt;div
+
+        class=&quot;flex items-center&quot;
+
+        style=&quot;
+
+          justify-content: center;
+
+          height: 100%;
+
+          background-color: var(--el-color-primary-light-7);
+
+        &quot;
+
+      &gt;
+
+        Display a message in the footer
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-20"><h3><span class="idx">21</span>自定义空元素渲染器</h3><div class="demo-card"><div class="mount" id="mount-20"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;[]&quot;
+
+    :row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    :footer-height=&quot;50&quot;
+
+  &gt;
+
+    &lt;template #empty&gt;
+
+      &lt;div class=&quot;flex items-center justify-center h-100%&quot;&gt;
+
+        &lt;el-empty /&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const columns = generateColumns(10)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-21"><h3><span class="idx">22</span>浮动遮罩层</h3><div class="demo-card"><div class="mount" id="mount-21"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  &gt;
+
+    &lt;template #overlay&gt;
+
+      &lt;div
+
+        class=&quot;el-loading-mask&quot;
+
+        style=&quot;display: flex; align-items: center; justify-content: center&quot;
+
+      &gt;
+
+        &lt;el-icon class=&quot;is-loading&quot; color=&quot;var(--el-color-primary)&quot; :size=&quot;26&quot;&gt;
+
+          &lt;loading-icon /&gt;
+
+        &lt;/el-icon&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { Loading as LoadingIcon } from &#x27;@element-plus/icons-vue&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-showcase .el-table-v2__overlay {
+
+  z-index: 9;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-22"><h3><span class="idx">23</span>手动滚动</h3><div class="demo-card"><div class="mount" id="mount-22"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;mb-4 flex items-center&quot;&gt;
+
+    &lt;el-form-item label=&quot;Scroll pixels&quot; class=&quot;mr-4&quot;&gt;
+
+      &lt;el-input v-model=&quot;scrollDelta&quot; /&gt;
+
+    &lt;/el-form-item&gt;
+
+    &lt;el-form-item label=&quot;Scroll rows&quot;&gt;
+
+      &lt;el-input v-model=&quot;scrollRows&quot; /&gt;
+
+    &lt;/el-form-item&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;mb-4 flex items-center&quot;&gt;
+
+    &lt;el-button @click=&quot;scrollByPixels&quot;&gt; Scroll by pixels &lt;/el-button&gt;
+
+    &lt;el-button @click=&quot;scrollByRows&quot;&gt; Scroll by rows &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          ref=&quot;tableRef&quot;
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import type { TableV2Instance } from &#x27;element-plus&#x27;
+
+const generateColumns = (length = 10, prefix = &#x27;column-&#x27;, props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = &#x27;row-&#x27;
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const tableRef = ref&lt;TableV2Instance&gt;()
+
+const scrollDelta = ref(200)
+
+const scrollRows = ref(10)
+
+function scrollByPixels() {
+
+  tableRef.value?.scrollToTop(scrollDelta.value)
+
+}
+
+function scrollByRows() {
+
+  tableRef.value?.scrollToRow(scrollRows.value)
+
+}
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Virtualized Table 虚拟化表格 beta</h1>
+<p>在前端开发领域，表格一直都是一个高频出现的组件，尤其是在中后台和数据分析场景。但是，对于 <a href="./table">Table V1</a>来说，当一屏里超过 1000 条数据记录时，就会出现卡顿等性能问题，体验不是很好。</p>
+<p>通过虚拟化表格组件，超大数据渲染将不再是一个头疼的问题。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>该组件<strong>仍在测试中</strong>，生产环境使用可能有风险。若您发现了 bug 或问题，请于 <a href="https://github.com/element-plus/element-plus/issues">GitHub</a> 报告给我们以便修复。同时，有一些 API 并未在此文档中提及，因为部分还没有开发完全，因此我们不在此提及。</p>
+<p><strong>即使</strong>虚拟化的表格是高效的，但是当数据负载过大时，<strong>网络</strong>和<strong>内存容量</strong>也会成为您应用程序的瓶颈。因此请牢记，虚拟化表格永远不是最完美的解决方案，请考虑数据分页、过滤器等优化方案。</p>
+</blockquote>
+<h2>基础用法</h2>
+<p>让我们演示虚拟化表的性能，用10列和1 000行渲染一个基本示例。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 1000)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自动调整大小</h2>
+<p>如果不想手动向表格传递 <code>width</code> 和 <code>height</code> 属性，可以使用 AutoResizer 对表格组件进行封装。这会自动为你更新宽度和高度。</p>
+<p>尝试调整您的浏览器大小来看看它是如何工作的。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>由于 <code>AutoResizer</code> 组件的默认高度是 100%，所以请确保该组件的父元素<strong>拥有固定的高度值</strong>。或者，您可以通过将 <code>style</code> 属性传递到 <code>AutoResizer</code> 来定义它。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义单元格渲染器</h2>
+<p>当然，您可以根据您的需要呈现表格单元格。这是如何自定义您的单元格的简单例子。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import dayjs from 'dayjs'
+
+import {
+
+  ElButton,
+
+  ElIcon,
+
+  ElTag,
+
+  ElTooltip,
+
+  TableV2FixedDir,
+
+} from 'element-plus'
+
+import { Timer } from '@element-plus/icons-vue'
+
+import type { Column } from 'element-plus'
+
+let id = 0
+
+const dataGenerator = () =&gt; ({
+
+  id: `random-id-${++id}`,
+
+  name: 'Tom',
+
+  date: '2020-10-1',
+
+})
+
+const columns: Column&lt;any&gt;[] = [
+
+  {
+
+    key: 'date',
+
+    title: 'Date',
+
+    dataKey: 'date',
+
+    width: 150,
+
+    fixed: TableV2FixedDir.LEFT,
+
+    cellRenderer: ({ cellData: date }) =&gt; (
+
+      &lt;ElTooltip content={dayjs(date).format('YYYY/MM/DD')}&gt;
+
+        {
+
+          &lt;span class=&quot;flex items-center&quot;&gt;
+
+            &lt;ElIcon class=&quot;mr-3&quot;&gt;
+
+              &lt;Timer /&gt;
+
+            &lt;/ElIcon&gt;
+
+            {dayjs(date).format('YYYY/MM/DD')}
+
+          &lt;/span&gt;
+
+        }
+
+      &lt;/ElTooltip&gt;
+
+    ),
+
+  },
+
+  {
+
+    key: 'name',
+
+    title: 'Name',
+
+    dataKey: 'name',
+
+    width: 150,
+
+    align: 'center',
+
+    cellRenderer: ({ cellData: name }) =&gt; &lt;ElTag&gt;{name}&lt;/ElTag&gt;,
+
+  },
+
+  {
+
+    key: 'operations',
+
+    title: 'Operations',
+
+    cellRenderer: () =&gt; (
+
+      &lt;&gt;
+
+        &lt;ElButton size=&quot;small&quot;&gt;Edit&lt;/ElButton&gt;
+
+        &lt;ElButton size=&quot;small&quot; type=&quot;danger&quot;&gt;
+
+          Delete
+
+        &lt;/ElButton&gt;
+
+      &lt;/&gt;
+
+    ),
+
+    width: 150,
+
+    align: 'center',
+
+  },
+
+]
+
+const data = ref(Array.from({ length: 200 }).map(dataGenerator))
+
+&lt;/script&gt;
+</code></pre>
+<h2>带有选择的表格</h2>
+<p>使用自定义的单元格渲染来给表格组件添加选择的能力。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref, unref } from 'vue'
+
+import { ElCheckbox, useLocale } from 'element-plus'
+
+import type { FunctionalComponent } from 'vue'
+
+import type { CheckboxValueType, Column } from 'element-plus'
+
+type SelectionCellProps = {
+
+  value: boolean
+
+  intermediate?: boolean
+
+  ariaLabel?: string
+
+  onChange: (value: CheckboxValueType) =&gt; void
+
+}
+
+const { t } = useLocale()
+
+const SelectionCell: FunctionalComponent&lt;SelectionCellProps&gt; = ({
+
+  value,
+
+  intermediate = false,
+
+  ariaLabel,
+
+  onChange,
+
+}) =&gt; {
+
+  return (
+
+    &lt;ElCheckbox
+
+      onChange={onChange}
+
+      modelValue={value}
+
+      ariaLabel={ariaLabel}
+
+      indeterminate={intermediate}
+
+    /&gt;
+
+  )
+
+}
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        checked: false,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns: Column&lt;any&gt;[] = generateColumns(10)
+
+columns.unshift({
+
+  key: 'selection',
+
+  width: 50,
+
+  cellRenderer: ({ rowData }) =&gt; {
+
+    const onChange = (value: CheckboxValueType) =&gt; (rowData.checked = value)
+
+    return (
+
+      &lt;SelectionCell
+
+        value={rowData.checked}
+
+        ariaLabel={t('el.table.selectRowLabel')}
+
+        onChange={onChange}
+
+      /&gt;
+
+    )
+
+  },
+
+  headerCellRenderer: () =&gt; {
+
+    const _data = unref(data)
+
+    const onChange = (value: CheckboxValueType) =&gt;
+
+      (data.value = _data.map((row) =&gt; {
+
+        row.checked = value
+
+        return row
+
+      }))
+
+    const allSelected = _data.every((row) =&gt; row.checked)
+
+    const containsChecked = _data.some((row) =&gt; row.checked)
+
+    return (
+
+      &lt;SelectionCell
+
+        value={allSelected}
+
+        intermediate={containsChecked &amp;&amp; !allSelected}
+
+        ariaLabel={t('el.table.selectAllLabel')}
+
+        onChange={onChange}
+
+      /&gt;
+
+    )
+
+  },
+
+})
+
+const data = ref(generateData(columns, 200))
+
+&lt;/script&gt;
+</code></pre>
+<h2>可编辑单元格</h2>
+<p>类似上面添加筛选框的方法，我们可以用同样的方法实现可编辑单元格。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref, withKeys } from 'vue'
+
+import { ElInput } from 'element-plus'
+
+import type { FunctionalComponent } from 'vue'
+
+import type { Column, InputInstance } from 'element-plus'
+
+type SelectionCellProps = {
+
+  value: string
+
+  intermediate?: boolean
+
+  onChange: (value: string) =&gt; void
+
+  onBlur: () =&gt; void
+
+  onKeydownEnter: () =&gt; void
+
+  forwardRef: (el: InputInstance) =&gt; void
+
+}
+
+const InputCell: FunctionalComponent&lt;SelectionCellProps&gt; = ({
+
+  value,
+
+  onChange,
+
+  onBlur,
+
+  onKeydownEnter,
+
+  forwardRef,
+
+}) =&gt; {
+
+  return (
+
+    &lt;ElInput
+
+      ref={forwardRef as any}
+
+      onInput={onChange}
+
+      onBlur={onBlur}
+
+      onKeydown={withKeys(onKeydownEnter, ['enter'])}
+
+      modelValue={value}
+
+    /&gt;
+
+  )
+
+}
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        editing: false,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns: Column&lt;any&gt;[] = generateColumns(10)
+
+columns[0] = {
+
+  ...columns[0],
+
+  title: 'Editable Column',
+
+  cellRenderer: ({ rowData, column }) =&gt; {
+
+    const onChange = (value: string) =&gt; {
+
+      rowData[column.dataKey!] = value
+
+    }
+
+    const onEnterEditMode = () =&gt; {
+
+      rowData.editing = true
+
+    }
+
+    const onExitEditMode = () =&gt; (rowData.editing = false)
+
+    const input = ref()
+
+    const setRef = (el) =&gt; {
+
+      input.value = el
+
+      if (el) {
+
+        el.focus?.()
+
+      }
+
+    }
+
+    return rowData.editing ? (
+
+      &lt;InputCell
+
+        forwardRef={setRef}
+
+        value={rowData[column.dataKey!]}
+
+        onChange={onChange}
+
+        onBlur={onExitEditMode}
+
+        onKeydownEnter={onExitEditMode}
+
+      /&gt;
+
+    ) : (
+
+      &lt;div class=&quot;table-v2-inline-editing-trigger&quot; onClick={onEnterEditMode}&gt;
+
+        {rowData[column.dataKey!]}
+
+      &lt;/div&gt;
+
+    )
+
+  },
+
+}
+
+const data = ref(generateData(columns, 200))
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.table-v2-inline-editing-trigger {
+
+  border: 1px transparent dotted;
+
+  padding: 4px;
+
+}
+
+.table-v2-inline-editing-trigger:hover {
+
+  border-color: var(--el-color-primary);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>带状态的表格</h2>
+<p>可将表格内容 highlight 显示，方便区分「成功、信息、警告、危险」等内容。</p>
+<p>要自定义行的外观，请使用 <code>row-class-name</code> 属性。举个例子，每10行会自动添加 <code>bg-blue-200</code> 类名，每5行会添加 <code>bg-red-100</code> 类名。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :row-class=&quot;rowClass&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import dayjs from 'dayjs'
+
+import {
+
+  ElButton,
+
+  ElIcon,
+
+  ElTag,
+
+  ElTooltip,
+
+  TableV2FixedDir,
+
+} from 'element-plus'
+
+import { Timer } from '@element-plus/icons-vue'
+
+import type { Column, RowClassNameGetter } from 'element-plus'
+
+let id = 0
+
+const dataGenerator = () =&gt; ({
+
+  id: `random-id-${++id}`,
+
+  name: 'Tom',
+
+  date: '2020-10-1',
+
+})
+
+const columns: Column&lt;any&gt;[] = [
+
+  {
+
+    key: 'date',
+
+    title: 'Date',
+
+    dataKey: 'date',
+
+    width: 150,
+
+    fixed: TableV2FixedDir.LEFT,
+
+    cellRenderer: ({ cellData: date }) =&gt; (
+
+      &lt;ElTooltip content={dayjs(date).format('YYYY/MM/DD')}&gt;
+
+        {
+
+          &lt;span class=&quot;flex items-center&quot;&gt;
+
+            &lt;ElIcon class=&quot;mr-3&quot;&gt;
+
+              &lt;Timer /&gt;
+
+            &lt;/ElIcon&gt;
+
+            {dayjs(date).format('YYYY/MM/DD')}
+
+          &lt;/span&gt;
+
+        }
+
+      &lt;/ElTooltip&gt;
+
+    ),
+
+  },
+
+  {
+
+    key: 'name',
+
+    title: 'Name',
+
+    dataKey: 'name',
+
+    width: 150,
+
+    align: 'center',
+
+    cellRenderer: ({ cellData: name }) =&gt; &lt;ElTag&gt;{name}&lt;/ElTag&gt;,
+
+  },
+
+  {
+
+    key: 'operations',
+
+    title: 'Operations',
+
+    cellRenderer: () =&gt; (
+
+      &lt;&gt;
+
+        &lt;ElButton size=&quot;small&quot;&gt;Edit&lt;/ElButton&gt;
+
+        &lt;ElButton size=&quot;small&quot; type=&quot;danger&quot;&gt;
+
+          Delete
+
+        &lt;/ElButton&gt;
+
+      &lt;/&gt;
+
+    ),
+
+    width: 150,
+
+    align: 'center',
+
+    flexGrow: 1,
+
+  },
+
+]
+
+const data = ref(Array.from({ length: 200 }).map(dataGenerator))
+
+const rowClass = ({ rowIndex }: Parameters&lt;RowClassNameGetter&lt;any&gt;&gt;[0]) =&gt; {
+
+  if (rowIndex % 10 === 5) {
+
+    return 'bg-red-100'
+
+  } else if (rowIndex % 10 === 0) {
+
+    return 'bg-blue-200'
+
+  }
+
+  return ''
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>表格行的粘性布局</h2>
+<p>您可以简单地使用 <code>fixed-data</code> 属性来实现将某些行固定到表格的头部。</p>
+<p>您可以根据滚动事件动态设置粘性行，如这个示例所示。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;tableData&quot;
+
+    :fixed-data=&quot;fixedData&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    :row-class=&quot;rowClass&quot;
+
+    fixed
+
+    @scroll=&quot;onScroll&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from 'vue'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const rowClass = ({ rowIndex }) =&gt; {
+
+  if (rowIndex &lt; 0 || (rowIndex + 1) % 5 === 0) return 'sticky-row'
+
+}
+
+const stickyIndex = ref(0)
+
+const fixedData = computed(() =&gt;
+
+  data.slice(stickyIndex.value, stickyIndex.value + 1)
+
+)
+
+const tableData = computed(() =&gt; {
+
+  return data.slice(1)
+
+})
+
+const onScroll = ({ scrollTop }) =&gt; {
+
+  stickyIndex.value = Math.floor(scrollTop / 250) * 5
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-el-table-v2__fixed-header-row {
+
+  background-color: var(--el-color-primary-light-5);
+
+  font-weight: bold;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>固定列表格</h2>
+<p>如果您想要有列粘贴左侧或右侧的某种原因。 您可以通过向表中添加特殊属性来实现这一点。</p>
+<p>您可以设置该行的<code>fixed</code> 属性为 <code>true</code> （代表<code>FixedDir.LEFT</code>）、<code>FixedDir.LEFT</code> 或 <code>FixedDir.RIGHT</code></p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :sort-by=&quot;sortBy&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { TableV2FixedDir, TableV2SortOrder } from 'element-plus'
+
+import type { SortBy } from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+let data = generateData(columns, 200)
+
+columns[0].fixed = true
+
+columns[1].fixed = TableV2FixedDir.LEFT
+
+columns[9].fixed = TableV2FixedDir.RIGHT
+
+for (let i = 0; i &lt; 3; i++) columns[i].sortable = true
+
+const sortBy = ref&lt;SortBy&gt;({
+
+  key: 'column-0',
+
+  order: TableV2SortOrder.ASC,
+
+})
+
+const onSort = (_sortBy: SortBy) =&gt; {
+
+  data = data.reverse()
+
+  sortBy.value = _sortBy
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>表头分组</h2>
+<p>正如这个示例，通过自定义表头渲染以将表头分组。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>在这种情况下，我们使用了 <code>JSX</code> 功能，这个功能在playground上不被支持。您可以在本地环境或在线集成开发环境（如 <code>codesandbox</code> ）中试用它们。</p>
+<p>建议您使用 JSX 使用您的表格组件，因为它包含 VNode 操作。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    fixed
+
+    :columns=&quot;fixedColumns&quot;
+
+    :data=&quot;data&quot;
+
+    :header-height=&quot;[50, 40, 50]&quot;
+
+    :header-class=&quot;headerClass&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  &gt;
+
+    &lt;template #header=&quot;props&quot;&gt;
+
+      &lt;customized-header v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { TableV2FixedDir, TableV2Placeholder } from 'element-plus'
+
+import type { FunctionalComponent } from 'vue'
+
+import type {
+
+  HeaderClassNameGetter,
+
+  TableV2CustomizedHeaderSlotParam,
+
+} from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(15)
+
+const data = generateData(columns, 200)
+
+const fixedColumns = columns.map((column, columnIndex) =&gt; {
+
+  let fixed: TableV2FixedDir | undefined = undefined
+
+  if (columnIndex &lt; 3) fixed = TableV2FixedDir.LEFT
+
+  if (columnIndex &gt; 12) fixed = TableV2FixedDir.RIGHT
+
+  return { ...column, fixed, width: 100 }
+
+})
+
+const CustomizedHeader: FunctionalComponent&lt;
+
+  TableV2CustomizedHeaderSlotParam
+
+&gt; = ({ cells, columns, headerIndex }) =&gt; {
+
+  if (headerIndex === 2) return cells
+
+  const groupCells = [] as typeof cells
+
+  let width = 0
+
+  let idx = 0
+
+  columns.forEach((column, columnIndex) =&gt; {
+
+    if (column.placeholderSign === TableV2Placeholder)
+
+      groupCells.push(cells[columnIndex])
+
+    else {
+
+      width += cells[columnIndex].props!.column.width
+
+      idx++
+
+      const nextColumn = columns[columnIndex + 1]
+
+      if (
+
+        columnIndex === columns.length - 1 ||
+
+        nextColumn.placeholderSign === TableV2Placeholder ||
+
+        idx === (headerIndex === 0 ? 4 : 2)
+
+      ) {
+
+        groupCells.push(
+
+          &lt;div
+
+            class=&quot;flex items-center justify-center custom-header-cell&quot;
+
+            role=&quot;columnheader&quot;
+
+            style={{
+
+              ...cells[columnIndex].props!.style,
+
+              width: `${width}px`,
+
+            }}
+
+          &gt;
+
+            Group width {width}
+
+          &lt;/div&gt;
+
+        )
+
+        width = 0
+
+        idx = 0
+
+      }
+
+    }
+
+  })
+
+  return groupCells
+
+}
+
+const headerClass = ({
+
+  headerIndex,
+
+}: Parameters&lt;HeaderClassNameGetter&lt;any&gt;&gt;[0]) =&gt; {
+
+  if (headerIndex === 1) return 'el-primary-color'
+
+  return ''
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-el-table-v2__header-row .custom-header-cell {
+
+  border-right: 1px solid var(--el-border-color);
+
+}
+
+.el-el-table-v2__header-row .custom-header-cell:last-child {
+
+  border-right: none;
+
+}
+
+.el-primary-color {
+
+  background-color: var(--el-color-primary);
+
+  color: var(--el-color-white);
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+}
+
+.el-primary-color .custom-header-cell {
+
+  padding: 0 4px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>过滤器</h2>
+<p>虚拟表格提供自定义页眉渲染器以创建自定义标题。然后我们可以利用这些来渲染过滤器。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    fixed
+
+    :columns=&quot;fixedColumns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { computed, ref } from 'vue'
+
+import {
+
+  ElButton,
+
+  ElCheckbox,
+
+  ElIcon,
+
+  ElPopover,
+
+  TableV2FixedDir,
+
+  useLocale,
+
+} from 'element-plus'
+
+import { Filter } from '@element-plus/icons-vue'
+
+import type { HeaderCellSlotProps } from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = ref(generateData(columns, 200))
+
+const { t } = useLocale()
+
+const shouldFilter = ref(false)
+
+const popoverRef = ref()
+
+const ariaLabel = computed(() =&gt; {
+
+  return t('el.table.filterLabel', { column: columns[0].title })
+
+})
+
+const onFilter = () =&gt; {
+
+  popoverRef.value.hide()
+
+  if (shouldFilter.value) {
+
+    data.value = generateData(columns, 100, 'filtered-')
+
+  } else {
+
+    data.value = generateData(columns, 200)
+
+  }
+
+}
+
+const onReset = () =&gt; {
+
+  shouldFilter.value = false
+
+  onFilter()
+
+}
+
+const handleShowPopover = () =&gt; {
+
+  const button = document.querySelector('.el-table-v2__demo-filter button')
+
+  ;(button as HTMLElement)?.focus()
+
+}
+
+columns[0].headerCellRenderer = (props: HeaderCellSlotProps) =&gt; {
+
+  return (
+
+    &lt;div class=&quot;flex items-center justify-center&quot;&gt;
+
+      &lt;span class=&quot;mr-2 text-xs&quot;&gt;{props.column.title}&lt;/span&gt;
+
+      &lt;ElPopover
+
+        ref={popoverRef}
+
+        trigger=&quot;click&quot;
+
+        width={200}
+
+        onAfter-enter={handleShowPopover}
+
+      &gt;
+
+        {{
+
+          default: () =&gt; (
+
+            &lt;div class=&quot;filter-wrapper&quot;&gt;
+
+              &lt;div class=&quot;filter-group&quot;&gt;
+
+                &lt;ElCheckbox v-model={shouldFilter.value}&gt;
+
+                  Filter Text
+
+                &lt;/ElCheckbox&gt;
+
+              &lt;/div&gt;
+
+              &lt;div class=&quot;el-table-v2__demo-filter&quot;&gt;
+
+                &lt;ElButton text onClick={onFilter}&gt;
+
+                  Confirm
+
+                &lt;/ElButton&gt;
+
+                &lt;ElButton text onClick={onReset}&gt;
+
+                  Reset
+
+                &lt;/ElButton&gt;
+
+              &lt;/div&gt;
+
+            &lt;/div&gt;
+
+          ),
+
+          reference: () =&gt; (
+
+            &lt;button
+
+              type=&quot;button&quot;
+
+              aria-label={ariaLabel.value}
+
+              class=&quot;el-table-v2__demo-filter-btn&quot;
+
+            &gt;
+
+              &lt;ElIcon size={14}&gt;
+
+                &lt;Filter /&gt;
+
+              &lt;/ElIcon&gt;
+
+            &lt;/button&gt;
+
+          ),
+
+        }}
+
+      &lt;/ElPopover&gt;
+
+    &lt;/div&gt;
+
+  )
+
+}
+
+const fixedColumns = columns.map((column, columnIndex) =&gt; {
+
+  let fixed: TableV2FixedDir | undefined = undefined
+
+  if (columnIndex &lt; 2) fixed = TableV2FixedDir.LEFT
+
+  if (columnIndex &gt; 9) fixed = TableV2FixedDir.RIGHT
+
+  return { ...column, fixed, width: 100 }
+
+})
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-table-v2__demo-filter {
+
+  border-top: var(--el-border);
+
+  margin: 12px -12px -12px;
+
+  padding: 0 12px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+}
+
+.el-table-v2__demo-filter-btn {
+
+  display: flex;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  margin: 0;
+
+  background-color: transparent;
+
+  appearance: none;
+
+  border: none;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>可排序表格</h2>
+<p>您可以使用排序状态来对表格进行排序。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :sort-by=&quot;sortState&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { TableV2SortOrder } from 'element-plus'
+
+import type { SortBy } from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+let data = generateData(columns, 200)
+
+columns[0].sortable = true
+
+const sortState = ref&lt;SortBy&gt;({
+
+  key: 'column-0',
+
+  order: TableV2SortOrder.ASC,
+
+})
+
+const onSort = (sortBy: SortBy) =&gt; {
+
+  console.log(sortBy)
+
+  data = data.reverse()
+
+  sortState.value = sortBy
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>受控的排序</h2>
+<p>您可以在需要时定义多个可排序的列。请记住，当您在定义了多个可排序的列时， UI 可能会显得有些奇怪，因为用户不知道哪一列被排序。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    v-model:sort-state=&quot;sortState&quot;
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { TableV2SortOrder } from 'element-plus'
+
+import type { SortBy, SortState } from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = ref(generateData(columns, 200))
+
+columns[0].sortable = true
+
+columns[1].sortable = true
+
+const sortState = ref&lt;SortState&gt;({
+
+  'column-0': TableV2SortOrder.DESC,
+
+  'column-1': TableV2SortOrder.ASC,
+
+})
+
+const onSort = ({ key, order }: SortBy) =&gt; {
+
+  sortState.value[key] = order
+
+  data.value = data.value.reverse()
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>高亮显示鼠标悬停单元格</h2>
+<p>当处理一个大的列表时，很容易丢失当前行的轨迹和您正在访问的一列。在这种情况下，使用这个功能可能很有帮助。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          :columns=&quot;columns&quot;
+
+          :cell-props=&quot;cellProps&quot;
+
+          :class=&quot;kls&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+columns.unshift({
+
+  key: 'column-n-1',
+
+  width: 50,
+
+  title: 'Row No.',
+
+  cellRenderer: ({ rowIndex }) =&gt; `${rowIndex + 1}`,
+
+  align: 'center',
+
+})
+
+const data = generateData(columns, 200)
+
+const cellProps = ({ columnIndex }) =&gt; {
+
+  const key = `hovering-col-${columnIndex}`
+
+  return {
+
+    ['data-key']: key,
+
+    onMouseenter: () =&gt; {
+
+      kls.value = key
+
+    },
+
+    onMouseleave: () =&gt; {
+
+      kls.value = ''
+
+    },
+
+  }
+
+}
+
+const kls = ref&lt;string&gt;('')
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.hovering-col-0 [data-key='hovering-col-0'],
+
+.hovering-col-1 [data-key='hovering-col-1'],
+
+.hovering-col-2 [data-key='hovering-col-2'],
+
+.hovering-col-3 [data-key='hovering-col-3'],
+
+.hovering-col-4 [data-key='hovering-col-4'],
+
+.hovering-col-5 [data-key='hovering-col-5'],
+
+.hovering-col-6 [data-key='hovering-col-6'],
+
+.hovering-col-7 [data-key='hovering-col-7'],
+
+.hovering-col-8 [data-key='hovering-col-8'],
+
+.hovering-col-9 [data-key='hovering-col-9'],
+
+.hovering-col-10 [data-key='hovering-col-10'] {
+
+  background: var(--el-table-row-hover-bg-color);
+
+}
+
+[data-key='hovering-col-0'] {
+
+  font-weight: bold;
+
+  user-select: none;
+
+  pointer-events: none;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>横跨列</h2>
+<p>虚拟化表格没有使用内置的 <code>table</code> 元素，故 <code>colspan</code> 和 <code>rowspan</code> 与 <a href="./table">TableV1</a> 比较略有不同。然而，通过定制的行渲染器，这些功能仍然可以实现。在本节中，我们将演示如何实现这一点。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2 fixed :columns=&quot;columns&quot; :data=&quot;data&quot; :width=&quot;700&quot; :height=&quot;400&quot;&gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { cloneVNode } from 'vue'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const colSpanIndex = 1
+
+columns[colSpanIndex].colSpan = ({ rowIndex }) =&gt; (rowIndex % 4) + 1
+
+columns[colSpanIndex].align = 'center'
+
+const Row = ({ rowData, rowIndex, cells, columns }) =&gt; {
+
+  const colSpan = columns[colSpanIndex].colSpan({ rowData, rowIndex })
+
+  if (colSpan &gt; 1) {
+
+    let width = Number.parseInt(cells[colSpanIndex].props.style.width)
+
+    for (let i = 1; i &lt; colSpan; i++) {
+
+      width += Number.parseInt(cells[colSpanIndex + i].props.style.width)
+
+      cells[colSpanIndex + i] = null
+
+    }
+
+    const style = {
+
+      ...cells[colSpanIndex].props.style,
+
+      width: `${width}px`,
+
+      backgroundColor: 'var(--el-color-primary-light-3)',
+
+    }
+
+    cells[colSpanIndex] = cloneVNode(cells[colSpanIndex], { style })
+
+  }
+
+  return cells
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>纵跨行</h2>
+<p>既然我们已经提到了 <a href="#colspan">Colspan</a>，那跨行（row span）也是没有问题的。它与colspan略有不同，但是基本原理是一样的。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2 fixed :columns=&quot;columns&quot; :data=&quot;data&quot; :width=&quot;700&quot; :height=&quot;400&quot;&gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { cloneVNode } from 'vue'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const rowSpanIndex = 0
+
+columns[rowSpanIndex].rowSpan = ({ rowIndex }) =&gt;
+
+  rowIndex % 2 === 0 &amp;&amp; rowIndex &lt;= data.length - 2 ? 2 : 1
+
+const Row = ({ rowData, rowIndex, cells, columns }) =&gt; {
+
+  const rowSpan = columns[rowSpanIndex].rowSpan({ rowData, rowIndex })
+
+  if (rowSpan &gt; 1) {
+
+    const cell = cells[rowSpanIndex]
+
+    const style = {
+
+      ...cell.props.style,
+
+      backgroundColor: 'var(--el-color-primary-light-3)',
+
+      height: `${rowSpan * 50 - 1}px`,
+
+      alignSelf: 'flex-start',
+
+      zIndex: 1,
+
+    }
+
+    cells[rowSpanIndex] = cloneVNode(cell, { style })
+
+  }
+
+  return cells
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>同时跨行和跨列</h2>
+<p>我们当然可以同时使用横跨列与纵跨行来满足您的业务需求！</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2 fixed :columns=&quot;columns&quot; :data=&quot;data&quot; :width=&quot;700&quot; :height=&quot;400&quot;&gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { cloneVNode } from 'vue'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const colSpanIndex = 1
+
+columns[colSpanIndex].colSpan = ({ rowIndex }) =&gt; (rowIndex % 4) + 1
+
+columns[colSpanIndex].align = 'center'
+
+const rowSpanIndex = 0
+
+columns[rowSpanIndex].rowSpan = ({ rowIndex }) =&gt;
+
+  rowIndex % 2 === 0 &amp;&amp; rowIndex &lt;= data.length - 2 ? 2 : 1
+
+const Row = ({ rowData, rowIndex, cells, columns }) =&gt; {
+
+  const colSpan = columns[colSpanIndex].colSpan({ rowData, rowIndex })
+
+  if (colSpan &gt; 1) {
+
+    let width = Number.parseInt(cells[colSpanIndex].props.style.width)
+
+    for (let i = 1; i &lt; colSpan; i++) {
+
+      width += Number.parseInt(cells[colSpanIndex + i].props.style.width)
+
+      cells[colSpanIndex + i] = null
+
+    }
+
+    const style = {
+
+      ...cells[colSpanIndex].props.style,
+
+      width: `${width}px`,
+
+      backgroundColor: 'var(--el-color-primary-light-3)',
+
+    }
+
+    cells[colSpanIndex] = cloneVNode(cells[colSpanIndex], { style })
+
+  }
+
+  const rowSpan = columns[rowSpanIndex].rowSpan({ rowData, rowIndex })
+
+  if (rowSpan &gt; 1) {
+
+    const cell = cells[rowSpanIndex]
+
+    const style = {
+
+      ...cell.props.style,
+
+      backgroundColor: 'var(--el-color-danger-light-3)',
+
+      height: `${rowSpan * 50}px`,
+
+      alignSelf: 'flex-start',
+
+      zIndex: 1,
+
+    }
+
+    cells[rowSpanIndex] = cloneVNode(cell, { style })
+
+  } else {
+
+    const style = cells[rowSpanIndex].props.style
+
+    // override the cell here for creating a pure node without pollute the style
+
+    cells[rowSpanIndex] = (
+
+      &lt;div style={{ ...style, width: `${style.width}px` }} /&gt;
+
+    )
+
+  }
+
+  return cells
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>树形数据</h2>
+<p>虚拟表也可以在树状结构中呈现数据。点击箭头图标，你可以展开或折叠树节点。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    v-model:expanded-row-keys=&quot;expandedRowKeys&quot;
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;treeData&quot;
+
+    :width=&quot;700&quot;
+
+    :expand-column-key=&quot;expandColumnKey&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @row-expand=&quot;onRowExpanded&quot;
+
+    @expanded-rows-change=&quot;onExpandedRowsChange&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from 'vue'
+
+import { TableV2FixedDir } from 'element-plus'
+
+import type { ExpandedRowsChangeHandler, RowExpandHandler } from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10).map((column, columnIndex) =&gt; {
+
+  let fixed!: TableV2FixedDir
+
+  if (columnIndex &lt; 2) fixed = TableV2FixedDir.LEFT
+
+  if (columnIndex &gt; 8) fixed = TableV2FixedDir.RIGHT
+
+  return { ...column, fixed }
+
+})
+
+const data = generateData(columns, 200)
+
+const expandColumnKey = 'column-0'
+
+// add some sub items
+
+for (let i = 0; i &lt; 50; i++) {
+
+  data.push(
+
+    {
+
+      ...data[0],
+
+      id: `${data[0].id}-sub-${i}`,
+
+      parentId: data[0].id,
+
+      [expandColumnKey]: `Sub ${i}`,
+
+    },
+
+    {
+
+      ...data[2],
+
+      id: `${data[2].id}-sub-${i}`,
+
+      parentId: data[2].id,
+
+      [expandColumnKey]: `Sub ${i}`,
+
+    },
+
+    {
+
+      ...data[2],
+
+      id: `${data[2].id}-sub-sub-${i}`,
+
+      parentId: `${data[2].id}-sub-${i}`,
+
+      [expandColumnKey]: `Sub-Sub ${i}`,
+
+    }
+
+  )
+
+}
+
+function unflatten(
+
+  data: ReturnType&lt;typeof generateData&gt;,
+
+  rootId = null,
+
+  dataKey = 'id',
+
+  parentKey = 'parentId'
+
+) {
+
+  const tree: any[] = []
+
+  const childrenMap = {}
+
+  for (const datum of data) {
+
+    const item = { ...datum }
+
+    const id = item[dataKey]
+
+    const parentId = item[parentKey]
+
+    if (Array.isArray(item.children)) {
+
+      childrenMap[id] = item.children.concat(childrenMap[id] || [])
+
+    } else if (!childrenMap[id]) {
+
+      childrenMap[id] = []
+
+    }
+
+    item.children = childrenMap[id]
+
+    if (parentId !== undefined &amp;&amp; parentId !== rootId) {
+
+      if (!childrenMap[parentId]) childrenMap[parentId] = []
+
+      childrenMap[parentId].push(item)
+
+    } else {
+
+      tree.push(item)
+
+    }
+
+  }
+
+  return tree
+
+}
+
+const treeData = computed(() =&gt; unflatten(data))
+
+const expandedRowKeys = ref&lt;string[]&gt;([])
+
+const onRowExpanded = ({ expanded }: Parameters&lt;RowExpandHandler&gt;[0]) =&gt; {
+
+  console.log('Expanded:', expanded)
+
+}
+
+const onExpandedRowsChange = (
+
+  expandedKeys: Parameters&lt;ExpandedRowsChangeHandler&gt;[0]
+
+) =&gt; {
+
+  console.log(expandedKeys)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>动态高度行</h2>
+<p>虚拟表能够呈现具有动态高度的行数。如果您正在处理数据并不确定内容大小， 此功能对于调整到内容高度的渲染行是理想的。要启用此功能，请传递 <code>estimated-row-height</code> 属性。估计高度越接近实际内容，渲染体验就越顺。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>每行高度在渲染过程中动态测量。因此，如果您试图显示大量数据， UI <strong>可能会</strong> 抖动。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :sort-by=&quot;sort&quot;
+
+    :estimated-row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    fixed
+
+    @column-sort=&quot;onColumnSort&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import {
+
+  ElButton,
+
+  ElTag,
+
+  TableV2FixedDir,
+
+  TableV2SortOrder,
+
+} from 'element-plus'
+
+import type { Column, SortBy } from 'element-plus'
+
+const longText =
+
+  'Quaerat ipsam necessitatibus eum quibusdam est id voluptatem cumque mollitia.'
+
+const midText = 'Corrupti doloremque a quos vero delectus consequatur.'
+
+const shortText = 'Eius optio fugiat.'
+
+const textList = [shortText, midText, longText]
+
+// generate random number in range 0 to 2
+
+let id = 0
+
+const dataGenerator = () =&gt; ({
+
+  id: `random-${++id}`,
+
+  name: 'Tom',
+
+  date: '2016-05-03',
+
+  description: textList[Math.floor(Math.random() * 3)],
+
+})
+
+const columns: Column&lt;any&gt;[] = [
+
+  {
+
+    key: 'id',
+
+    title: 'Id',
+
+    dataKey: 'id',
+
+    width: 150,
+
+    sortable: true,
+
+    fixed: TableV2FixedDir.LEFT,
+
+  },
+
+  {
+
+    key: 'name',
+
+    title: 'Name',
+
+    dataKey: 'name',
+
+    width: 150,
+
+    align: 'center',
+
+    cellRenderer: ({ cellData: name }) =&gt; &lt;ElTag&gt;{name}&lt;/ElTag&gt;,
+
+  },
+
+  {
+
+    key: 'description',
+
+    title: 'Description',
+
+    dataKey: 'description',
+
+    width: 150,
+
+    cellRenderer: ({ cellData: description }) =&gt; (
+
+      &lt;div style=&quot;padding: 10px 0;&quot;&gt;{description}&lt;/div&gt;
+
+    ),
+
+  },
+
+  {
+
+    key: 'operations',
+
+    title: 'Operations',
+
+    cellRenderer: () =&gt; (
+
+      &lt;&gt;
+
+        &lt;ElButton size=&quot;small&quot;&gt;Edit&lt;/ElButton&gt;
+
+        &lt;ElButton size=&quot;small&quot; type=&quot;danger&quot;&gt;
+
+          Delete
+
+        &lt;/ElButton&gt;
+
+      &lt;/&gt;
+
+    ),
+
+    width: 150,
+
+    align: 'center',
+
+  },
+
+]
+
+const data = ref(
+
+  Array.from({ length: 200 })
+
+    .map(dataGenerator)
+
+    .sort((a, b) =&gt; (a.name &gt; b.name ? 1 : -1))
+
+)
+
+const sort = ref&lt;SortBy&gt;({ key: 'name', order: TableV2SortOrder.ASC })
+
+const onColumnSort = (sortBy: SortBy) =&gt; {
+
+  const order = sortBy.order === 'asc' ? 1 : -1
+
+  const dataClone = [...data.value]
+
+  dataClone.sort((a, b) =&gt; (a[sortBy.key] &gt; b[sortBy.key] ? order : -order))
+
+  sort.value = sortBy
+
+  data.value = dataClone
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>可展开的附加信息</h2>
+<p>使用动态高度渲染，您也可以在表格中显示详细的视图。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :estimated-row-height=&quot;50&quot;
+
+    :expand-column-key=&quot;columns[0].key&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  &gt;
+
+    &lt;template #row=&quot;props&quot;&gt;
+
+      &lt;Row v-bind=&quot;props&quot; /&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const detailedText = `Velit sed aspernatur tempora. Natus consequatur officiis dicta vel assumenda.
+
+Itaque est temporibus minus quis. Ipsum commodiab porro vel voluptas illum.
+
+Qui quam nulla et dolore autem itaque est.
+
+Id consequatur ipsum ea fuga et odit eligendi impedit.
+
+Maiores officiis occaecati et magnam et sapiente est velit sunt.
+
+Non et tempore temporibus. Excepturi et quos. Minus distinctio aut.
+
+Voluptatem ea excepturi omnis vel. Non aperiam sit sed laboriosam eaque omnis deleniti.
+
+Est molestiae omnis non et nulla repudiandae fuga sit.`
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = ref(
+
+  generateData(columns, 200).map((data) =&gt; {
+
+    data.children = [
+
+      {
+
+        id: `${data.id}-detail-content`,
+
+        detail: detailedText,
+
+      },
+
+    ]
+
+    return data
+
+  })
+
+)
+
+const Row = ({ cells, rowData }) =&gt; {
+
+  if (rowData.detail) return &lt;div class=&quot;p-6&quot;&gt;{rowData.detail}&lt;/div&gt;
+
+  return cells
+
+}
+
+Row.inheritAttrs = false
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.el-table-v2__row-depth-0 {
+
+  height: 50px;
+
+}
+
+.el-table-v2__cell-text {
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义页脚</h2>
+<p>自定义表格 footer， 通常用来展示一些汇总数据和信息。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    :footer-height=&quot;50&quot;
+
+    fixed
+
+  &gt;
+
+    &lt;template #footer
+
+      &gt;&lt;div
+
+        class=&quot;flex items-center&quot;
+
+        style=&quot;
+
+          justify-content: center;
+
+          height: 100%;
+
+          background-color: var(--el-color-primary-light-7);
+
+        &quot;
+
+      &gt;
+
+        Display a message in the footer
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义空元素渲染器</h2>
+<p>渲染自定义的空元素。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;[]&quot;
+
+    :row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+    :footer-height=&quot;50&quot;
+
+  &gt;
+
+    &lt;template #empty&gt;
+
+      &lt;div class=&quot;flex items-center justify-center h-100%&quot;&gt;
+
+        &lt;el-empty /&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;tsx&quot; setup&gt;
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const columns = generateColumns(10)
+
+&lt;/script&gt;
+</code></pre>
+<h2>浮动遮罩层</h2>
+<p>当您想要显示加载指示器之类的浮动元素，可以通过渲染一个浮动在表格之上的遮罩层来实现。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table-v2
+
+    :columns=&quot;columns&quot;
+
+    :data=&quot;data&quot;
+
+    :row-height=&quot;40&quot;
+
+    :width=&quot;700&quot;
+
+    :height=&quot;400&quot;
+
+  &gt;
+
+    &lt;template #overlay&gt;
+
+      &lt;div
+
+        class=&quot;el-loading-mask&quot;
+
+        style=&quot;display: flex; align-items: center; justify-content: center&quot;
+
+      &gt;
+
+        &lt;el-icon class=&quot;is-loading&quot; color=&quot;var(--el-color-primary)&quot; :size=&quot;26&quot;&gt;
+
+          &lt;loading-icon /&gt;
+
+        &lt;/el-icon&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-table-v2&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { Loading as LoadingIcon } from '@element-plus/icons-vue'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-showcase .el-table-v2__overlay {
+
+  z-index: 9;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>手动滚动</h2>
+<p>使用 Table V2 暴露的方法可以进行手动或编程式的滚动到指定的偏移量或者行。</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p><code>scrollToRow</code> 的第二个参数代表滚动策略，计算了要滚动的位置，其默认值是 <code>auto</code>。如果你想要滚动到某个特定位置，你可以自己定义战略。可用的选项是 <code>"auto" | "center" | "end" | "start" | "smart"</code></p>
+<p><code>smart</code> 和<code>auto</code> 之间的区别是， <code>auto</code> 是 <code>smart</code> 滚动策略的子集。</p>
+</blockquote>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;mb-4 flex items-center&quot;&gt;
+
+    &lt;el-form-item label=&quot;Scroll pixels&quot; class=&quot;mr-4&quot;&gt;
+
+      &lt;el-input v-model=&quot;scrollDelta&quot; /&gt;
+
+    &lt;/el-form-item&gt;
+
+    &lt;el-form-item label=&quot;Scroll rows&quot;&gt;
+
+      &lt;el-input v-model=&quot;scrollRows&quot; /&gt;
+
+    &lt;/el-form-item&gt;
+
+  &lt;/div&gt;
+
+  &lt;div class=&quot;mb-4 flex items-center&quot;&gt;
+
+    &lt;el-button @click=&quot;scrollByPixels&quot;&gt; Scroll by pixels &lt;/el-button&gt;
+
+    &lt;el-button @click=&quot;scrollByRows&quot;&gt; Scroll by rows &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;div style=&quot;height: 400px&quot;&gt;
+
+    &lt;el-auto-resizer&gt;
+
+      &lt;template #default=&quot;{ height, width }&quot;&gt;
+
+        &lt;el-table-v2
+
+          ref=&quot;tableRef&quot;
+
+          :columns=&quot;columns&quot;
+
+          :data=&quot;data&quot;
+
+          :width=&quot;width&quot;
+
+          :height=&quot;height&quot;
+
+          fixed
+
+        /&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-auto-resizer&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { TableV2Instance } from 'element-plus'
+
+const generateColumns = (length = 10, prefix = 'column-', props?: any) =&gt;
+
+  Array.from({ length }).map((_, columnIndex) =&gt; ({
+
+    ...props,
+
+    key: `${prefix}${columnIndex}`,
+
+    dataKey: `${prefix}${columnIndex}`,
+
+    title: `Column ${columnIndex}`,
+
+    width: 150,
+
+  }))
+
+const generateData = (
+
+  columns: ReturnType&lt;typeof generateColumns&gt;,
+
+  length = 200,
+
+  prefix = 'row-'
+
+) =&gt;
+
+  Array.from({ length }).map((_, rowIndex) =&gt; {
+
+    return columns.reduce(
+
+      (rowData, column, columnIndex) =&gt; {
+
+        rowData[column.dataKey] = `Row ${rowIndex} - Col ${columnIndex}`
+
+        return rowData
+
+      },
+
+      {
+
+        id: `${prefix}${rowIndex}`,
+
+        parentId: null,
+
+      }
+
+    )
+
+  })
+
+const columns = generateColumns(10)
+
+const data = generateData(columns, 200)
+
+const tableRef = ref&lt;TableV2Instance&gt;()
+
+const scrollDelta = ref(200)
+
+const scrollRows = ref(10)
+
+function scrollByPixels() {
+
+  tableRef.value?.scrollToTop(scrollDelta.value)
+
+}
+
+function scrollByRows() {
+
+  tableRef.value?.scrollToRow(scrollRows.value)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>TableV2 API</h2>
+<h3>TableV2 Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>描述说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cache</td>
+<td>为了更好的渲染效果预先多加载的行数</td>
+<td><code>number</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>estimated-row-height</td>
+<td>渲染动态的单元格的预估高度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>header-class</td>
+<td>header 部分的自定义 class 名</td>
+<td><code>string</code> / Function&lt;<a href="#typings">HeaderClassGetter</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>header-props</td>
+<td>header 部分的自定义 props 名</td>
+<td><code>object</code> / Function&lt;<a href="#typings">HeaderPropsGetter</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>header-cell-props</td>
+<td>header cell 部分的自定义 props 名</td>
+<td><code>object</code> / Function&lt;<a href="#typings">HeaderCellPropsGetter</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>header-height</td>
+<td>Header 的高度由<code>height</code>设置。如果传入数组，它会使 header row 等于数组长度</td>
+<td><code>number</code>/ <code>number[]</code></td>
+<td>50</td>
+</tr>
+<tr>
+<td>footer-height</td>
+<td>Footer 部分的高度，当传入值时，这部分将被计算入 table 的高度里</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>row-class</td>
+<td>row wrapper 部分的自定义 class 名</td>
+<td><code>string</code> / Function&lt;<a href="#typings">RowClassGetter</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>row-key</td>
+<td>每行的 key 值，如果不提供，将使用索引 index 代替</td>
+<td><code>string</code> / <code>Symbol</code> / <code>number</code></td>
+<td>id</td>
+</tr>
+<tr>
+<td>row-props</td>
+<td>row component 部分的自定义 class 名</td>
+<td><code>object</code> / Function&lt;<a href="#typings">RowPropsGetter</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>row-height</td>
+<td>每行的高度, 用于计算表的总高度</td>
+<td><code>number</code></td>
+<td>50</td>
+</tr>
+<tr>
+<td>row-event-handlers</td>
+<td>当每行添加了一系列事件处理器时触发</td>
+<td><code>object</code>&lt;<a href="#typings">RowEventHandlers</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>cell-props</td>
+<td>每个单元格 cell 的自定义 props (除了 header cell 以外)</td>
+<td><code>object</code> / Function&lt;<a href="#typings">CellPropsGetter</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>columns</td>
+<td>列 column 的配置数组</td>
+<td><a href="#column-attribute">Column[]</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>data</td>
+<td>要在表中渲染的数据数组</td>
+<td><a href="#typings">Data[]</a></td>
+<td>[]</td>
+</tr>
+<tr>
+<td>data-getter</td>
+<td>一个自定义方法从数据源获取数据</td>
+<td>Function&lt;<a href="#typings">DataGetter<T></a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>fixed-data</td>
+<td>渲染行在表格主内容上方和 header 下方区域的数据</td>
+<td><code>object</code>&lt;<a href="#typings">Data</a>&gt;</td>
+<td>—</td>
+</tr>
+<tr>
+<td>expand-column-key</td>
+<td>列的 key 来标记哪个行可以被展开</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>expanded-row-keys</td>
+<td>存放行展开状态的 key 的数组，可以和 <code>v-model</code> 搭配使用</td>
+<td><a href="#typings">KeyType[]</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>default-expanded-row-keys</td>
+<td>默认展开的行的 key 的数组, **这个数据不是响应式的</td>
+<td><a href="#typings">KeyType[]</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>class</td>
+<td>表格的类名称，将应用于表格的全部的三个部分 (左、右、主)</td>
+<td><code>string</code> / <code>array</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>单元格宽度是自适应还是固定</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>width required</td>
+<td>表格的宽度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>height required</td>
+<td>表格的高度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>max-height</td>
+<td>表格的最大高度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>indent-size</td>
+<td>树形表的水平缩进</td>
+<td><code>number</code></td>
+<td>12</td>
+</tr>
+<tr>
+<td>h-scrollbar-size</td>
+<td>配置表格的水平滚动条大小，防止水平和垂直滚动条重叠。</td>
+<td><code>number</code></td>
+<td>6</td>
+</tr>
+<tr>
+<td>v-scrollbar-size</td>
+<td>配置表格的垂直滚动条大小，防止水平和垂直滚动条重叠。</td>
+<td><code>number</code></td>
+<td>6</td>
+</tr>
+<tr>
+<td>scrollbar-always-on</td>
+<td>如果开启，滚动条将一直显示，反之只会在鼠标经过时显示。</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>sort-by</td>
+<td>排序方式</td>
+<td><code>object</code>&lt;<a href="#typings">SortBy</a>&gt;</td>
+<td>{}</td>
+</tr>
+<tr>
+<td>sort-state</td>
+<td>多个排序</td>
+<td><code>object</code>&lt;<a href="#typings">SortState</a>&gt;</td>
+<td>undefined</td>
+</tr>
+</tbody>
+</table>
+<h3>TableV2 Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>事件参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cell</td>
+<td><code>object</code>&lt;<a href="#typings">CellSlotProps</a>&gt;</td>
+</tr>
+<tr>
+<td>header</td>
+<td><code>object</code>&lt;<a href="#typings">HeaderSlotProps</a>&gt;</td>
+</tr>
+<tr>
+<td>header-cell</td>
+<td><code>object</code>&lt;<a href="#typings">HeaderCellSlotProps</a>&gt;</td>
+</tr>
+<tr>
+<td>row</td>
+<td><code>object</code>&lt;<a href="#typings">RowSlotProps</a>&gt;</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>—</td>
+</tr>
+<tr>
+<td>empty</td>
+<td>—</td>
+</tr>
+<tr>
+<td>overlay</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>TableV2 Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>描述</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>column-sort</td>
+<td>列排序时调用</td>
+<td><code>object</code>&lt;<a href="#typings">ColumnSortParam</a>&gt;</td>
+</tr>
+<tr>
+<td>expanded-rows-change</td>
+<td>行展开状态改变时触发</td>
+<td><a href="#typings">KeyType[]</a></td>
+</tr>
+<tr>
+<td>end-reached</td>
+<td>到达表格末尾时触发。回调包含剩余距离，它通常是滚动条高度。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>scroll</td>
+<td>表格被用户滚动后触发</td>
+<td><code>object</code>&lt;<a href="#typings">ScrollParams</a>&gt;</td>
+</tr>
+<tr>
+<td>rows-rendered</td>
+<td>当行被渲染后触发</td>
+<td><code>object</code>&lt;<a href="#typings">RowsRenderedParams</a>&gt;</td>
+</tr>
+<tr>
+<td>row-expand</td>
+<td>点击箭头图标展开/折叠树节点时触发</td>
+<td><code>object</code>&lt;<a href="#typings">RowExpandParams</a>&gt;</td>
+</tr>
+</tbody>
+</table>
+<h3>TableV2 Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>描述</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scrollTo</td>
+<td>滚动到给定位置</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>scrollToLeft</td>
+<td>滚动到给定的水平位置</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>scrollToTop</td>
+<td>滚动到给定的垂直位置</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>scrollToRow</td>
+<td>使用给定的滚动策略滚动至指定行</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>请注意：这些是 <code>JavaScript</code> 对象，所以您 <strong>不能使用</strong> 短横线命名法（kebab-case）来处理这些属性</p>
+</blockquote>
+<h3>Column Attribute</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>描述</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>align</td>
+<td>表格单元格内容对齐方式</td>
+<td><a href="https://github.com/element-plus/element-plus/blob/b92b22932758f0ddea98810ae248f6ca62f77e25/packages/components/table-v2/src/constants.ts#L6">Alignment</a></td>
+<td>left</td>
+</tr>
+<tr>
+<td>class</td>
+<td>列的类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>key</td>
+<td>唯一标志</td>
+<td><a href="#typings">KeyType</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>dataKey</td>
+<td>data 的唯一标志符</td>
+<td><a href="#typings">KeyType</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>固定列位置</td>
+<td><code>boolean</code> / <a href="https://github.com/element-plus/element-plus/blob/b92b22932758f0ddea98810ae248f6ca62f77e25/packages/components/table-v2/src/constants.ts#L11">FixedDir</a></td>
+<td>false</td>
+</tr>
+<tr>
+<td>flexGrow</td>
+<td>CSS 属性 flex grow, 仅当不是固定表时才生效</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>flexShrink</td>
+<td>CSS 属性 flex shrink, 仅当不是固定表时才生效</td>
+<td><code>number</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>headerClass</td>
+<td>自定义 header 头部类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>此列是否不可见</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>style</td>
+<td>自定义列单元格的类名，将会与 gird 单元格合并</td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>sortable</td>
+<td>设置列是否可排序</td>
+<td><code>boolean</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Header 头部单元格中的默认文本</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>maxWidth</td>
+<td>列的最大宽度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>minWidth</td>
+<td>列的最小宽度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>width required</td>
+<td>列宽度</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>cellRenderer</td>
+<td>自定义单元格渲染器</td>
+<td><code>VueComponent</code> / (props: <a href="#typings">CellRenderProps</a>) =&gt; VNode</td>
+<td>—</td>
+</tr>
+<tr>
+<td>headerCellRenderer</td>
+<td>自定义头部渲染器</td>
+<td><code>VueComponent</code> / (props: <a href="#typings">HeaderRenderProps</a>) =&gt; VNode</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>Typings</h2>
+<p>显示类型声明ts`type HeaderClassGetter = (param: {</p>
+<p>columns: Column<any>[]</p>
+<p>headerIndex: number</p>
+<p>}) =&gt; string</p>
+<p>type HeaderPropsGetter = (param: {</p>
+<p>columns: Column<any>[]</p>
+<p>headerIndex: number</p>
+<p>}) =&gt; Record<string, any></p>
+<p>type HeaderCellPropsGetter = (param: {</p>
+<p>columns: Column<any>[]</p>
+<p>column: Column<any></p>
+<p>columnIndex: number</p>
+<p>headerIndex: number</p>
+<p>style: CSSProperties</p>
+<p>}) =&gt; Record<string, any></p>
+<p>type RowClassGetter = (param: {</p>
+<p>columns: Column<any>[]</p>
+<p>rowData: any</p>
+<p>rowIndex: number</p>
+<p>}) =&gt; string</p>
+<p>type RowPropsGetter = (param: {</p>
+<p>columns: Column<any>[]</p>
+<p>rowData: any</p>
+<p>rowIndex: number</p>
+<p>}) =&gt; Record<string, any></p>
+<p>type CellPropsGetter = (param: {</p>
+<p>column: Column<any></p>
+<p>columns: Column<any>[]</p>
+<p>columnIndex: number</p>
+<p>cellData: any</p>
+<p>rowData: any</p>
+<p>rowIndex: number</p>
+<p>}) =&gt; void</p>
+<p>type DataGetterParams<T> = {</p>
+<p>columns: Column<T>[]</p>
+<p>column: Column<T></p>
+<p>columnIndex: number</p>
+<p>} &amp; RowCommonParams</p>
+<p>type DataGetter<T> = (params: DataGetterParams<T>) =&gt; T</p>
+<p>type CellRenderProps<T> = {</p>
+<p>cellData: T</p>
+<p>column: Column<T></p>
+<p>columns: Column<T>[]</p>
+<p>columnIndex: number</p>
+<p>rowData: any</p>
+<p>rowIndex: number</p>
+<p>}</p>
+<p>type HeaderRenderProps<T> = {</p>
+<p>column: Column<T></p>
+<p>columns: Column<T>[]</p>
+<p>columnIndex: number</p>
+<p>headerIndex: number</p>
+<p>}</p>
+<p>type ScrollParams = {</p>
+<p>xAxisScrollDir: 'forward' | 'backward'</p>
+<p>scrollLeft: number</p>
+<p>yAxisScrollDir: 'forward' | 'backward'</p>
+<p>scrollTop: number</p>
+<p>}</p>
+<p>type CellSlotProps<T> = {</p>
+<p>column: Column<T></p>
+<p>columns: Column<T>[]</p>
+<p>columnIndex: number</p>
+<p>depth: number</p>
+<p>style: CSSProperties</p>
+<p>rowData: any</p>
+<p>rowIndex: number</p>
+<p>isScrolling: boolean</p>
+<p>expandIconProps?:</p>
+<pre><code>| {
+
+    rowData: any
+
+    rowIndex: number
+
+    onExpand: (expand: boolean) =&gt; void
+
+  }
+
+| undefined
+</code></pre>
+<p>}</p>
+<p>type HeaderSlotProps = {</p>
+<p>cells: VNode[]</p>
+<p>columns: Column<any>[]</p>
+<p>headerIndex: number</p>
+<p>}</p>
+<p>type HeaderCellSlotProps = {</p>
+<p>class: string</p>
+<p>columns: Column<any>[]</p>
+<p>column: Column<any></p>
+<p>columnIndex: number</p>
+<p>headerIndex: number</p>
+<p>style: CSSProperties</p>
+<p>headerCellProps?: any</p>
+<p>sortBy: SortBy</p>
+<p>sortState?: SortState | undefined</p>
+<p>onColumnSorted: (e: MouseEvent) =&gt; void</p>
+<p>}</p>
+<p>type RowCommonParams = {</p>
+<p>rowData: any</p>
+<p>rowIndex: number</p>
+<p>}</p>
+<p>type RowEventHandlerParams = {</p>
+<p>rowKey: KeyType</p>
+<p>event: Event</p>
+<p>} &amp; RowCommonParams</p>
+<p>type RowEventHandler = (params: RowEventHandlerParams) =&gt; void</p>
+<p>type RowEventHandlers = {</p>
+<p>onClick?: RowEventHandler</p>
+<p>onContextmenu?: RowEventHandler</p>
+<p>onDblclick?: RowEventHandler</p>
+<p>onMouseenter?: RowEventHandler</p>
+<p>onMouseleave?: RowEventHandler</p>
+<p>}</p>
+<p>type RowsRenderedParams = {</p>
+<p>rowCacheStart: number</p>
+<p>rowCacheEnd: number</p>
+<p>rowVisibleStart: number</p>
+<p>rowVisibleEnd: number</p>
+<p>}</p>
+<p>type RowSlotProps = {</p>
+<p>columns: Column<any>[]</p>
+<p>rowData: any</p>
+<p>columnIndex: number</p>
+<p>rowIndex: number</p>
+<p>data: any</p>
+<p>key: number | string</p>
+<p>isScrolling?: boolean</p>
+<p>style: CSSProperties</p>
+<p>}</p>
+<p>type RowExpandParams = {</p>
+<p>expanded: boolean</p>
+<p>rowKey: KeyType</p>
+<p>} &amp; RowCommonParams</p>
+<p>type Data = {</p>
+<p>children?: Array<any></p>
+<p>}</p>
+<p>type FixedData = Data</p>
+<p>type KeyType = string | number | symbol</p>
+<p>type ColumnSortParam<T> = { column: Column<T>; key: KeyType; order: SortOrder }</p>
+<p>enum SortOrder {</p>
+<p>ASC = 'asc',</p>
+<p>DESC = 'desc',</p>
+<p>}</p>
+<p>enum Alignment {</p>
+<p>LEFT = 'left',</p>
+<p>CENTER = 'center',</p>
+<p>RIGHT = 'right',</p>
+<p>}</p>
+<p>type SortBy = { key: KeyType; Order: SortOrder }</p>
+<p>type SortState = Record<KeyType, SortOrder>`</p>
+<h2>常见问题</h2>
+<h4>如何在第一列中渲染带复选框的列表？</h4>
+<p>由于可以自己定义单元格渲染器，您可以根据示例 <a href="#customize-cell-renderer">自定义单元格渲染器</a> 代码来渲染 <code>checkbox</code>，并自行管理其状态。</p>
+<h4>为什么虚拟化表提供的功能较 <a href="./table">TableV1</a> 少？</h4>
+<p>对于虚拟化表格，我们打算减少一些功能，让用户根据需求自行实现。整合过多的功能会让组件的代码变得难以维护，且对于大多数用户来说，基础功能就已足够。一些主要的功能尚未开发。我们很希望听从您的意见。进入 <a href="https://discord.com/invite/gXK9XNzW3X">Discord</a> 持续关注.</p></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/table-v2.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["table-v2"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+
+
+
+
+.el-table .warning-row {
+
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
+}
+.el-table .success-row {
+
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+p[data-v-p4tvf] {
+
+  margin: 10px;
+
+  padding: 0;
+}
+.tag-item + .tag-item[data-v-p4tvf] {
+
+  margin-left: 5px;
+}
+
+
+

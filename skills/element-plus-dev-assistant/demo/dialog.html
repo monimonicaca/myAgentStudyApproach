@@ -1,0 +1,2608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dialog 对话框 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/dialog.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Dialog 对话框</h1>
+  <span class="count">12 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（12）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 自定义内容</a>
+<a href="#ex-2">3. 自定义头部</a>
+<a href="#ex-3">4. 嵌套的对话框</a>
+<a href="#ex-4">5. 内容居中</a>
+<a href="#ex-5">6. 居中对话框</a>
+<a href="#ex-6">7. 关闭时销毁</a>
+<a href="#ex-7">8. 可拖拽对话框</a>
+<a href="#ex-8">9. 全屏</a>
+<a href="#ex-9">10. 模态框</a>
+<a href="#ex-10">11. 自定义动画 2.10.5</a>
+<a href="#ex-11">12. Events</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Click to open the Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogVisible&quot;
+
+    title=&quot;Tips&quot;
+
+    width=&quot;500&quot;
+
+    :before-close=&quot;handleClose&quot;
+
+  &gt;
+
+    &lt;span&gt;This is a message&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { ElMessageBox } from &#x27;element-plus&#x27;
+
+const dialogVisible = ref(false)
+
+const handleClose = (done: () =&gt; void) =&gt; {
+
+  ElMessageBox.confirm(&#x27;Are you sure to close this dialog?&#x27;)
+
+    .then(() =&gt; {
+
+      done()
+
+    })
+
+    .catch(() =&gt; {
+
+      // catch error
+
+    })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>自定义内容</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogTableVisible = true&quot;&gt;
+
+      Open a Table nested Dialog
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogFormVisible = true&quot;&gt;
+
+      Open a Form nested Dialog
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dialog v-model=&quot;dialogTableVisible&quot; title=&quot;Shipping address&quot; width=&quot;800&quot;&gt;
+
+    &lt;el-table :data=&quot;gridData&quot;&gt;
+
+      &lt;el-table-column property=&quot;date&quot; label=&quot;Date&quot; width=&quot;150&quot; /&gt;
+
+      &lt;el-table-column property=&quot;name&quot; label=&quot;Name&quot; width=&quot;200&quot; /&gt;
+
+      &lt;el-table-column property=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+    &lt;/el-table&gt;
+
+  &lt;/el-dialog&gt;
+
+  &lt;el-dialog v-model=&quot;dialogFormVisible&quot; title=&quot;Shipping address&quot; width=&quot;500&quot;&gt;
+
+    &lt;el-form :model=&quot;form&quot;&gt;
+
+      &lt;el-form-item label=&quot;Promotion name&quot; :label-width=&quot;formLabelWidth&quot;&gt;
+
+        &lt;el-input v-model=&quot;form.name&quot; autocomplete=&quot;off&quot; /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;Zones&quot; :label-width=&quot;formLabelWidth&quot;&gt;
+
+        &lt;el-select v-model=&quot;form.region&quot; placeholder=&quot;Please select a zone&quot;&gt;
+
+          &lt;el-option label=&quot;Zone No.1&quot; value=&quot;shanghai&quot; /&gt;
+
+          &lt;el-option label=&quot;Zone No.2&quot; value=&quot;beijing&quot; /&gt;
+
+        &lt;/el-select&gt;
+
+      &lt;/el-form-item&gt;
+
+    &lt;/el-form&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogFormVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogFormVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { reactive, ref } from &#x27;vue&#x27;
+
+const dialogTableVisible = ref(false)
+
+const dialogFormVisible = ref(false)
+
+const formLabelWidth = &#x27;140px&#x27;
+
+const form = reactive({
+
+  name: &#x27;&#x27;,
+
+  region: &#x27;&#x27;,
+
+  date1: &#x27;&#x27;,
+
+  date2: &#x27;&#x27;,
+
+  delivery: false,
+
+  type: [],
+
+  resource: &#x27;&#x27;,
+
+  desc: &#x27;&#x27;,
+
+})
+
+const gridData = [
+
+  {
+
+    date: &#x27;2016-05-02&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-04&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-01&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-03&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+]
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>自定义头部</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;visible = true&quot;&gt;
+
+    Open Dialog with customized header
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;visible&quot; :show-close=&quot;false&quot; width=&quot;500&quot;&gt;
+
+    &lt;template #header=&quot;{ close, titleId, titleClass }&quot;&gt;
+
+      &lt;div class=&quot;my-header&quot;&gt;
+
+        &lt;h4 :id=&quot;titleId&quot; :class=&quot;titleClass&quot;&gt;This is a custom header!&lt;/h4&gt;
+
+        &lt;el-button type=&quot;danger&quot; @click=&quot;close&quot;&gt;
+
+          &lt;el-icon class=&quot;el-icon--left&quot;&gt;&lt;CircleCloseFilled /&gt;&lt;/el-icon&gt;
+
+          Close
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+    This is dialog content.
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { CircleCloseFilled } from &#x27;@element-plus/icons-vue&#x27;
+
+const visible = ref(false)
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.my-header {
+
+  display: flex;
+
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>嵌套的对话框</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;outerVisible = true&quot;&gt;
+
+    Open the outer Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;outerVisible&quot; title=&quot;Outer Dialog&quot; width=&quot;800&quot;&gt;
+
+    &lt;span&gt;This is the outer Dialog&lt;/span&gt;
+
+    &lt;el-dialog
+
+      v-model=&quot;innerVisible&quot;
+
+      width=&quot;500&quot;
+
+      title=&quot;Inner Dialog&quot;
+
+      append-to-body
+
+    &gt;
+
+      &lt;span&gt;This is the inner Dialog&lt;/span&gt;
+
+    &lt;/el-dialog&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;outerVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;innerVisible = true&quot;&gt;
+
+          Open the inner Dialog
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const outerVisible = ref(false)
+
+const innerVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>内容居中</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;centerDialogVisible = true&quot;&gt;
+
+    Click to open the Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;centerDialogVisible&quot; title=&quot;Warning&quot; width=&quot;500&quot; center&gt;
+
+    &lt;span&gt;
+
+      It should be noted that the content will not be aligned in center by
+
+      default
+
+    &lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;centerDialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;centerDialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const centerDialogVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-5"><h3><span class="idx">6</span>居中对话框</h3><div class="demo-card"><div class="mount" id="mount-5"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;centerDialogVisible = true&quot;&gt;
+
+    Click to open the Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;centerDialogVisible&quot;
+
+    title=&quot;Warning&quot;
+
+    width=&quot;500&quot;
+
+    align-center
+
+  &gt;
+
+    &lt;span&gt;Open the dialog from the center from the screen&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;centerDialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;centerDialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const centerDialogVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-6"><h3><span class="idx">7</span>关闭时销毁</h3><div class="demo-card"><div class="mount" id="mount-6"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;centerDialogVisible = true&quot;&gt;
+
+    Click to open Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;centerDialogVisible&quot;
+
+    title=&quot;Notice&quot;
+
+    width=&quot;500&quot;
+
+    destroy-on-close
+
+    center
+
+  &gt;
+
+    &lt;span&gt;
+
+      Notice: before the dialog is opened for the first time, this node and the
+
+      one below will not be rendered.
+
+    &lt;/span&gt;
+
+    &lt;div&gt;
+
+      &lt;strong&gt;Extra content (Not rendered)&lt;/strong&gt;
+
+    &lt;/div&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;centerDialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;centerDialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const centerDialogVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-7"><h3><span class="idx">8</span>可拖拽对话框</h3><div class="demo-card"><div class="mount" id="mount-7"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogVisible = true&quot;&gt;
+
+      Open a draggable Dialog
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogOverflowVisible = true&quot;&gt;
+
+      Open a overflow draggable Dialog
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;customDraggingVisible = true&quot;&gt;
+
+      Open a custom dragging style Dialog
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot; title=&quot;Tips&quot; width=&quot;500&quot; draggable&gt;
+
+    &lt;span&gt;It&#x27;s a draggable Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogOverflowVisible&quot;
+
+    title=&quot;Tips&quot;
+
+    width=&quot;500&quot;
+
+    draggable
+
+    overflow
+
+  &gt;
+
+    &lt;span&gt;It&#x27;s a overflow draggable Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogOverflowVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogOverflowVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;customDraggingVisible&quot;
+
+    class=&quot;custom-dragging-style&quot;
+
+    title=&quot;Custom Dragging Style&quot;
+
+    width=&quot;500&quot;
+
+    draggable
+
+  &gt;
+
+    &lt;span
+
+      &gt;This dialog has custom dragging styles. Try dragging it to see the
+
+      effects!&lt;/span
+
+    &gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;customDraggingVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;customDraggingVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const dialogVisible = ref(false)
+
+const dialogOverflowVisible = ref(false)
+
+const customDraggingVisible = ref(false)
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+:global(.custom-dragging-style.is-dragging) {
+
+  border: 2px dashed var(--el-color-primary);
+
+  opacity: 0.65;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-8"><h3><span class="idx">9</span>全屏</h3><div class="demo-card"><div class="mount" id="mount-8"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Open the fullscreen Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot; fullscreen&gt;
+
+    &lt;span&gt;It&#x27;s a fullscreen Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const dialogVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-9"><h3><span class="idx">10</span>模态框</h3><div class="demo-card"><div class="mount" id="mount-9"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Open the modal Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot; :modal=&quot;false&quot; modal-penetrable&gt;
+
+    &lt;span&gt;It&#x27;s a modal Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const dialogVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-10"><h3><span class="idx">11</span>自定义动画 2.10.5</h3><div class="demo-card"><div class="mount" id="mount-10"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-button plain @click=&quot;openDialog(&#x27;fade&#x27;)&quot;&gt; Default &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialog(&#x27;scale&#x27;)&quot;&gt; Scale &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialog(&#x27;slide&#x27;)&quot;&gt; Slide &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialog(&#x27;bounce&#x27;)&quot;&gt; Bounce &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialogWithObject&quot;&gt; Object Config &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogVisible&quot;
+
+    class=&quot;custom-transition-dialog&quot;
+
+    :title=&quot;`${currentAnimation} Animation Dialog`&quot;
+
+    width=&quot;30%&quot;
+
+    :transition=&quot;transitionConfig&quot;
+
+  &gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;
+
+        Current animation: &lt;strong&gt;{{ currentAnimation }}&lt;/strong&gt;
+
+      &lt;/p&gt;
+
+      &lt;p&gt;
+
+        This dialog demonstrates the {{ currentAnimation }} animation effect.
+
+      &lt;/p&gt;
+
+      &lt;p v-if=&quot;isObjectConfig&quot;&gt;
+
+        &lt;strong&gt;Using object configuration:&lt;/strong&gt;&lt;br /&gt;
+
+        &lt;code&gt;{{ JSON.stringify(transitionConfig, null, 2) }}&lt;/code&gt;
+
+      &lt;/p&gt;
+
+    &lt;/div&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+      &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+        Confirm
+
+      &lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from &#x27;vue&#x27;
+
+import type { DialogTransition } from &#x27;element-plus&#x27;
+
+const dialogVisible = ref(false)
+
+const currentAnimation = ref(&#x27;fade&#x27;)
+
+const isObjectConfig = ref(false)
+
+const transitionConfig = computed&lt;DialogTransition&gt;(() =&gt; {
+
+  if (isObjectConfig.value) {
+
+    return {
+
+      name: &#x27;dialog-custom-object&#x27;,
+
+      appear: true,
+
+      mode: &#x27;out-in&#x27;,
+
+      duration: 500,
+
+    }
+
+  }
+
+  return `dialog-${currentAnimation.value}`
+
+})
+
+const openDialog = (type: string) =&gt; {
+
+  currentAnimation.value = type
+
+  isObjectConfig.value = false
+
+  dialogVisible.value = true
+
+}
+
+const openDialogWithObject = () =&gt; {
+
+  currentAnimation.value = &#x27;object-config&#x27;
+
+  isObjectConfig.value = true
+
+  dialogVisible.value = true
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+code {
+
+  background: var(--el-bg-color-page);
+
+  padding: 4px 8px;
+
+  border-radius: 4px;
+
+  font-size: 12px;
+
+  display: block;
+
+  margin-top: 8px;
+
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+
+/* Scale Animation */
+
+.dialog-scale-enter-active,
+
+.dialog-scale-leave-active,
+
+.dialog-scale-enter-active .el-dialog,
+
+.dialog-scale-leave-active .el-dialog {
+
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+}
+
+.dialog-scale-enter-from,
+
+.dialog-scale-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-scale-enter-from .el-dialog,
+
+.dialog-scale-leave-to .el-dialog {
+
+  transform: scale(0.5);
+
+  opacity: 0;
+
+}
+
+/* Slide Animation */
+
+.dialog-slide-enter-active,
+
+.dialog-slide-leave-active,
+
+.dialog-slide-enter-active .el-dialog,
+
+.dialog-slide-leave-active .el-dialog {
+
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+}
+
+.dialog-slide-enter-from,
+
+.dialog-slide-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-slide-enter-from .el-dialog,
+
+.dialog-slide-leave-to .el-dialog {
+
+  transform: translateY(-100px);
+
+  opacity: 0;
+
+}
+
+/* Bounce Animation */
+
+.dialog-bounce-enter-active,
+
+.dialog-bounce-leave-active,
+
+.dialog-bounce-enter-active .el-dialog,
+
+.dialog-bounce-leave-active .el-dialog {
+
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+}
+
+.dialog-bounce-enter-from,
+
+.dialog-bounce-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-bounce-enter-from .el-dialog,
+
+.dialog-bounce-leave-to .el-dialog {
+
+  transform: scale(0.3) translateY(-50px);
+
+  opacity: 0;
+
+}
+
+/* Object Configuration Animation */
+
+.dialog-custom-object-enter-active,
+
+.dialog-custom-object-leave-active,
+
+.dialog-custom-object-enter-active .el-dialog,
+
+.dialog-custom-object-leave-active .el-dialog {
+
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+}
+
+.dialog-custom-object-enter-from,
+
+.dialog-custom-object-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-custom-object-enter-from .el-dialog,
+
+.dialog-custom-object-leave-to .el-dialog {
+
+  transform: rotate(180deg) scale(0.5);
+
+  opacity: 0;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-11"><h3><span class="idx">12</span>Events</h3><div class="demo-card"><div class="mount" id="mount-11"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Open the event Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogVisible&quot;
+
+    modal-class=&quot;overide-animation&quot;
+
+    :before-close=&quot;
+
+      (doneFn) =&gt; {
+
+        ;(console.log(&#x27;before-close&#x27;), doneFn())
+
+      }
+
+    &quot;
+
+    @open=&quot;console.log(&#x27;open&#x27;)&quot;
+
+    @open-auto-focus=&quot;console.log(&#x27;open-auto-focus&#x27;)&quot;
+
+    @opened=&quot;console.log(&#x27;opened&#x27;)&quot;
+
+    @close=&quot;console.log(&#x27;close&#x27;)&quot;
+
+    @close-auto-focus=&quot;console.log(&#x27;close-auto-focus&#x27;)&quot;
+
+    @closed=&quot;console.log(&#x27;closed&#x27;)&quot;
+
+  &gt;
+
+    &lt;span&gt;It&#x27;s a event Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const dialogVisible = ref(false)
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Dialog 对话框</h1>
+<p>在保留当前页面状态的情况下，告知用户并承载相关操作。</p>
+<h2>基础用法</h2>
+<p>Dialog 弹出一个对话框，适合需要定制性更大的场景。</p>
+<p>需要设置 <code>model-value / v-model</code> 属性，它接收 <code>Boolean</code>，当为 <code>true</code> 时显示 Dialog。 Dialog 分为两个部分：<code>body</code> 和 <code>footer</code>，<code>footer</code> 需要具名为 <code>footer</code> 的 <code>slot</code>。 <code>title</code> 属性用于定义标题，它是可选的，默认值为空。最后，本例还展示了 <code>before-close</code> 的用法。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Click to open the Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogVisible&quot;
+
+    title=&quot;Tips&quot;
+
+    width=&quot;500&quot;
+
+    :before-close=&quot;handleClose&quot;
+
+  &gt;
+
+    &lt;span&gt;This is a message&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElMessageBox } from 'element-plus'
+
+const dialogVisible = ref(false)
+
+const handleClose = (done: () =&gt; void) =&gt; {
+
+  ElMessageBox.confirm('Are you sure to close this dialog?')
+
+    .then(() =&gt; {
+
+      done()
+
+    })
+
+    .catch(() =&gt; {
+
+      // catch error
+
+    })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p><code>before-close</code> 只会在用户点击关闭按钮或者对话框的遮罩区域时被调用。如果你在 <code>footer</code> 具名 slot 里添加了用于关闭 Dialog 的按钮，那么可以在按钮的点击回调函数里加入 <code>before-close</code> 的相关逻辑。</p>
+</blockquote>
+<h2>自定义内容</h2>
+<p>对话框的内容可以是任何东西，甚至是一个表格或表单。此示例显示如何在 Dialog 中使用 Element Plus 的表格和表单。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogTableVisible = true&quot;&gt;
+
+      Open a Table nested Dialog
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogFormVisible = true&quot;&gt;
+
+      Open a Form nested Dialog
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dialog v-model=&quot;dialogTableVisible&quot; title=&quot;Shipping address&quot; width=&quot;800&quot;&gt;
+
+    &lt;el-table :data=&quot;gridData&quot;&gt;
+
+      &lt;el-table-column property=&quot;date&quot; label=&quot;Date&quot; width=&quot;150&quot; /&gt;
+
+      &lt;el-table-column property=&quot;name&quot; label=&quot;Name&quot; width=&quot;200&quot; /&gt;
+
+      &lt;el-table-column property=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+    &lt;/el-table&gt;
+
+  &lt;/el-dialog&gt;
+
+  &lt;el-dialog v-model=&quot;dialogFormVisible&quot; title=&quot;Shipping address&quot; width=&quot;500&quot;&gt;
+
+    &lt;el-form :model=&quot;form&quot;&gt;
+
+      &lt;el-form-item label=&quot;Promotion name&quot; :label-width=&quot;formLabelWidth&quot;&gt;
+
+        &lt;el-input v-model=&quot;form.name&quot; autocomplete=&quot;off&quot; /&gt;
+
+      &lt;/el-form-item&gt;
+
+      &lt;el-form-item label=&quot;Zones&quot; :label-width=&quot;formLabelWidth&quot;&gt;
+
+        &lt;el-select v-model=&quot;form.region&quot; placeholder=&quot;Please select a zone&quot;&gt;
+
+          &lt;el-option label=&quot;Zone No.1&quot; value=&quot;shanghai&quot; /&gt;
+
+          &lt;el-option label=&quot;Zone No.2&quot; value=&quot;beijing&quot; /&gt;
+
+        &lt;/el-select&gt;
+
+      &lt;/el-form-item&gt;
+
+    &lt;/el-form&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogFormVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogFormVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { reactive, ref } from 'vue'
+
+const dialogTableVisible = ref(false)
+
+const dialogFormVisible = ref(false)
+
+const formLabelWidth = '140px'
+
+const form = reactive({
+
+  name: '',
+
+  region: '',
+
+  date1: '',
+
+  date2: '',
+
+  delivery: false,
+
+  type: [],
+
+  resource: '',
+
+  desc: '',
+
+})
+
+const gridData = [
+
+  {
+
+    date: '2016-05-02',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-04',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-01',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-03',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义头部</h2>
+<p><code>header</code> 可用于自定义显示标题的区域。为了保持可用性，除了使用此插槽外，使用 <code>title</code> 属性，或使用 <code>titleId</code> 插槽属性来指定哪些元素应该读取为对话框标题。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;visible = true&quot;&gt;
+
+    Open Dialog with customized header
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;visible&quot; :show-close=&quot;false&quot; width=&quot;500&quot;&gt;
+
+    &lt;template #header=&quot;{ close, titleId, titleClass }&quot;&gt;
+
+      &lt;div class=&quot;my-header&quot;&gt;
+
+        &lt;h4 :id=&quot;titleId&quot; :class=&quot;titleClass&quot;&gt;This is a custom header!&lt;/h4&gt;
+
+        &lt;el-button type=&quot;danger&quot; @click=&quot;close&quot;&gt;
+
+          &lt;el-icon class=&quot;el-icon--left&quot;&gt;&lt;CircleCloseFilled /&gt;&lt;/el-icon&gt;
+
+          Close
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+    This is dialog content.
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { CircleCloseFilled } from '@element-plus/icons-vue'
+
+const visible = ref(false)
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.my-header {
+
+  display: flex;
+
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>嵌套的对话框</h2>
+<p>如果需要在一个 Dialog 内部嵌套另一个 Dialog，需要使用 <code>append-to-body</code> 属性。</p>
+<p>通常我们不建议使用嵌套对话框。如果你需要在页面上呈现多个对话框，你可以简单地打平它们，以便它们彼此之间是平级关系。如果必须要在一个对话框内展示另一个对话框，可以将内部嵌套的对话框属性 <code>append-to-body</code> 设置为 true，嵌套的对话框将附加到 body 而不是其父节点，这样两个对话框都可以被正确地渲染。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;outerVisible = true&quot;&gt;
+
+    Open the outer Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;outerVisible&quot; title=&quot;Outer Dialog&quot; width=&quot;800&quot;&gt;
+
+    &lt;span&gt;This is the outer Dialog&lt;/span&gt;
+
+    &lt;el-dialog
+
+      v-model=&quot;innerVisible&quot;
+
+      width=&quot;500&quot;
+
+      title=&quot;Inner Dialog&quot;
+
+      append-to-body
+
+    &gt;
+
+      &lt;span&gt;This is the inner Dialog&lt;/span&gt;
+
+    &lt;/el-dialog&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;outerVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;innerVisible = true&quot;&gt;
+
+          Open the inner Dialog
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const outerVisible = ref(false)
+
+const innerVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>内容居中</h2>
+<p>对话框的内容可以居中。</p>
+<p>将<code>center</code>设置为<code>true</code>即可使标题和底部居中。 <code>center</code>仅影响标题和底部区域。 Dialog 的内容是任意的，在一些情况下，内容并不适合居中布局。如果需要内容也水平居中，请自行为其添加 CSS 样式。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;centerDialogVisible = true&quot;&gt;
+
+    Click to open the Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;centerDialogVisible&quot; title=&quot;Warning&quot; width=&quot;500&quot; center&gt;
+
+    &lt;span&gt;
+
+      It should be noted that the content will not be aligned in center by
+
+      default
+
+    &lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;centerDialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;centerDialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const centerDialogVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>Dialog 的内容是懒渲染的——在被第一次打开之前，传入的默认 slot 不会被立即渲染到 DOM 上。因此，如果需要执行 DOM 操作，或通过 <code>ref</code> 获取相应组件，请在 <code>open</code> 事件回调中进行。</p>
+</blockquote>
+<h2>居中对话框</h2>
+<p>从屏幕中心打开对话框。</p>
+<p>设置 <code>align-center</code> 为 <code>true</code> 使对话框水平垂直居中。由于对话框垂直居中在弹性盒子中，所以<code>top</code>属性将不起作用。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;centerDialogVisible = true&quot;&gt;
+
+    Click to open the Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;centerDialogVisible&quot;
+
+    title=&quot;Warning&quot;
+
+    width=&quot;500&quot;
+
+    align-center
+
+  &gt;
+
+    &lt;span&gt;Open the dialog from the center from the screen&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;centerDialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;centerDialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const centerDialogVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>关闭时销毁</h2>
+<p>启用此功能时，默认栏位下的内容将使用 <code>v-if</code> 指令销毁。当出现性能问题时，可以启用此功能。</p>
+<p>需要注意的是，当这个属性被启用时，在 <code>transition.beforeEnter</code> 事件卸载前，除了 <code>overlay</code>、<code>header (可选)</code>与<code>footer(可选)</code> ，Dialog 内不会有其它任何其它的 DOM 节点存在。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;centerDialogVisible = true&quot;&gt;
+
+    Click to open Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;centerDialogVisible&quot;
+
+    title=&quot;Notice&quot;
+
+    width=&quot;500&quot;
+
+    destroy-on-close
+
+    center
+
+  &gt;
+
+    &lt;span&gt;
+
+      Notice: before the dialog is opened for the first time, this node and the
+
+      one below will not be rendered.
+
+    &lt;/span&gt;
+
+    &lt;div&gt;
+
+      &lt;strong&gt;Extra content (Not rendered)&lt;/strong&gt;
+
+    &lt;/div&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;centerDialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;centerDialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const centerDialogVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>可拖拽对话框</h2>
+<p>试着拖动一下<code>header</code>部分吧</p>
+<p>设置<code>draggable</code>属性为<code>true</code>以做到拖拽设置 <code>overflow</code> 2.5.4 为 <code>true</code> 可以让拖拽范围超出可视区。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogVisible = true&quot;&gt;
+
+      Open a draggable Dialog
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;dialogOverflowVisible = true&quot;&gt;
+
+      Open a overflow draggable Dialog
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;customDraggingVisible = true&quot;&gt;
+
+      Open a custom dragging style Dialog
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot; title=&quot;Tips&quot; width=&quot;500&quot; draggable&gt;
+
+    &lt;span&gt;It's a draggable Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogOverflowVisible&quot;
+
+    title=&quot;Tips&quot;
+
+    width=&quot;500&quot;
+
+    draggable
+
+    overflow
+
+  &gt;
+
+    &lt;span&gt;It's a overflow draggable Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogOverflowVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogOverflowVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;customDraggingVisible&quot;
+
+    class=&quot;custom-dragging-style&quot;
+
+    title=&quot;Custom Dragging Style&quot;
+
+    width=&quot;500&quot;
+
+    draggable
+
+  &gt;
+
+    &lt;span
+
+      &gt;This dialog has custom dragging styles. Try dragging it to see the
+
+      effects!&lt;/span
+
+    &gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;customDraggingVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;customDraggingVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const dialogVisible = ref(false)
+
+const dialogOverflowVisible = ref(false)
+
+const customDraggingVisible = ref(false)
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+:global(.custom-dragging-style.is-dragging) {
+
+  border: 2px dashed var(--el-color-primary);
+
+  opacity: 0.65;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>当 <code>modal</code> 的值为 false 时，请一定要确保 <code>append-to-body</code> 属性为 <strong>true</strong>，由于 <code>Dialog</code> 使用 <code>position: relative</code> 定位，当外层的遮罩层被移除时，<code>Dialog</code> 则会根据当前 DOM 上的祖先节点来定位，因此可能造成定位问题。</p>
+</blockquote>
+<h2>全屏</h2>
+<p>设置 <code>fullscreen</code> 属性来打开全屏对话框。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Open the fullscreen Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot; fullscreen&gt;
+
+    &lt;span&gt;It's a fullscreen Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const dialogVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>如果 <code>fullscreen</code> 为 true，则 <code>width</code>、<code>top</code> 和 <code>draggable</code> 属性无效。</p>
+</blockquote>
+<h2>模态框</h2>
+<p>将 <code>modal</code> 设置为 <code>false</code> 会隐藏对话框的模态（覆盖层）。</p>
+<p>从版本 2.10.5 起，新增了 <code>modal-penetrable</code>属性，该属性可设置为“可穿透”（即允许穿透）。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Open the modal Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot; :modal=&quot;false&quot; modal-penetrable&gt;
+
+    &lt;span&gt;It's a modal Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const dialogVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义动画 2.10.5</h2>
+<p>通过 <code>transition</code> 属性自定义对话框动画，该属性可以接受以下任意一种值：</p>
+<ul>
+<li>动画名称（字符串）</li>
+<li>Vue 过渡配置（对象）</li>
+</ul>
+<p>示例包括缩放（scale）、滑动（slide）、淡入淡出（fade）、弹跳（bounce）动画，以及带有自定义事件处理器的基于对象的配置。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div&gt;
+
+    &lt;el-button plain @click=&quot;openDialog('fade')&quot;&gt; Default &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialog('scale')&quot;&gt; Scale &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialog('slide')&quot;&gt; Slide &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialog('bounce')&quot;&gt; Bounce &lt;/el-button&gt;
+
+    &lt;el-button plain @click=&quot;openDialogWithObject&quot;&gt; Object Config &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogVisible&quot;
+
+    class=&quot;custom-transition-dialog&quot;
+
+    :title=&quot;`${currentAnimation} Animation Dialog`&quot;
+
+    width=&quot;30%&quot;
+
+    :transition=&quot;transitionConfig&quot;
+
+  &gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;
+
+        Current animation: &lt;strong&gt;{{ currentAnimation }}&lt;/strong&gt;
+
+      &lt;/p&gt;
+
+      &lt;p&gt;
+
+        This dialog demonstrates the {{ currentAnimation }} animation effect.
+
+      &lt;/p&gt;
+
+      &lt;p v-if=&quot;isObjectConfig&quot;&gt;
+
+        &lt;strong&gt;Using object configuration:&lt;/strong&gt;&lt;br /&gt;
+
+        &lt;code&gt;{{ JSON.stringify(transitionConfig, null, 2) }}&lt;/code&gt;
+
+      &lt;/p&gt;
+
+    &lt;/div&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+      &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+        Confirm
+
+      &lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from 'vue'
+
+import type { DialogTransition } from 'element-plus'
+
+const dialogVisible = ref(false)
+
+const currentAnimation = ref('fade')
+
+const isObjectConfig = ref(false)
+
+const transitionConfig = computed&lt;DialogTransition&gt;(() =&gt; {
+
+  if (isObjectConfig.value) {
+
+    return {
+
+      name: 'dialog-custom-object',
+
+      appear: true,
+
+      mode: 'out-in',
+
+      duration: 500,
+
+    }
+
+  }
+
+  return `dialog-${currentAnimation.value}`
+
+})
+
+const openDialog = (type: string) =&gt; {
+
+  currentAnimation.value = type
+
+  isObjectConfig.value = false
+
+  dialogVisible.value = true
+
+}
+
+const openDialogWithObject = () =&gt; {
+
+  currentAnimation.value = 'object-config'
+
+  isObjectConfig.value = true
+
+  dialogVisible.value = true
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+code {
+
+  background: var(--el-bg-color-page);
+
+  padding: 4px 8px;
+
+  border-radius: 4px;
+
+  font-size: 12px;
+
+  display: block;
+
+  margin-top: 8px;
+
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+
+/* Scale Animation */
+
+.dialog-scale-enter-active,
+
+.dialog-scale-leave-active,
+
+.dialog-scale-enter-active .el-dialog,
+
+.dialog-scale-leave-active .el-dialog {
+
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+}
+
+.dialog-scale-enter-from,
+
+.dialog-scale-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-scale-enter-from .el-dialog,
+
+.dialog-scale-leave-to .el-dialog {
+
+  transform: scale(0.5);
+
+  opacity: 0;
+
+}
+
+/* Slide Animation */
+
+.dialog-slide-enter-active,
+
+.dialog-slide-leave-active,
+
+.dialog-slide-enter-active .el-dialog,
+
+.dialog-slide-leave-active .el-dialog {
+
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+}
+
+.dialog-slide-enter-from,
+
+.dialog-slide-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-slide-enter-from .el-dialog,
+
+.dialog-slide-leave-to .el-dialog {
+
+  transform: translateY(-100px);
+
+  opacity: 0;
+
+}
+
+/* Bounce Animation */
+
+.dialog-bounce-enter-active,
+
+.dialog-bounce-leave-active,
+
+.dialog-bounce-enter-active .el-dialog,
+
+.dialog-bounce-leave-active .el-dialog {
+
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+}
+
+.dialog-bounce-enter-from,
+
+.dialog-bounce-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-bounce-enter-from .el-dialog,
+
+.dialog-bounce-leave-to .el-dialog {
+
+  transform: scale(0.3) translateY(-50px);
+
+  opacity: 0;
+
+}
+
+/* Object Configuration Animation */
+
+.dialog-custom-object-enter-active,
+
+.dialog-custom-object-leave-active,
+
+.dialog-custom-object-enter-active .el-dialog,
+
+.dialog-custom-object-leave-active .el-dialog {
+
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+}
+
+.dialog-custom-object-enter-from,
+
+.dialog-custom-object-leave-to {
+
+  opacity: 0;
+
+}
+
+.dialog-custom-object-enter-from .el-dialog,
+
+.dialog-custom-object-leave-to .el-dialog {
+
+  transform: rotate(180deg) scale(0.5);
+
+  opacity: 0;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>动画类会根据过渡名称动态生成。为了更细致地控制动画行为，你可以明确地定义这些类。详情请参见 <a href="https://vuejs.org/guide/built-ins/transition.html#custom-transition-classes">自定义过渡类（custom-transition-classes）</a>。</p>
+</blockquote>
+<h2>Events</h2>
+<p>打开开发者控制台(ctrl + shift + J)，查看事件的顺序。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;dialogVisible = true&quot;&gt;
+
+    Open the event Dialog
+
+  &lt;/el-button&gt;
+
+  &lt;el-dialog
+
+    v-model=&quot;dialogVisible&quot;
+
+    modal-class=&quot;overide-animation&quot;
+
+    :before-close=&quot;
+
+      (doneFn) =&gt; {
+
+        ;(console.log('before-close'), doneFn())
+
+      }
+
+    &quot;
+
+    @open=&quot;console.log('open')&quot;
+
+    @open-auto-focus=&quot;console.log('open-auto-focus')&quot;
+
+    @opened=&quot;console.log('opened')&quot;
+
+    @close=&quot;console.log('close')&quot;
+
+    @close-auto-focus=&quot;console.log('close-auto-focus')&quot;
+
+    @closed=&quot;console.log('closed')&quot;
+
+  &gt;
+
+    &lt;span&gt;It's a event Dialog&lt;/span&gt;
+
+    &lt;template #footer&gt;
+
+      &lt;div class=&quot;dialog-footer&quot;&gt;
+
+        &lt;el-button @click=&quot;dialogVisible = false&quot;&gt;Cancel&lt;/el-button&gt;
+
+        &lt;el-button type=&quot;primary&quot; @click=&quot;dialogVisible = false&quot;&gt;
+
+          Confirm
+
+        &lt;/el-button&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const dialogVisible = ref(false)
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>是否显示 Dialog</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Dialog 对话框 Dialog 的标题， 也可通过具名 slot （见下表）传入</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>width</td>
+<td>对话框的宽度，默认值为 50%</td>
+<td><code>string</code> / <code>number</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>fullscreen</td>
+<td>是否为全屏 Dialog</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>top</td>
+<td>dialog CSS 中的 margin-top 值，默认为 15vh</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>modal</td>
+<td>是否需要遮罩层</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>modal-penetrable 2.10.5</td>
+<td>是否允许穿透遮罩层。 modal 属性必须为 <code>false</code>。</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>modal-class</td>
+<td>遮罩的自定义类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>header-class 2.9.3</td>
+<td>header 部分的自定义 class 名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>body-class 2.9.3</td>
+<td>body 部分的自定义 class 名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>footer-class 2.9.3</td>
+<td>footer 部分的自定义 class 名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>append-to-body</td>
+<td>Dialog 自身是否插入至 body 元素上。嵌套的 Dialog 必须指定该属性并赋值为 <code>true</code></td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>append-to 2.4.3</td>
+<td>Dialog 挂载到哪个 DOM 元素将覆盖 <code>append-to-body</code></td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>body</td>
+</tr>
+<tr>
+<td>lock-scroll</td>
+<td>是否在 Dialog 出现时将 body 滚动锁定</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>open-delay</td>
+<td>dialog 打开的延时时间，单位毫秒</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>close-delay</td>
+<td>dialog 关闭的延时时间，单位毫秒</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>close-on-click-modal</td>
+<td>是否可以通过点击 modal 关闭 Dialog</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>close-on-press-escape</td>
+<td>是否可以通过按下 ESC 关闭 Dialog</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>show-close</td>
+<td>是否显示关闭按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>before-close</td>
+<td>关闭前的回调，会暂停 Dialog 的关闭. 回调函数内执行 done 参数方法的时候才是真正关闭对话框的时候.</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>draggable</td>
+<td>为 Dialog 启用可拖拽功能</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>overflow 2.5.4</td>
+<td>拖动范围可以超出可视区</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>center</td>
+<td>是否让 Dialog 的 header 和 footer 部分居中排列</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>align-center 2.2.16</td>
+<td>是否水平垂直对齐对话框</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>destroy-on-close</td>
+<td>当关闭 Dialog 时，销毁其中的元素</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>close-icon</td>
+<td>自定义关闭图标，默认 Close</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>z-index</td>
+<td>和原生的 CSS 的 z-index 相同，改变 z 轴的顺序</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>header-aria-level a11y</td>
+<td>header 的 <code>aria-level</code> 属性</td>
+<td><code>string</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>transition 2.10.5</td>
+<td>对话框动画的自定义过渡配置。可以是一个字符串（过渡名称），也可以是一个包含 Vue 过渡属性的对象。</td>
+<td><code>string</code> / <code>object</code></td>
+<td>dialog-fade</td>
+</tr>
+<tr>
+<td>custom-class deprecated</td>
+<td>Dialog 的自定义类名</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>custom-class</code> 已被 <strong>弃用</strong>, 之后将会在 2.4.0 <strong>移除</strong>, 请使用 <code>class</code>.</p>
+</blockquote>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>对话框的默认内容</td>
+</tr>
+<tr>
+<td>header</td>
+<td>对话框标题的内容；会替换标题部分，但不会移除关闭按钮。</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>Dialog 按钮操作区的内容</td>
+</tr>
+<tr>
+<td>title deprecated</td>
+<td>与 header 作用相同请使用 header</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>title</code> 已被<strong>弃用</strong>，并将在 3.0.0 版本中<strong>移除</strong>，请使用 <code>header</code> 代替。</p>
+</blockquote>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>open</td>
+<td>Dialog 打开的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>opened</td>
+<td>Dialog 打开动画结束时的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>close</td>
+<td>Dialog 关闭的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>closed</td>
+<td>Dialog 关闭动画结束时的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>open-auto-focus</td>
+<td>输入焦点聚焦在 Dialog 内容时的回调</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>close-auto-focus</td>
+<td>输入焦点从 Dialog 内容失焦时的回调</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resetPosition 2.8.1</td>
+<td>重置位置</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleClose 2.9.8</td>
+<td>关闭对话框</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>FAQ</h2>
+<h4>在 SFC 文件中使用对话框，scope 样式不会生效</h4>
+<p>典型议题：<a href="https://github.com/element-plus/element-plus/issues/10515">#10515</a></p>
+<p>PS：既然对话框是使用 <code>Teleport</code> 渲染的，建议在全局范围写入根节点的样式。</p>
+<h4>当对话框被显示及隐藏时，页面元素会来回移动（抖动）</h4>
+<p>典型议题：<a href="https://github.com/element-plus/element-plus/issues/10481">#10481</a></p>
+<p>PS：建议将滚动区域放置在一个挂载的 vue 节点，如 <code>&lt;div id="app" /&gt;</code> 下，并对 body 使用 <code>overflow: hidden</code> 样式。</p></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/dialog.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["dialog"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

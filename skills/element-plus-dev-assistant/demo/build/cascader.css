@@ -1,0 +1,41 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.cascader-custom-header-footer[data-v-6x8xpp] {
+
+  display: flex;
+}
+.cascader-custom-header-footer > div[data-v-6x8xpp] {
+
+  flex: 1;
+
+  text-align: center;
+}
+.cascader-custom-header-footer > div[data-v-6x8xpp]:not(:last-child) {
+
+  border-right: 1px solid var(--el-border-color);
+}
+.cascader-custom-header .el-checkbox[data-v-6x8xpp] {
+
+  display: flex;
+
+  height: unset;
+}
+
+
+
+
+

@@ -1,0 +1,560 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-11-06",
+  "count": 79,
+  "components": {
+    "elAffix": {
+      "name": "affix",
+      "title": "Affix 固钉",
+      "doc": "component/affix.md",
+      "preview": "demo/affix.html",
+      "status": "stable"
+    },
+    "elAlert": {
+      "name": "alert",
+      "title": "Alert 提示",
+      "doc": "component/alert.md",
+      "preview": "demo/alert.html",
+      "status": "stable"
+    },
+    "elAnchor": {
+      "name": "anchor",
+      "title": "Anchor 锚点",
+      "doc": "component/anchor.md",
+      "preview": "demo/anchor.html",
+      "status": "stable"
+    },
+    "elAutocomplete": {
+      "name": "autocomplete",
+      "title": "自动补全输入框",
+      "doc": "component/autocomplete.md",
+      "preview": "demo/autocomplete.html",
+      "status": "stable"
+    },
+    "elAvatar": {
+      "name": "avatar",
+      "title": "Avatar 头像",
+      "doc": "component/avatar.md",
+      "preview": "demo/avatar.html",
+      "status": "stable"
+    },
+    "elBacktop": {
+      "name": "backtop",
+      "title": "Backtop 回到顶部",
+      "doc": "component/backtop.md",
+      "preview": "demo/backtop.html",
+      "status": "stable"
+    },
+    "elBadge": {
+      "name": "badge",
+      "title": "Badge 徽章",
+      "doc": "component/badge.md",
+      "preview": "demo/badge.html",
+      "status": "stable"
+    },
+    "elBreadcrumb": {
+      "name": "breadcrumb",
+      "title": "Breadcrumb 面包屑",
+      "doc": "component/breadcrumb.md",
+      "preview": "demo/breadcrumb.html",
+      "status": "stable"
+    },
+    "elButton": {
+      "name": "button",
+      "title": "Button 按钮",
+      "doc": "component/button.md",
+      "preview": "demo/button.html",
+      "status": "stable"
+    },
+    "elCalendar": {
+      "name": "calendar",
+      "title": "Calendar 日历",
+      "doc": "component/calendar.md",
+      "preview": "demo/calendar.html",
+      "status": "stable"
+    },
+    "elCard": {
+      "name": "card",
+      "title": "Card 卡片",
+      "doc": "component/card.md",
+      "preview": "demo/card.html",
+      "status": "stable"
+    },
+    "elCarousel": {
+      "name": "carousel",
+      "title": "Carousel 走马灯",
+      "doc": "component/carousel.md",
+      "preview": "demo/carousel.html",
+      "status": "stable"
+    },
+    "elCascader": {
+      "name": "cascader",
+      "title": "Cascader 级联选择器",
+      "doc": "component/cascader.md",
+      "preview": "demo/cascader.html",
+      "status": "stable"
+    },
+    "elCheckbox": {
+      "name": "checkbox",
+      "title": "Checkbox 多选框",
+      "doc": "component/checkbox.md",
+      "preview": "demo/checkbox.html",
+      "status": "stable"
+    },
+    "elCollapse": {
+      "name": "collapse",
+      "title": "Collapse 折叠面板",
+      "doc": "component/collapse.md",
+      "preview": "demo/collapse.html",
+      "status": "stable"
+    },
+    "elColorPickerPanel": {
+      "name": "color-picker-panel",
+      "title": "ColorPickerPanel 颜色选择器面板 beta",
+      "doc": "component/color-picker-panel.md",
+      "preview": "demo/color-picker-panel.html",
+      "status": "beta"
+    },
+    "elColorPicker": {
+      "name": "color-picker",
+      "title": "ColorPicker 颜色选择器",
+      "doc": "component/color-picker.md",
+      "preview": "demo/color-picker.html",
+      "status": "stable"
+    },
+    "elConfigProvider": {
+      "name": "config-provider",
+      "title": "Config Provider 全局配置",
+      "doc": "component/config-provider.md",
+      "preview": "demo/config-provider.html",
+      "status": "stable"
+    },
+    "elContainer": {
+      "name": "container",
+      "title": "Container 布局容器",
+      "doc": "component/container.md",
+      "preview": "demo/container.html",
+      "status": "stable"
+    },
+    "elDatePickerPanel": {
+      "name": "date-picker-panel",
+      "title": "DatePickerPane 日期选择器面板 beta",
+      "doc": "component/date-picker-panel.md",
+      "preview": "demo/date-picker-panel.html",
+      "status": "beta"
+    },
+    "elDatePicker": {
+      "name": "date-picker",
+      "title": "DatePicker 日期选择器",
+      "doc": "component/date-picker.md",
+      "preview": "demo/date-picker.html",
+      "status": "stable"
+    },
+    "elDateTimePicker": {
+      "name": "datetime-picker",
+      "title": "DateTimePicker 日期时间选择器",
+      "doc": "component/datetime-picker.md",
+      "preview": "demo/datetime-picker.html",
+      "status": "stable"
+    },
+    "elDescriptions": {
+      "name": "descriptions",
+      "title": "Descriptions 描述列表",
+      "doc": "component/descriptions.md",
+      "preview": "demo/descriptions.html",
+      "status": "stable"
+    },
+    "elDialog": {
+      "name": "dialog",
+      "title": "Dialog 对话框",
+      "doc": "component/dialog.md",
+      "preview": "demo/dialog.html",
+      "status": "stable"
+    },
+    "elDivider": {
+      "name": "divider",
+      "title": "Divider 分割线",
+      "doc": "component/divider.md",
+      "preview": "demo/divider.html",
+      "status": "stable"
+    },
+    "elDrawer": {
+      "name": "drawer",
+      "title": "Drawer 抽屉",
+      "doc": "component/drawer.md",
+      "preview": "demo/drawer.html",
+      "status": "stable"
+    },
+    "elDropdown": {
+      "name": "dropdown",
+      "title": "Dropdown 下拉菜单",
+      "doc": "component/dropdown.md",
+      "preview": "demo/dropdown.html",
+      "status": "stable"
+    },
+    "elEmpty": {
+      "name": "empty",
+      "title": "Empty 空状态",
+      "doc": "component/empty.md",
+      "preview": "demo/empty.html",
+      "status": "stable"
+    },
+    "elForm": {
+      "name": "form",
+      "title": "Form 表单",
+      "doc": "component/form.md",
+      "preview": "demo/form.html",
+      "status": "stable"
+    },
+    "elIcon": {
+      "name": "icon",
+      "title": "Icon 图标",
+      "doc": "component/icon.md",
+      "preview": "demo/icon.html",
+      "status": "stable"
+    },
+    "elImage": {
+      "name": "image",
+      "title": "Image 图片",
+      "doc": "component/image.md",
+      "preview": "demo/image.html",
+      "status": "stable"
+    },
+    "elInfiniteScroll": {
+      "name": "infinite-scroll",
+      "title": "Infinite Scroll 无限滚动",
+      "doc": "component/infinite-scroll.md",
+      "preview": "demo/infinite-scroll.html",
+      "status": "stable"
+    },
+    "elInputNumber": {
+      "name": "input-number",
+      "title": "Input Number 数字输入框",
+      "doc": "component/input-number.md",
+      "preview": "demo/input-number.html",
+      "status": "stable"
+    },
+    "elInputOtp": {
+      "name": "input-otp",
+      "title": "InputOtp 一次性密码输入框 beta",
+      "doc": "component/input-otp.md",
+      "preview": "demo/input-otp.html",
+      "status": "beta"
+    },
+    "elInputTag": {
+      "name": "input-tag",
+      "title": "InputTag 标签输入框",
+      "doc": "component/input-tag.md",
+      "preview": "demo/input-tag.html",
+      "status": "stable"
+    },
+    "elInput": {
+      "name": "input",
+      "title": "Input 输入框",
+      "doc": "component/input.md",
+      "preview": "demo/input.html",
+      "status": "stable"
+    },
+    "elLayout": {
+      "name": "layout",
+      "title": "Layout 布局",
+      "doc": "component/layout.md",
+      "preview": "demo/layout.html",
+      "status": "stable"
+    },
+    "elLink": {
+      "name": "link",
+      "title": "Link 链接",
+      "doc": "component/link.md",
+      "preview": "demo/link.html",
+      "status": "stable"
+    },
+    "elLoading": {
+      "name": "loading",
+      "title": "Loading 加载",
+      "doc": "component/loading.md",
+      "preview": "demo/loading.html",
+      "status": "stable"
+    },
+    "elMention": {
+      "name": "mention",
+      "title": "Mention 提及",
+      "doc": "component/mention.md",
+      "preview": "demo/mention.html",
+      "status": "stable"
+    },
+    "elMenu": {
+      "name": "menu",
+      "title": "Menu 菜单",
+      "doc": "component/menu.md",
+      "preview": "demo/menu.html",
+      "status": "stable"
+    },
+    "elMessageBox": {
+      "name": "message-box",
+      "title": "MessageBox 消息弹框",
+      "doc": "component/message-box.md",
+      "preview": "demo/message-box.html",
+      "status": "stable"
+    },
+    "elMessage": {
+      "name": "message",
+      "title": "Message 消息提示",
+      "doc": "component/message.md",
+      "preview": "demo/message.html",
+      "status": "stable"
+    },
+    "elNotification": {
+      "name": "notification",
+      "title": "Notification 通知",
+      "doc": "component/notification.md",
+      "preview": "demo/notification.html",
+      "status": "stable"
+    },
+    "elPageHeader": {
+      "name": "page-header",
+      "title": "Page Header 页头",
+      "doc": "component/page-header.md",
+      "preview": "demo/page-header.html",
+      "status": "stable"
+    },
+    "elPagination": {
+      "name": "pagination",
+      "title": "Pagination 分页",
+      "doc": "component/pagination.md",
+      "preview": "demo/pagination.html",
+      "status": "stable"
+    },
+    "elPopconfirm": {
+      "name": "popconfirm",
+      "title": "Popconfirm 气泡确认框",
+      "doc": "component/popconfirm.md",
+      "preview": "demo/popconfirm.html",
+      "status": "stable"
+    },
+    "elPopover": {
+      "name": "popover",
+      "title": "Popover 弹出框",
+      "doc": "component/popover.md",
+      "preview": "demo/popover.html",
+      "status": "stable"
+    },
+    "elProgress": {
+      "name": "progress",
+      "title": "Progress 进度条",
+      "doc": "component/progress.md",
+      "preview": "demo/progress.html",
+      "status": "stable"
+    },
+    "elRadio": {
+      "name": "radio",
+      "title": "Radio 单选框",
+      "doc": "component/radio.md",
+      "preview": "demo/radio.html",
+      "status": "stable"
+    },
+    "elRate": {
+      "name": "rate",
+      "title": "Rate 评分",
+      "doc": "component/rate.md",
+      "preview": "demo/rate.html",
+      "status": "stable"
+    },
+    "elResult": {
+      "name": "result",
+      "title": "Result 结果",
+      "doc": "component/result.md",
+      "preview": "demo/result.html",
+      "status": "stable"
+    },
+    "elScrollbar": {
+      "name": "scrollbar",
+      "title": "Scrollbar 滚动条",
+      "doc": "component/scrollbar.md",
+      "preview": "demo/scrollbar.html",
+      "status": "stable"
+    },
+    "elSegmented": {
+      "name": "segmented",
+      "title": "Segmented 分段控制器",
+      "doc": "component/segmented.md",
+      "preview": "demo/segmented.html",
+      "status": "stable"
+    },
+    "elSelectV2": {
+      "name": "select-v2",
+      "title": "Virtualized Select 虚拟化选择器",
+      "doc": "component/select-v2.md",
+      "preview": "demo/select-v2.html",
+      "status": "stable"
+    },
+    "elSelect": {
+      "name": "select",
+      "title": "Select 选择器",
+      "doc": "component/select.md",
+      "preview": "demo/select.html",
+      "status": "stable"
+    },
+    "elSkeleton": {
+      "name": "skeleton",
+      "title": "Skeleton 骨架屏",
+      "doc": "component/skeleton.md",
+      "preview": "demo/skeleton.html",
+      "status": "stable"
+    },
+    "elSlider": {
+      "name": "slider",
+      "title": "Slider 滑块",
+      "doc": "component/slider.md",
+      "preview": "demo/slider.html",
+      "status": "stable"
+    },
+    "elSpace": {
+      "name": "space",
+      "title": "Space 间距",
+      "doc": "component/space.md",
+      "preview": "demo/space.html",
+      "status": "stable"
+    },
+    "elSplitter": {
+      "name": "splitter",
+      "title": "Splitter 分隔面板 beta",
+      "doc": "component/splitter.md",
+      "preview": "demo/splitter.html",
+      "status": "beta"
+    },
+    "elStatistic": {
+      "name": "statistic",
+      "title": "Statistic 统计组件",
+      "doc": "component/statistic.md",
+      "preview": "demo/statistic.html",
+      "status": "stable"
+    },
+    "elSteps": {
+      "name": "steps",
+      "title": "Steps 步骤条",
+      "doc": "component/steps.md",
+      "preview": "demo/steps.html",
+      "status": "stable"
+    },
+    "elSwitch": {
+      "name": "switch",
+      "title": "Switch 开关",
+      "doc": "component/switch.md",
+      "preview": "demo/switch.html",
+      "status": "stable"
+    },
+    "elTableV2": {
+      "name": "table-v2",
+      "title": "Virtualized Table 虚拟化表格 beta",
+      "doc": "component/table-v2.md",
+      "preview": "demo/table-v2.html",
+      "status": "beta"
+    },
+    "elTable": {
+      "name": "table",
+      "title": "Table 表格",
+      "doc": "component/table.md",
+      "preview": "demo/table.html",
+      "status": "stable"
+    },
+    "elTabs": {
+      "name": "tabs",
+      "title": "Tabs 标签页",
+      "doc": "component/tabs.md",
+      "preview": "demo/tabs.html",
+      "status": "stable"
+    },
+    "elTag": {
+      "name": "tag",
+      "title": "Tag 标签",
+      "doc": "component/tag.md",
+      "preview": "demo/tag.html",
+      "status": "stable"
+    },
+    "elText": {
+      "name": "text",
+      "title": "Text",
+      "doc": "component/text.md",
+      "preview": "demo/text.html",
+      "status": "stable"
+    },
+    "elTimePicker": {
+      "name": "time-picker",
+      "title": "TimePicker 时间选择器",
+      "doc": "component/time-picker.md",
+      "preview": "demo/time-picker.html",
+      "status": "stable"
+    },
+    "elTimeSelect": {
+      "name": "time-select",
+      "title": "TimeSelect 时间选择",
+      "doc": "component/time-select.md",
+      "preview": "demo/time-select.html",
+      "status": "stable"
+    },
+    "elTimeline": {
+      "name": "timeline",
+      "title": "Timeline 时间线",
+      "doc": "component/timeline.md",
+      "preview": "demo/timeline.html",
+      "status": "stable"
+    },
+    "elTooltip": {
+      "name": "tooltip",
+      "title": "Tooltip 文字提示",
+      "doc": "component/tooltip.md",
+      "preview": "demo/tooltip.html",
+      "status": "stable"
+    },
+    "elTour": {
+      "name": "tour",
+      "title": "Tour 漫游式引导",
+      "doc": "component/tour.md",
+      "preview": "demo/tour.html",
+      "status": "stable"
+    },
+    "elTransfer": {
+      "name": "transfer",
+      "title": "Transfer 穿梭框",
+      "doc": "component/transfer.md",
+      "preview": "demo/transfer.html",
+      "status": "stable"
+    },
+    "elTreeSelect": {
+      "name": "tree-select",
+      "title": "TreeSelect 树形选择",
+      "doc": "component/tree-select.md",
+      "preview": "demo/tree-select.html",
+      "status": "stable"
+    },
+    "elTreeV2": {
+      "name": "tree-v2",
+      "title": "Tree V2 虚拟化树形控件beta",
+      "doc": "component/tree-v2.md",
+      "preview": "demo/tree-v2.html",
+      "status": "beta"
+    },
+    "elTree": {
+      "name": "tree",
+      "title": "Tree 树形控件",
+      "doc": "component/tree.md",
+      "preview": "demo/tree.html",
+      "status": "stable"
+    },
+    "elUpload": {
+      "name": "upload",
+      "title": "Upload 上传",
+      "doc": "component/upload.md",
+      "preview": "demo/upload.html",
+      "status": "stable"
+    },
+    "elWatermark": {
+      "name": "watermark",
+      "title": "Watermark 水印",
+      "doc": "component/watermark.md",
+      "preview": "demo/watermark.html",
+      "status": "stable"
+    }
+  }
+}

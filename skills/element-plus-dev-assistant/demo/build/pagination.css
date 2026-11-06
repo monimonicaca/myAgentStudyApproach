@@ -1,0 +1,28 @@
+
+.example-pagination-block + .example-pagination-block {
+
+  margin-top: 10px;
+}
+.example-pagination-block .example-demonstration {
+
+  margin-bottom: 16px;
+}
+
+
+
+
+
+
+
+
+.demo-pagination-block + .demo-pagination-block[data-v-gwyo2w] {
+
+  margin-top: 10px;
+}
+.demo-pagination-block .demonstration[data-v-gwyo2w] {
+
+  margin-bottom: 16px;
+}
+
+
+

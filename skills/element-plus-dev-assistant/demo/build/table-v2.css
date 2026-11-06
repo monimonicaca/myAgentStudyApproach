@@ -1,0 +1,158 @@
+
+
+
+
+
+.table-v2-inline-editing-trigger {
+
+  border: 1px transparent dotted;
+
+  padding: 4px;
+}
+.table-v2-inline-editing-trigger:hover {
+
+  border-color: var(--el-color-primary);
+}
+
+
+
+
+
+.el-el-table-v2__fixed-header-row {
+
+  background-color: var(--el-color-primary-light-5);
+
+  font-weight: bold;
+}
+
+
+
+
+
+.el-el-table-v2__header-row .custom-header-cell {
+
+  border-right: 1px solid var(--el-border-color);
+}
+.el-el-table-v2__header-row .custom-header-cell:last-child {
+
+  border-right: none;
+}
+.el-primary-color {
+
+  background-color: var(--el-color-primary);
+
+  color: var(--el-color-white);
+
+  font-size: 14px;
+
+  font-weight: bold;
+}
+.el-primary-color .custom-header-cell {
+
+  padding: 0 4px;
+}
+
+
+
+
+.el-table-v2__demo-filter {
+
+  border-top: var(--el-border);
+
+  margin: 12px -12px -12px;
+
+  padding: 0 12px;
+
+  display: flex;
+
+  justify-content: space-between;
+}
+.el-table-v2__demo-filter-btn {
+
+  display: flex;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  margin: 0;
+
+  background-color: transparent;
+
+  appearance: none;
+
+  border: none;
+}
+
+
+
+
+
+
+.hovering-col-0 [data-key='hovering-col-0'],
+
+.hovering-col-1 [data-key='hovering-col-1'],
+
+.hovering-col-2 [data-key='hovering-col-2'],
+
+.hovering-col-3 [data-key='hovering-col-3'],
+
+.hovering-col-4 [data-key='hovering-col-4'],
+
+.hovering-col-5 [data-key='hovering-col-5'],
+
+.hovering-col-6 [data-key='hovering-col-6'],
+
+.hovering-col-7 [data-key='hovering-col-7'],
+
+.hovering-col-8 [data-key='hovering-col-8'],
+
+.hovering-col-9 [data-key='hovering-col-9'],
+
+.hovering-col-10 [data-key='hovering-col-10'] {
+
+  background: var(--el-table-row-hover-bg-color);
+}
+[data-key='hovering-col-0'] {
+
+  font-weight: bold;
+
+  user-select: none;
+
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+.el-table-v2__row-depth-0 {
+
+  height: 50px;
+}
+.el-table-v2__cell-text {
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+
+
+
+
+.example-showcase .el-table-v2__overlay {
+
+  z-index: 9;
+}
+
+
+
+

@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自动补全输入框 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/autocomplete.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>自动补全输入框</h1>
+  <span class="count">5 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（5）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 自定义模板</a>
+<a href="#ex-2">3. 远程搜索</a>
+<a href="#ex-3">4. 自定义加载 2.5.0</a>
+<a href="#ex-4">5. 自定义头部与底部 2.10.6</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-autocomplete&quot;&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;list suggestions when activated&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state1&quot;
+
+        :fetch-suggestions=&quot;querySearch&quot;
+
+        clearable
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please Input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;list suggestions on input&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state2&quot;
+
+        :fetch-suggestions=&quot;querySearch&quot;
+
+        :trigger-on-focus=&quot;false&quot;
+
+        clearable
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please Input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from &#x27;vue&#x27;
+
+interface RestaurantItem {
+
+  value: string
+
+  link: string
+
+}
+
+const state1 = ref(&#x27;&#x27;)
+
+const state2 = ref(&#x27;&#x27;)
+
+const restaurants = ref&lt;RestaurantItem[]&gt;([])
+
+const querySearch = (queryString: string, cb: any) =&gt; {
+
+  const results = queryString
+
+    ? restaurants.value.filter(createFilter(queryString))
+
+    : restaurants.value
+
+  // call callback function to return suggestions
+
+  cb(results)
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: RestaurantItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: &#x27;vue&#x27;, link: &#x27;https://github.com/vuejs/vue&#x27; },
+
+    { value: &#x27;element&#x27;, link: &#x27;https://github.com/ElemeFE/element&#x27; },
+
+    { value: &#x27;cooking&#x27;, link: &#x27;https://github.com/ElemeFE/cooking&#x27; },
+
+    { value: &#x27;mint-ui&#x27;, link: &#x27;https://github.com/ElemeFE/mint-ui&#x27; },
+
+    { value: &#x27;vuex&#x27;, link: &#x27;https://github.com/vuejs/vuex&#x27; },
+
+    { value: &#x27;vue-router&#x27;, link: &#x27;https://github.com/vuejs/vue-router&#x27; },
+
+    { value: &#x27;babel&#x27;, link: &#x27;https://github.com/babel/babel&#x27; },
+
+  ]
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  restaurants.value = loadAll()
+
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-autocomplete {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2rem;
+
+}
+
+.demo-block {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+
+}
+
+.demo-title {
+
+  font-size: 0.875rem;
+
+  color: var(--el-text-color-secondary);
+
+  min-height: 2.5em;
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .demo-autocomplete {
+
+    gap: 1rem;
+
+  }
+
+  .demo-block {
+
+    width: 100%;
+
+  }
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>自定义模板</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-autocomplete
+
+    v-model=&quot;state&quot;
+
+    :fetch-suggestions=&quot;querySearch&quot;
+
+    popper-class=&quot;my-autocomplete&quot;
+
+    placeholder=&quot;Please input&quot;
+
+    @select=&quot;handleSelect&quot;
+
+  &gt;
+
+    &lt;template #suffix&gt;
+
+      &lt;el-icon class=&quot;el-input__icon&quot; @click=&quot;handleIconClick&quot;&gt;
+
+        &lt;edit /&gt;
+
+      &lt;/el-icon&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #default=&quot;{ item }&quot;&gt;
+
+      &lt;div class=&quot;value&quot;&gt;{{ item.value }}&lt;/div&gt;
+
+      &lt;span class=&quot;link&quot;&gt;{{ item.link }}&lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-autocomplete&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from &#x27;vue&#x27;
+
+import { Edit } from &#x27;@element-plus/icons-vue&#x27;
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const state = ref(&#x27;&#x27;)
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const querySearch = (queryString: string, cb) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  // call callback function to return suggestion objects
+
+  cb(results)
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: &#x27;vue&#x27;, link: &#x27;https://github.com/vuejs/vue&#x27; },
+
+    { value: &#x27;element&#x27;, link: &#x27;https://github.com/ElemeFE/element&#x27; },
+
+    { value: &#x27;cooking&#x27;, link: &#x27;https://github.com/ElemeFE/cooking&#x27; },
+
+    { value: &#x27;mint-ui&#x27;, link: &#x27;https://github.com/ElemeFE/mint-ui&#x27; },
+
+    { value: &#x27;vuex&#x27;, link: &#x27;https://github.com/vuejs/vuex&#x27; },
+
+    { value: &#x27;vue-router&#x27;, link: &#x27;https://github.com/vuejs/vue-router&#x27; },
+
+    { value: &#x27;babel&#x27;, link: &#x27;https://github.com/babel/babel&#x27; },
+
+  ]
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+const handleIconClick = (ev: Event) =&gt; {
+
+  console.log(ev)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.my-autocomplete li {
+
+  line-height: normal;
+
+  padding: 7px;
+
+}
+
+.my-autocomplete li .name {
+
+  text-overflow: ellipsis;
+
+  overflow: hidden;
+
+}
+
+.my-autocomplete li .addr {
+
+  font-size: 12px;
+
+  color: #b4b4b4;
+
+}
+
+.my-autocomplete li .highlighted .addr {
+
+  color: #ddd;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>远程搜索</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-autocomplete
+
+    v-model=&quot;state&quot;
+
+    :fetch-suggestions=&quot;querySearchAsync&quot;
+
+    placeholder=&quot;Please input&quot;
+
+    @select=&quot;handleSelect&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from &#x27;vue&#x27;
+
+const state = ref(&#x27;&#x27;)
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: &#x27;vue&#x27;, link: &#x27;https://github.com/vuejs/vue&#x27; },
+
+    { value: &#x27;element&#x27;, link: &#x27;https://github.com/ElemeFE/element&#x27; },
+
+    { value: &#x27;cooking&#x27;, link: &#x27;https://github.com/ElemeFE/cooking&#x27; },
+
+    { value: &#x27;mint-ui&#x27;, link: &#x27;https://github.com/ElemeFE/mint-ui&#x27; },
+
+    { value: &#x27;vuex&#x27;, link: &#x27;https://github.com/vuejs/vuex&#x27; },
+
+    { value: &#x27;vue-router&#x27;, link: &#x27;https://github.com/vuejs/vue-router&#x27; },
+
+    { value: &#x27;babel&#x27;, link: &#x27;https://github.com/babel/babel&#x27; },
+
+  ]
+
+}
+
+let timeout: ReturnType&lt;typeof setTimeout&gt;
+
+const querySearchAsync = (queryString: string, cb: (arg: any) =&gt; void) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  clearTimeout(timeout)
+
+  timeout = setTimeout(() =&gt; {
+
+    cb(results)
+
+  }, 3000 * Math.random())
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>自定义加载 2.5.0</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-autocomplete&quot;&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;loading icon1&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #loading&gt;
+
+          &lt;svg class=&quot;circular&quot; viewBox=&quot;0 0 50 50&quot;&gt;
+
+            &lt;circle class=&quot;path&quot; cx=&quot;25&quot; cy=&quot;25&quot; r=&quot;20&quot; fill=&quot;none&quot; /&gt;
+
+          &lt;/svg&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;loading icon2&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #loading&gt;
+
+          &lt;el-icon class=&quot;is-loading&quot;&gt;
+
+            &lt;svg class=&quot;circular&quot; viewBox=&quot;0 0 20 20&quot;&gt;
+
+              &lt;g
+
+                class=&quot;path2 loading-path&quot;
+
+                stroke-width=&quot;0&quot;
+
+                style=&quot;animation: none; stroke: none&quot;
+
+              &gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot1&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot2&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot4&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot3&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from &#x27;vue&#x27;
+
+const state = ref(&#x27;&#x27;)
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: &#x27;vue&#x27;, link: &#x27;https://github.com/vuejs/vue&#x27; },
+
+    { value: &#x27;element&#x27;, link: &#x27;https://github.com/ElemeFE/element&#x27; },
+
+    { value: &#x27;cooking&#x27;, link: &#x27;https://github.com/ElemeFE/cooking&#x27; },
+
+    { value: &#x27;mint-ui&#x27;, link: &#x27;https://github.com/ElemeFE/mint-ui&#x27; },
+
+    { value: &#x27;vuex&#x27;, link: &#x27;https://github.com/vuejs/vuex&#x27; },
+
+    { value: &#x27;vue-router&#x27;, link: &#x27;https://github.com/vuejs/vue-router&#x27; },
+
+    { value: &#x27;babel&#x27;, link: &#x27;https://github.com/babel/babel&#x27; },
+
+  ]
+
+}
+
+let timeout: ReturnType&lt;typeof setTimeout&gt;
+
+const querySearchAsync = (queryString: string, cb: (arg: any) =&gt; void) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  clearTimeout(timeout)
+
+  timeout = setTimeout(() =&gt; {
+
+    cb(results)
+
+  }, 5000 * Math.random())
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-autocomplete {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2rem;
+
+}
+
+.demo-block {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+
+}
+
+.demo-title {
+
+  font-size: 0.875rem;
+
+  color: var(--el-text-color-secondary);
+
+  min-height: 2.5em;
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .demo-autocomplete {
+
+    gap: 1rem;
+
+  }
+
+  .demo-block {
+
+    width: 100%;
+
+  }
+
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+
+.circular {
+
+  display: inline;
+
+  height: 30px;
+
+  width: 30px;
+
+  animation: loading-rotate 2s linear infinite;
+
+}
+
+.path {
+
+  animation: loading-dash 1.5s ease-in-out infinite;
+
+  stroke-dasharray: 90, 150;
+
+  stroke-dashoffset: 0;
+
+  stroke-width: 2;
+
+  stroke: var(--el-color-primary);
+
+  stroke-linecap: round;
+
+}
+
+.loading-path .dot1 {
+
+  transform: translate(3.75px, 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+}
+
+.loading-path .dot2 {
+
+  transform: translate(calc(100% - 3.75px), 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.4s;
+
+}
+
+.loading-path .dot3 {
+
+  transform: translate(3.75px, calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 1.2s;
+
+}
+
+.loading-path .dot4 {
+
+  transform: translate(calc(100% - 3.75px), calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.8s;
+
+}
+
+@keyframes loading-rotate {
+
+  to {
+
+    transform: rotate(360deg);
+
+  }
+
+}
+
+@keyframes loading-dash {
+
+  0% {
+
+    stroke-dasharray: 1, 200;
+
+    stroke-dashoffset: 0;
+
+  }
+
+  50% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -40px;
+
+  }
+
+  100% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -120px;
+
+  }
+
+}
+
+@keyframes custom-spin-move {
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>自定义头部与底部 2.10.6</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;autocomplete-custom-header-footer&quot;&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Custom header content&lt;/p&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;headerSlotState&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #header&gt;header content&lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Custom footer content&lt;/p&gt;
+
+      &lt;el-autocomplete
+
+        ref=&quot;footerAutocompleteRef&quot;
+
+        v-model=&quot;footerSlotstate&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #footer&gt;
+
+          &lt;el-button link size=&quot;small&quot; @click=&quot;handleClear&quot;&gt; Clear &lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from &#x27;vue&#x27;
+
+const headerSlotState = ref(&#x27;&#x27;)
+
+const footerSlotstate = ref(&#x27;&#x27;)
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: &#x27;vue&#x27;, link: &#x27;https://github.com/vuejs/vue&#x27; },
+
+    { value: &#x27;element&#x27;, link: &#x27;https://github.com/ElemeFE/element&#x27; },
+
+    { value: &#x27;cooking&#x27;, link: &#x27;https://github.com/ElemeFE/cooking&#x27; },
+
+    { value: &#x27;mint-ui&#x27;, link: &#x27;https://github.com/ElemeFE/mint-ui&#x27; },
+
+    { value: &#x27;vuex&#x27;, link: &#x27;https://github.com/vuejs/vuex&#x27; },
+
+    { value: &#x27;vue-router&#x27;, link: &#x27;https://github.com/vuejs/vue-router&#x27; },
+
+    { value: &#x27;babel&#x27;, link: &#x27;https://github.com/babel/babel&#x27; },
+
+  ]
+
+}
+
+let timeout: ReturnType&lt;typeof setTimeout&gt;
+
+const querySearchAsync = (queryString: string, cb: (arg: any) =&gt; void) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  clearTimeout(timeout)
+
+  timeout = setTimeout(() =&gt; {
+
+    cb(results)
+
+  }, 3000 * Math.random())
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+const footerAutocompleteRef = ref()
+
+const handleClear = () =&gt; {
+
+  footerSlotstate.value = &#x27;&#x27;
+
+  footerAutocompleteRef.value.getData()
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.autocomplete-custom-header-footer {
+
+  display: flex;
+
+}
+
+.autocomplete-custom-header-footer &gt; div {
+
+  flex: 1;
+
+  text-align: center;
+
+}
+
+.autocomplete-custom-header-footer &gt; div &gt; :deep(.el-autocomplete) {
+
+  width: 50%;
+
+}
+
+.autocomplete-custom-header-footer &gt; div:not(:last-child) {
+
+  border-right: 1px solid var(--el-border-color);
+
+}
+
+&lt;/style&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>自动补全输入框</h1>
+<p>根据输入内容提供对应的输入建议。</p>
+<h2>基础用法</h2>
+<p>Autocomplete 组件提供输入建议。</p>
+<p><code>fetch-suggestions</code> 属性是返回建议输入的方法。在此示例中， <code>querySearch(queryString, cb)</code> 方法通过 <code>cb(data)</code> 给 Autocomplete 组件返回建议。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-autocomplete&quot;&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;list suggestions when activated&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state1&quot;
+
+        :fetch-suggestions=&quot;querySearch&quot;
+
+        clearable
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please Input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;list suggestions on input&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state2&quot;
+
+        :fetch-suggestions=&quot;querySearch&quot;
+
+        :trigger-on-focus=&quot;false&quot;
+
+        clearable
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please Input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      /&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+interface RestaurantItem {
+
+  value: string
+
+  link: string
+
+}
+
+const state1 = ref('')
+
+const state2 = ref('')
+
+const restaurants = ref&lt;RestaurantItem[]&gt;([])
+
+const querySearch = (queryString: string, cb: any) =&gt; {
+
+  const results = queryString
+
+    ? restaurants.value.filter(createFilter(queryString))
+
+    : restaurants.value
+
+  // call callback function to return suggestions
+
+  cb(results)
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: RestaurantItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+
+    { value: 'babel', link: 'https://github.com/babel/babel' },
+
+  ]
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  restaurants.value = loadAll()
+
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-autocomplete {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2rem;
+
+}
+
+.demo-block {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+
+}
+
+.demo-title {
+
+  font-size: 0.875rem;
+
+  color: var(--el-text-color-secondary);
+
+  min-height: 2.5em;
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .demo-autocomplete {
+
+    gap: 1rem;
+
+  }
+
+  .demo-block {
+
+    width: 100%;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义模板</h2>
+<p>自定义如何显示输入建议。</p>
+<p>使用 <code>scoped slot</code> 自定义输入建议。在这个范围中，你可以使用 <code>item</code> 键来访问当前输入建议对象。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-autocomplete
+
+    v-model=&quot;state&quot;
+
+    :fetch-suggestions=&quot;querySearch&quot;
+
+    popper-class=&quot;my-autocomplete&quot;
+
+    placeholder=&quot;Please input&quot;
+
+    @select=&quot;handleSelect&quot;
+
+  &gt;
+
+    &lt;template #suffix&gt;
+
+      &lt;el-icon class=&quot;el-input__icon&quot; @click=&quot;handleIconClick&quot;&gt;
+
+        &lt;edit /&gt;
+
+      &lt;/el-icon&gt;
+
+    &lt;/template&gt;
+
+    &lt;template #default=&quot;{ item }&quot;&gt;
+
+      &lt;div class=&quot;value&quot;&gt;{{ item.value }}&lt;/div&gt;
+
+      &lt;span class=&quot;link&quot;&gt;{{ item.link }}&lt;/span&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-autocomplete&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+import { Edit } from '@element-plus/icons-vue'
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const state = ref('')
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const querySearch = (queryString: string, cb) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  // call callback function to return suggestion objects
+
+  cb(results)
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+
+    { value: 'babel', link: 'https://github.com/babel/babel' },
+
+  ]
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+const handleIconClick = (ev: Event) =&gt; {
+
+  console.log(ev)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.my-autocomplete li {
+
+  line-height: normal;
+
+  padding: 7px;
+
+}
+
+.my-autocomplete li .name {
+
+  text-overflow: ellipsis;
+
+  overflow: hidden;
+
+}
+
+.my-autocomplete li .addr {
+
+  font-size: 12px;
+
+  color: #b4b4b4;
+
+}
+
+.my-autocomplete li .highlighted .addr {
+
+  color: #ddd;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>远程搜索</h2>
+<p>从服务端搜索数据。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-autocomplete
+
+    v-model=&quot;state&quot;
+
+    :fetch-suggestions=&quot;querySearchAsync&quot;
+
+    placeholder=&quot;Please input&quot;
+
+    @select=&quot;handleSelect&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+const state = ref('')
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+
+    { value: 'babel', link: 'https://github.com/babel/babel' },
+
+  ]
+
+}
+
+let timeout: ReturnType&lt;typeof setTimeout&gt;
+
+const querySearchAsync = (queryString: string, cb: (arg: any) =&gt; void) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  clearTimeout(timeout)
+
+  timeout = setTimeout(() =&gt; {
+
+    cb(results)
+
+  }, 3000 * Math.random())
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义加载 2.5.0</h2>
+<p>修改加载区域内容</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-autocomplete&quot;&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;loading icon1&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #loading&gt;
+
+          &lt;svg class=&quot;circular&quot; viewBox=&quot;0 0 50 50&quot;&gt;
+
+            &lt;circle class=&quot;path&quot; cx=&quot;25&quot; cy=&quot;25&quot; r=&quot;20&quot; fill=&quot;none&quot; /&gt;
+
+          &lt;/svg&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;demo-block&quot;&gt;
+
+      &lt;div class=&quot;demo-title&quot;&gt;loading icon2&lt;/div&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;state&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        class=&quot;w-50&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #loading&gt;
+
+          &lt;el-icon class=&quot;is-loading&quot;&gt;
+
+            &lt;svg class=&quot;circular&quot; viewBox=&quot;0 0 20 20&quot;&gt;
+
+              &lt;g
+
+                class=&quot;path2 loading-path&quot;
+
+                stroke-width=&quot;0&quot;
+
+                style=&quot;animation: none; stroke: none&quot;
+
+              &gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot1&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot2&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot4&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+                &lt;circle r=&quot;3.375&quot; class=&quot;dot3&quot; rx=&quot;0&quot; ry=&quot;0&quot; /&gt;
+
+              &lt;/g&gt;
+
+            &lt;/svg&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+const state = ref('')
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+
+    { value: 'babel', link: 'https://github.com/babel/babel' },
+
+  ]
+
+}
+
+let timeout: ReturnType&lt;typeof setTimeout&gt;
+
+const querySearchAsync = (queryString: string, cb: (arg: any) =&gt; void) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  clearTimeout(timeout)
+
+  timeout = setTimeout(() =&gt; {
+
+    cb(results)
+
+  }, 5000 * Math.random())
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.demo-autocomplete {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2rem;
+
+}
+
+.demo-block {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+
+}
+
+.demo-title {
+
+  font-size: 0.875rem;
+
+  color: var(--el-text-color-secondary);
+
+  min-height: 2.5em;
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .demo-autocomplete {
+
+    gap: 1rem;
+
+  }
+
+  .demo-block {
+
+    width: 100%;
+
+  }
+
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+
+.circular {
+
+  display: inline;
+
+  height: 30px;
+
+  width: 30px;
+
+  animation: loading-rotate 2s linear infinite;
+
+}
+
+.path {
+
+  animation: loading-dash 1.5s ease-in-out infinite;
+
+  stroke-dasharray: 90, 150;
+
+  stroke-dashoffset: 0;
+
+  stroke-width: 2;
+
+  stroke: var(--el-color-primary);
+
+  stroke-linecap: round;
+
+}
+
+.loading-path .dot1 {
+
+  transform: translate(3.75px, 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+}
+
+.loading-path .dot2 {
+
+  transform: translate(calc(100% - 3.75px), 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.4s;
+
+}
+
+.loading-path .dot3 {
+
+  transform: translate(3.75px, calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 1.2s;
+
+}
+
+.loading-path .dot4 {
+
+  transform: translate(calc(100% - 3.75px), calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.8s;
+
+}
+
+@keyframes loading-rotate {
+
+  to {
+
+    transform: rotate(360deg);
+
+  }
+
+}
+
+@keyframes loading-dash {
+
+  0% {
+
+    stroke-dasharray: 1, 200;
+
+    stroke-dashoffset: 0;
+
+  }
+
+  50% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -40px;
+
+  }
+
+  100% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -120px;
+
+  }
+
+}
+
+@keyframes custom-spin-move {
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义头部与底部 2.10.6</h2>
+<p>你可以通过插槽来自定义下拉菜单的头部和底部。</p>
+<p>使用插槽自定义内容。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;autocomplete-custom-header-footer&quot;&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Custom header content&lt;/p&gt;
+
+      &lt;el-autocomplete
+
+        v-model=&quot;headerSlotState&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #header&gt;header content&lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+    &lt;div&gt;
+
+      &lt;p&gt;Custom footer content&lt;/p&gt;
+
+      &lt;el-autocomplete
+
+        ref=&quot;footerAutocompleteRef&quot;
+
+        v-model=&quot;footerSlotstate&quot;
+
+        :fetch-suggestions=&quot;querySearchAsync&quot;
+
+        placeholder=&quot;Please input&quot;
+
+        @select=&quot;handleSelect&quot;
+
+      &gt;
+
+        &lt;template #footer&gt;
+
+          &lt;el-button link size=&quot;small&quot; @click=&quot;handleClear&quot;&gt; Clear &lt;/el-button&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-autocomplete&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { onMounted, ref } from 'vue'
+
+const headerSlotState = ref('')
+
+const footerSlotstate = ref('')
+
+interface LinkItem {
+
+  value: string
+
+  link: string
+
+}
+
+const links = ref&lt;LinkItem[]&gt;([])
+
+const loadAll = () =&gt; {
+
+  return [
+
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+
+    { value: 'babel', link: 'https://github.com/babel/babel' },
+
+  ]
+
+}
+
+let timeout: ReturnType&lt;typeof setTimeout&gt;
+
+const querySearchAsync = (queryString: string, cb: (arg: any) =&gt; void) =&gt; {
+
+  const results = queryString
+
+    ? links.value.filter(createFilter(queryString))
+
+    : links.value
+
+  clearTimeout(timeout)
+
+  timeout = setTimeout(() =&gt; {
+
+    cb(results)
+
+  }, 3000 * Math.random())
+
+}
+
+const createFilter = (queryString: string) =&gt; {
+
+  return (restaurant: LinkItem) =&gt; {
+
+    return (
+
+      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+
+    )
+
+  }
+
+}
+
+const handleSelect = (item: Record&lt;string, any&gt;) =&gt; {
+
+  console.log(item)
+
+}
+
+onMounted(() =&gt; {
+
+  links.value = loadAll()
+
+})
+
+const footerAutocompleteRef = ref()
+
+const handleClear = () =&gt; {
+
+  footerSlotstate.value = ''
+
+  footerAutocompleteRef.value.getData()
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.autocomplete-custom-header-footer {
+
+  display: flex;
+
+}
+
+.autocomplete-custom-header-footer &gt; div {
+
+  flex: 1;
+
+  text-align: center;
+
+}
+
+.autocomplete-custom-header-footer &gt; div &gt; :deep(.el-autocomplete) {
+
+  width: 50%;
+
+}
+
+.autocomplete-custom-header-footer &gt; div:not(:last-child) {
+
+  border-right: 1px solid var(--el-border-color);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>选中项绑定值</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>占位文本</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>clearable</td>
+<td>是否可清空</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>自动补全组件是否被禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>value-key</td>
+<td>输入建议对象中用于显示的键名</td>
+<td><code>string</code></td>
+<td>value</td>
+</tr>
+<tr>
+<td>debounce</td>
+<td>获取输入建议的防抖延时，单位为毫秒</td>
+<td><code>number</code></td>
+<td>300</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>菜单弹出位置</td>
+<td><code>enum</code></td>
+<td>bottom-start</td>
+</tr>
+<tr>
+<td>fetch-suggestions</td>
+<td>获取输入建议的方法，仅当你的输入建议数据 resolve 时，通过调用 <code>callback(data:[])</code> 来返回它</td>
+<td><code>array</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>trigger-on-focus</td>
+<td>whether show suggestions when input focus</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>select-when-unmatched</td>
+<td>在输入没有任何匹配建议的情况下，按下回车是否触发 <code>select</code> 事件</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>name</td>
+<td>等价于原生 input <code>name</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>aria-label a11y 2.7.2</td>
+<td>原生 <code>aria-label</code>属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>hide-loading</td>
+<td>是否隐藏远程加载时的加载图标</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>下拉列表的类名</td>
+<td><code>string</code> / <code>object</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>popper-style 2.11.4</td>
+<td>autocomplete 下拉列表的类名</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options 2.14.0</td>
+<td><a href="https://popper.js.org/docs/v2/">popper.js</a> parameters</td>
+<td><code>object</code>refer to <a href="https://popper.js.org/docs/v2/">popper.js</a> doc</td>
+<td>{}</td>
+</tr>
+<tr>
+<td>show-after 2.14.0</td>
+<td>下拉菜单的内容是否有箭头</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否将下拉列表元素插入 append-to 指向的元素下</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>append-to 2.9.9</td>
+<td>下拉框挂载到哪个 DOM 元素</td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>highlight-first-item</td>
+<td>是否默认高亮远程搜索结果的第一项</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>fit-input-width</td>
+<td>下拉框的宽度是否与输入框相同</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>popper-append-to-body deprecated</td>
+<td>是否将下拉列表插入至 body 元素。在下拉列表的定位出现问题时，可将该属性设置为 false</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>loop-navigation 2.11.4</td>
+<td>键盘导航是否从末尾循环到开头</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td><a href="./input#attributes">input props</a></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Events</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>blur</td>
+<td>当选择器的输入框失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>当选择器的输入框获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>input</td>
+<td>在 Input 值改变时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clear</td>
+<td>在点击由 <code>clearable</code> 属性生成的清空按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>select</td>
+<td>点击选中建议项时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>change</td>
+<td>在 Input 值改变时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>描述说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义输入建议的内容。</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>header 2.10.6</td>
+<td>下拉列表顶部的内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>footer 2.10.6</td>
+<td>下拉列表底部的内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>输入框头部内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>输入框尾部内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>prepend</td>
+<td>输入框前置内容，在 prefix 之前</td>
+<td>-</td>
+</tr>
+<tr>
+<td>append</td>
+<td>输入框后置内容，在 suffix 之后</td>
+<td>-</td>
+</tr>
+<tr>
+<td>loading 2.5.0</td>
+<td>修改加载区域内容</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3>Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activated</td>
+<td>自动补全输入框是否被激活</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>使 input 失去焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>close</td>
+<td>折叠建议列表</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>使 input 获取焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleSelect</td>
+<td>手动触发选中建议事件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleKeyEnter</td>
+<td>手动触发键盘回车事件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>highlightedIndex</td>
+<td>当前高亮显示选项的索引</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>highlight</td>
+<td>在建议中高亮显示一个项目</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>inputRef</td>
+<td>el-input 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>loading</td>
+<td>远程获取提示内容的加载状态指示器</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>popperRef</td>
+<td>el-tooltip 组件实例</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>suggestions</td>
+<td>获取自动补全结果</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>getData 2.8.4</td>
+<td>加载建议列表</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/autocomplete.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["autocomplete"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

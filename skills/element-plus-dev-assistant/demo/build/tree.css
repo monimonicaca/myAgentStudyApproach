@@ -1,0 +1,50 @@
+
+
+
+
+
+
+
+
+.custom-tree-node {
+
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  font-size: 14px;
+
+  padding-right: 8px;
+}
+
+
+
+
+.is-penultimate > .el-tree-node__content .el-tree-node__label {
+
+  color: #626aef;
+}
+.is-penultimate > .el-tree-node__children > div {
+
+  display: inline-block;
+
+  margin-right: 4px;
+&:not(:first-child) .el-tree-node__content {
+
+    padding-left: 0px !important;
+}
+.el-tree-node__content {
+
+    padding-right: 16px;
+}
+}
+
+
+
+
+
+

@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistic 统计组件 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/statistic.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Statistic 统计组件</h1>
+  <span class="count">3 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（3）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 倒计时</a>
+<a href="#ex-2">3. 统计卡片</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row :gutter=&quot;16&quot;&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic title=&quot;Daily active users&quot; :value=&quot;268500&quot; /&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic :value=&quot;138&quot;&gt;
+
+        &lt;template #title&gt;
+
+          &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+            Ratio of men to women
+
+            &lt;el-icon style=&quot;margin-left: 4px&quot; :size=&quot;12&quot;&gt;
+
+              &lt;Male /&gt;
+
+            &lt;/el-icon&gt;
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #suffix&gt;/100&lt;/template&gt;
+
+      &lt;/el-statistic&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic title=&quot;Total Transactions&quot; :value=&quot;outputValue&quot; /&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic title=&quot;Feedback number&quot; :value=&quot;562&quot;&gt;
+
+        &lt;template #suffix&gt;
+
+          &lt;el-icon style=&quot;vertical-align: -0.125em&quot;&gt;
+
+            &lt;ChatLineRound /&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-statistic&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { useTransition } from &#x27;@vueuse/core&#x27;
+
+import { ChatLineRound, Male } from &#x27;@element-plus/icons-vue&#x27;
+
+const source = ref(0)
+
+const outputValue = useTransition(source, {
+
+  duration: 1500,
+
+})
+
+source.value = 172000
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>倒计时</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row :gutter=&quot;16&quot;&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-countdown title=&quot;Start to grab&quot; :value=&quot;value&quot; /&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-countdown
+
+        title=&quot;Remaining VIP time&quot;
+
+        format=&quot;HH:mm:ss&quot;
+
+        :value=&quot;value1&quot;
+
+      /&gt;
+
+      &lt;el-button class=&quot;countdown-footer&quot; type=&quot;primary&quot; @click=&quot;reset&quot;&gt;
+
+        Reset
+
+      &lt;/el-button&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-countdown format=&quot;DD [days] HH:mm:ss&quot; :value=&quot;value2&quot;&gt;
+
+        &lt;template #title&gt;
+
+          &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+            &lt;el-icon style=&quot;margin-right: 4px&quot; :size=&quot;12&quot;&gt;
+
+              &lt;Calendar /&gt;
+
+            &lt;/el-icon&gt;
+
+            Still to go until next month
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-countdown&gt;
+
+      &lt;div class=&quot;countdown-footer&quot;&gt;{{ value2.format(&#x27;YYYY-MM-DD&#x27;) }}&lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import dayjs from &#x27;dayjs&#x27;
+
+import { Calendar } from &#x27;@element-plus/icons-vue&#x27;
+
+const value = ref(Date.now() + 1000 * 60 * 60 * 7)
+
+const value1 = ref(Date.now() + 1000 * 60 * 60 * 24 * 2)
+
+const value2 = ref(dayjs().add(1, &#x27;month&#x27;).startOf(&#x27;month&#x27;))
+
+function reset() {
+
+  value1.value = Date.now() + 1000 * 60 * 60 * 24 * 2
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.countdown-footer {
+
+  margin-top: 8px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>统计卡片</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row :gutter=&quot;16&quot;&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;mb-4&quot;&gt;
+
+      &lt;div class=&quot;statistic-card&quot;&gt;
+
+        &lt;el-statistic :value=&quot;98500&quot;&gt;
+
+          &lt;template #title&gt;
+
+            &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+              Daily active users
+
+              &lt;el-tooltip
+
+                effect=&quot;dark&quot;
+
+                content=&quot;Number of users who logged into the product in one day&quot;
+
+                placement=&quot;top&quot;
+
+              &gt;
+
+                &lt;el-icon style=&quot;margin-left: 4px&quot; :size=&quot;12&quot;&gt;
+
+                  &lt;Warning /&gt;
+
+                &lt;/el-icon&gt;
+
+              &lt;/el-tooltip&gt;
+
+            &lt;/div&gt;
+
+          &lt;/template&gt;
+
+        &lt;/el-statistic&gt;
+
+        &lt;div class=&quot;statistic-footer&quot;&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;span&gt;than yesterday&lt;/span&gt;
+
+            &lt;span class=&quot;green&quot;&gt;
+
+              24%
+
+              &lt;el-icon&gt;
+
+                &lt;CaretTop /&gt;
+
+              &lt;/el-icon&gt;
+
+            &lt;/span&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;mb-4&quot;&gt;
+
+      &lt;div class=&quot;statistic-card&quot;&gt;
+
+        &lt;el-statistic :value=&quot;693700&quot;&gt;
+
+          &lt;template #title&gt;
+
+            &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+              Monthly Active Users
+
+              &lt;el-tooltip
+
+                effect=&quot;dark&quot;
+
+                content=&quot;Number of users who logged into the product in one month&quot;
+
+                placement=&quot;top&quot;
+
+              &gt;
+
+                &lt;el-icon style=&quot;margin-left: 4px&quot; :size=&quot;12&quot;&gt;
+
+                  &lt;Warning /&gt;
+
+                &lt;/el-icon&gt;
+
+              &lt;/el-tooltip&gt;
+
+            &lt;/div&gt;
+
+          &lt;/template&gt;
+
+        &lt;/el-statistic&gt;
+
+        &lt;div class=&quot;statistic-footer&quot;&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;span&gt;month on month&lt;/span&gt;
+
+            &lt;span class=&quot;red&quot;&gt;
+
+              12%
+
+              &lt;el-icon&gt;
+
+                &lt;CaretBottom /&gt;
+
+              &lt;/el-icon&gt;
+
+            &lt;/span&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;mb-4&quot;&gt;
+
+      &lt;div class=&quot;statistic-card&quot;&gt;
+
+        &lt;el-statistic :value=&quot;72000&quot; title=&quot;New transactions today&quot;&gt;
+
+          &lt;template #title&gt;
+
+            &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+              New transactions today
+
+            &lt;/div&gt;
+
+          &lt;/template&gt;
+
+        &lt;/el-statistic&gt;
+
+        &lt;div class=&quot;statistic-footer&quot;&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;span&gt;than yesterday&lt;/span&gt;
+
+            &lt;span class=&quot;green&quot;&gt;
+
+              16%
+
+              &lt;el-icon&gt;
+
+                &lt;CaretTop /&gt;
+
+              &lt;/el-icon&gt;
+
+            &lt;/span&gt;
+
+          &lt;/div&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;el-icon :size=&quot;14&quot;&gt;
+
+              &lt;ArrowRight /&gt;
+
+            &lt;/el-icon&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import {
+
+  ArrowRight,
+
+  CaretBottom,
+
+  CaretTop,
+
+  Warning,
+
+} from &#x27;@element-plus/icons-vue&#x27;
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+:global(h2#card-usage ~ .example .example-showcase) {
+
+  background-color: var(--el-fill-color) !important;
+
+}
+
+.el-statistic {
+
+  --el-statistic-content-font-size: 28px;
+
+}
+
+.statistic-card {
+
+  height: 100%;
+
+  padding: 20px;
+
+  border-radius: 4px;
+
+  background-color: var(--el-bg-color-overlay);
+
+}
+
+.statistic-footer {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  font-size: 12px;
+
+  color: var(--el-text-color-regular);
+
+  margin-top: 16px;
+
+}
+
+.statistic-footer .footer-item {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+.statistic-footer .footer-item span:last-child {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  margin-left: 4px;
+
+}
+
+.green {
+
+  color: var(--el-color-success);
+
+}
+
+.red {
+
+  color: var(--el-color-error);
+
+}
+
+&lt;/style&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Statistic 统计组件</h1>
+<p>显示统计数据。</p>
+<h2>基础用法</h2>
+<p>用于突出某个或某组数字时，如统计数值、金额、排名等，数值和标题前后都可以加icon、单位等元素。可以使用 <a href="https://vueuse.org/core/useTransition/">vueuse</a> 实现数值的变化动效</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row :gutter=&quot;16&quot;&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic title=&quot;Daily active users&quot; :value=&quot;268500&quot; /&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic :value=&quot;138&quot;&gt;
+
+        &lt;template #title&gt;
+
+          &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+            Ratio of men to women
+
+            &lt;el-icon style=&quot;margin-left: 4px&quot; :size=&quot;12&quot;&gt;
+
+              &lt;Male /&gt;
+
+            &lt;/el-icon&gt;
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+        &lt;template #suffix&gt;/100&lt;/template&gt;
+
+      &lt;/el-statistic&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic title=&quot;Total Transactions&quot; :value=&quot;outputValue&quot; /&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;6&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-statistic title=&quot;Feedback number&quot; :value=&quot;562&quot;&gt;
+
+        &lt;template #suffix&gt;
+
+          &lt;el-icon style=&quot;vertical-align: -0.125em&quot;&gt;
+
+            &lt;ChatLineRound /&gt;
+
+          &lt;/el-icon&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-statistic&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { useTransition } from '@vueuse/core'
+
+import { ChatLineRound, Male } from '@element-plus/icons-vue'
+
+const source = ref(0)
+
+const outputValue = useTransition(source, {
+
+  duration: 1500,
+
+})
+
+source.value = 172000
+
+&lt;/script&gt;
+</code></pre>
+<h2>倒计时</h2>
+<p>倒计时组件，支持添加其他组件来控制。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row :gutter=&quot;16&quot;&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-countdown title=&quot;Start to grab&quot; :value=&quot;value&quot; /&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-countdown
+
+        title=&quot;Remaining VIP time&quot;
+
+        format=&quot;HH:mm:ss&quot;
+
+        :value=&quot;value1&quot;
+
+      /&gt;
+
+      &lt;el-button class=&quot;countdown-footer&quot; type=&quot;primary&quot; @click=&quot;reset&quot;&gt;
+
+        Reset
+
+      &lt;/el-button&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;text-center mb-4&quot;&gt;
+
+      &lt;el-countdown format=&quot;DD [days] HH:mm:ss&quot; :value=&quot;value2&quot;&gt;
+
+        &lt;template #title&gt;
+
+          &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+            &lt;el-icon style=&quot;margin-right: 4px&quot; :size=&quot;12&quot;&gt;
+
+              &lt;Calendar /&gt;
+
+            &lt;/el-icon&gt;
+
+            Still to go until next month
+
+          &lt;/div&gt;
+
+        &lt;/template&gt;
+
+      &lt;/el-countdown&gt;
+
+      &lt;div class=&quot;countdown-footer&quot;&gt;{{ value2.format('YYYY-MM-DD') }}&lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import dayjs from 'dayjs'
+
+import { Calendar } from '@element-plus/icons-vue'
+
+const value = ref(Date.now() + 1000 * 60 * 60 * 7)
+
+const value1 = ref(Date.now() + 1000 * 60 * 60 * 24 * 2)
+
+const value2 = ref(dayjs().add(1, 'month').startOf('month'))
+
+function reset() {
+
+  value1.value = Date.now() + 1000 * 60 * 60 * 24 * 2
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.countdown-footer {
+
+  margin-top: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>在格式化过程中，建议在天数范围内</p>
+</blockquote>
+<h2>统计卡片</h2>
+<p>卡片式用法展示，可以自由组合</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-row :gutter=&quot;16&quot;&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;mb-4&quot;&gt;
+
+      &lt;div class=&quot;statistic-card&quot;&gt;
+
+        &lt;el-statistic :value=&quot;98500&quot;&gt;
+
+          &lt;template #title&gt;
+
+            &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+              Daily active users
+
+              &lt;el-tooltip
+
+                effect=&quot;dark&quot;
+
+                content=&quot;Number of users who logged into the product in one day&quot;
+
+                placement=&quot;top&quot;
+
+              &gt;
+
+                &lt;el-icon style=&quot;margin-left: 4px&quot; :size=&quot;12&quot;&gt;
+
+                  &lt;Warning /&gt;
+
+                &lt;/el-icon&gt;
+
+              &lt;/el-tooltip&gt;
+
+            &lt;/div&gt;
+
+          &lt;/template&gt;
+
+        &lt;/el-statistic&gt;
+
+        &lt;div class=&quot;statistic-footer&quot;&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;span&gt;than yesterday&lt;/span&gt;
+
+            &lt;span class=&quot;green&quot;&gt;
+
+              24%
+
+              &lt;el-icon&gt;
+
+                &lt;CaretTop /&gt;
+
+              &lt;/el-icon&gt;
+
+            &lt;/span&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;mb-4&quot;&gt;
+
+      &lt;div class=&quot;statistic-card&quot;&gt;
+
+        &lt;el-statistic :value=&quot;693700&quot;&gt;
+
+          &lt;template #title&gt;
+
+            &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+              Monthly Active Users
+
+              &lt;el-tooltip
+
+                effect=&quot;dark&quot;
+
+                content=&quot;Number of users who logged into the product in one month&quot;
+
+                placement=&quot;top&quot;
+
+              &gt;
+
+                &lt;el-icon style=&quot;margin-left: 4px&quot; :size=&quot;12&quot;&gt;
+
+                  &lt;Warning /&gt;
+
+                &lt;/el-icon&gt;
+
+              &lt;/el-tooltip&gt;
+
+            &lt;/div&gt;
+
+          &lt;/template&gt;
+
+        &lt;/el-statistic&gt;
+
+        &lt;div class=&quot;statistic-footer&quot;&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;span&gt;month on month&lt;/span&gt;
+
+            &lt;span class=&quot;red&quot;&gt;
+
+              12%
+
+              &lt;el-icon&gt;
+
+                &lt;CaretBottom /&gt;
+
+              &lt;/el-icon&gt;
+
+            &lt;/span&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+    &lt;el-col :xs=&quot;24&quot; :sm=&quot;12&quot; :md=&quot;8&quot; class=&quot;mb-4&quot;&gt;
+
+      &lt;div class=&quot;statistic-card&quot;&gt;
+
+        &lt;el-statistic :value=&quot;72000&quot; title=&quot;New transactions today&quot;&gt;
+
+          &lt;template #title&gt;
+
+            &lt;div style=&quot;display: inline-flex; align-items: center&quot;&gt;
+
+              New transactions today
+
+            &lt;/div&gt;
+
+          &lt;/template&gt;
+
+        &lt;/el-statistic&gt;
+
+        &lt;div class=&quot;statistic-footer&quot;&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;span&gt;than yesterday&lt;/span&gt;
+
+            &lt;span class=&quot;green&quot;&gt;
+
+              16%
+
+              &lt;el-icon&gt;
+
+                &lt;CaretTop /&gt;
+
+              &lt;/el-icon&gt;
+
+            &lt;/span&gt;
+
+          &lt;/div&gt;
+
+          &lt;div class=&quot;footer-item&quot;&gt;
+
+            &lt;el-icon :size=&quot;14&quot;&gt;
+
+              &lt;ArrowRight /&gt;
+
+            &lt;/el-icon&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/el-col&gt;
+
+  &lt;/el-row&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import {
+
+  ArrowRight,
+
+  CaretBottom,
+
+  CaretTop,
+
+  Warning,
+
+} from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+:global(h2#card-usage ~ .example .example-showcase) {
+
+  background-color: var(--el-fill-color) !important;
+
+}
+
+.el-statistic {
+
+  --el-statistic-content-font-size: 28px;
+
+}
+
+.statistic-card {
+
+  height: 100%;
+
+  padding: 20px;
+
+  border-radius: 4px;
+
+  background-color: var(--el-bg-color-overlay);
+
+}
+
+.statistic-footer {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  font-size: 12px;
+
+  color: var(--el-text-color-regular);
+
+  margin-top: 16px;
+
+}
+
+.statistic-footer .footer-item {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+.statistic-footer .footer-item span:last-child {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  margin-left: 4px;
+
+}
+
+.green {
+
+  color: var(--el-color-success);
+
+}
+
+.red {
+
+  color: var(--el-color-error);
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>Statistic API</h2>
+<h3>Statistic Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>描述</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>数字内容</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>decimal-separator</td>
+<td>设置小数点符号</td>
+<td><code>string</code></td>
+<td>.</td>
+</tr>
+<tr>
+<td>formatter</td>
+<td>自定义数字格式化</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>group-separator</td>
+<td>设置千分位标识符</td>
+<td><code>string</code></td>
+<td>,</td>
+</tr>
+<tr>
+<td>precision</td>
+<td>数字精度</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>设置数字的前缀</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>设置数字的后缀</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>title</td>
+<td>数字标题</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-style</td>
+<td>数字样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Statistic Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefix</td>
+<td>数字区之前</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>数字区之后</td>
+</tr>
+<tr>
+<td>title</td>
+<td>数字标题</td>
+</tr>
+</tbody>
+</table>
+<h3>Statistic Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>displayValue</td>
+<td>当前显示值</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Countdown API</h2>
+<h3>Countdown Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>详情</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>目标时间</td>
+<td><code>number</code> / <code>Dayjs</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>format</td>
+<td>格式化倒计时</td>
+<td><code>string</code></td>
+<td>HH:mm:ss</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>设置倒计时前缀</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>设置倒计时的后缀</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>title</td>
+<td>倒计时标题</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-style</td>
+<td>倒计时值的样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Countdown Events</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>描述</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>时间差改变事件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>finish</td>
+<td>倒计时结束事件</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Countdown Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefix</td>
+<td>倒计时值前缀</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>倒计时后缀</td>
+</tr>
+<tr>
+<td>title</td>
+<td>倒计时标题</td>
+</tr>
+</tbody>
+</table>
+<h3>Countdown Exposes</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>displayValue</td>
+<td>当前显示值</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/statistic.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["statistic"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,4530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tree 树形控件 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/tree.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Tree 树形控件</h1>
+  <span class="count">12 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（12）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 可选择</a>
+<a href="#ex-2">3. 懒加载自定义叶子节点</a>
+<a href="#ex-3">4. 多次懒加载 2.6.3</a>
+<a href="#ex-4">5. 禁用复选框</a>
+<a href="#ex-5">6. 默认展开以及默认选中</a>
+<a href="#ex-6">7. 树节点的选择</a>
+<a href="#ex-7">8. 自定义节点内容</a>
+<a href="#ex-8">9. 自定义节点类名</a>
+<a href="#ex-9">10. 树节点过滤</a>
+<a href="#ex-10">11. 手风琴模式</a>
+<a href="#ex-11">12. 可拖拽节点</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    @node-click=&quot;handleNodeClick&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+interface Tree {
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+const handleNodeClick = (data: Tree) =&gt; {
+
+  console.log(data)
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 2-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 2-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: &#x27;Level two 2-2&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 2-2-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 3-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 3-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: &#x27;Level two 3-2&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 3-2-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+const defaultProps = {
+
+  children: &#x27;children&#x27;,
+
+  label: &#x27;label&#x27;,
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>可选择</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :props=&quot;props&quot;
+
+    :load=&quot;loadNode&quot;
+
+    lazy
+
+    show-checkbox
+
+    @check-change=&quot;handleCheckChange&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { LoadFunction } from &#x27;element-plus&#x27;
+
+interface Tree {
+
+  name: string
+
+}
+
+let count = 1
+
+const props = {
+
+  label: &#x27;name&#x27;,
+
+  children: &#x27;zones&#x27;,
+
+}
+
+const handleCheckChange = (
+
+  data: Tree,
+
+  checked: boolean,
+
+  indeterminate: boolean
+
+) =&gt; {
+
+  console.log(data, checked, indeterminate)
+
+}
+
+const loadNode: LoadFunction = (node, resolve) =&gt; {
+
+  if (node.level === 0) {
+
+    return resolve([{ name: &#x27;Root1&#x27; }, { name: &#x27;Root2&#x27; }])
+
+  }
+
+  if (node.level &gt; 3) return resolve([])
+
+  let hasChild = false
+
+  if (node.data.name === &#x27;region1&#x27;) {
+
+    hasChild = true
+
+  } else if (node.data.name === &#x27;region2&#x27;) {
+
+    hasChild = false
+
+  } else {
+
+    hasChild = Math.random() &gt; 0.5
+
+  }
+
+  setTimeout(() =&gt; {
+
+    let data: Tree[] = []
+
+    if (hasChild) {
+
+      data = [
+
+        {
+
+          name: `zone${count++}`,
+
+        },
+
+        {
+
+          name: `zone${count++}`,
+
+        },
+
+      ]
+
+    } else {
+
+      data = []
+
+    }
+
+    resolve(data)
+
+  }, 500)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>懒加载自定义叶子节点</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :props=&quot;props&quot;
+
+    :load=&quot;loadNode&quot;
+
+    lazy
+
+    show-checkbox
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { LoadFunction } from &#x27;element-plus&#x27;
+
+interface Tree {
+
+  name: string
+
+  leaf?: boolean
+
+}
+
+const props = {
+
+  label: &#x27;name&#x27;,
+
+  children: &#x27;zones&#x27;,
+
+  isLeaf: &#x27;leaf&#x27;,
+
+}
+
+const loadNode: LoadFunction = (node, resolve) =&gt; {
+
+  if (node.level === 0) {
+
+    return resolve([{ name: &#x27;region&#x27; }])
+
+  }
+
+  if (node.level &gt; 1) return resolve([])
+
+  setTimeout(() =&gt; {
+
+    const data: Tree[] = [
+
+      {
+
+        name: &#x27;leaf&#x27;,
+
+        leaf: true,
+
+      },
+
+      {
+
+        name: &#x27;zone&#x27;,
+
+      },
+
+    ]
+
+    resolve(data)
+
+  }, 500)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>多次懒加载 2.6.3</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree style=&quot;max-width: 600px&quot; :props=&quot;props&quot; :load=&quot;loadNode&quot; lazy /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { LoadFunction } from &#x27;element-plus&#x27;
+
+const props = {
+
+  label: &#x27;name&#x27;,
+
+  children: &#x27;zones&#x27;,
+
+  isLeaf: &#x27;leaf&#x27;,
+
+}
+
+let time = 0
+
+const loadNode: LoadFunction = (node, resolve, reject) =&gt; {
+
+  if (node.level === 0) {
+
+    return resolve([{ name: &#x27;region&#x27; }])
+
+  }
+
+  time++
+
+  if (node.level &gt;= 1) {
+
+    setTimeout(() =&gt; {
+
+      if (time &gt; 3) {
+
+        return resolve([
+
+          { name: &#x27;zone1&#x27;, leaf: true },
+
+          { name: &#x27;zone2&#x27;, leaf: true },
+
+          { name: &#x27;zone3&#x27;, leaf: true },
+
+        ])
+
+      } else {
+
+        return reject()
+
+      }
+
+    }, 3000)
+
+  }
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>禁用复选框</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    show-checkbox
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const defaultProps = {
+
+  children: &#x27;children&#x27;,
+
+  label: &#x27;label&#x27;,
+
+  disabled: &#x27;disabled&#x27;,
+
+}
+
+const data = [
+
+  {
+
+    id: 1,
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        id: 3,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+        children: [
+
+          {
+
+            id: 4,
+
+            label: &#x27;Level three 3-1-1&#x27;,
+
+          },
+
+          {
+
+            id: 5,
+
+            label: &#x27;Level three 3-1-2&#x27;,
+
+            disabled: true,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        id: 2,
+
+        label: &#x27;Level two 2-2&#x27;,
+
+        disabled: true,
+
+        children: [
+
+          {
+
+            id: 6,
+
+            label: &#x27;Level three 3-2-1&#x27;,
+
+          },
+
+          {
+
+            id: 7,
+
+            label: &#x27;Level three 3-2-2&#x27;,
+
+            disabled: true,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-5"><h3><span class="idx">6</span>默认展开以及默认选中</h3><div class="demo-card"><div class="mount" id="mount-5"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    show-checkbox
+
+    node-key=&quot;id&quot;
+
+    :default-expanded-keys=&quot;[2, 3]&quot;
+
+    :default-checked-keys=&quot;[5]&quot;
+
+    :props=&quot;defaultProps&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const defaultProps = {
+
+  children: &#x27;children&#x27;,
+
+  label: &#x27;label&#x27;,
+
+}
+
+const data = [
+
+  {
+
+    id: 1,
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+          {
+
+            id: 10,
+
+            label: &#x27;Level three 1-1-2&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+      },
+
+      {
+
+        id: 6,
+
+        label: &#x27;Level two 2-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: &#x27;Level two 3-1&#x27;,
+
+      },
+
+      {
+
+        id: 8,
+
+        label: &#x27;Level two 3-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-6"><h3><span class="idx">7</span>树节点的选择</h3><div class="demo-card"><div class="mount" id="mount-6"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    ref=&quot;treeRef&quot;
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    show-checkbox
+
+    default-expand-all
+
+    node-key=&quot;id&quot;
+
+    highlight-current
+
+    :props=&quot;defaultProps&quot;
+
+  /&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1 mt-2&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;getCheckedNodes&quot;&gt;get by node&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;getCheckedKeys&quot;&gt;get by key&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;setCheckedNodes&quot;&gt;set by node&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;setCheckedKeys&quot;&gt;set by key&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;resetChecked&quot;&gt;reset&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import type { RenderContentContext, TreeInstance } from &#x27;element-plus&#x27;
+
+interface Tree {
+
+  id: number
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+type Node = RenderContentContext[&#x27;node&#x27;]
+
+const treeRef = ref&lt;TreeInstance&gt;()
+
+const getCheckedNodes = () =&gt; {
+
+  console.log(treeRef.value!.getCheckedNodes(false, false))
+
+}
+
+const getCheckedKeys = () =&gt; {
+
+  console.log(treeRef.value!.getCheckedKeys(false))
+
+}
+
+const setCheckedNodes = () =&gt; {
+
+  treeRef.value!.setCheckedNodes(
+
+    [
+
+      {
+
+        id: 5,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+      },
+
+      {
+
+        id: 9,
+
+        label: &#x27;Level three 1-1-1&#x27;,
+
+      },
+
+    ] as Node[],
+
+    false
+
+  )
+
+}
+
+const setCheckedKeys = () =&gt; {
+
+  treeRef.value!.setCheckedKeys([3], false)
+
+}
+
+const resetChecked = () =&gt; {
+
+  treeRef.value!.setCheckedKeys([], false)
+
+}
+
+const defaultProps = {
+
+  children: &#x27;children&#x27;,
+
+  label: &#x27;label&#x27;,
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    id: 1,
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+          {
+
+            id: 10,
+
+            label: &#x27;Level three 1-1-2&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+      },
+
+      {
+
+        id: 6,
+
+        label: &#x27;Level two 2-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: &#x27;Level two 3-1&#x27;,
+
+      },
+
+      {
+
+        id: 8,
+
+        label: &#x27;Level two 3-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-7"><h3><span class="idx">8</span>自定义节点内容</h3><div class="demo-card"><div class="mount" id="mount-7"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;custom-tree-container&quot;&gt;
+
+    &lt;p&gt;Using render-content&lt;/p&gt;
+
+    &lt;el-tree
+
+      ref=&quot;treeRef1&quot;
+
+      style=&quot;max-width: 600px&quot;
+
+      :data=&quot;dataSource&quot;
+
+      show-checkbox
+
+      node-key=&quot;id&quot;
+
+      default-expand-all
+
+      :expand-on-click-node=&quot;false&quot;
+
+      :render-content=&quot;renderContent&quot;
+
+    /&gt;
+
+    &lt;p&gt;Using scoped slot&lt;/p&gt;
+
+    &lt;el-tree
+
+      ref=&quot;treeRef2&quot;
+
+      style=&quot;max-width: 600px&quot;
+
+      :data=&quot;dataSource&quot;
+
+      show-checkbox
+
+      node-key=&quot;id&quot;
+
+      default-expand-all
+
+      :expand-on-click-node=&quot;false&quot;
+
+    &gt;
+
+      &lt;template #default=&quot;{ node, data }&quot;&gt;
+
+        &lt;div class=&quot;custom-tree-node&quot;&gt;
+
+          &lt;span&gt;{{ node.label }}&lt;/span&gt;
+
+          &lt;div&gt;
+
+            &lt;el-button type=&quot;primary&quot; link @click=&quot;append(data)&quot;&gt;
+
+              Append
+
+            &lt;/el-button&gt;
+
+            &lt;el-button
+
+              style=&quot;margin-left: 4px&quot;
+
+              type=&quot;danger&quot;
+
+              link
+
+              @click=&quot;remove(node, data)&quot;
+
+            &gt;
+
+              Delete
+
+            &lt;/el-button&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-tree&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { ElButton } from &#x27;element-plus&#x27;
+
+import type {
+
+  RenderContentContext,
+
+  RenderContentFunction,
+
+  TreeInstance,
+
+} from &#x27;element-plus&#x27;
+
+interface Tree {
+
+  id: number
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+type Node = RenderContentContext[&#x27;node&#x27;]
+
+type Data = RenderContentContext[&#x27;data&#x27;]
+
+let id = 1000
+
+const treeRef1 = ref&lt;TreeInstance&gt;()
+
+const treeRef2 = ref&lt;TreeInstance&gt;()
+
+const append = (data: Data) =&gt; {
+
+  const newChild = { id: id++, label: &#x27;testtest&#x27;, children: [] }
+
+  treeRef1.value?.append(newChild, data)
+
+  treeRef2.value?.append(newChild, data)
+
+}
+
+const remove = (node: Node, data: Data) =&gt; {
+
+  treeRef1.value?.remove(data)
+
+  treeRef2.value?.remove(data)
+
+}
+
+const renderContent: RenderContentFunction = (h, { node, data }) =&gt; {
+
+  return h(
+
+    &#x27;div&#x27;,
+
+    {
+
+      class: &#x27;custom-tree-node&#x27;,
+
+    },
+
+    [
+
+      h(&#x27;span&#x27;, null, node.label),
+
+      h(&#x27;div&#x27;, null, [
+
+        h(
+
+          ElButton,
+
+          {
+
+            type: &#x27;primary&#x27;,
+
+            link: true,
+
+            onClick: () =&gt; append(data),
+
+          },
+
+          {
+
+            default: () =&gt; &#x27;Append&#x27;,
+
+          }
+
+        ),
+
+        h(
+
+          ElButton,
+
+          {
+
+            type: &#x27;danger&#x27;,
+
+            link: true,
+
+            style: &#x27;margin-left: 4px&#x27;,
+
+            onClick: () =&gt; remove(node, data),
+
+          },
+
+          {
+
+            default: () =&gt; &#x27;Delete&#x27;,
+
+          }
+
+        ),
+
+      ]),
+
+    ]
+
+  )
+
+}
+
+const dataSource = ref&lt;Tree[]&gt;([
+
+  {
+
+    id: 1,
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+          {
+
+            id: 10,
+
+            label: &#x27;Level three 1-1-2&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+      },
+
+      {
+
+        id: 6,
+
+        label: &#x27;Level two 2-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: &#x27;Level two 3-1&#x27;,
+
+      },
+
+      {
+
+        id: 8,
+
+        label: &#x27;Level two 3-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+])
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.custom-tree-node {
+
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  font-size: 14px;
+
+  padding-right: 8px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-8"><h3><span class="idx">9</span>自定义节点类名</h3><div class="demo-card"><div class="mount" id="mount-8"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;custom-tree-node-container&quot;&gt;
+
+    &lt;el-tree
+
+      style=&quot;max-width: 600px&quot;
+
+      :data=&quot;data&quot;
+
+      show-checkbox
+
+      node-key=&quot;id&quot;
+
+      default-expand-all
+
+      :expand-on-click-node=&quot;false&quot;
+
+      :props=&quot;{ class: customNodeClass }&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { TreeNodeData } from &#x27;element-plus&#x27;
+
+interface Tree {
+
+  id: number
+
+  label: string
+
+  isPenultimate?: boolean
+
+  children?: Tree[]
+
+}
+
+const customNodeClass = ({ isPenultimate }: TreeNodeData) =&gt;
+
+  isPenultimate ? &#x27;is-penultimate&#x27; : &#x27;&#x27;
+
+const data: Tree[] = [
+
+  {
+
+    id: 1,
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        isPenultimate: true,
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+          {
+
+            id: 10,
+
+            label: &#x27;Level three 1-1-2&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: &#x27;Level one 2&#x27;,
+
+    isPenultimate: true,
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+      },
+
+      {
+
+        id: 6,
+
+        label: &#x27;Level two 2-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: &#x27;Level one 3&#x27;,
+
+    isPenultimate: true,
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: &#x27;Level two 3-1&#x27;,
+
+      },
+
+      {
+
+        id: 8,
+
+        label: &#x27;Level two 3-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.is-penultimate &gt; .el-tree-node__content .el-tree-node__label {
+
+  color: #626aef;
+
+}
+
+.is-penultimate &gt; .el-tree-node__children &gt; div {
+
+  display: inline-block;
+
+  margin-right: 4px;
+
+  &amp;:not(:first-child) .el-tree-node__content {
+
+    padding-left: 0px !important;
+
+  }
+
+  .el-tree-node__content {
+
+    padding-right: 16px;
+
+  }
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-9"><h3><span class="idx">10</span>树节点过滤</h3><div class="demo-card"><div class="mount" id="mount-9"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input
+
+    v-model=&quot;filterText&quot;
+
+    class=&quot;w-60 mb-2&quot;
+
+    placeholder=&quot;Filter keyword&quot;
+
+  /&gt;
+
+  &lt;el-tree
+
+    ref=&quot;treeRef&quot;
+
+    style=&quot;max-width: 600px&quot;
+
+    class=&quot;filter-tree&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    default-expand-all
+
+    :filter-node-method=&quot;filterNode&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref, watch } from &#x27;vue&#x27;
+
+import type { FilterNodeMethodFunction, TreeInstance } from &#x27;element-plus&#x27;
+
+interface Tree {
+
+  [key: string]: any
+
+}
+
+const filterText = ref(&#x27;&#x27;)
+
+const treeRef = ref&lt;TreeInstance&gt;()
+
+const defaultProps = {
+
+  children: &#x27;children&#x27;,
+
+  label: &#x27;label&#x27;,
+
+}
+
+watch(filterText, (val) =&gt; {
+
+  treeRef.value!.filter(val)
+
+})
+
+const filterNode: FilterNodeMethodFunction = (value: string, data: Tree) =&gt; {
+
+  if (!value) return true
+
+  return data.label.includes(value)
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    id: 1,
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+          {
+
+            id: 10,
+
+            label: &#x27;Level three 1-1-2&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: &#x27;Level two 2-1&#x27;,
+
+      },
+
+      {
+
+        id: 6,
+
+        label: &#x27;Level two 2-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: &#x27;Level two 3-1&#x27;,
+
+      },
+
+      {
+
+        id: 8,
+
+        label: &#x27;Level two 3-2&#x27;,
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-10"><h3><span class="idx">11</span>手风琴模式</h3><div class="demo-card"><div class="mount" id="mount-10"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    accordion
+
+    @node-click=&quot;handleNodeClick&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+interface Tree {
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+const handleNodeClick = (data: Tree) =&gt; {
+
+  console.log(data)
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 2-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 2-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: &#x27;Level two 2-2&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 2-2-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 3-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 3-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: &#x27;Level two 3-2&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 3-2-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+const defaultProps = {
+
+  children: &#x27;children&#x27;,
+
+  label: &#x27;label&#x27;,
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-11"><h3><span class="idx">12</span>可拖拽节点</h3><div class="demo-card"><div class="mount" id="mount-11"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :allow-drop=&quot;allowDrop&quot;
+
+    :allow-drag=&quot;allowDrag&quot;
+
+    :data=&quot;data&quot;
+
+    draggable
+
+    default-expand-all
+
+    node-key=&quot;id&quot;
+
+    @node-drag-start=&quot;handleDragStart&quot;
+
+    @node-drag-enter=&quot;handleDragEnter&quot;
+
+    @node-drag-leave=&quot;handleDragLeave&quot;
+
+    @node-drag-over=&quot;handleDragOver&quot;
+
+    @node-drag-end=&quot;handleDragEnd&quot;
+
+    @node-drop=&quot;handleDrop&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type {
+
+  AllowDropType,
+
+  NodeDropType,
+
+  RenderContentContext,
+
+} from &#x27;element-plus&#x27;
+
+type Node = RenderContentContext[&#x27;node&#x27;]
+
+const handleDragStart = (node: Node, ev: DragEvent) =&gt; {
+
+  console.log(&#x27;drag start&#x27;, node)
+
+}
+
+const handleDragEnter = (draggingNode: Node, dropNode: Node, ev: DragEvent) =&gt; {
+
+  console.log(&#x27;tree drag enter:&#x27;, dropNode.label)
+
+}
+
+const handleDragLeave = (draggingNode: Node, dropNode: Node, ev: DragEvent) =&gt; {
+
+  console.log(&#x27;tree drag leave:&#x27;, dropNode.label)
+
+}
+
+const handleDragOver = (draggingNode: Node, dropNode: Node, ev: DragEvent) =&gt; {
+
+  console.log(&#x27;tree drag over:&#x27;, dropNode.label)
+
+}
+
+const handleDragEnd = (
+
+  draggingNode: Node,
+
+  dropNode: Node | null,
+
+  dropType: NodeDropType,
+
+  ev: DragEvent
+
+) =&gt; {
+
+  console.log(&#x27;tree drag end:&#x27;, dropNode &amp;&amp; dropNode.label, dropType)
+
+}
+
+const handleDrop = (
+
+  draggingNode: Node,
+
+  dropNode: Node,
+
+  dropType: Exclude&lt;NodeDropType, &#x27;none&#x27;&gt;,
+
+  ev: DragEvent
+
+) =&gt; {
+
+  console.log(&#x27;tree drop:&#x27;, dropNode.label, dropType)
+
+}
+
+const allowDrop = (draggingNode: Node, dropNode: Node, type: AllowDropType) =&gt; {
+
+  if (dropNode.data.label === &#x27;Level two 3-1&#x27;) {
+
+    return type !== &#x27;inner&#x27;
+
+  } else {
+
+    return true
+
+  }
+
+}
+
+const allowDrag = (draggingNode: Node) =&gt; {
+
+  return !draggingNode.data.label.includes(&#x27;Level three 3-1-1&#x27;)
+
+}
+
+const data = [
+
+  {
+
+    label: &#x27;Level one 1&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 1-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 1-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: &#x27;Level one 2&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 2-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 2-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: &#x27;Level two 2-2&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 2-2-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: &#x27;Level one 3&#x27;,
+
+    children: [
+
+      {
+
+        label: &#x27;Level two 3-1&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 3-1-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: &#x27;Level two 3-2&#x27;,
+
+        children: [
+
+          {
+
+            label: &#x27;Level three 3-2-1&#x27;,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Tree 树形控件</h1>
+<p>用清晰的层级结构展示信息，可展开或折叠。</p>
+<h2>基础用法</h2>
+<p>基础的树形结构展示</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    @node-click=&quot;handleNodeClick&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+interface Tree {
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+const handleNodeClick = (data: Tree) =&gt; {
+
+  console.log(data)
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 1-1-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        label: 'Level two 2-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 2-1-1',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: 'Level two 2-2',
+
+        children: [
+
+          {
+
+            label: 'Level three 2-2-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        label: 'Level two 3-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 3-1-1',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: 'Level two 3-2',
+
+        children: [
+
+          {
+
+            label: 'Level three 3-2-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+const defaultProps = {
+
+  children: 'children',
+
+  label: 'label',
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>可选择</h2>
+<p>适用于需要选择层级时使用。</p>
+<p>本例还展示了动态加载节点数据的方法。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :props=&quot;props&quot;
+
+    :load=&quot;loadNode&quot;
+
+    lazy
+
+    show-checkbox
+
+    @check-change=&quot;handleCheckChange&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { LoadFunction } from 'element-plus'
+
+interface Tree {
+
+  name: string
+
+}
+
+let count = 1
+
+const props = {
+
+  label: 'name',
+
+  children: 'zones',
+
+}
+
+const handleCheckChange = (
+
+  data: Tree,
+
+  checked: boolean,
+
+  indeterminate: boolean
+
+) =&gt; {
+
+  console.log(data, checked, indeterminate)
+
+}
+
+const loadNode: LoadFunction = (node, resolve) =&gt; {
+
+  if (node.level === 0) {
+
+    return resolve([{ name: 'Root1' }, { name: 'Root2' }])
+
+  }
+
+  if (node.level &gt; 3) return resolve([])
+
+  let hasChild = false
+
+  if (node.data.name === 'region1') {
+
+    hasChild = true
+
+  } else if (node.data.name === 'region2') {
+
+    hasChild = false
+
+  } else {
+
+    hasChild = Math.random() &gt; 0.5
+
+  }
+
+  setTimeout(() =&gt; {
+
+    let data: Tree[] = []
+
+    if (hasChild) {
+
+      data = [
+
+        {
+
+          name: `zone${count++}`,
+
+        },
+
+        {
+
+          name: `zone${count++}`,
+
+        },
+
+      ]
+
+    } else {
+
+      data = []
+
+    }
+
+    resolve(data)
+
+  }, 500)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p>在使用 show-checkbox 时，因为 <code>check-on-click-leaf</code> 默认值为 true， 最后一个树节点可以通过点击节点进行勾选。</p>
+</blockquote>
+<h2>懒加载自定义叶子节点</h2>
+<p>由于在点击节点时才进行该层数据的获取，默认情况下 Tree 无法预知某个节点是否为叶子节点，所以会为每个节点添加一个下拉按钮，如果节点没有下层数据，则点击后下拉按钮会消失。同时，你也可以提前告知 Tree 某个节点是否为叶子节点，从而避免在叶子节点前渲染下拉按钮。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :props=&quot;props&quot;
+
+    :load=&quot;loadNode&quot;
+
+    lazy
+
+    show-checkbox
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { LoadFunction } from 'element-plus'
+
+interface Tree {
+
+  name: string
+
+  leaf?: boolean
+
+}
+
+const props = {
+
+  label: 'name',
+
+  children: 'zones',
+
+  isLeaf: 'leaf',
+
+}
+
+const loadNode: LoadFunction = (node, resolve) =&gt; {
+
+  if (node.level === 0) {
+
+    return resolve([{ name: 'region' }])
+
+  }
+
+  if (node.level &gt; 1) return resolve([])
+
+  setTimeout(() =&gt; {
+
+    const data: Tree[] = [
+
+      {
+
+        name: 'leaf',
+
+        leaf: true,
+
+      },
+
+      {
+
+        name: 'zone',
+
+      },
+
+    ]
+
+    resolve(data)
+
+  }, 500)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>多次懒加载 2.6.3</h2>
+<p>加载远程节点数据时，懒加载有时可能失败。在这种情况下，您可以调用 reject 以保持节点状态，并允许远程加载继续。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree style=&quot;max-width: 600px&quot; :props=&quot;props&quot; :load=&quot;loadNode&quot; lazy /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { LoadFunction } from 'element-plus'
+
+const props = {
+
+  label: 'name',
+
+  children: 'zones',
+
+  isLeaf: 'leaf',
+
+}
+
+let time = 0
+
+const loadNode: LoadFunction = (node, resolve, reject) =&gt; {
+
+  if (node.level === 0) {
+
+    return resolve([{ name: 'region' }])
+
+  }
+
+  time++
+
+  if (node.level &gt;= 1) {
+
+    setTimeout(() =&gt; {
+
+      if (time &gt; 3) {
+
+        return resolve([
+
+          { name: 'zone1', leaf: true },
+
+          { name: 'zone2', leaf: true },
+
+          { name: 'zone3', leaf: true },
+
+        ])
+
+      } else {
+
+        return reject()
+
+      }
+
+    }, 3000)
+
+  }
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>禁用复选框</h2>
+<p>节点的复选框可以设置为禁用。</p>
+<p>在示例中，通过 disabled 设置禁用状态。相应的复选框已禁用，不能点击。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    show-checkbox
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const defaultProps = {
+
+  children: 'children',
+
+  label: 'label',
+
+  disabled: 'disabled',
+
+}
+
+const data = [
+
+  {
+
+    id: 1,
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        id: 3,
+
+        label: 'Level two 2-1',
+
+        children: [
+
+          {
+
+            id: 4,
+
+            label: 'Level three 3-1-1',
+
+          },
+
+          {
+
+            id: 5,
+
+            label: 'Level three 3-1-2',
+
+            disabled: true,
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        id: 2,
+
+        label: 'Level two 2-2',
+
+        disabled: true,
+
+        children: [
+
+          {
+
+            id: 6,
+
+            label: 'Level three 3-2-1',
+
+          },
+
+          {
+
+            id: 7,
+
+            label: 'Level three 3-2-2',
+
+            disabled: true,
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>默认展开以及默认选中</h2>
+<p>树节点可以在初始化阶段被设置为展开和选中。</p>
+<p>分别通过 <code>default-expanded-keys</code> 和 <code>default-checked-keys</code> 设置默认展开和默认选中的节点。需要注意的是，此时必须设置 <code>node-key</code>，其值为节点数据中的一个字段名，该字段在整棵树中是唯一的。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    show-checkbox
+
+    node-key=&quot;id&quot;
+
+    :default-expanded-keys=&quot;[2, 3]&quot;
+
+    :default-checked-keys=&quot;[5]&quot;
+
+    :props=&quot;defaultProps&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+const defaultProps = {
+
+  children: 'children',
+
+  label: 'label',
+
+}
+
+const data = [
+
+  {
+
+    id: 1,
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: 'Level three 1-1-1',
+
+          },
+
+          {
+
+            id: 10,
+
+            label: 'Level three 1-1-2',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: 'Level two 2-1',
+
+      },
+
+      {
+
+        id: 6,
+
+        label: 'Level two 2-2',
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: 'Level two 3-1',
+
+      },
+
+      {
+
+        id: 8,
+
+        label: 'Level two 3-2',
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>树节点的选择</h2>
+<p>本例展示如何获取和设置选中节点。获取和设置各有两种方式：通过 node 或通过 key。如果需要通过 key 来获取或设置，则必须设置 <code>node-key</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    ref=&quot;treeRef&quot;
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    show-checkbox
+
+    default-expand-all
+
+    node-key=&quot;id&quot;
+
+    highlight-current
+
+    :props=&quot;defaultProps&quot;
+
+  /&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1 mt-2&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;getCheckedNodes&quot;&gt;get by node&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;getCheckedKeys&quot;&gt;get by key&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;setCheckedNodes&quot;&gt;set by node&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;setCheckedKeys&quot;&gt;set by key&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; @click=&quot;resetChecked&quot;&gt;reset&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { RenderContentContext, TreeInstance } from 'element-plus'
+
+interface Tree {
+
+  id: number
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+type Node = RenderContentContext['node']
+
+const treeRef = ref&lt;TreeInstance&gt;()
+
+const getCheckedNodes = () =&gt; {
+
+  console.log(treeRef.value!.getCheckedNodes(false, false))
+
+}
+
+const getCheckedKeys = () =&gt; {
+
+  console.log(treeRef.value!.getCheckedKeys(false))
+
+}
+
+const setCheckedNodes = () =&gt; {
+
+  treeRef.value!.setCheckedNodes(
+
+    [
+
+      {
+
+        id: 5,
+
+        label: 'Level two 2-1',
+
+      },
+
+      {
+
+        id: 9,
+
+        label: 'Level three 1-1-1',
+
+      },
+
+    ] as Node[],
+
+    false
+
+  )
+
+}
+
+const setCheckedKeys = () =&gt; {
+
+  treeRef.value!.setCheckedKeys([3], false)
+
+}
+
+const resetChecked = () =&gt; {
+
+  treeRef.value!.setCheckedKeys([], false)
+
+}
+
+const defaultProps = {
+
+  children: 'children',
+
+  label: 'label',
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    id: 1,
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: 'Level three 1-1-1',
+
+          },
+
+          {
+
+            id: 10,
+
+            label: 'Level three 1-1-2',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: 'Level two 2-1',
+
+      },
+
+      {
+
+        id: 6,
+
+        label: 'Level two 2-2',
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: 'Level two 3-1',
+
+      },
+
+      {
+
+        id: 8,
+
+        label: 'Level two 3-2',
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义节点内容</h2>
+<p>节点的内容支持自定义，可以在节点区添加按钮或图标等内容</p>
+<p>可以通过两种方法进行树节点内容的自定义：<code>render-content</code> 和 scoped slot。使用 <code>render-content</code> 指定渲染函数，该函数返回需要的节点区内容即可。渲染函数的用法请参考 Vue 文档。使用 scoped slot 会传入两个参数 <code>node</code> 和 <code>data</code>，分别表示当前节点的 Node 对象和当前节点的数据。注意：由于 JSFiddle 不支持 JSX 语法，所以 <code>render-content</code> 示例无法在那里运行。但是在实际的项目中，只要正确地配置了相关依赖，就可以正常运行。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;custom-tree-container&quot;&gt;
+
+    &lt;p&gt;Using render-content&lt;/p&gt;
+
+    &lt;el-tree
+
+      ref=&quot;treeRef1&quot;
+
+      style=&quot;max-width: 600px&quot;
+
+      :data=&quot;dataSource&quot;
+
+      show-checkbox
+
+      node-key=&quot;id&quot;
+
+      default-expand-all
+
+      :expand-on-click-node=&quot;false&quot;
+
+      :render-content=&quot;renderContent&quot;
+
+    /&gt;
+
+    &lt;p&gt;Using scoped slot&lt;/p&gt;
+
+    &lt;el-tree
+
+      ref=&quot;treeRef2&quot;
+
+      style=&quot;max-width: 600px&quot;
+
+      :data=&quot;dataSource&quot;
+
+      show-checkbox
+
+      node-key=&quot;id&quot;
+
+      default-expand-all
+
+      :expand-on-click-node=&quot;false&quot;
+
+    &gt;
+
+      &lt;template #default=&quot;{ node, data }&quot;&gt;
+
+        &lt;div class=&quot;custom-tree-node&quot;&gt;
+
+          &lt;span&gt;{{ node.label }}&lt;/span&gt;
+
+          &lt;div&gt;
+
+            &lt;el-button type=&quot;primary&quot; link @click=&quot;append(data)&quot;&gt;
+
+              Append
+
+            &lt;/el-button&gt;
+
+            &lt;el-button
+
+              style=&quot;margin-left: 4px&quot;
+
+              type=&quot;danger&quot;
+
+              link
+
+              @click=&quot;remove(node, data)&quot;
+
+            &gt;
+
+              Delete
+
+            &lt;/el-button&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/template&gt;
+
+    &lt;/el-tree&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElButton } from 'element-plus'
+
+import type {
+
+  RenderContentContext,
+
+  RenderContentFunction,
+
+  TreeInstance,
+
+} from 'element-plus'
+
+interface Tree {
+
+  id: number
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+type Node = RenderContentContext['node']
+
+type Data = RenderContentContext['data']
+
+let id = 1000
+
+const treeRef1 = ref&lt;TreeInstance&gt;()
+
+const treeRef2 = ref&lt;TreeInstance&gt;()
+
+const append = (data: Data) =&gt; {
+
+  const newChild = { id: id++, label: 'testtest', children: [] }
+
+  treeRef1.value?.append(newChild, data)
+
+  treeRef2.value?.append(newChild, data)
+
+}
+
+const remove = (node: Node, data: Data) =&gt; {
+
+  treeRef1.value?.remove(data)
+
+  treeRef2.value?.remove(data)
+
+}
+
+const renderContent: RenderContentFunction = (h, { node, data }) =&gt; {
+
+  return h(
+
+    'div',
+
+    {
+
+      class: 'custom-tree-node',
+
+    },
+
+    [
+
+      h('span', null, node.label),
+
+      h('div', null, [
+
+        h(
+
+          ElButton,
+
+          {
+
+            type: 'primary',
+
+            link: true,
+
+            onClick: () =&gt; append(data),
+
+          },
+
+          {
+
+            default: () =&gt; 'Append',
+
+          }
+
+        ),
+
+        h(
+
+          ElButton,
+
+          {
+
+            type: 'danger',
+
+            link: true,
+
+            style: 'margin-left: 4px',
+
+            onClick: () =&gt; remove(node, data),
+
+          },
+
+          {
+
+            default: () =&gt; 'Delete',
+
+          }
+
+        ),
+
+      ]),
+
+    ]
+
+  )
+
+}
+
+const dataSource = ref&lt;Tree[]&gt;([
+
+  {
+
+    id: 1,
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: 'Level three 1-1-1',
+
+          },
+
+          {
+
+            id: 10,
+
+            label: 'Level three 1-1-2',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: 'Level two 2-1',
+
+      },
+
+      {
+
+        id: 6,
+
+        label: 'Level two 2-2',
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: 'Level two 3-1',
+
+      },
+
+      {
+
+        id: 8,
+
+        label: 'Level two 3-2',
+
+      },
+
+    ],
+
+  },
+
+])
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.custom-tree-node {
+
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  font-size: 14px;
+
+  padding-right: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义节点类名</h2>
+<p>节点的类名支持自定义。</p>
+<p>使用 <code>props.class</code> 来建立节点的类名。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;custom-tree-node-container&quot;&gt;
+
+    &lt;el-tree
+
+      style=&quot;max-width: 600px&quot;
+
+      :data=&quot;data&quot;
+
+      show-checkbox
+
+      node-key=&quot;id&quot;
+
+      default-expand-all
+
+      :expand-on-click-node=&quot;false&quot;
+
+      :props=&quot;{ class: customNodeClass }&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type { TreeNodeData } from 'element-plus'
+
+interface Tree {
+
+  id: number
+
+  label: string
+
+  isPenultimate?: boolean
+
+  children?: Tree[]
+
+}
+
+const customNodeClass = ({ isPenultimate }: TreeNodeData) =&gt;
+
+  isPenultimate ? 'is-penultimate' : ''
+
+const data: Tree[] = [
+
+  {
+
+    id: 1,
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: 'Level two 1-1',
+
+        isPenultimate: true,
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: 'Level three 1-1-1',
+
+          },
+
+          {
+
+            id: 10,
+
+            label: 'Level three 1-1-2',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: 'Level one 2',
+
+    isPenultimate: true,
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: 'Level two 2-1',
+
+      },
+
+      {
+
+        id: 6,
+
+        label: 'Level two 2-2',
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: 'Level one 3',
+
+    isPenultimate: true,
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: 'Level two 3-1',
+
+      },
+
+      {
+
+        id: 8,
+
+        label: 'Level two 3-2',
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.is-penultimate &gt; .el-tree-node__content .el-tree-node__label {
+
+  color: #626aef;
+
+}
+
+.is-penultimate &gt; .el-tree-node__children &gt; div {
+
+  display: inline-block;
+
+  margin-right: 4px;
+
+  &amp;:not(:first-child) .el-tree-node__content {
+
+    padding-left: 0px !important;
+
+  }
+
+  .el-tree-node__content {
+
+    padding-right: 16px;
+
+  }
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>树节点过滤</h2>
+<p>树节点是可以被过滤的</p>
+<p>调用 Tree 实例对象的 <code>filter</code> 方法来过滤树节点。方法的参数就是过滤关键字。需要注意的是，此时需要设置 <code>filter-node-method</code> 属性，其值为过滤函数。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-input
+
+    v-model=&quot;filterText&quot;
+
+    class=&quot;w-60 mb-2&quot;
+
+    placeholder=&quot;Filter keyword&quot;
+
+  /&gt;
+
+  &lt;el-tree
+
+    ref=&quot;treeRef&quot;
+
+    style=&quot;max-width: 600px&quot;
+
+    class=&quot;filter-tree&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    default-expand-all
+
+    :filter-node-method=&quot;filterNode&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref, watch } from 'vue'
+
+import type { FilterNodeMethodFunction, TreeInstance } from 'element-plus'
+
+interface Tree {
+
+  [key: string]: any
+
+}
+
+const filterText = ref('')
+
+const treeRef = ref&lt;TreeInstance&gt;()
+
+const defaultProps = {
+
+  children: 'children',
+
+  label: 'label',
+
+}
+
+watch(filterText, (val) =&gt; {
+
+  treeRef.value!.filter(val)
+
+})
+
+const filterNode: FilterNodeMethodFunction = (value: string, data: Tree) =&gt; {
+
+  if (!value) return true
+
+  return data.label.includes(value)
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    id: 1,
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        id: 4,
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            id: 9,
+
+            label: 'Level three 1-1-1',
+
+          },
+
+          {
+
+            id: 10,
+
+            label: 'Level three 1-1-2',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        id: 5,
+
+        label: 'Level two 2-1',
+
+      },
+
+      {
+
+        id: 6,
+
+        label: 'Level two 2-2',
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        id: 7,
+
+        label: 'Level two 3-1',
+
+      },
+
+      {
+
+        id: 8,
+
+        label: 'Level two 3-2',
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>手风琴模式</h2>
+<p>对于同一级的节点，每次只能展开一个</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :data=&quot;data&quot;
+
+    :props=&quot;defaultProps&quot;
+
+    accordion
+
+    @node-click=&quot;handleNodeClick&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+interface Tree {
+
+  label: string
+
+  children?: Tree[]
+
+}
+
+const handleNodeClick = (data: Tree) =&gt; {
+
+  console.log(data)
+
+}
+
+const data: Tree[] = [
+
+  {
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 1-1-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        label: 'Level two 2-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 2-1-1',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: 'Level two 2-2',
+
+        children: [
+
+          {
+
+            label: 'Level three 2-2-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        label: 'Level two 3-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 3-1-1',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: 'Level two 3-2',
+
+        children: [
+
+          {
+
+            label: 'Level three 3-2-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+const defaultProps = {
+
+  children: 'children',
+
+  label: 'label',
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>可拖拽节点</h2>
+<p>通过 <code>draggable</code> 属性可让节点变为可拖拽</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-tree
+
+    style=&quot;max-width: 600px&quot;
+
+    :allow-drop=&quot;allowDrop&quot;
+
+    :allow-drag=&quot;allowDrag&quot;
+
+    :data=&quot;data&quot;
+
+    draggable
+
+    default-expand-all
+
+    node-key=&quot;id&quot;
+
+    @node-drag-start=&quot;handleDragStart&quot;
+
+    @node-drag-enter=&quot;handleDragEnter&quot;
+
+    @node-drag-leave=&quot;handleDragLeave&quot;
+
+    @node-drag-over=&quot;handleDragOver&quot;
+
+    @node-drag-end=&quot;handleDragEnd&quot;
+
+    @node-drop=&quot;handleDrop&quot;
+
+  /&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import type {
+
+  AllowDropType,
+
+  NodeDropType,
+
+  RenderContentContext,
+
+} from 'element-plus'
+
+type Node = RenderContentContext['node']
+
+const handleDragStart = (node: Node, ev: DragEvent) =&gt; {
+
+  console.log('drag start', node)
+
+}
+
+const handleDragEnter = (draggingNode: Node, dropNode: Node, ev: DragEvent) =&gt; {
+
+  console.log('tree drag enter:', dropNode.label)
+
+}
+
+const handleDragLeave = (draggingNode: Node, dropNode: Node, ev: DragEvent) =&gt; {
+
+  console.log('tree drag leave:', dropNode.label)
+
+}
+
+const handleDragOver = (draggingNode: Node, dropNode: Node, ev: DragEvent) =&gt; {
+
+  console.log('tree drag over:', dropNode.label)
+
+}
+
+const handleDragEnd = (
+
+  draggingNode: Node,
+
+  dropNode: Node | null,
+
+  dropType: NodeDropType,
+
+  ev: DragEvent
+
+) =&gt; {
+
+  console.log('tree drag end:', dropNode &amp;&amp; dropNode.label, dropType)
+
+}
+
+const handleDrop = (
+
+  draggingNode: Node,
+
+  dropNode: Node,
+
+  dropType: Exclude&lt;NodeDropType, 'none'&gt;,
+
+  ev: DragEvent
+
+) =&gt; {
+
+  console.log('tree drop:', dropNode.label, dropType)
+
+}
+
+const allowDrop = (draggingNode: Node, dropNode: Node, type: AllowDropType) =&gt; {
+
+  if (dropNode.data.label === 'Level two 3-1') {
+
+    return type !== 'inner'
+
+  } else {
+
+    return true
+
+  }
+
+}
+
+const allowDrag = (draggingNode: Node) =&gt; {
+
+  return !draggingNode.data.label.includes('Level three 3-1-1')
+
+}
+
+const data = [
+
+  {
+
+    label: 'Level one 1',
+
+    children: [
+
+      {
+
+        label: 'Level two 1-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 1-1-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'Level one 2',
+
+    children: [
+
+      {
+
+        label: 'Level two 2-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 2-1-1',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: 'Level two 2-2',
+
+        children: [
+
+          {
+
+            label: 'Level three 2-2-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+  {
+
+    label: 'Level one 3',
+
+    children: [
+
+      {
+
+        label: 'Level two 3-1',
+
+        children: [
+
+          {
+
+            label: 'Level three 3-1-1',
+
+          },
+
+        ],
+
+      },
+
+      {
+
+        label: 'Level two 3-2',
+
+        children: [
+
+          {
+
+            label: 'Level three 3-2-1',
+
+          },
+
+        ],
+
+      },
+
+    ],
+
+  },
+
+]
+
+&lt;/script&gt;
+</code></pre>
+<h2>Tree API</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>展示数据</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>empty-text</td>
+<td>内容为空的时候展示的文本</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>node-key</td>
+<td>每个树节点用来作为唯一标识的属性，整棵树应该是唯一的</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><a href="#props">props</a></td>
+<td>配置选项，具体看下表</td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>render-after-expand</td>
+<td>是否在第一次展开某个树节点后才渲染其子节点</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>load</td>
+<td>加载子树数据的方法，仅当 lazy 属性为true 时生效</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>render-content</td>
+<td>树节点的内容区的渲染 Function</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>highlight-current</td>
+<td>是否高亮当前选中节点，默认值是 false。</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>default-expand-all</td>
+<td>是否默认展开所有节点</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>expand-on-click-node</td>
+<td>是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>check-on-click-node</td>
+<td>是否在点击节点的时候选中节点，默认值为 false，即只有在点击复选框时才会选中节点。</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>check-on-click-leaf 2.9.6</td>
+<td>点击叶节点(最后一个子节点)时是否选中或取消选中节点。</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>auto-expand-parent</td>
+<td>展开子节点的时候是否自动展开父节点</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>default-expanded-keys</td>
+<td>默认展开的节点的 key 的数组</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>show-checkbox</td>
+<td>节点是否可被选择</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>check-strictly</td>
+<td>在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>default-checked-keys</td>
+<td>默认勾选的节点的 key 的数组</td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>current-node-key</td>
+<td>当前选中的节点</td>
+<td><code>string</code> / <code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>filter-node-method</td>
+<td>对树节点进行筛选时执行的方法，返回 <code>false</code> 则表示这个节点会被隐藏</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>accordion</td>
+<td>是否每次只打开一个同级树节点展开</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>indent</td>
+<td>相邻级节点间的水平缩进，单位为像素</td>
+<td><code>number</code></td>
+<td>18</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>自定义树节点图标组件</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>lazy</td>
+<td>是否懒加载子节点，需与 load 方法结合使用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>draggable</td>
+<td>是否开启拖拽节点功能</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>allow-drag</td>
+<td>判断节点能否被拖拽如果返回 <code>false</code> ，节点不能被拖动</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>allow-drop</td>
+<td>拖拽时判定目标节点能否成为拖动目标位置。如果返回 <code>false</code> ，拖动节点不能被拖放到目标节点。 <code>type</code> 参数有三种情况：'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Props</h3>
+<table>
+<thead>
+<tr>
+<th>Props</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>label</td>
+<td>指定节点标签为节点对象的某个属性值</td>
+<td><code>string</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>children</td>
+<td>指定子树为节点对象的某个属性值</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>指定节点选择框是否禁用为节点对象的某个属性值</td>
+<td><code>string</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>isLeaf</td>
+<td>指定节点是否为叶子节点，仅在指定了 lazy 属性的情况下生效</td>
+<td><code>string</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>class</td>
+<td>自定义节点类名</td>
+<td><code>string</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>对外暴露的方法</h3>
+<p><code>Tree</code> 组件有以下方法，均返回当前选中的节点数组</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+<th>回调参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filter</td>
+<td>过滤所有树节点，过滤后的节点将被隐藏</td>
+<td>接收一个参数并指定为 filter-node-method 属性的第一个参数</td>
+</tr>
+<tr>
+<td>updateKeyChildren</td>
+<td>为节点设置新数据，只有当设置 <code>node-key</code> 属性的时候才可用</td>
+<td>(key, data) 接收两个参数: 1. 节点的 key 2. 新数据</td>
+</tr>
+<tr>
+<td>getCheckedNodes</td>
+<td>如果节点可以被选中，(<code>show-checkbox</code> 为 <code>true</code>), 本方法将返回当前选中节点的数组</td>
+<td>(leafOnly, includeHalfChecked) 接收两个布尔类型参数: 1. 默认值为 <code>false</code>. 若参数为 <code>true</code>, 它将返回当前选中节点的子节点 2. 默认值为 <code>false</code>. 如果参数为 <code>true</code>, 返回值包含半选中节点数据</td>
+</tr>
+<tr>
+<td>setCheckedNodes</td>
+<td>设置目前选中的节点，使用此方法必须设置 <code>node-key</code> 属性</td>
+<td>(nodes, leafOnly) 接收两个参数: 1. 要选中的节点对象构成的数组 2. 布尔类型的值如果设置为 <code>true</code>，将只设置选中的叶子节点状态。默认值是 <code>false</code>.</td>
+</tr>
+<tr>
+<td>getCheckedKeys</td>
+<td>若节点可用被选中 (<code>show-checkbox</code> 为 <code>true</code>), 它将返回当前选中节点 key 的数组</td>
+<td>(leafOnly) 接收一个布尔类型参数，默认为 <code>false</code>. 若参数为 <code>true</code>, 它将返回当前选中节点的子节点</td>
+</tr>
+<tr>
+<td>setCheckedKeys</td>
+<td>设置目前选中的节点，使用此方法必须设置 <code>node-key</code> 属性</td>
+<td>(keys, leafOnly) 接收两个参数: 1. 一个需要被选中的多节点 key 的数组 2. 布尔类型的值如果设置为 <code>true</code>，将只设置选中的叶子节点状态。默认值是 <code>false</code>.</td>
+</tr>
+<tr>
+<td>setChecked</td>
+<td>设置节点是否被选中, 使用此方法必须设置 <code>node-key</code> 属性</td>
+<td>(key/data, checked, deep) 接收三个参数: 1. 要选中的节点的 key 或者数据 2. 一个布尔类型参数表明是否选中. 3. 一个布尔类型参数，用于指示是否递归选中/取消选中子节点（自 2.14.0 起，无论 <code>check-strictly</code> 设置如何，该行为均有效）。</td>
+</tr>
+<tr>
+<td>getHalfCheckedNodes</td>
+<td>如果节点可用被选中 (<code>show-checkbox</code> 为 <code>true</code>), 它将返回当前半选中的节点组成的数组</td>
+<td>—</td>
+</tr>
+<tr>
+<td>getHalfCheckedKeys</td>
+<td>若节点可被选中(<code>show-checkbox</code> 为 <code>true</code>)，则返回目前半选中的节点的 key 所组成的数组</td>
+<td>—</td>
+</tr>
+<tr>
+<td>getCurrentKey</td>
+<td>返回当前被选中节点的数据 (如果没有则返回 null)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>getCurrentNode</td>
+<td>返回当前被选中节点的数据 (如果没有则返回 null)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>setCurrentKey</td>
+<td>通过 key 设置某个节点的当前选中状态，使用此方法必须设置 <code>node-key</code> 属性</td>
+<td>(key, shouldAutoExpandParent=true) 1. 待被选节点的 key，如果为 <code>null</code>, 取消当前选中的节点 2. 是否展开父节点</td>
+</tr>
+<tr>
+<td>setCurrentNode</td>
+<td>设置节点为选中状态，使用此方法必须设置 <code>node-key</code>属性</td>
+<td>(node, shouldAutoExpandParent=true) 1. 待被选中的节点 2. 是否展开父节点</td>
+</tr>
+<tr>
+<td>getNode</td>
+<td>根据 data 或者 key 拿到 Tree 组件中的 node</td>
+<td>(data) 节点的 data 或 key</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>删除 Tree 中的一个节点，使用此方法必须设置 node-key 属性</td>
+<td>(data) 要删除的节点的 data 或者 node 对象</td>
+</tr>
+<tr>
+<td>append</td>
+<td>为 Tree 中的一个节点追加一个子节点</td>
+<td>(data, parentNode) 1. 要追加的子节点的 data 2. 父节点的 data, key 或 node</td>
+</tr>
+<tr>
+<td>insertBefore</td>
+<td>在 Tree 中给定节点前插入一个节点</td>
+<td>(data, refNode) 1. 要增加的节点的 data 2. 参考节点的 data, key 或 node</td>
+</tr>
+<tr>
+<td>insertAfter</td>
+<td>在 Tree 中给定节点后插入一个节点</td>
+<td>(data, refNode) 1. 要增加的节点的 data 2. 参考节点的 data, key 或 node</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node-click</td>
+<td>当节点被点击的时候触发</td>
+<td>四个参数：对应于节点点击的节点对象，TreeNode 的 <code>node</code> 属性, TreeNode和事件对象</td>
+</tr>
+<tr>
+<td>node-contextmenu</td>
+<td>当某一节点被鼠标右键点击时会触发该事件</td>
+<td>共四个参数，依次为：event、传递给 <code>data</code> 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身。</td>
+</tr>
+<tr>
+<td>check-change</td>
+<td>当复选框被点击的时候触发</td>
+<td>共三个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、节点本身是否被选中、节点的子树中是否有被选中的节点</td>
+</tr>
+<tr>
+<td>check</td>
+<td>点击节点复选框之后触发</td>
+<td>共两个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、树目前的选中状态对象，包含 checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys 四个属性</td>
+</tr>
+<tr>
+<td>current-change</td>
+<td>当前选中节点变化时触发的事件</td>
+<td>共两个参数，依次为：当前节点的数据，当前节点的 Node 对象</td>
+</tr>
+<tr>
+<td>node-expand</td>
+<td>节点被展开时触发的事件</td>
+<td>共三个参数，依次为：传递给 <code>data</code> 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身</td>
+</tr>
+<tr>
+<td>node-collapse</td>
+<td>节点被关闭时触发的事件</td>
+<td>共三个参数，依次为：传递给 <code>data</code> 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身</td>
+</tr>
+<tr>
+<td>node-drag-start</td>
+<td>节点开始拖拽时触发的事件</td>
+<td>共两个参数，依次为：被拖拽节点对应的 Node、event</td>
+</tr>
+<tr>
+<td>node-drag-enter</td>
+<td>拖拽进入其他节点时触发的事件</td>
+<td>共三个参数，依次为：被拖拽节点对应的 Node、所进入节点对应的 Node、event</td>
+</tr>
+<tr>
+<td>node-drag-leave</td>
+<td>拖拽离开某个节点时触发的事件</td>
+<td>共三个参数，依次为：被拖拽节点对应的 Node、所离开节点对应的 Node、event</td>
+</tr>
+<tr>
+<td>node-drag-over</td>
+<td>在拖拽节点时触发的事件（类似浏览器的 mouseover 事件）</td>
+<td>共三个参数，依次为：被拖拽节点对应的 Node、当前进入节点对应的 Node、event</td>
+</tr>
+<tr>
+<td>node-drag-end</td>
+<td>拖拽结束时（可能未成功）触发的事件</td>
+<td>共四个参数，依次为：被拖拽节点对应的 Node、结束拖拽时最后进入的节点（可能为空）、被拖拽节点的放置位置（before、after、inner）、event</td>
+</tr>
+<tr>
+<td>node-drop</td>
+<td>拖拽成功完成时触发的事件</td>
+<td>共四个参数，依次为：被拖拽节点对应的 Node、结束拖拽时最后进入的节点、被拖拽节点的放置位置（before、after、inner）、event</td>
+</tr>
+</tbody>
+</table>
+<h3>插槽</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>描述</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义树节点的内容。</td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td>empty 2.3.4</td>
+<td>当数据为空时自定义的内容</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>类型声明</h2>
+<p>Show declarationsts`interface RootTreeType {</p>
+<p>root: Ref<Node></p>
+<p>// ...</p>
+<p>}</p>
+<p>// UnwrapRef&lt;RootTreeType['root']&gt; =&gt; Node</p>
+<p>type Node = {</p>
+<p>canFocus: boolean</p>
+<p>checked: boolean</p>
+<p>childNodes: Node[]</p>
+<p>data: TreeNodeData</p>
+<p>expanded: boolean</p>
+<p>id: number</p>
+<p>indeterminate: boolean</p>
+<p>isCurrent: boolean</p>
+<p>isEffectivelyChecked: boolean</p>
+<p>isLeaf?: boolean</p>
+<p>isLeafByUser?: boolean</p>
+<p>level: number</p>
+<p>loaded: boolean</p>
+<p>loading: boolean</p>
+<p>parent: Node | null</p>
+<p>store: TreeStore</p>
+<p>text: string | null</p>
+<p>visible: boolean</p>
+<p>}</p>
+<p>// TreeNodeData =&gt; Tree / TreeOptionProps</p>
+<p>// Tree type is your prop type.</p>
+<p>// TreeOptionProps is default prop type</p>
+<p>interface TreeOptionProps {</p>
+<p>children?: string</p>
+<p>label?: string | ((data: TreeNodeData, node: Node) =&gt; string)</p>
+<p>disabled?: string | ((data: TreeNodeData, node: Node) =&gt; boolean)</p>
+<p>isLeaf?: string | ((data: TreeNodeData, node: Node) =&gt; boolean)</p>
+<p>class?: (</p>
+<pre><code>data: TreeNodeData,
+
+node: Node
+</code></pre>
+<p>) =&gt; string | { [key: string]: boolean }</p>
+<p>}`</p></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/tree.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["tree"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

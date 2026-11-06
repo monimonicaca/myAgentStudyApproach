@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Element Plus 组件预览</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.hero{background:linear-gradient(135deg,#409EFF,#337ecc);color:#fff;padding:38px 24px 30px}
+.hero .inner{max-width:1240px;margin:0 auto}
+.hero h1{margin:0 0 8px;font-size:26px}
+.hero p{margin:0;opacity:.9;font-size:13px}
+.hero a{color:#fff;text-decoration:underline}
+.wrap{max-width:1240px;margin:0 auto;padding:22px}
+.search{width:100%;max-width:440px;padding:11px 16px;border:1px solid #dcdfe6;border-radius:24px;font-size:14px;outline:none;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.search:focus{border-color:#409EFF}
+.cat{margin-bottom:28px}
+.cat h2{font-size:16px;margin:0 0 14px;padding-left:10px;border-left:4px solid #409EFF}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:13px}
+.card{display:block;background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:15px 16px;text-decoration:none;color:inherit;transition:.16s;position:relative}
+.card:hover{border-color:#409EFF;box-shadow:0 6px 18px rgba(64,158,255,.18);transform:translateY(-2px)}
+.card .cn{font-size:15px;font-weight:600;margin-bottom:5px;line-height:1.3}
+.card .en{font-size:12px;color:#a8abb2;font-family:Consolas,Menlo,monospace}
+.card .num{position:absolute;right:13px;top:13px;font-size:11px;color:#409EFF;background:#ecf5ff;border-radius:10px;padding:1px 8px}
+.noresult{color:#909399;font-size:14px;display:none}
+</style>
+</head>
+<body>
+<div class="hero"><div class="inner">
+  <h1>Element Plus 组件预览</h1>
+  <p>共 79 个组件 · 离线可用 · 每个组件含在线演示与完整文档 · 也可查看 <a href="../组件索引.md">Markdown 组件索引</a></p>
+</div></div>
+<div class="wrap">
+  <input id="q" class="search" placeholder="搜索组件（中文名或英文名，如 表格 / table）...">
+  <div id="list">
+<section class="cat"><h2>基础组件</h2><div class="grid">
+<a class="card" href="button.html" data-k="button Button 按钮"><span class="num">10</span><div class="cn">Button 按钮</div><div class="en">button</div></a>
+<a class="card" href="icon.html" data-k="icon Icon 图标"><span class="num">1</span><div class="cn">Icon 图标</div><div class="en">icon</div></a>
+<a class="card" href="link.html" data-k="link Link 链接"><span class="num">4</span><div class="cn">Link 链接</div><div class="en">link</div></a>
+<a class="card" href="text.html" data-k="text Text"><span class="num">5</span><div class="cn">Text</div><div class="en">text</div></a>
+<a class="card" href="layout.html" data-k="layout Layout 布局"><span class="num">6</span><div class="cn">Layout 布局</div><div class="en">layout</div></a>
+<a class="card" href="container.html" data-k="container Container 布局容器"><span class="num">8</span><div class="cn">Container 布局容器</div><div class="en">container</div></a>
+<a class="card" href="space.html" data-k="space Space 间距"><span class="num">10</span><div class="cn">Space 间距</div><div class="en">space</div></a>
+<a class="card" href="divider.html" data-k="divider Divider 分割线"><span class="num">4</span><div class="cn">Divider 分割线</div><div class="en">divider</div></a>
+</div></section>
+<section class="cat"><h2>表单组件</h2><div class="grid">
+<a class="card" href="input.html" data-k="input Input 输入框"><span class="num">13</span><div class="cn">Input 输入框</div><div class="en">input</div></a>
+<a class="card" href="input-number.html" data-k="input-number Input Number 数字输入框"><span class="num">10</span><div class="cn">Input Number 数字输入框</div><div class="en">input-number</div></a>
+<a class="card" href="input-tag.html" data-k="input-tag InputTag 标签输入框"><span class="num">12</span><div class="cn">InputTag 标签输入框</div><div class="en">input-tag</div></a>
+<a class="card" href="input-otp.html" data-k="input-otp InputOtp 一次性密码输入框 beta"><span class="num">8</span><div class="cn">InputOtp 一次性密码输入框 beta</div><div class="en">input-otp</div></a>
+<a class="card" href="select.html" data-k="select Select 选择器"><span class="num">19</span><div class="cn">Select 选择器</div><div class="en">select</div></a>
+<a class="card" href="select-v2.html" data-k="select-v2 Virtualized Select 虚拟化选择器"><span class="num">20</span><div class="cn">Virtualized Select 虚拟化选择器</div><div class="en">select-v2</div></a>
+<a class="card" href="cascader.html" data-k="cascader Cascader 级联选择器"><span class="num">18</span><div class="cn">Cascader 级联选择器</div><div class="en">cascader</div></a>
+<a class="card" href="date-picker.html" data-k="date-picker DatePicker 日期选择器"><span class="num">13</span><div class="cn">DatePicker 日期选择器</div><div class="en">date-picker</div></a>
+<a class="card" href="date-picker-panel.html" data-k="date-picker-panel DatePickerPane 日期选择器面板 beta"><span class="num">4</span><div class="cn">DatePickerPane 日期选择器面板 beta</div><div class="en">date-picker-panel</div></a>
+<a class="card" href="datetime-picker.html" data-k="datetime-picker DateTimePicker 日期时间选择器"><span class="num">7</span><div class="cn">DateTimePicker 日期时间选择器</div><div class="en">datetime-picker</div></a>
+<a class="card" href="time-picker.html" data-k="time-picker TimePicker 时间选择器"><span class="num">3</span><div class="cn">TimePicker 时间选择器</div><div class="en">time-picker</div></a>
+<a class="card" href="time-select.html" data-k="time-select TimeSelect 时间选择"><span class="num">3</span><div class="cn">TimeSelect 时间选择</div><div class="en">time-select</div></a>
+<a class="card" href="radio.html" data-k="radio Radio 单选框"><span class="num">6</span><div class="cn">Radio 单选框</div><div class="en">radio</div></a>
+<a class="card" href="checkbox.html" data-k="checkbox Checkbox 多选框"><span class="num">8</span><div class="cn">Checkbox 多选框</div><div class="en">checkbox</div></a>
+<a class="card" href="switch.html" data-k="switch Switch 开关"><span class="num">10</span><div class="cn">Switch 开关</div><div class="en">switch</div></a>
+<a class="card" href="slider.html" data-k="slider Slider 滑块"><span class="num">9</span><div class="cn">Slider 滑块</div><div class="en">slider</div></a>
+<a class="card" href="rate.html" data-k="rate Rate 评分"><span class="num">7</span><div class="cn">Rate 评分</div><div class="en">rate</div></a>
+<a class="card" href="color-picker.html" data-k="color-picker ColorPicker 颜色选择器"><span class="num">4</span><div class="cn">ColorPicker 颜色选择器</div><div class="en">color-picker</div></a>
+<a class="card" href="color-picker-panel.html" data-k="color-picker-panel ColorPickerPanel 颜色选择器面板 beta"><span class="num">5</span><div class="cn">ColorPickerPanel 颜色选择器面板 beta</div><div class="en">color-picker-panel</div></a>
+<a class="card" href="transfer.html" data-k="transfer Transfer 穿梭框"><span class="num">6</span><div class="cn">Transfer 穿梭框</div><div class="en">transfer</div></a>
+<a class="card" href="form.html" data-k="form Form 表单"><span class="num">9</span><div class="cn">Form 表单</div><div class="en">form</div></a>
+<a class="card" href="upload.html" data-k="upload Upload 上传"><span class="num">10</span><div class="cn">Upload 上传</div><div class="en">upload</div></a>
+<a class="card" href="autocomplete.html" data-k="autocomplete 自动补全输入框"><span class="num">5</span><div class="cn">自动补全输入框</div><div class="en">autocomplete</div></a>
+<a class="card" href="mention.html" data-k="mention Mention 提及"><span class="num">8</span><div class="cn">Mention 提及</div><div class="en">mention</div></a>
+</div></section>
+<section class="cat"><h2>数据展示</h2><div class="grid">
+<a class="card" href="card.html" data-k="card Card 卡片"><span class="num">4</span><div class="cn">Card 卡片</div><div class="en">card</div></a>
+<a class="card" href="collapse.html" data-k="collapse Collapse 折叠面板"><span class="num">6</span><div class="cn">Collapse 折叠面板</div><div class="en">collapse</div></a>
+<a class="card" href="table.html" data-k="table Table 表格"><span class="num">25</span><div class="cn">Table 表格</div><div class="en">table</div></a>
+<a class="card" href="table-v2.html" data-k="table-v2 Virtualized Table 虚拟化表格 beta"><span class="num">23</span><div class="cn">Virtualized Table 虚拟化表格 beta</div><div class="en">table-v2</div></a>
+<a class="card" href="tag.html" data-k="tag Tag 标签"><span class="num">7</span><div class="cn">Tag 标签</div><div class="en">tag</div></a>
+<a class="card" href="progress.html" data-k="progress Progress 进度条"><span class="num">8</span><div class="cn">Progress 进度条</div><div class="en">progress</div></a>
+<a class="card" href="tree.html" data-k="tree Tree 树形控件"><span class="num">12</span><div class="cn">Tree 树形控件</div><div class="en">tree</div></a>
+<a class="card" href="tree-v2.html" data-k="tree-v2 Tree V2 虚拟化树形控件beta"><span class="num">8</span><div class="cn">Tree V2 虚拟化树形控件beta</div><div class="en">tree-v2</div></a>
+<a class="card" href="tree-select.html" data-k="tree-select TreeSelect 树形选择"><span class="num">8</span><div class="cn">TreeSelect 树形选择</div><div class="en">tree-select</div></a>
+<a class="card" href="pagination.html" data-k="pagination Pagination 分页"><span class="num">6</span><div class="cn">Pagination 分页</div><div class="en">pagination</div></a>
+<a class="card" href="badge.html" data-k="badge Badge 徽章"><span class="num">5</span><div class="cn">Badge 徽章</div><div class="en">badge</div></a>
+<a class="card" href="avatar.html" data-k="avatar Avatar 头像"><span class="num">5</span><div class="cn">Avatar 头像</div><div class="en">avatar</div></a>
+<a class="card" href="skeleton.html" data-k="skeleton Skeleton 骨架屏"><span class="num">9</span><div class="cn">Skeleton 骨架屏</div><div class="en">skeleton</div></a>
+<a class="card" href="empty.html" data-k="empty Empty 空状态"><span class="num">4</span><div class="cn">Empty 空状态</div><div class="en">empty</div></a>
+<a class="card" href="descriptions.html" data-k="descriptions Descriptions 描述列表"><span class="num">5</span><div class="cn">Descriptions 描述列表</div><div class="en">descriptions</div></a>
+<a class="card" href="statistic.html" data-k="statistic Statistic 统计组件"><span class="num">3</span><div class="cn">Statistic 统计组件</div><div class="en">statistic</div></a>
+<a class="card" href="segmented.html" data-k="segmented Segmented 分段控制器"><span class="num">7</span><div class="cn">Segmented 分段控制器</div><div class="en">segmented</div></a>
+<a class="card" href="result.html" data-k="result Result 结果"><span class="num">2</span><div class="cn">Result 结果</div><div class="en">result</div></a>
+<a class="card" href="calendar.html" data-k="calendar Calendar 日历"><span class="num">5</span><div class="cn">Calendar 日历</div><div class="en">calendar</div></a>
+<a class="card" href="timeline.html" data-k="timeline Timeline 时间线"><span class="num">6</span><div class="cn">Timeline 时间线</div><div class="en">timeline</div></a>
+<a class="card" href="carousel.html" data-k="carousel Carousel 走马灯"><span class="num">7</span><div class="cn">Carousel 走马灯</div><div class="en">carousel</div></a>
+<a class="card" href="image.html" data-k="image Image 图片"><span class="num">8</span><div class="cn">Image 图片</div><div class="en">image</div></a>
+<a class="card" href="scrollbar.html" data-k="scrollbar Scrollbar 滚动条"><span class="num">5</span><div class="cn">Scrollbar 滚动条</div><div class="en">scrollbar</div></a>
+</div></section>
+<section class="cat"><h2>导航组件</h2><div class="grid">
+<a class="card" href="menu.html" data-k="menu Menu 菜单"><span class="num">5</span><div class="cn">Menu 菜单</div><div class="en">menu</div></a>
+<a class="card" href="tabs.html" data-k="tabs Tabs 标签页"><span class="num">9</span><div class="cn">Tabs 标签页</div><div class="en">tabs</div></a>
+<a class="card" href="breadcrumb.html" data-k="breadcrumb Breadcrumb 面包屑"><span class="num">2</span><div class="cn">Breadcrumb 面包屑</div><div class="en">breadcrumb</div></a>
+<a class="card" href="dropdown.html" data-k="dropdown Dropdown 下拉菜单"><span class="num">9</span><div class="cn">Dropdown 下拉菜单</div><div class="en">dropdown</div></a>
+<a class="card" href="page-header.html" data-k="page-header Page Header 页头"><span class="num">7</span><div class="cn">Page Header 页头</div><div class="en">page-header</div></a>
+<a class="card" href="steps.html" data-k="steps Steps 步骤条"><span class="num">7</span><div class="cn">Steps 步骤条</div><div class="en">steps</div></a>
+<a class="card" href="anchor.html" data-k="anchor Anchor 锚点"><span class="num">6</span><div class="cn">Anchor 锚点</div><div class="en">anchor</div></a>
+<a class="card" href="backtop.html" data-k="backtop Backtop 回到顶部"><span class="num">2</span><div class="cn">Backtop 回到顶部</div><div class="en">backtop</div></a>
+</div></section>
+<section class="cat"><h2>反馈组件</h2><div class="grid">
+<a class="card" href="alert.html" data-k="alert Alert 提示"><span class="num">7</span><div class="cn">Alert 提示</div><div class="en">alert</div></a>
+<a class="card" href="message.html" data-k="message Message 消息提示"><span class="num">7</span><div class="cn">Message 消息提示</div><div class="en">message</div></a>
+<a class="card" href="message-box.html" data-k="message-box MessageBox 消息弹框"><span class="num">11</span><div class="cn">MessageBox 消息弹框</div><div class="en">message-box</div></a>
+<a class="card" href="notification.html" data-k="notification Notification 通知"><span class="num">8</span><div class="cn">Notification 通知</div><div class="en">notification</div></a>
+<a class="card" href="popconfirm.html" data-k="popconfirm Popconfirm 气泡确认框"><span class="num">4</span><div class="cn">Popconfirm 气泡确认框</div><div class="en">popconfirm</div></a>
+<a class="card" href="loading.html" data-k="loading Loading 加载"><span class="num">3</span><div class="cn">Loading 加载</div><div class="en">loading</div></a>
+<a class="card" href="popover.html" data-k="popover Popover 弹出框"><span class="num">6</span><div class="cn">Popover 弹出框</div><div class="en">popover</div></a>
+<a class="card" href="tooltip.html" data-k="tooltip Tooltip 文字提示"><span class="num">10</span><div class="cn">Tooltip 文字提示</div><div class="en">tooltip</div></a>
+<a class="card" href="dialog.html" data-k="dialog Dialog 对话框"><span class="num">12</span><div class="cn">Dialog 对话框</div><div class="en">dialog</div></a>
+<a class="card" href="drawer.html" data-k="drawer Drawer 抽屉"><span class="num">7</span><div class="cn">Drawer 抽屉</div><div class="en">drawer</div></a>
+<a class="card" href="tour.html" data-k="tour Tour 漫游式引导"><span class="num">6</span><div class="cn">Tour 漫游式引导</div><div class="en">tour</div></a>
+</div></section>
+<section class="cat"><h2>其他</h2><div class="grid">
+<a class="card" href="affix.html" data-k="affix Affix 固钉"><span class="num">3</span><div class="cn">Affix 固钉</div><div class="en">affix</div></a>
+<a class="card" href="config-provider.html" data-k="config-provider Config Provider 全局配置"><span class="num">8</span><div class="cn">Config Provider 全局配置</div><div class="en">config-provider</div></a>
+<a class="card" href="watermark.html" data-k="watermark Watermark 水印"><span class="num">4</span><div class="cn">Watermark 水印</div><div class="en">watermark</div></a>
+<a class="card" href="infinite-scroll.html" data-k="infinite-scroll Infinite Scroll 无限滚动"><span class="num">2</span><div class="cn">Infinite Scroll 无限滚动</div><div class="en">infinite-scroll</div></a>
+<a class="card" href="splitter.html" data-k="splitter Splitter 分隔面板 beta"><span class="num">6</span><div class="cn">Splitter 分隔面板 beta</div><div class="en">splitter</div></a>
+</div></section>
+  </div>
+  <p class="noresult" id="nr">没有匹配的组件。</p>
+</div>
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var cats = Array.prototype.slice.call(document.querySelectorAll('.cat'));
+  var nr = document.getElementById('nr');
+  q.addEventListener('input', function(){
+    var v = q.value.trim().toLowerCase(); var any = false;
+    cards.forEach(function(c){
+      var hit = !v || c.getAttribute('data-k').toLowerCase().indexOf(v) >= 0;
+      c.style.display = hit ? '' : 'none'; if (hit) any = true;
+    });
+    cats.forEach(function(sec){
+      var vis = sec.querySelectorAll('.card:not([style*="display: none"])').length;
+      sec.style.display = vis ? '' : 'none';
+    });
+    nr.style.display = any ? 'none' : 'block';
+  });
+})();
+</script>
+</body>
+</html>

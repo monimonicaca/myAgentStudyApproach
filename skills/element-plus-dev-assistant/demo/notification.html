@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notification 通知 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/notification.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Notification 通知</h1>
+  <span class="count">8 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（8）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 不同类型的通知</a>
+<a href="#ex-2">3. 自定义消息弹出的位置</a>
+<a href="#ex-3">4. 有位置偏移的通知栏</a>
+<a href="#ex-4">5. 使用 HTML 片段作为正文内容</a>
+<a href="#ex-5">6. 函数形式的 message 2.9.0</a>
+<a href="#ex-6">7. 使用进度条 2.14.4</a>
+<a href="#ex-7">8. 隐藏关闭按钮</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt;
+
+      Closes automatically
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open2&quot;&gt;
+
+      Won&#x27;t close automatically
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h } from &#x27;vue&#x27;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+const open1 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Title&#x27;,
+
+    message: h(&#x27;i&#x27;, { style: &#x27;color: teal&#x27; }, &#x27;This is a reminder&#x27;),
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Prompt&#x27;,
+
+    message: &#x27;This is a message that does not automatically close&#x27;,
+
+    duration: 0,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>不同类型的通知</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open5&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open2&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open3&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+const open1 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Success&#x27;,
+
+    message: &#x27;This is a success message&#x27;,
+
+    type: &#x27;success&#x27;,
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Warning&#x27;,
+
+    message: &#x27;This is a warning message&#x27;,
+
+    type: &#x27;warning&#x27;,
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElNotification.info({
+
+    title: &#x27;Info&#x27;,
+
+    message: &#x27;This is an info message&#x27;,
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElNotification.error({
+
+    title: &#x27;Error&#x27;,
+
+    message: &#x27;This is an error message&#x27;,
+
+  })
+
+}
+
+const open5 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Primary&#x27;,
+
+    message: &#x27;This is a primary message&#x27;,
+
+    type: &#x27;primary&#x27;,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>自定义消息弹出的位置</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt; Top Right &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open2&quot;&gt; Bottom Right &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open3&quot;&gt; Bottom Left &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open4&quot;&gt; Top Left &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+const open1 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Custom Position&#x27;,
+
+    message: &quot;I&#x27;m at the top right corner&quot;,
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Custom Position&#x27;,
+
+    message: &quot;I&#x27;m at the bottom right corner&quot;,
+
+    position: &#x27;bottom-right&#x27;,
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Custom Position&#x27;,
+
+    message: &quot;I&#x27;m at the bottom left corner&quot;,
+
+    position: &#x27;bottom-left&#x27;,
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Custom Position&#x27;,
+
+    message: &quot;I&#x27;m at the top left corner&quot;,
+
+    position: &#x27;top-left&#x27;,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>有位置偏移的通知栏</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open&quot;&gt; Notification with offset &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+const open = () =&gt; {
+
+  ElNotification.success({
+
+    title: &#x27;Success&#x27;,
+
+    message: &#x27;This is a success message&#x27;,
+
+    offset: 100,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>使用 HTML 片段作为正文内容</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open&quot;&gt; Use HTML String &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+const open = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;HTML String&#x27;,
+
+    dangerouslyUseHTMLString: true,
+
+    message: &#x27;&lt;strong&gt;This is &lt;i&gt;HTML&lt;/i&gt; string&lt;/strong&gt;&#x27;,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-5"><h3><span class="idx">6</span>函数形式的 message 2.9.0</h3><div class="demo-card"><div class="mount" id="mount-5"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open&quot;&gt;Common VNode&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt;Dynamic props&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h, ref } from &#x27;vue&#x27;
+
+import { ElNotification, ElSwitch } from &#x27;element-plus&#x27;
+
+const open = () =&gt; {
+
+  ElNotification({
+
+    title: &#x27;Use Vnode&#x27;,
+
+    message: h(&#x27;p&#x27;, null, [
+
+      h(&#x27;span&#x27;, null, &#x27;Message can be &#x27;),
+
+      h(&#x27;i&#x27;, { style: &#x27;color: teal&#x27; }, &#x27;VNode&#x27;),
+
+    ]),
+
+  })
+
+}
+
+const open1 = () =&gt; {
+
+  const checked = ref&lt;boolean | string | number&gt;(false)
+
+  ElNotification({
+
+    title: &#x27;Use Vnode&#x27;,
+
+    // Should pass a function if VNode contains dynamic props
+
+    message: () =&gt;
+
+      h(ElSwitch, {
+
+        modelValue: checked.value,
+
+        &#x27;onUpdate:modelValue&#x27;: (val: boolean | string | number) =&gt; {
+
+          checked.value = val
+
+        },
+
+      }),
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-6"><h3><span class="idx">7</span>使用进度条 2.14.4</h3><div class="demo-card"><div class="mount" id="mount-6"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open(&#x27;&#x27;)&quot;&gt; Default &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;success&quot; @click=&quot;open(&#x27;success&#x27;)&quot;&gt; Success &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;warning&quot; @click=&quot;open(&#x27;warning&#x27;)&quot;&gt; Warning &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;danger&quot; @click=&quot;open(&#x27;error&#x27;)&quot;&gt; Error &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;info&quot; @click=&quot;open(&#x27;info&#x27;)&quot;&gt; Info &lt;/el-button&gt;
+
+  &lt;el-button plain @click=&quot;openCustomColor&quot;&gt; Custom color &lt;/el-button&gt;
+
+  &lt;el-button plain @click=&quot;openWithoutPause&quot;&gt; No pause on hover &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+function open(type: string) {
+
+  ElNotification({
+
+    title: `${type || &#x27;Default&#x27;} progress`,
+
+    message: &#x27;Hover to pause the timer and progress bar&#x27;,
+
+    type: type as any,
+
+    duration: 6000,
+
+    progress: true,
+
+  })
+
+}
+
+function openWithoutPause() {
+
+  ElNotification({
+
+    title: &#x27;No pause on hover&#x27;,
+
+    message: &#x27;Timer and progress bar keep running even when hovering&#x27;,
+
+    duration: 6000,
+
+    progress: true,
+
+    pauseOnHover: false,
+
+  })
+
+}
+
+function openCustomColor() {
+
+  ElNotification({
+
+    title: &#x27;Custom color&#x27;,
+
+    message: &#x27;Custom progress bar color overrides the default&#x27;,
+
+    duration: 6000,
+
+    progress: {
+
+      color: [
+
+        { color: &#x27;#f56c6c&#x27;, percentage: 20 },
+
+        { color: &#x27;#e6a23c&#x27;, percentage: 40 },
+
+        { color: &#x27;#5cb87a&#x27;, percentage: 60 },
+
+        { color: &#x27;#1989fa&#x27;, percentage: 80 },
+
+        { color: &#x27;#6f7ad3&#x27;, percentage: 100 },
+
+      ],
+
+    },
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-7"><h3><span class="idx">8</span>隐藏关闭按钮</h3><div class="demo-card"><div class="mount" id="mount-7"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open&quot;&gt; Hide close button &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from &#x27;element-plus&#x27;
+
+const open = () =&gt; {
+
+  ElNotification.success({
+
+    title: &#x27;Info&#x27;,
+
+    message: &#x27;This is a message without close button&#x27;,
+
+    showClose: false,
+
+  })
+
+}
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Notification 通知</h1>
+<p>悬浮出现在页面角落，显示全局的通知提醒消息。</p>
+<h2>基础用法</h2>
+<p>Element Plus 注册了 <code>$notify</code> 方法并且它接受一个 Object 作为其参数。在最简单的情况下，你可以通过设置 <code>title</code> 和 <code>message</code> 属性来设置通知的标题和正文内容。默认情况下，通知在4500毫秒后自动关闭，但你可以通过设置 <code>duration</code> 属性来自定义通知的展示时间。如果你将它设置为 <code>0</code>，那么通知将不会自动关闭。需要注意的是 <code>duration</code> 接收一个 <code>Number</code>，单位为毫秒。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt;
+
+      Closes automatically
+
+    &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open2&quot;&gt;
+
+      Won't close automatically
+
+    &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h } from 'vue'
+
+import { ElNotification } from 'element-plus'
+
+const open1 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Title',
+
+    message: h('i', { style: 'color: teal' }, 'This is a reminder'),
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Prompt',
+
+    message: 'This is a message that does not automatically close',
+
+    duration: 0,
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>不同类型的通知</h2>
+<p>We provide five types: primary, success, warning, info and error.</p>
+<p>Element Plus provides five notification types: <code>primary</code>, <code>success</code>, <code>warning</code>, <code>info</code> and <code>error</code>. 他们可以设置 <code>type</code> 字段来修改，除上述的四个值之外的值会被忽略。同时，我们也为 Notification 的各种 type 注册了单独的方法，可以在不传入 <code>type</code> 字段的情况下像 <code>open3</code> 和 <code>open4</code> 那样直接调用。 <code>primary</code> 已被添加到2.9.11。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open5&quot;&gt;Primary&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt;Success&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open2&quot;&gt;Warning&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open3&quot;&gt;Info&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open4&quot;&gt;Error&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from 'element-plus'
+
+const open1 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Success',
+
+    message: 'This is a success message',
+
+    type: 'success',
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Warning',
+
+    message: 'This is a warning message',
+
+    type: 'warning',
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElNotification.info({
+
+    title: 'Info',
+
+    message: 'This is an info message',
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElNotification.error({
+
+    title: 'Error',
+
+    message: 'This is an error message',
+
+  })
+
+}
+
+const open5 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Primary',
+
+    message: 'This is a primary message',
+
+    type: 'primary',
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义消息弹出的位置</h2>
+<p>可以让 Notification 从屏幕四角中的任意一角弹出</p>
+<p>使用 <code>position</code> 属性设置 Notification 的弹出位置，支持四个选项：<code>top-right</code>、<code>top-left</code>、<code>bottom-right</code> 和 <code>bottom-left</code>，默认为 <code>top-right</code>。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt; Top Right &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open2&quot;&gt; Bottom Right &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open3&quot;&gt; Bottom Left &lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open4&quot;&gt; Top Left &lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from 'element-plus'
+
+const open1 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Custom Position',
+
+    message: &quot;I'm at the top right corner&quot;,
+
+  })
+
+}
+
+const open2 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Custom Position',
+
+    message: &quot;I'm at the bottom right corner&quot;,
+
+    position: 'bottom-right',
+
+  })
+
+}
+
+const open3 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Custom Position',
+
+    message: &quot;I'm at the bottom left corner&quot;,
+
+    position: 'bottom-left',
+
+  })
+
+}
+
+const open4 = () =&gt; {
+
+  ElNotification({
+
+    title: 'Custom Position',
+
+    message: &quot;I'm at the top left corner&quot;,
+
+    position: 'top-left',
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>有位置偏移的通知栏</h2>
+<p>能够设置偏移量来使 Notification 偏移默认位置。</p>
+<p>Notification 提供设置偏移量的功能，通过设置 <code>offset</code> 字段，可以使弹出的消息距屏幕边缘偏移一段距离。注意在同一时刻，每一个的 Notification 实例应当具有一个相同的偏移量。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open&quot;&gt; Notification with offset &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from 'element-plus'
+
+const open = () =&gt; {
+
+  ElNotification.success({
+
+    title: 'Success',
+
+    message: 'This is a success message',
+
+    offset: 100,
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>使用 HTML 片段作为正文内容</h2>
+<p><code>message</code> 支持传入 HTML 字符串来作为正文内容。</p>
+<p>将 <code>dangerouslyUseHTMLString</code> 属性设置为 true，<code>message</code> 属性就会被当作 HTML 片段处理。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open&quot;&gt; Use HTML String &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from 'element-plus'
+
+const open = () =&gt; {
+
+  ElNotification({
+
+    title: 'HTML String',
+
+    dangerouslyUseHTMLString: true,
+
+    message: '&lt;strong&gt;This is &lt;i&gt;HTML&lt;/i&gt; string&lt;/strong&gt;',
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p><code>message</code> 属性虽然支持传入 HTML 片段，但是在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS 攻击</a>。因此在 <code>dangerouslyUseHTMLString</code> 打开的情况下，请确保 <code>message</code> 的内容是可信的，<strong>永远不要</strong>将用户提交的内容赋值给 <code>message</code> 属性。</p>
+</blockquote>
+<h2>函数形式的 message 2.9.0</h2>
+<p><code>message</code> 可以是 VNode。</p>
+<p>在2.9.0之后， <code>message</code> 支持返回值为 VNode的函数。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;flex flex-wrap gap-1&quot;&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open&quot;&gt;Common VNode&lt;/el-button&gt;
+
+    &lt;el-button class=&quot;!ml-0&quot; plain @click=&quot;open1&quot;&gt;Dynamic props&lt;/el-button&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { h, ref } from 'vue'
+
+import { ElNotification, ElSwitch } from 'element-plus'
+
+const open = () =&gt; {
+
+  ElNotification({
+
+    title: 'Use Vnode',
+
+    message: h('p', null, [
+
+      h('span', null, 'Message can be '),
+
+      h('i', { style: 'color: teal' }, 'VNode'),
+
+    ]),
+
+  })
+
+}
+
+const open1 = () =&gt; {
+
+  const checked = ref&lt;boolean | string | number&gt;(false)
+
+  ElNotification({
+
+    title: 'Use Vnode',
+
+    // Should pass a function if VNode contains dynamic props
+
+    message: () =&gt;
+
+      h(ElSwitch, {
+
+        modelValue: checked.value,
+
+        'onUpdate:modelValue': (val: boolean | string | number) =&gt; {
+
+          checked.value = val
+
+        },
+
+      }),
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>使用进度条 2.14.4</h2>
+<p>显示进度条，指示通知自动关闭前的剩余时间。</p>
+<p>将 <code>progress</code> 设为 <code>true</code> 即可启用进度条。进度条将显示与 <code>duration</code> 匹配的倒计时。向 <code>progress</code> 传递一个对象，即可使用 <a href="./progress.html#attributes">Progress</a> 的选项进行自定义，例如 <code>color</code>，该选项会覆盖基于 <code>type</code> 的状态颜色。当 <code>pauseOnHover</code> 为 <code>true</code>（默认值）时，将鼠标悬停在通知上会同时暂停计时器和进度条。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open('')&quot;&gt; Default &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;success&quot; @click=&quot;open('success')&quot;&gt; Success &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;warning&quot; @click=&quot;open('warning')&quot;&gt; Warning &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;danger&quot; @click=&quot;open('error')&quot;&gt; Error &lt;/el-button&gt;
+
+  &lt;el-button plain type=&quot;info&quot; @click=&quot;open('info')&quot;&gt; Info &lt;/el-button&gt;
+
+  &lt;el-button plain @click=&quot;openCustomColor&quot;&gt; Custom color &lt;/el-button&gt;
+
+  &lt;el-button plain @click=&quot;openWithoutPause&quot;&gt; No pause on hover &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from 'element-plus'
+
+function open(type: string) {
+
+  ElNotification({
+
+    title: `${type || 'Default'} progress`,
+
+    message: 'Hover to pause the timer and progress bar',
+
+    type: type as any,
+
+    duration: 6000,
+
+    progress: true,
+
+  })
+
+}
+
+function openWithoutPause() {
+
+  ElNotification({
+
+    title: 'No pause on hover',
+
+    message: 'Timer and progress bar keep running even when hovering',
+
+    duration: 6000,
+
+    progress: true,
+
+    pauseOnHover: false,
+
+  })
+
+}
+
+function openCustomColor() {
+
+  ElNotification({
+
+    title: 'Custom color',
+
+    message: 'Custom progress bar color overrides the default',
+
+    duration: 6000,
+
+    progress: {
+
+      color: [
+
+        { color: '#f56c6c', percentage: 20 },
+
+        { color: '#e6a23c', percentage: 40 },
+
+        { color: '#5cb87a', percentage: 60 },
+
+        { color: '#1989fa', percentage: 80 },
+
+        { color: '#6f7ad3', percentage: 100 },
+
+      ],
+
+    },
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>隐藏关闭按钮</h2>
+<p>通知的关闭按钮可以被设置为隐藏。</p>
+<p>将 <code>showClose</code> 属性设置为 <code>false</code> 即可隐藏关闭按钮。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button plain @click=&quot;open&quot;&gt; Hide close button &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ElNotification } from 'element-plus'
+
+const open = () =&gt; {
+
+  ElNotification.success({
+
+    title: 'Info',
+
+    message: 'This is a message without close button',
+
+    showClose: false,
+
+  })
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>全局方法</h2>
+<p>Element Plus 为 <code>app.config.globalProperties</code> 添加了全局方法 <code>$notify</code>。因此在 Vue instance 中可以采用本页面中的方式调用 <code>Notification</code>。</p>
+<h2>单独引用</h2>
+<p>javascript</p>
+<p>`import { ElNotification } from 'element-plus'</p>
+<p>import { CloseBold } from '@element-plus/icons-vue'</p>
+<p>ElNotification({</p>
+<p>title: 'Title',</p>
+<p>message: 'This is a message',</p>
+<p>closeIcon: CloseBold,</p>
+<p>})`</p>
+<p>你可以在对应的处理函数内调用 <code>ElNotification(options)</code> 来呼出通知栏。我们也提前定义了多个 type 的单独调用方法，如 <code>ElNotification.success(options)</code>。当你需要关闭页面上所有的通知栏的时候，可以调用 <code>ElNotification.closeAll()</code> 来关闭所有的实例。在 2.10.5 版本中，你可以通过调用 <code>ElNotification.updateOffsets(position)</code> 手动更新所有通知实例在特定方向上的偏移量。</p>
+<h2>应用程序上下文继承 &gt; 2.0.4</h2>
+<p>现在 Notification 接受一条 <code>context</code> 作为消息构造器的第二个参数，允许你将当前应用的上下文注入到 Notification 中，这将允许你继承应用程序的所有属性。</p>
+<p>你可以像这样使用它：</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>如果您全局注册了 ElNotification 组件，它将自动继承应用的上下文环境。</p>
+</blockquote>
+<p>ts</p>
+<p>`import { getCurrentInstance } from 'vue'</p>
+<p>import { ElNotification } from 'element-plus'</p>
+<p>// 在你的 setup 方法中</p>
+<p>const { appContext } = getCurrentInstance()!</p>
+<p>ElNotification({}, appContext)`</p>
+<h2>API</h2>
+<h3>配置项</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>title</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>message</td>
+<td>通知栏正文内容</td>
+<td><code>string</code> / <code>VNode</code> / <code>Function</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>dangerouslyUseHTMLString</td>
+<td>是否将 message 属性作为 HTML 片段处理</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>type</td>
+<td>通知的类型</td>
+<td><code>enum</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>自定义图标。若设置了 <code>type</code>，则 <code>icon</code> 会被覆盖</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>customClass</td>
+<td>自定义类名</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>显示时间, 单位为毫秒。值为 0 则不会自动关闭</td>
+<td><code>number</code></td>
+<td>4500</td>
+</tr>
+<tr>
+<td>position</td>
+<td>自定义弹出位置</td>
+<td><code>enum</code></td>
+<td>top-right</td>
+</tr>
+<tr>
+<td>showClose</td>
+<td>是否显示关闭按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>onClose</td>
+<td>关闭时的回调函数</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>onClick</td>
+<td>点击 Notification 时的回调函数</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>相对屏幕顶部的偏移量偏移的距离，在同一时刻，所有的 Notification 实例应当具有一个相同的偏移量</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>appendTo</td>
+<td>设置 notification 的根元素，默认为 <code>document.body</code></td>
+<td><code>CSSSelector</code> / <code>HTMLElement</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>zIndex</td>
+<td>初始 zIndex</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>closeIcon 2.9.8</td>
+<td>自定义关闭图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>Close</td>
+</tr>
+<tr>
+<td>progress 2.14.4</td>
+<td>进度条指示自动关闭倒计时。设为 <code>true</code> 可显示默认进度条，或传入一个包含 <a href="./progress.html#attributes">Progress 选项</a>的对象进行自定义（<code>percentage</code>、<code>type</code>、<code>duration</code>、<code>indeterminate</code> 和 <code>width</code> 除外）。</td>
+<td><code>boolean</code> / <code>object</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>pauseOnHover 2.14.4</td>
+<td>悬停于通知上时是否暂停计时器。</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<h3>方法</h3>
+<p><code>Notification</code> 和 <code>this.$notify</code> 都返回当前的 Notification 实例。如果需要手动关闭实例，可以调用它的 <code>close</code> 方法。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>详情</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>关闭当前的 Notification</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/notification.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["notification"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

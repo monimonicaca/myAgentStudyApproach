@@ -1,0 +1,40 @@
+
+
+.el-descriptions[data-v-9rl8oh] {
+
+  margin-top: 20px;
+}
+.cell-item[data-v-9rl8oh] {
+
+  display: flex;
+
+  align-items: center;
+}
+.margin-top[data-v-9rl8oh] {
+
+  margin-top: 20px;
+}
+
+
+
+
+.el-descriptions[data-v-9s519u] {
+
+  margin-top: 20px;
+}
+
+
+
+
+
+:deep(.my-label) {
+
+  background: var(--el-color-success-light-9) !important;
+}
+:deep(.my-content) {
+
+  background: var(--el-color-danger-light-9);
+}
+
+
+

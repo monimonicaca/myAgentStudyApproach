@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infinite Scroll 无限滚动 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/infinite-scroll.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Infinite Scroll 无限滚动</h1>
+  <span class="count">2 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（2）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 禁用加载</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;ul v-infinite-scroll=&quot;load&quot; class=&quot;infinite-list&quot; style=&quot;overflow: auto&quot;&gt;
+
+    &lt;li v-for=&quot;i in count&quot; :key=&quot;i&quot; class=&quot;infinite-list-item&quot;&gt;{{ i }}&lt;/li&gt;
+
+  &lt;/ul&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const count = ref(0)
+
+const load = () =&gt; {
+
+  count.value += 2
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.infinite-list {
+
+  height: 300px;
+
+  padding: 0;
+
+  margin: 0;
+
+  list-style: none;
+
+}
+
+.infinite-list .infinite-list-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  background: var(--el-color-primary-light-9);
+
+  margin: 10px;
+
+  color: var(--el-color-primary);
+
+}
+
+.infinite-list .infinite-list-item + .list-item {
+
+  margin-top: 10px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>禁用加载</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;infinite-list-wrapper&quot; style=&quot;overflow: auto&quot;&gt;
+
+    &lt;ul
+
+      v-infinite-scroll=&quot;load&quot;
+
+      class=&quot;list&quot;
+
+      :infinite-scroll-disabled=&quot;disabled&quot;
+
+    &gt;
+
+      &lt;li v-for=&quot;i in count&quot; :key=&quot;i&quot; class=&quot;list-item&quot;&gt;{{ i }}&lt;/li&gt;
+
+    &lt;/ul&gt;
+
+    &lt;p v-if=&quot;loading&quot;&gt;Loading...&lt;/p&gt;
+
+    &lt;p v-if=&quot;noMore&quot;&gt;No more&lt;/p&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from &#x27;vue&#x27;
+
+const count = ref(10)
+
+const loading = ref(false)
+
+const noMore = computed(() =&gt; count.value &gt;= 20)
+
+const disabled = computed(() =&gt; loading.value || noMore.value)
+
+const load = () =&gt; {
+
+  loading.value = true
+
+  setTimeout(() =&gt; {
+
+    count.value += 2
+
+    loading.value = false
+
+  }, 2000)
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.infinite-list-wrapper {
+
+  height: 300px;
+
+  text-align: center;
+
+}
+
+.infinite-list-wrapper .list {
+
+  padding: 0;
+
+  margin: 0;
+
+  list-style: none;
+
+}
+
+.infinite-list-wrapper .list-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  background: var(--el-color-danger-light-9);
+
+  color: var(--el-color-danger);
+
+}
+
+.infinite-list-wrapper .list-item + .list-item {
+
+  margin-top: 10px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><blockquote>
+<p><strong>废弃的 directive</strong></p>
+<p>我们将不再维护这个 directive。会在 3.0.0 <strong>被移除</strong>，请使用 <a href="./scrollbar#infinite-scroll">el-scrollbar infinite scroll</a> 作为代替。</p>
+</blockquote>
+<h1>Infinite Scroll 无限滚动</h1>
+<p>滚动至底部时，加载更多数据。</p>
+<h2>基础用法</h2>
+<p>在要实现滚动加载的列表上添加<code>v-infinite-scroll</code>，并赋值相应的加载方法，可实现滚动到底部时自动执行加载方法。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;ul v-infinite-scroll=&quot;load&quot; class=&quot;infinite-list&quot; style=&quot;overflow: auto&quot;&gt;
+
+    &lt;li v-for=&quot;i in count&quot; :key=&quot;i&quot; class=&quot;infinite-list-item&quot;&gt;{{ i }}&lt;/li&gt;
+
+  &lt;/ul&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const count = ref(0)
+
+const load = () =&gt; {
+
+  count.value += 2
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.infinite-list {
+
+  height: 300px;
+
+  padding: 0;
+
+  margin: 0;
+
+  list-style: none;
+
+}
+
+.infinite-list .infinite-list-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  background: var(--el-color-primary-light-9);
+
+  margin: 10px;
+
+  color: var(--el-color-primary);
+
+}
+
+.infinite-list .infinite-list-item + .list-item {
+
+  margin-top: 10px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>禁用加载</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;infinite-list-wrapper&quot; style=&quot;overflow: auto&quot;&gt;
+
+    &lt;ul
+
+      v-infinite-scroll=&quot;load&quot;
+
+      class=&quot;list&quot;
+
+      :infinite-scroll-disabled=&quot;disabled&quot;
+
+    &gt;
+
+      &lt;li v-for=&quot;i in count&quot; :key=&quot;i&quot; class=&quot;list-item&quot;&gt;{{ i }}&lt;/li&gt;
+
+    &lt;/ul&gt;
+
+    &lt;p v-if=&quot;loading&quot;&gt;Loading...&lt;/p&gt;
+
+    &lt;p v-if=&quot;noMore&quot;&gt;No more&lt;/p&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { computed, ref } from 'vue'
+
+const count = ref(10)
+
+const loading = ref(false)
+
+const noMore = computed(() =&gt; count.value &gt;= 20)
+
+const disabled = computed(() =&gt; loading.value || noMore.value)
+
+const load = () =&gt; {
+
+  loading.value = true
+
+  setTimeout(() =&gt; {
+
+    count.value += 2
+
+    loading.value = false
+
+  }, 2000)
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.infinite-list-wrapper {
+
+  height: 300px;
+
+  text-align: center;
+
+}
+
+.infinite-list-wrapper .list {
+
+  padding: 0;
+
+  margin: 0;
+
+  list-style: none;
+
+}
+
+.infinite-list-wrapper .list-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 50px;
+
+  background: var(--el-color-danger-light-9);
+
+  color: var(--el-color-danger);
+
+}
+
+.infinite-list-wrapper .list-item + .list-item {
+
+  margin-top: 10px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>指令</h2>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v-infinite-scroll</td>
+<td>滚动到底部时，加载更多数据</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>infinite-scroll-disabled</td>
+<td>是否禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>infinite-scroll-delay</td>
+<td>节流时延，单位为ms</td>
+<td><code>number</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>infinite-scroll-distance</td>
+<td>触发加载的距离阈值，单位为px</td>
+<td><code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>infinite-scroll-immediate</td>
+<td>是否立即执行加载方法，以防初始状态下内容无法撑满容器。</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/infinite-scroll.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["infinite-scroll"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

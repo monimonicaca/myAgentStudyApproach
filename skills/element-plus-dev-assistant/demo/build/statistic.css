@@ -1,0 +1,71 @@
+
+
+.countdown-footer[data-v-3hzdbq] {
+
+  margin-top: 8px;
+}
+
+
+
+
+h2#card-usage ~ .example .example-showcase {
+
+  background-color: var(--el-fill-color) !important;
+}
+.el-statistic[data-v-3hfkqd] {
+
+  --el-statistic-content-font-size: 28px;
+}
+.statistic-card[data-v-3hfkqd] {
+
+  height: 100%;
+
+  padding: 20px;
+
+  border-radius: 4px;
+
+  background-color: var(--el-bg-color-overlay);
+}
+.statistic-footer[data-v-3hfkqd] {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  font-size: 12px;
+
+  color: var(--el-text-color-regular);
+
+  margin-top: 16px;
+}
+.statistic-footer .footer-item[data-v-3hfkqd] {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+.statistic-footer .footer-item span[data-v-3hfkqd]:last-child {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  margin-left: 4px;
+}
+.green[data-v-3hfkqd] {
+
+  color: var(--el-color-success);
+}
+.red[data-v-3hfkqd] {
+
+  color: var(--el-color-error);
+}
+
+
+

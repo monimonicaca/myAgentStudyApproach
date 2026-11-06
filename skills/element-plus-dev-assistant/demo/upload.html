@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upload 上传 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/upload.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Upload 上传</h1>
+  <span class="count">10 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（10）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 覆盖前一个文件</a>
+<a href="#ex-2">3. 用户头像</a>
+<a href="#ex-3">4. 照片墙</a>
+<a href="#ex-4">5. 自定义缩略图</a>
+<a href="#ex-5">6. 图片列表缩略图</a>
+<a href="#ex-6">7. 上传文件列表控制</a>
+<a href="#ex-7">8. 拖拽上传</a>
+<a href="#ex-8">9. 上传目录 2.13.1</a>
+<a href="#ex-9">10. 手动上传</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    multiple
+
+    :on-preview=&quot;handlePreview&quot;
+
+    :on-remove=&quot;handleRemove&quot;
+
+    :before-remove=&quot;beforeRemove&quot;
+
+    :limit=&quot;3&quot;
+
+    :on-exceed=&quot;handleExceed&quot;
+
+  &gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Click to upload&lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500KB.
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { ElMessage, ElMessageBox } from &#x27;element-plus&#x27;
+
+import type { UploadProps, UploadUserFile } from &#x27;element-plus&#x27;
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: &#x27;element-plus-logo.svg&#x27;,
+
+    url: &#x27;https://element-plus.org/images/element-plus-logo.svg&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;element-plus-logo2.svg&#x27;,
+
+    url: &#x27;https://element-plus.org/images/element-plus-logo.svg&#x27;,
+
+  },
+
+])
+
+const handleRemove: UploadProps[&#x27;onRemove&#x27;] = (file, uploadFiles) =&gt; {
+
+  console.log(file, uploadFiles)
+
+}
+
+const handlePreview: UploadProps[&#x27;onPreview&#x27;] = (uploadFile) =&gt; {
+
+  console.log(uploadFile)
+
+}
+
+const handleExceed: UploadProps[&#x27;onExceed&#x27;] = (files, uploadFiles) =&gt; {
+
+  ElMessage.warning(
+
+    `The limit is 3, you selected ${files.length} files this time, add up to ${
+
+      files.length + uploadFiles.length
+
+    } totally`
+
+  )
+
+}
+
+const beforeRemove: UploadProps[&#x27;beforeRemove&#x27;] = (uploadFile, uploadFiles) =&gt; {
+
+  return ElMessageBox.confirm(
+
+    `Cancel the transfer of ${uploadFile.name} ?`
+
+  ).then(
+
+    () =&gt; true,
+
+    () =&gt; false
+
+  )
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>覆盖前一个文件</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    ref=&quot;upload&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :limit=&quot;1&quot;
+
+    :on-exceed=&quot;handleExceed&quot;
+
+    :auto-upload=&quot;false&quot;
+
+  &gt;
+
+    &lt;template #trigger&gt;
+
+      &lt;el-button type=&quot;primary&quot;&gt;select file&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-button class=&quot;ml-3&quot; type=&quot;success&quot; @click=&quot;submitUpload&quot;&gt;
+
+      upload to server
+
+    &lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip text-red&quot;&gt;
+
+        limit 1 file, new file will cover the old file
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { genFileId } from &#x27;element-plus&#x27;
+
+import type { UploadInstance, UploadProps, UploadRawFile } from &#x27;element-plus&#x27;
+
+const upload = ref&lt;UploadInstance&gt;()
+
+const handleExceed: UploadProps[&#x27;onExceed&#x27;] = (files) =&gt; {
+
+  upload.value!.clearFiles()
+
+  const file = files[0] as UploadRawFile
+
+  file.uid = genFileId()
+
+  upload.value!.handleStart(file)
+
+}
+
+const submitUpload = () =&gt; {
+
+  upload.value!.submit()
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>用户头像</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    class=&quot;avatar-uploader&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :show-file-list=&quot;false&quot;
+
+    :on-success=&quot;handleAvatarSuccess&quot;
+
+    :before-upload=&quot;beforeAvatarUpload&quot;
+
+  &gt;
+
+    &lt;img v-if=&quot;imageUrl&quot; :src=&quot;imageUrl&quot; class=&quot;avatar&quot; /&gt;
+
+    &lt;el-icon v-else class=&quot;avatar-uploader-icon&quot;&gt;&lt;Plus /&gt;&lt;/el-icon&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { ElMessage } from &#x27;element-plus&#x27;
+
+import { Plus } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { UploadProps } from &#x27;element-plus&#x27;
+
+const imageUrl = ref(&#x27;&#x27;)
+
+const handleAvatarSuccess: UploadProps[&#x27;onSuccess&#x27;] = (
+
+  response,
+
+  uploadFile
+
+) =&gt; {
+
+  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+
+}
+
+const beforeAvatarUpload: UploadProps[&#x27;beforeUpload&#x27;] = (rawFile) =&gt; {
+
+  if (rawFile.type !== &#x27;image/jpeg&#x27;) {
+
+    ElMessage.error(&#x27;Avatar picture must be JPG format!&#x27;)
+
+    return false
+
+  } else if (rawFile.size / 1024 / 1024 &gt; 2) {
+
+    ElMessage.error(&#x27;Avatar picture size can not exceed 2MB!&#x27;)
+
+    return false
+
+  }
+
+  return true
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.avatar-uploader .avatar {
+
+  width: 178px;
+
+  height: 178px;
+
+  display: block;
+
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+
+.avatar-uploader .el-upload {
+
+  border: 1px dashed var(--el-border-color);
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition: var(--el-transition-duration-fast);
+
+}
+
+.avatar-uploader .el-upload:hover {
+
+  border-color: var(--el-color-primary);
+
+}
+
+.el-icon.avatar-uploader-icon {
+
+  font-size: 28px;
+
+  color: #8c939d;
+
+  width: 178px;
+
+  height: 178px;
+
+  text-align: center;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-3"><h3><span class="idx">4</span>照片墙</h3><div class="demo-card"><div class="mount" id="mount-3"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    list-type=&quot;picture-card&quot;
+
+    :on-preview=&quot;handlePictureCardPreview&quot;
+
+    :on-remove=&quot;handleRemove&quot;
+
+  &gt;
+
+    &lt;el-icon&gt;&lt;Plus /&gt;&lt;/el-icon&gt;
+
+  &lt;/el-upload&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot;&gt;
+
+    &lt;img w-full :src=&quot;dialogImageUrl&quot; alt=&quot;Preview Image&quot; /&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { Plus } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { UploadProps, UploadUserFile } from &#x27;element-plus&#x27;
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: &#x27;food.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;plant-1.png&#x27;,
+
+    url: &#x27;/images/plant-1.png&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;food.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;plant-2.png&#x27;,
+
+    url: &#x27;/images/plant-2.png&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;food.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;figure-1.png&#x27;,
+
+    url: &#x27;/images/figure-1.png&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;food.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;figure-2.png&#x27;,
+
+    url: &#x27;/images/figure-2.png&#x27;,
+
+  },
+
+])
+
+const dialogImageUrl = ref(&#x27;&#x27;)
+
+const dialogVisible = ref(false)
+
+const handleRemove: UploadProps[&#x27;onRemove&#x27;] = (uploadFile, uploadFiles) =&gt; {
+
+  console.log(uploadFile, uploadFiles)
+
+}
+
+const handlePictureCardPreview: UploadProps[&#x27;onPreview&#x27;] = (uploadFile) =&gt; {
+
+  dialogImageUrl.value = uploadFile.url!
+
+  dialogVisible.value = true
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-4"><h3><span class="idx">5</span>自定义缩略图</h3><div class="demo-card"><div class="mount" id="mount-4"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload action=&quot;#&quot; list-type=&quot;picture-card&quot; :auto-upload=&quot;false&quot;&gt;
+
+    &lt;el-icon&gt;&lt;Plus /&gt;&lt;/el-icon&gt;
+
+    &lt;template #file=&quot;{ file }&quot;&gt;
+
+      &lt;div&gt;
+
+        &lt;img class=&quot;el-upload-list__item-thumbnail&quot; :src=&quot;file.url&quot; alt=&quot;&quot; /&gt;
+
+        &lt;span class=&quot;el-upload-list__item-actions&quot;&gt;
+
+          &lt;span
+
+            class=&quot;el-upload-list__item-preview&quot;
+
+            @click=&quot;handlePictureCardPreview(file)&quot;
+
+          &gt;
+
+            &lt;el-icon&gt;&lt;zoom-in /&gt;&lt;/el-icon&gt;
+
+          &lt;/span&gt;
+
+          &lt;span
+
+            v-if=&quot;!disabled&quot;
+
+            class=&quot;el-upload-list__item-delete&quot;
+
+            @click=&quot;handleDownload(file)&quot;
+
+          &gt;
+
+            &lt;el-icon&gt;&lt;Download /&gt;&lt;/el-icon&gt;
+
+          &lt;/span&gt;
+
+          &lt;span
+
+            v-if=&quot;!disabled&quot;
+
+            class=&quot;el-upload-list__item-delete&quot;
+
+            @click=&quot;handleRemove(file)&quot;
+
+          &gt;
+
+            &lt;el-icon&gt;&lt;Delete /&gt;&lt;/el-icon&gt;
+
+          &lt;/span&gt;
+
+        &lt;/span&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot;&gt;
+
+    &lt;img w-full :src=&quot;dialogImageUrl&quot; alt=&quot;Preview Image&quot; /&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { Delete, Download, Plus, ZoomIn } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { UploadFile } from &#x27;element-plus&#x27;
+
+const dialogImageUrl = ref(&#x27;&#x27;)
+
+const dialogVisible = ref(false)
+
+const disabled = ref(false)
+
+const handleRemove = (file: UploadFile) =&gt; {
+
+  console.log(file)
+
+}
+
+const handlePictureCardPreview = (file: UploadFile) =&gt; {
+
+  dialogImageUrl.value = file.url!
+
+  dialogVisible.value = true
+
+}
+
+const handleDownload = (file: UploadFile) =&gt; {
+
+  console.log(file)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-5"><h3><span class="idx">6</span>图片列表缩略图</h3><div class="demo-card"><div class="mount" id="mount-5"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :on-preview=&quot;handlePreview&quot;
+
+    :on-remove=&quot;handleRemove&quot;
+
+    list-type=&quot;picture&quot;
+
+  &gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Click to upload&lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import type { UploadProps, UploadUserFile } from &#x27;element-plus&#x27;
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: &#x27;food.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;food2.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+])
+
+const handleRemove: UploadProps[&#x27;onRemove&#x27;] = (uploadFile, uploadFiles) =&gt; {
+
+  console.log(uploadFile, uploadFiles)
+
+}
+
+const handlePreview: UploadProps[&#x27;onPreview&#x27;] = (file) =&gt; {
+
+  console.log(file)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-6"><h3><span class="idx">7</span>上传文件列表控制</h3><div class="demo-card"><div class="mount" id="mount-6"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :on-change=&quot;handleChange&quot;
+
+  &gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Click to upload&lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import type { UploadProps, UploadUserFile } from &#x27;element-plus&#x27;
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: &#x27;food.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+  {
+
+    name: &#x27;food2.jpeg&#x27;,
+
+    url: &#x27;https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&#x27;,
+
+  },
+
+])
+
+const handleChange: UploadProps[&#x27;onChange&#x27;] = (uploadFile, uploadFiles) =&gt; {
+
+  fileList.value = fileList.value.slice(-3)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-7"><h3><span class="idx">8</span>拖拽上传</h3><div class="demo-card"><div class="mount" id="mount-7"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    class=&quot;upload-demo&quot;
+
+    drag
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    multiple
+
+  &gt;
+
+    &lt;el-icon class=&quot;el-icon--upload&quot;&gt;&lt;upload-filled /&gt;&lt;/el-icon&gt;
+
+    &lt;div class=&quot;el-upload__text&quot;&gt;
+
+      Drop file here or &lt;em&gt;click to upload&lt;/em&gt;
+
+    &lt;/div&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { UploadFilled } from &#x27;@element-plus/icons-vue&#x27;
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-8"><h3><span class="idx">9</span>上传目录 2.13.1</h3><div class="demo-card"><div class="mount" id="mount-8"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    class=&quot;upload-demo&quot;
+
+    drag
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    directory
+
+    multiple
+
+    :on-change=&quot;handleChange&quot;
+
+  &gt;
+
+    &lt;el-icon class=&quot;el-icon--upload&quot;&gt;&lt;upload-filled /&gt;&lt;/el-icon&gt;
+
+    &lt;div class=&quot;el-upload__text&quot;&gt;
+
+      Drop directory here or &lt;em&gt;click to upload&lt;/em&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { UploadFilled } from &#x27;@element-plus/icons-vue&#x27;
+
+import type { UploadFile, UploadFiles } from &#x27;element-plus&#x27;
+
+const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) =&gt; {
+
+  console.log(uploadFile, uploadFiles)
+
+}
+
+&lt;/script&gt;</code></pre></details></section>
+<section class="ex" id="ex-9"><h3><span class="idx">10</span>手动上传</h3><div class="demo-card"><div class="mount" id="mount-9"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    ref=&quot;uploadRef&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :auto-upload=&quot;false&quot;
+
+  &gt;
+
+    &lt;template #trigger&gt;
+
+      &lt;el-button type=&quot;primary&quot;&gt;select file&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-button class=&quot;ml-3&quot; type=&quot;success&quot; @click=&quot;submitUpload&quot;&gt;
+
+      upload to server
+
+    &lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import type { UploadInstance } from &#x27;element-plus&#x27;
+
+const uploadRef = ref&lt;UploadInstance&gt;()
+
+const submitUpload = () =&gt; {
+
+  uploadRef.value!.submit()
+
+}
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Upload 上传</h1>
+<p>通过点击或者拖拽上传文件。</p>
+<h2>基础用法</h2>
+<p>通过 <code>slot</code> 你可以传入自定义的上传按钮类型和文字提示。可通过设置 <code>limit</code> 和 <code>on-exceed</code> 来限制上传文件的个数和定义超出限制时的行为。可通过设置 <code>before-remove</code> 来阻止文件移除操作。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    multiple
+
+    :on-preview=&quot;handlePreview&quot;
+
+    :on-remove=&quot;handleRemove&quot;
+
+    :before-remove=&quot;beforeRemove&quot;
+
+    :limit=&quot;3&quot;
+
+    :on-exceed=&quot;handleExceed&quot;
+
+  &gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Click to upload&lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500KB.
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+import type { UploadProps, UploadUserFile } from 'element-plus'
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: 'element-plus-logo.svg',
+
+    url: 'https://element-plus.org/images/element-plus-logo.svg',
+
+  },
+
+  {
+
+    name: 'element-plus-logo2.svg',
+
+    url: 'https://element-plus.org/images/element-plus-logo.svg',
+
+  },
+
+])
+
+const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) =&gt; {
+
+  console.log(file, uploadFiles)
+
+}
+
+const handlePreview: UploadProps['onPreview'] = (uploadFile) =&gt; {
+
+  console.log(uploadFile)
+
+}
+
+const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) =&gt; {
+
+  ElMessage.warning(
+
+    `The limit is 3, you selected ${files.length} files this time, add up to ${
+
+      files.length + uploadFiles.length
+
+    } totally`
+
+  )
+
+}
+
+const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) =&gt; {
+
+  return ElMessageBox.confirm(
+
+    `Cancel the transfer of ${uploadFile.name} ?`
+
+  ).then(
+
+    () =&gt; true,
+
+    () =&gt; false
+
+  )
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>覆盖前一个文件</h2>
+<p>设置 <code>limit</code> 和 <code>on-exceed</code> 可以在选中时自动替换上一个文件。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    ref=&quot;upload&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :limit=&quot;1&quot;
+
+    :on-exceed=&quot;handleExceed&quot;
+
+    :auto-upload=&quot;false&quot;
+
+  &gt;
+
+    &lt;template #trigger&gt;
+
+      &lt;el-button type=&quot;primary&quot;&gt;select file&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-button class=&quot;ml-3&quot; type=&quot;success&quot; @click=&quot;submitUpload&quot;&gt;
+
+      upload to server
+
+    &lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip text-red&quot;&gt;
+
+        limit 1 file, new file will cover the old file
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { ref } from 'vue'
+
+import { genFileId } from 'element-plus'
+
+import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
+
+const upload = ref&lt;UploadInstance&gt;()
+
+const handleExceed: UploadProps['onExceed'] = (files) =&gt; {
+
+  upload.value!.clearFiles()
+
+  const file = files[0] as UploadRawFile
+
+  file.uid = genFileId()
+
+  upload.value!.handleStart(file)
+
+}
+
+const submitUpload = () =&gt; {
+
+  upload.value!.submit()
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>用户头像</h2>
+<p>在 <code>before-upload</code> 钩子中限制用户上传文件的格式和大小。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    class=&quot;avatar-uploader&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :show-file-list=&quot;false&quot;
+
+    :on-success=&quot;handleAvatarSuccess&quot;
+
+    :before-upload=&quot;beforeAvatarUpload&quot;
+
+  &gt;
+
+    &lt;img v-if=&quot;imageUrl&quot; :src=&quot;imageUrl&quot; class=&quot;avatar&quot; /&gt;
+
+    &lt;el-icon v-else class=&quot;avatar-uploader-icon&quot;&gt;&lt;Plus /&gt;&lt;/el-icon&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElMessage } from 'element-plus'
+
+import { Plus } from '@element-plus/icons-vue'
+
+import type { UploadProps } from 'element-plus'
+
+const imageUrl = ref('')
+
+const handleAvatarSuccess: UploadProps['onSuccess'] = (
+
+  response,
+
+  uploadFile
+
+) =&gt; {
+
+  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) =&gt; {
+
+  if (rawFile.type !== 'image/jpeg') {
+
+    ElMessage.error('Avatar picture must be JPG format!')
+
+    return false
+
+  } else if (rawFile.size / 1024 / 1024 &gt; 2) {
+
+    ElMessage.error('Avatar picture size can not exceed 2MB!')
+
+    return false
+
+  }
+
+  return true
+
+}
+
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+.avatar-uploader .avatar {
+
+  width: 178px;
+
+  height: 178px;
+
+  display: block;
+
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+
+.avatar-uploader .el-upload {
+
+  border: 1px dashed var(--el-border-color);
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition: var(--el-transition-duration-fast);
+
+}
+
+.avatar-uploader .el-upload:hover {
+
+  border-color: var(--el-color-primary);
+
+}
+
+.el-icon.avatar-uploader-icon {
+
+  font-size: 28px;
+
+  color: #8c939d;
+
+  width: 178px;
+
+  height: 178px;
+
+  text-align: center;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>照片墙</h2>
+<p>使用 <code>list-type</code> 属性来设定文件列表的样式。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    list-type=&quot;picture-card&quot;
+
+    :on-preview=&quot;handlePictureCardPreview&quot;
+
+    :on-remove=&quot;handleRemove&quot;
+
+  &gt;
+
+    &lt;el-icon&gt;&lt;Plus /&gt;&lt;/el-icon&gt;
+
+  &lt;/el-upload&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot;&gt;
+
+    &lt;img w-full :src=&quot;dialogImageUrl&quot; alt=&quot;Preview Image&quot; /&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { Plus } from '@element-plus/icons-vue'
+
+import type { UploadProps, UploadUserFile } from 'element-plus'
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: 'food.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+  {
+
+    name: 'plant-1.png',
+
+    url: '/images/plant-1.png',
+
+  },
+
+  {
+
+    name: 'food.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+  {
+
+    name: 'plant-2.png',
+
+    url: '/images/plant-2.png',
+
+  },
+
+  {
+
+    name: 'food.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+  {
+
+    name: 'figure-1.png',
+
+    url: '/images/figure-1.png',
+
+  },
+
+  {
+
+    name: 'food.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+  {
+
+    name: 'figure-2.png',
+
+    url: '/images/figure-2.png',
+
+  },
+
+])
+
+const dialogImageUrl = ref('')
+
+const dialogVisible = ref(false)
+
+const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) =&gt; {
+
+  console.log(uploadFile, uploadFiles)
+
+}
+
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) =&gt; {
+
+  dialogImageUrl.value = uploadFile.url!
+
+  dialogVisible.value = true
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>自定义缩略图</h2>
+<p>使用 <code>scoped-slot</code> 属性来改变默认的缩略图模板样式。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload action=&quot;#&quot; list-type=&quot;picture-card&quot; :auto-upload=&quot;false&quot;&gt;
+
+    &lt;el-icon&gt;&lt;Plus /&gt;&lt;/el-icon&gt;
+
+    &lt;template #file=&quot;{ file }&quot;&gt;
+
+      &lt;div&gt;
+
+        &lt;img class=&quot;el-upload-list__item-thumbnail&quot; :src=&quot;file.url&quot; alt=&quot;&quot; /&gt;
+
+        &lt;span class=&quot;el-upload-list__item-actions&quot;&gt;
+
+          &lt;span
+
+            class=&quot;el-upload-list__item-preview&quot;
+
+            @click=&quot;handlePictureCardPreview(file)&quot;
+
+          &gt;
+
+            &lt;el-icon&gt;&lt;zoom-in /&gt;&lt;/el-icon&gt;
+
+          &lt;/span&gt;
+
+          &lt;span
+
+            v-if=&quot;!disabled&quot;
+
+            class=&quot;el-upload-list__item-delete&quot;
+
+            @click=&quot;handleDownload(file)&quot;
+
+          &gt;
+
+            &lt;el-icon&gt;&lt;Download /&gt;&lt;/el-icon&gt;
+
+          &lt;/span&gt;
+
+          &lt;span
+
+            v-if=&quot;!disabled&quot;
+
+            class=&quot;el-upload-list__item-delete&quot;
+
+            @click=&quot;handleRemove(file)&quot;
+
+          &gt;
+
+            &lt;el-icon&gt;&lt;Delete /&gt;&lt;/el-icon&gt;
+
+          &lt;/span&gt;
+
+        &lt;/span&gt;
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+  &lt;el-dialog v-model=&quot;dialogVisible&quot;&gt;
+
+    &lt;img w-full :src=&quot;dialogImageUrl&quot; alt=&quot;Preview Image&quot; /&gt;
+
+  &lt;/el-dialog&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
+
+import type { UploadFile } from 'element-plus'
+
+const dialogImageUrl = ref('')
+
+const dialogVisible = ref(false)
+
+const disabled = ref(false)
+
+const handleRemove = (file: UploadFile) =&gt; {
+
+  console.log(file)
+
+}
+
+const handlePictureCardPreview = (file: UploadFile) =&gt; {
+
+  dialogImageUrl.value = file.url!
+
+  dialogVisible.value = true
+
+}
+
+const handleDownload = (file: UploadFile) =&gt; {
+
+  console.log(file)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>图片列表缩略图</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :on-preview=&quot;handlePreview&quot;
+
+    :on-remove=&quot;handleRemove&quot;
+
+    list-type=&quot;picture&quot;
+
+  &gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Click to upload&lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { UploadProps, UploadUserFile } from 'element-plus'
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: 'food.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+  {
+
+    name: 'food2.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+])
+
+const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) =&gt; {
+
+  console.log(uploadFile, uploadFiles)
+
+}
+
+const handlePreview: UploadProps['onPreview'] = (file) =&gt; {
+
+  console.log(file)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>上传文件列表控制</h2>
+<p>通过 <code>on-change</code> 钩子函数来对上传文件的列表进行控制。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    v-model:file-list=&quot;fileList&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :on-change=&quot;handleChange&quot;
+
+  &gt;
+
+    &lt;el-button type=&quot;primary&quot;&gt;Click to upload&lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { UploadProps, UploadUserFile } from 'element-plus'
+
+const fileList = ref&lt;UploadUserFile[]&gt;([
+
+  {
+
+    name: 'food.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+  {
+
+    name: 'food2.jpeg',
+
+    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+
+  },
+
+])
+
+const handleChange: UploadProps['onChange'] = (uploadFile, uploadFiles) =&gt; {
+
+  fileList.value = fileList.value.slice(-3)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>拖拽上传</h2>
+<p>你可以将文件拖拽到特定区域以进行上传。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    class=&quot;upload-demo&quot;
+
+    drag
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    multiple
+
+  &gt;
+
+    &lt;el-icon class=&quot;el-icon--upload&quot;&gt;&lt;upload-filled /&gt;&lt;/el-icon&gt;
+
+    &lt;div class=&quot;el-upload__text&quot;&gt;
+
+      Drop file here or &lt;em&gt;click to upload&lt;/em&gt;
+
+    &lt;/div&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { UploadFilled } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+</code></pre>
+<h2>上传目录 2.13.1</h2>
+<p>通过 <code>directory</code> 属性启用文件夹上传。</p>
+<p>启用后，只能选择文件夹；选择文件夹后，文件夹内的文件将被扁平化处理。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    class=&quot;upload-demo&quot;
+
+    drag
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    directory
+
+    multiple
+
+    :on-change=&quot;handleChange&quot;
+
+  &gt;
+
+    &lt;el-icon class=&quot;el-icon--upload&quot;&gt;&lt;upload-filled /&gt;&lt;/el-icon&gt;
+
+    &lt;div class=&quot;el-upload__text&quot;&gt;
+
+      Drop directory here or &lt;em&gt;click to upload&lt;/em&gt;
+
+    &lt;/div&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+
+import { UploadFilled } from '@element-plus/icons-vue'
+
+import type { UploadFile, UploadFiles } from 'element-plus'
+
+const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) =&gt; {
+
+  console.log(uploadFile, uploadFiles)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>手动上传</h2>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-upload
+
+    ref=&quot;uploadRef&quot;
+
+    class=&quot;upload-demo&quot;
+
+    action=&quot;https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15&quot;
+
+    :auto-upload=&quot;false&quot;
+
+  &gt;
+
+    &lt;template #trigger&gt;
+
+      &lt;el-button type=&quot;primary&quot;&gt;select file&lt;/el-button&gt;
+
+    &lt;/template&gt;
+
+    &lt;el-button class=&quot;ml-3&quot; type=&quot;success&quot; @click=&quot;submitUpload&quot;&gt;
+
+      upload to server
+
+    &lt;/el-button&gt;
+
+    &lt;template #tip&gt;
+
+      &lt;div class=&quot;el-upload__tip&quot;&gt;
+
+        jpg/png files with a size less than 500kb
+
+      &lt;/div&gt;
+
+    &lt;/template&gt;
+
+  &lt;/el-upload&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import type { UploadInstance } from 'element-plus'
+
+const uploadRef = ref&lt;UploadInstance&gt;()
+
+const submitUpload = () =&gt; {
+
+  uploadRef.value!.submit()
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>API</h2>
+<h3>属性</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>action required</td>
+<td>请求 URL</td>
+<td><code>string</code></td>
+<td>#</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>设置上传的请求头部</td>
+<td><code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>method</td>
+<td>设置上传请求方法</td>
+<td><code>string</code></td>
+<td>post</td>
+</tr>
+<tr>
+<td>multiple</td>
+<td>是否支持多选文件</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>data</td>
+<td>上传时附带的额外参数从 v2.3.13 支持 <code>Awaitable</code> 数据，和 <code>Function</code></td>
+<td><code>object</code>** / <code>Function</code></td>
+<td>{}</td>
+</tr>
+<tr>
+<td>name</td>
+<td>上传的文件字段名</td>
+<td><code>string</code></td>
+<td>file</td>
+</tr>
+<tr>
+<td>with-credentials</td>
+<td>支持发送 cookie 凭证信息</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>show-file-list</td>
+<td>是否显示已上传文件列表</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>drag</td>
+<td>是否启用拖拽上传</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>accept</td>
+<td>接受上传的<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept">文件类型</a>（thumbnail-mode 模式下此参数无效）</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>crossorigin</td>
+<td>原生属性 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin">crossorigin</a></td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-preview</td>
+<td>点击文件列表中已上传的文件时的钩子</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-remove</td>
+<td>文件列表移除文件时的钩子</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-success</td>
+<td>文件上传成功时的钩子</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-error</td>
+<td>文件上传失败时的钩子</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-progress</td>
+<td>文件上传时的钩子</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-change</td>
+<td>文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>on-exceed</td>
+<td>当超出限制时，执行的钩子函数</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>before-upload</td>
+<td>上传文件之前的钩子，参数为上传的文件，若返回<code>false</code>或者返回<code>Promise</code> 且被 reject，则停止上传。</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>before-remove</td>
+<td>删除文件之前的钩子，参数为上传的文件和文件列表，若返回 <code>false</code>或者返回 <code>Promise</code>且被 reject，则停止删除。</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>file-list / v-model:file-list</td>
+<td>默认上传文件</td>
+<td><code>array</code></td>
+<td>[]</td>
+</tr>
+<tr>
+<td>list-type</td>
+<td>文件列表的类型</td>
+<td><code>enum</code></td>
+<td>text</td>
+</tr>
+<tr>
+<td>auto-upload</td>
+<td>是否自动上传文件</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>http-request</td>
+<td>覆盖默认的 Xhr 行为，允许自行实现上传文件的请求</td>
+<td><code>Function</code></td>
+<td><a href="https://github.com/element-plus/element-plus/blob/dev/packages/components/upload/src/ajax.ts#L55">请参考ajaxUpload</a></td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>是否禁用上传</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>允许上传文件的最大数量</td>
+<td><code>number</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>directory 2.13.1</td>
+<td>是否支持上传文件夹。启用后，只能选择文件夹；选择文件夹后，文件夹内的文件将被扁平化处理。</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>插槽</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>触发文件选择框的内容</td>
+<td>-</td>
+</tr>
+<tr>
+<td>tip</td>
+<td>提示说明文字</td>
+<td>-</td>
+</tr>
+<tr>
+<td>file</td>
+<td>缩略图模板的内容</td>
+<td><code>object</code></td>
+</tr>
+</tbody>
+</table>
+<h3>外部方法</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>abort</td>
+<td>取消上传请求。当指定了文件时，中止相应的待上传文件；当未指定文件时，中止所有待上传文件。</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>submit</td>
+<td>手动上传文件列表</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clearFiles</td>
+<td>清空已上传的文件列表（该方法不支持在 <code>before-upload</code> 中调用）</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleStart</td>
+<td>手动选择文件</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleRemove</td>
+<td>手动移除文件。 <code>file</code> 和<code>rawFile</code> 已被合并。 <code>rawFile</code> 将在 <code>v2.2.0</code> 中移除</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>类型声明</h2>
+<p>显示类型声明ts`type UploadFiles = UploadFile[]</p>
+<p>type UploadUserFile = Omit&lt;UploadFile, 'status' | 'uid'&gt; &amp;</p>
+<p>Partial&lt;Pick&lt;UploadFile, 'status' | 'uid'&gt;&gt;</p>
+<p>type UploadStatus = 'ready' | 'uploading' | 'success' | 'fail'</p>
+<p>type Awaitable<T> = Promise<T> | T</p>
+<p>type Mutable<T> = { -readonly [P in keyof T]: T[P] }</p>
+<p>interface UploadFile {</p>
+<p>name: string</p>
+<p>percentage?: number</p>
+<p>status: UploadStatus</p>
+<p>size?: number</p>
+<p>response?: unknown</p>
+<p>uid: number</p>
+<p>url?: string</p>
+<p>raw?: UploadRawFile</p>
+<p>}</p>
+<p>interface UploadProgressEvent extends ProgressEvent {</p>
+<p>percent: number</p>
+<p>}</p>
+<p>interface UploadRawFile extends File {</p>
+<p>uid: number</p>
+<p>isDirectory?: boolean</p>
+<p>}</p>
+<p>interface UploadRequestOptions {</p>
+<p>action: string</p>
+<p>method: string</p>
+<p>data: Record<string, string | Blob | [string | Blob, string] | string[]></p>
+<p>filename: string</p>
+<p>file: UploadRawFile</p>
+<p>headers: Headers | Record<string, string | number | null | undefined></p>
+<p>onError: (evt: UploadAjaxError) =&gt; void</p>
+<p>onProgress: (evt: UploadProgressEvent) =&gt; void</p>
+<p>onSuccess: (response: any) =&gt; void</p>
+<p>withCredentials: boolean</p>
+<p>}`</p></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/upload.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["upload"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

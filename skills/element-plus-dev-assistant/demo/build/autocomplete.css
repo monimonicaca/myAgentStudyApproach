@@ -1,0 +1,238 @@
+
+.demo-autocomplete[data-v-y2m23j] {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2rem;
+}
+.demo-block[data-v-y2m23j] {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+}
+.demo-title[data-v-y2m23j] {
+
+  font-size: 0.875rem;
+
+  color: var(--el-text-color-secondary);
+
+  min-height: 2.5em;
+
+  display: flex;
+
+  align-items: center;
+}
+@media screen and (max-width: 768px) {
+.demo-autocomplete[data-v-y2m23j] {
+
+    gap: 1rem;
+}
+.demo-block[data-v-y2m23j] {
+
+    width: 100%;
+}
+}
+
+
+
+
+.my-autocomplete li {
+
+  line-height: normal;
+
+  padding: 7px;
+}
+.my-autocomplete li .name {
+
+  text-overflow: ellipsis;
+
+  overflow: hidden;
+}
+.my-autocomplete li .addr {
+
+  font-size: 12px;
+
+  color: #b4b4b4;
+}
+.my-autocomplete li .highlighted .addr {
+
+  color: #ddd;
+}
+
+
+
+
+
+.demo-autocomplete[data-v-y0yobg] {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2rem;
+}
+.demo-block[data-v-y0yobg] {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+}
+.demo-title[data-v-y0yobg] {
+
+  font-size: 0.875rem;
+
+  color: var(--el-text-color-secondary);
+
+  min-height: 2.5em;
+
+  display: flex;
+
+  align-items: center;
+}
+@media screen and (max-width: 768px) {
+.demo-autocomplete[data-v-y0yobg] {
+
+    gap: 1rem;
+}
+.demo-block[data-v-y0yobg] {
+
+    width: 100%;
+}
+}
+
+
+
+.circular {
+
+  display: inline;
+
+  height: 30px;
+
+  width: 30px;
+
+  animation: loading-rotate 2s linear infinite;
+}
+.path {
+
+  animation: loading-dash 1.5s ease-in-out infinite;
+
+  stroke-dasharray: 90, 150;
+
+  stroke-dashoffset: 0;
+
+  stroke-width: 2;
+
+  stroke: var(--el-color-primary);
+
+  stroke-linecap: round;
+}
+.loading-path .dot1 {
+
+  transform: translate(3.75px, 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+}
+.loading-path .dot2 {
+
+  transform: translate(calc(100% - 3.75px), 3.75px);
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.4s;
+}
+.loading-path .dot3 {
+
+  transform: translate(3.75px, calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 1.2s;
+}
+.loading-path .dot4 {
+
+  transform: translate(calc(100% - 3.75px), calc(100% - 3.75px));
+
+  fill: var(--el-color-primary);
+
+  animation: custom-spin-move 1s infinite linear alternate;
+
+  opacity: 0.3;
+
+  animation-delay: 0.8s;
+}
+@keyframes loading-rotate {
+to {
+
+    transform: rotate(360deg);
+}
+}
+@keyframes loading-dash {
+0% {
+
+    stroke-dasharray: 1, 200;
+
+    stroke-dashoffset: 0;
+}
+50% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -40px;
+}
+100% {
+
+    stroke-dasharray: 90, 150;
+
+    stroke-dashoffset: -120px;
+}
+}
+@keyframes custom-spin-move {
+to {
+
+    opacity: 1;
+}
+}
+
+
+
+
+.autocomplete-custom-header-footer[data-v-y0evq3] {
+
+  display: flex;
+}
+.autocomplete-custom-header-footer > div[data-v-y0evq3] {
+
+  flex: 1;
+
+  text-align: center;
+}
+.autocomplete-custom-header-footer > div[data-v-y0evq3] >  .el-autocomplete {
+
+  width: 50%;
+}
+.autocomplete-custom-header-footer > div[data-v-y0evq3]:not(:last-child) {
+
+  border-right: 1px solid var(--el-border-color);
+}
+
+
+

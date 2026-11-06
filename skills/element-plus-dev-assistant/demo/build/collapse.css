@@ -1,0 +1,30 @@
+
+
+
+.title-wrapper[data-v-7zpz3c] {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+.title-wrapper.is-active[data-v-7zpz3c] {
+
+  color: var(--el-color-primary);
+}
+
+
+
+
+.icon-ele[data-v-809rop] {
+
+  margin: 0 8px 0 auto;
+
+  color: #409eff;
+}
+
+
+
+
+

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breadcrumb 面包屑 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/breadcrumb.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Breadcrumb 面包屑</h1>
+  <span class="count">2 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（2）</div><a href="#ex-0">1. 基础用法</a>
+<a href="#ex-1">2. 图标分隔符</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>基础用法</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-breadcrumb separator=&quot;/&quot;&gt;
+
+    &lt;el-breadcrumb-item :to=&quot;{ path: &#x27;/&#x27; }&quot;&gt;homepage&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;
+
+      &lt;a href=&quot;/&quot;&gt;promotion management&lt;/a&gt;
+
+    &lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion list&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion detail&lt;/el-breadcrumb-item&gt;
+
+  &lt;/el-breadcrumb&gt;
+
+&lt;/template&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>图标分隔符</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-breadcrumb :separator-icon=&quot;ArrowRight&quot;&gt;
+
+    &lt;el-breadcrumb-item :to=&quot;{ path: &#x27;/&#x27; }&quot;&gt;homepage&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion management&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion list&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion detail&lt;/el-breadcrumb-item&gt;
+
+  &lt;/el-breadcrumb&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ArrowRight } from &#x27;@element-plus/icons-vue&#x27;
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Breadcrumb 面包屑</h1>
+<p>显示当前页面的路径，快速返回之前的任意页面。</p>
+<h2>基础用法</h2>
+<p>在 <code>el-breadcrumb</code> 中使用 <code>el-breadcrumb-item</code> 标签表示从首页开始的每一级。该组件接受一个 <code>String</code> 类型的参数 <code>separator</code>来作为分隔符。默认值为 '/'。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-breadcrumb separator=&quot;/&quot;&gt;
+
+    &lt;el-breadcrumb-item :to=&quot;{ path: '/' }&quot;&gt;homepage&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;
+
+      &lt;a href=&quot;/&quot;&gt;promotion management&lt;/a&gt;
+
+    &lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion list&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion detail&lt;/el-breadcrumb-item&gt;
+
+  &lt;/el-breadcrumb&gt;
+
+&lt;/template&gt;
+</code></pre>
+<h2>图标分隔符</h2>
+<p>通过设置 <code>separator-class</code> 可使用相应的 <code>iconfont</code> 作为分隔符，注意这将使 <code>separator</code> 失效。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-breadcrumb :separator-icon=&quot;ArrowRight&quot;&gt;
+
+    &lt;el-breadcrumb-item :to=&quot;{ path: '/' }&quot;&gt;homepage&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion management&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion list&lt;/el-breadcrumb-item&gt;
+
+    &lt;el-breadcrumb-item&gt;promotion detail&lt;/el-breadcrumb-item&gt;
+
+  &lt;/el-breadcrumb&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ArrowRight } from '@element-plus/icons-vue'
+
+&lt;/script&gt;
+</code></pre>
+<h2>Breadcrumb API</h2>
+<h3>Breadcrumb Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>separator</td>
+<td>分隔符</td>
+<td><code>string</code></td>
+<td>/</td>
+</tr>
+<tr>
+<td>separator-icon</td>
+<td>图标分隔符的组件或组件名</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Breadcrumb Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+<th>子标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+<td>Breadcrumb Item</td>
+</tr>
+</tbody>
+</table>
+<h2>BreadcrumbItem API</h2>
+<h3>BreadcrumbItem Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>to</td>
+<td>路由跳转目标，同 <code>vue-router</code> 的 <code>to</code> 属性</td>
+<td><code>string</code> / <code>object</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>replace</td>
+<td>如果设置该属性为 <code>true</code>, 导航将不会留下历史记录</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>BreadcrumbItem Slots</h3>
+<table>
+<thead>
+<tr>
+<th>插槽名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/breadcrumb.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["breadcrumb"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

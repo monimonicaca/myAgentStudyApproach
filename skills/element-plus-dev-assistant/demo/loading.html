@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading 加载 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/loading.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Loading 加载</h1>
+  <span class="count">3 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（3）</div><a href="#ex-0">1. 区域加载</a>
+<a href="#ex-1">2. 自定义加载中组件内容</a>
+<a href="#ex-2">3. 让加载组件铺满整个屏幕</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>区域加载</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table v-loading=&quot;loading&quot; :data=&quot;tableData&quot; style=&quot;width: 100%&quot;&gt;
+
+    &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+  &lt;/el-table&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const loading = ref(true)
+
+const tableData = [
+
+  {
+
+    date: &#x27;2016-05-02&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-04&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-01&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+body {
+
+  margin: 0;
+
+}
+
+.example-showcase .el-loading-mask {
+
+  z-index: 9;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>自定义加载中组件内容</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table
+
+    v-loading=&quot;loading&quot;
+
+    element-loading-text=&quot;Loading...&quot;
+
+    :element-loading-spinner=&quot;svg&quot;
+
+    element-loading-svg-view-box=&quot;-10, -10, 50, 50&quot;
+
+    element-loading-background=&quot;rgba(122, 122, 122, 0.8)&quot;
+
+    :data=&quot;tableData&quot;
+
+    style=&quot;width: 100%&quot;
+
+  &gt;
+
+    &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+  &lt;/el-table&gt;
+
+  &lt;el-table
+
+    v-loading=&quot;loading&quot;
+
+    :element-loading-svg=&quot;svg&quot;
+
+    class=&quot;custom-loading-svg&quot;
+
+    element-loading-svg-view-box=&quot;-10, -10, 50, 50&quot;
+
+    :data=&quot;tableData&quot;
+
+    style=&quot;width: 100%&quot;
+
+  &gt;
+
+    &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+  &lt;/el-table&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const loading = ref(true)
+
+const svg = `
+
+        &lt;path class=&quot;path&quot; d=&quot;
+
+          M 30 15
+
+          L 28 17
+
+          M 25.61 25.61
+
+          A 15 15, 0, 0, 1, 15 30
+
+          A 15 15, 0, 1, 1, 27.99 7.5
+
+          L 15 15
+
+        &quot; style=&quot;stroke-width: 4px; fill: rgba(0, 0, 0, 0)&quot;/&gt;
+
+      `
+
+const tableData = [
+
+  {
+
+    date: &#x27;2016-05-02&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-04&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+  {
+
+    date: &#x27;2016-05-01&#x27;,
+
+    name: &#x27;John Smith&#x27;,
+
+    address: &#x27;No.1518,  Jinshajiang Road, Putuo District&#x27;,
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-showcase .el-loading-mask {
+
+  z-index: 9;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>让加载组件铺满整个屏幕</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button
+
+    v-loading.fullscreen.lock=&quot;fullscreenLoading&quot;
+
+    type=&quot;primary&quot;
+
+    @click=&quot;openFullScreen1&quot;
+
+  &gt;
+
+    As a directive
+
+  &lt;/el-button&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;openFullScreen2&quot;&gt; As a service &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+import { ElLoading } from &#x27;element-plus&#x27;
+
+const fullscreenLoading = ref(false)
+
+const openFullScreen1 = () =&gt; {
+
+  fullscreenLoading.value = true
+
+  setTimeout(() =&gt; {
+
+    fullscreenLoading.value = false
+
+  }, 2000)
+
+}
+
+const openFullScreen2 = () =&gt; {
+
+  const loading = ElLoading.service({
+
+    lock: true,
+
+    text: &#x27;Loading&#x27;,
+
+    background: &#x27;rgba(0, 0, 0, 0.7)&#x27;,
+
+  })
+
+  setTimeout(() =&gt; {
+
+    loading.close()
+
+  }, 2000)
+
+}
+
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Loading 加载</h1>
+<p>加载数据时显示动效。</p>
+<h2>区域加载</h2>
+<p>在需要的时候展示加载动画，防止页面失去响应提高用户体验（例如表格）。</p>
+<p>Element Plus 提供了两种调用 Loading 的方法：指令和服务。对于自定义指令 <code>v-loading</code>，只需要绑定 <code>boolean</code> 值即可。默认状况下，Loading 遮罩会插入到绑定元素的子节点。通过添加 <code>body</code> 修饰符，可以使遮罩插入至 Dom 中的 body 上。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table v-loading=&quot;loading&quot; :data=&quot;tableData&quot; style=&quot;width: 100%&quot;&gt;
+
+    &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+  &lt;/el-table&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const loading = ref(true)
+
+const tableData = [
+
+  {
+
+    date: '2016-05-02',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-04',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-01',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+body {
+
+  margin: 0;
+
+}
+
+.example-showcase .el-loading-mask {
+
+  z-index: 9;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>自定义加载中组件内容</h2>
+<p>你可以自定义加载中组件的文字，图标，以及背景颜色。</p>
+<p>在绑定了<code>v-loading</code>指令的元素上添加<code>element-loading-text</code>属性，其值会被渲染为加载文案，并显示在加载图标的下方。类似地，<code>element-loading-spinner</code>、<code>element-loading-background</code> 和 <code>element-loading-svg</code> 属性分别用来设定 svg 图标、背景色值、加载图标。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-table
+
+    v-loading=&quot;loading&quot;
+
+    element-loading-text=&quot;Loading...&quot;
+
+    :element-loading-spinner=&quot;svg&quot;
+
+    element-loading-svg-view-box=&quot;-10, -10, 50, 50&quot;
+
+    element-loading-background=&quot;rgba(122, 122, 122, 0.8)&quot;
+
+    :data=&quot;tableData&quot;
+
+    style=&quot;width: 100%&quot;
+
+  &gt;
+
+    &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+  &lt;/el-table&gt;
+
+  &lt;el-table
+
+    v-loading=&quot;loading&quot;
+
+    :element-loading-svg=&quot;svg&quot;
+
+    class=&quot;custom-loading-svg&quot;
+
+    element-loading-svg-view-box=&quot;-10, -10, 50, 50&quot;
+
+    :data=&quot;tableData&quot;
+
+    style=&quot;width: 100%&quot;
+
+  &gt;
+
+    &lt;el-table-column prop=&quot;date&quot; label=&quot;Date&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;name&quot; label=&quot;Name&quot; width=&quot;180&quot; /&gt;
+
+    &lt;el-table-column prop=&quot;address&quot; label=&quot;Address&quot; /&gt;
+
+  &lt;/el-table&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const loading = ref(true)
+
+const svg = `
+
+        &lt;path class=&quot;path&quot; d=&quot;
+
+          M 30 15
+
+          L 28 17
+
+          M 25.61 25.61
+
+          A 15 15, 0, 0, 1, 15 30
+
+          A 15 15, 0, 1, 1, 27.99 7.5
+
+          L 15 15
+
+        &quot; style=&quot;stroke-width: 4px; fill: rgba(0, 0, 0, 0)&quot;/&gt;
+
+      `
+
+const tableData = [
+
+  {
+
+    date: '2016-05-02',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-04',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+  {
+
+    date: '2016-05-01',
+
+    name: 'John Smith',
+
+    address: 'No.1518,  Jinshajiang Road, Putuo District',
+
+  },
+
+]
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-showcase .el-loading-mask {
+
+  z-index: 9;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p>虽然 <code>element-loading-spinner / element-loading-svg</code> 属性支持传入的 HTML 片段，但是动态在网站上渲染任意的 HTML 是非常危险的，因为很容易导致 <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS 攻击</a>。请确保 <code>element-loading-spinner / element-loading-svg</code>的内容是可信的，<strong>不要</strong>将用户提交的内容赋值给 <code>element-loading-spinner / element-loading-svg</code> 属性。</p>
+</blockquote>
+<h2>让加载组件铺满整个屏幕</h2>
+<p>加载数据时显示全屏动画。</p>
+<p>当使用指令方式时，全屏遮罩需要添加<code>fullscreen</code>修饰符（遮罩会插入至 body 上）此时若需要锁定屏幕的滚动，可以使用<code>lock</code>修饰符；当使用服务方式时，遮罩默认即为全屏，无需额外设置。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;el-button
+
+    v-loading.fullscreen.lock=&quot;fullscreenLoading&quot;
+
+    type=&quot;primary&quot;
+
+    @click=&quot;openFullScreen1&quot;
+
+  &gt;
+
+    As a directive
+
+  &lt;/el-button&gt;
+
+  &lt;el-button type=&quot;primary&quot; @click=&quot;openFullScreen2&quot;&gt; As a service &lt;/el-button&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+import { ElLoading } from 'element-plus'
+
+const fullscreenLoading = ref(false)
+
+const openFullScreen1 = () =&gt; {
+
+  fullscreenLoading.value = true
+
+  setTimeout(() =&gt; {
+
+    fullscreenLoading.value = false
+
+  }, 2000)
+
+}
+
+const openFullScreen2 = () =&gt; {
+
+  const loading = ElLoading.service({
+
+    lock: true,
+
+    text: 'Loading',
+
+    background: 'rgba(0, 0, 0, 0.7)',
+
+  })
+
+  setTimeout(() =&gt; {
+
+    loading.close()
+
+  }, 2000)
+
+}
+
+&lt;/script&gt;
+</code></pre>
+<h2>以服务的方式来调用</h2>
+<p>Loading 还可以以服务的方式调用。你可以像这样引入 Loading 服务：</p>
+<p>ts</p>
+<p><code>import { ElLoading } from 'element-plus'</code></p>
+<p>在你需要的时候通过下面的方式调用：</p>
+<p>ts</p>
+<p><code>ElLoading.service(options)</code></p>
+<p>其中<code>options</code>参数为 Loading 的配置项，具体见下表。 <code>LoadingService</code> 会返回一个 Loading 实例，可通过调用该实例的 <code>close</code> 方法来关闭它：</p>
+<p>ts</p>
+<p>`const loadingInstance = ElLoading.service(options)</p>
+<p>nextTick(() =&gt; {</p>
+<p>// Loading should be closed asynchronously</p>
+<p>loadingInstance.close()</p>
+<p>})`</p>
+<p>需要注意的是，以服务的方式调用的全屏 Loading 是单例的。若在前一个全屏 Loading 关闭前再次调用全屏 Loading，并不会创建一个新的 Loading 实例，而是返回现有全屏 Loading 的实例：</p>
+<p>ts</p>
+<p>`const loadingInstance1 = ElLoading.service({ fullscreen: true })</p>
+<p>const loadingInstance2 = ElLoading.service({ fullscreen: true })</p>
+<p>console.log(loadingInstance1 === loadingInstance2) // true`</p>
+<p>此时调用它们中任意一个的 <code>close</code> 方法都能关闭这个全屏 Loading。</p>
+<p>如果完整引入了 Element Plus，那么 <code>app.config.globalProperties</code> 上会有一个全局方法<code>$loading</code>，它的调用方式为：<code>this.$loading(options)</code>，同样会返回一个 Loading 实例。</p>
+<h2>应用程序上下文 2.9.10</h2>
+<p>现在 Loading 接受一条 <code>context</code> 作为消息构造器的第二个参数，允许你将当前应用的上下文注入到 Loading 中，这将允许你继承应用程序的所有属性。</p>
+<p>你可以像这样使用它：</p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>如果您全局注册了 ELLoading 组件，它将自动继承应用的上下文环境。</p>
+</blockquote>
+<p>ts</p>
+<p>`import { getCurrentInstance } from 'vue'</p>
+<p>import { ElLoading } from 'element-plus'</p>
+<p>// in your setup method</p>
+<p>const { appContext } = getCurrentInstance()!</p>
+<p>ElLoading.service({}, appContext)`</p>
+<h2>API</h2>
+<h3>配置项</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>Loading 需要覆盖的 DOM 节点。可传入一个 DOM 对象或字符串；若传入字符串，则会将其作为参数传入 <code>document.querySelector</code>以获取到对应 DOM 节点</td>
+<td><code>string</code> / <code>HTMLElement</code></td>
+<td>document.body</td>
+</tr>
+<tr>
+<td>body</td>
+<td>同 <code>v-loading</code> 指令中的 <code>body</code> 修饰符</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>fullscreen</td>
+<td>同 <code>v-loading</code> 指令中的 <code>fullscreen</code> 修饰符</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>lock</td>
+<td>同 <code>v-loading</code> 指令中的 <code>lock</code> 修饰符</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>text</td>
+<td>显示在加载图标下方的加载文案</td>
+<td><code>string</code> / <code>VNode</code> / <code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>spinner</td>
+<td>自定义加载图标类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>background</td>
+<td>遮罩背景色</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>customClass</td>
+<td>Loading 的自定义类名</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>svg</td>
+<td>自定义 SVG 元素覆盖默认加载器</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>svgViewBox</td>
+<td>设置用于加载 svg 元素的 viewBox 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>beforeClose 2.7.8</td>
+<td>Loading 关闭之前执行的函数。如果此函数返回 false ，关闭过程将被中止。反之，loading 将被关闭。</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>closed 2.7.8</td>
+<td>Loading 完全关闭后触发的函数</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>指令</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v-loading</td>
+<td>是否显示动画</td>
+<td><code>boolean</code> / <code>LoadingOptions</code></td>
+</tr>
+<tr>
+<td>element-loading-text</td>
+<td>显示在加载图标下方的加载文案</td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>element-loading-spinner</td>
+<td>自定义加载图标</td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>element-loading-svg</td>
+<td>自定义加载图标 (与 element-loading-spinner 相同)</td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>element-loading-svg-view-box</td>
+<td>设置用于加载 svg 元素的 viewBox 属性</td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>element-loading-background</td>
+<td>背景遮罩的颜色</td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>element-loading-custom-class</td>
+<td>loading 的自定义类名</td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/loading.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["loading"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

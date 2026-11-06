@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TimePicker 时间选择器 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/time-picker.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>TimePicker 时间选择器</h1>
+  <span class="count">3 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（3）</div><a href="#ex-0">1. 任意时间点</a>
+<a href="#ex-1">2. 限制时间选择范围</a>
+<a href="#ex-2">3. 任意时间范围</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>任意时间点</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;example-basic&quot;&gt;
+
+    &lt;el-time-picker v-model=&quot;value1&quot; placeholder=&quot;Arbitrary time&quot; /&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value2&quot;
+
+      arrow-control
+
+      placeholder=&quot;Arbitrary time&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const value1 = ref()
+
+const value2 = ref()
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-basic .el-date-editor {
+
+  margin: 8px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-1"><h3><span class="idx">2</span>限制时间选择范围</h3><div class="demo-card"><div class="mount" id="mount-1"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;example-basic&quot;&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value1&quot;
+
+      :disabled-hours=&quot;disabledHours&quot;
+
+      :disabled-minutes=&quot;disabledMinutes&quot;
+
+      :disabled-seconds=&quot;disabledSeconds&quot;
+
+      placeholder=&quot;Arbitrary time&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const value1 = ref(new Date(2016, 9, 10, 18, 30))
+
+const makeRange = (start: number, end: number) =&gt; {
+
+  const result: number[] = []
+
+  for (let i = start; i &lt;= end; i++) {
+
+    result.push(i)
+
+  }
+
+  return result
+
+}
+
+const disabledHours = () =&gt; {
+
+  return makeRange(0, 16).concat(makeRange(19, 23))
+
+}
+
+const disabledMinutes = (hour: number) =&gt; {
+
+  if (hour === 17) {
+
+    return makeRange(0, 29)
+
+  }
+
+  if (hour === 18) {
+
+    return makeRange(31, 59)
+
+  }
+
+  return []
+
+}
+
+const disabledSeconds = (hour: number, minute: number) =&gt; {
+
+  if (hour === 18 &amp;&amp; minute === 30) {
+
+    return makeRange(1, 59)
+
+  }
+
+  return []
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-basic .el-date-editor {
+
+  margin: 8px;
+
+}
+
+&lt;/style&gt;</code></pre></details></section>
+<section class="ex" id="ex-2"><h3><span class="idx">3</span>任意时间范围</h3><div class="demo-card"><div class="mount" id="mount-2"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-range&quot;&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value1&quot;
+
+      is-range
+
+      range-separator=&quot;To&quot;
+
+      start-placeholder=&quot;Start time&quot;
+
+      end-placeholder=&quot;End time&quot;
+
+    /&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value2&quot;
+
+      is-range
+
+      arrow-control
+
+      range-separator=&quot;To&quot;
+
+      start-placeholder=&quot;Start time&quot;
+
+      end-placeholder=&quot;End time&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from &#x27;vue&#x27;
+
+const value1 = ref&lt;[Date, Date]&gt;([
+
+  new Date(2016, 9, 10, 8, 40),
+
+  new Date(2016, 9, 10, 9, 40),
+
+])
+
+const value2 = ref&lt;[Date, Date]&gt;([
+
+  new Date(2016, 9, 10, 8, 40),
+
+  new Date(2016, 9, 10, 9, 40),
+
+])
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-range .el-date-editor {
+
+  margin: 8px;
+
+}
+
+.demo-range .el-range-separator {
+
+  box-sizing: content-box;
+
+}
+
+&lt;/style&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>TimePicker 时间选择器</h1>
+<p>用于选择或输入日期</p>
+<h2>任意时间点</h2>
+<p>可以选择任意时间</p>
+<p>提供了两种交互方式：默认情况下通过鼠标滚轮进行选择，打开<code>arrow-control</code>属性则通过界面上的箭头进行选择。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;example-basic&quot;&gt;
+
+    &lt;el-time-picker v-model=&quot;value1&quot; placeholder=&quot;Arbitrary time&quot; /&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value2&quot;
+
+      arrow-control
+
+      placeholder=&quot;Arbitrary time&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref()
+
+const value2 = ref()
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-basic .el-date-editor {
+
+  margin: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>限制时间选择范围</h2>
+<p>您也可以限制时间选择范围。</p>
+<p>通过 <code>disabledHours</code>，<code>disabledMinutes</code> 和 <code>disabledSeconds</code> 限制可选时间范围。,</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;example-basic&quot;&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value1&quot;
+
+      :disabled-hours=&quot;disabledHours&quot;
+
+      :disabled-minutes=&quot;disabledMinutes&quot;
+
+      :disabled-seconds=&quot;disabledSeconds&quot;
+
+      placeholder=&quot;Arbitrary time&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref(new Date(2016, 9, 10, 18, 30))
+
+const makeRange = (start: number, end: number) =&gt; {
+
+  const result: number[] = []
+
+  for (let i = start; i &lt;= end; i++) {
+
+    result.push(i)
+
+  }
+
+  return result
+
+}
+
+const disabledHours = () =&gt; {
+
+  return makeRange(0, 16).concat(makeRange(19, 23))
+
+}
+
+const disabledMinutes = (hour: number) =&gt; {
+
+  if (hour === 17) {
+
+    return makeRange(0, 29)
+
+  }
+
+  if (hour === 18) {
+
+    return makeRange(31, 59)
+
+  }
+
+  return []
+
+}
+
+const disabledSeconds = (hour: number, minute: number) =&gt; {
+
+  if (hour === 18 &amp;&amp; minute === 30) {
+
+    return makeRange(1, 59)
+
+  }
+
+  return []
+
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.example-basic .el-date-editor {
+
+  margin: 8px;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>任意时间范围</h2>
+<p>可选择任意的时间范围</p>
+<p>添加<code>is-range</code>属性即可选择时间范围。同样支持 <code>arrow-control</code> 属性。</p>
+<pre><code class="language-vue">&lt;template&gt;
+
+  &lt;div class=&quot;demo-range&quot;&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value1&quot;
+
+      is-range
+
+      range-separator=&quot;To&quot;
+
+      start-placeholder=&quot;Start time&quot;
+
+      end-placeholder=&quot;End time&quot;
+
+    /&gt;
+
+    &lt;el-time-picker
+
+      v-model=&quot;value2&quot;
+
+      is-range
+
+      arrow-control
+
+      range-separator=&quot;To&quot;
+
+      start-placeholder=&quot;Start time&quot;
+
+      end-placeholder=&quot;End time&quot;
+
+    /&gt;
+
+  &lt;/div&gt;
+
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+
+import { ref } from 'vue'
+
+const value1 = ref&lt;[Date, Date]&gt;([
+
+  new Date(2016, 9, 10, 8, 40),
+
+  new Date(2016, 9, 10, 9, 40),
+
+])
+
+const value2 = ref&lt;[Date, Date]&gt;([
+
+  new Date(2016, 9, 10, 8, 40),
+
+  new Date(2016, 9, 10, 9, 40),
+
+])
+
+&lt;/script&gt;
+
+&lt;style&gt;
+
+.demo-range .el-date-editor {
+
+  margin: 8px;
+
+}
+
+.demo-range .el-range-separator {
+
+  box-sizing: content-box;
+
+}
+
+&lt;/style&gt;
+</code></pre>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>model-value / v-model</td>
+<td>绑定值，如果它是数组，长度应该是 2</td>
+<td><code>number</code> / <code>string</code> / <code>object</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>readonly</td>
+<td>完全只读</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>禁用</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>editable</td>
+<td>文本框可输入</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>clearable</td>
+<td>是否显示清除按钮</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>size</td>
+<td>输入框尺寸</td>
+<td><code>enum</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>非范围选择时的占位内容</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>start-placeholder</td>
+<td>范围选择时开始日期的占位内容</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>end-placeholder</td>
+<td>范围选择时结束日期的占位内容</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>is-range</td>
+<td>是否为时间范围选择</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>arrow-control</td>
+<td>是否使用箭头进行时间选择</td>
+<td><code>boolean</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td>popper-class</td>
+<td>TimePicker 下拉框的类名</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>popper-style</td>
+<td>为 TimePicke 的下拉菜单自定义样式</td>
+<td><code>string</code> / <code>object</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>popper-options</td>
+<td>自定义 popper 选项，更多请参考 <a href="https://popper.js.org/docs/v2/">popper.js</a></td>
+<td><code>object</code></td>
+<td>{}</td>
+</tr>
+<tr>
+<td>fallback-placements 2.8.4</td>
+<td>Tooltip 可用的 positions 请查看<a href="https://popper.js.org/docs/v2/modifiers/flip/#fallbackplacements">popper.js 文档</a></td>
+<td><code>array</code></td>
+<td>['bottom', 'top', 'right', 'left']</td>
+</tr>
+<tr>
+<td>placement 2.8.4</td>
+<td>下拉框出现的位置</td>
+<td><code>展示位置</code></td>
+<td>bottom</td>
+</tr>
+<tr>
+<td>range-separator</td>
+<td>选择范围时的分隔符</td>
+<td><code>string</code></td>
+<td>'-'</td>
+</tr>
+<tr>
+<td>format</td>
+<td>显示在输入框中的格式</td>
+<td><code>string</code> 参考 <a href="./date-picker#date-formats">日期格式</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>default-value</td>
+<td>可选，选择器打开时默认显示的时间</td>
+<td><code>Date</code> / <code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-format</td>
+<td>可选，绑定值的格式。不指定则绑定值为 Date 对象</td>
+<td><code>string</code> 参考 <a href="./date-picker#date-formats">日期格式</a></td>
+<td>—</td>
+</tr>
+<tr>
+<td>id</td>
+<td>等价于原生 input <code>id</code> 属性</td>
+<td><code>string</code> / <code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td>等价于原生 input <code>name</code> 属性</td>
+<td><code>string</code></td>
+<td>''</td>
+</tr>
+<tr>
+<td>aria-label a11y 2.7.2</td>
+<td>等价于原生 input <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>prefix-icon</td>
+<td>自定义前缀图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>Clock</td>
+</tr>
+<tr>
+<td>clear-icon</td>
+<td>自定义清除图标</td>
+<td><code>string</code> / <code>Component</code></td>
+<td>CircleClose</td>
+</tr>
+<tr>
+<td>disabled-hours</td>
+<td>禁止选择部分小时选项</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled-minutes</td>
+<td>禁止选择部分分钟选项</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>disabled-seconds</td>
+<td>禁止选择部分秒选项</td>
+<td><code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>teleported</td>
+<td>是否将 popover 的下拉列表镜像至 body 元素</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>tabindex</td>
+<td>输入框的 tabindex</td>
+<td><code>string</code> / <code>number</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>empty-values 2.7.0</td>
+<td>组件的空值配置， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>array</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>value-on-clear 2.7.0</td>
+<td>清空选项的值， <a href="./config-provider#empty-values-configurations">参考config-provider</a></td>
+<td><code>string</code> / <code>number</code> / <code>boolean</code> / <code>Function</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>save-on-blur 2.13.4</td>
+<td>当未选择任何值时，是否在获得焦点时自动填充为当前时间。</td>
+<td><code>boolean</code></td>
+<td>true</td>
+</tr>
+<tr>
+<td>label a11y deprecated</td>
+<td>等价于原生 input <code>aria-label</code> 属性</td>
+<td><code>string</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>事件</h3>
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>change</td>
+<td>用户确认选定的值时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>在组件 Input 失去焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>focus</td>
+<td>在组件 Input 获得焦点时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>clear 2.7.7</td>
+<td>可清空的模式下用户点击清空按钮时触发</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>visible-change</td>
+<td>当 TimePicker 的下拉列表出现/消失时触发</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h3>暴露</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>使组件获取焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>blur</td>
+<td>使组件失去焦点</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleOpen 2.2.16</td>
+<td>打开时间选择器弹窗</td>
+<td><code>Function</code></td>
+</tr>
+<tr>
+<td>handleClose 2.2.16</td>
+<td>关闭时间选择器弹窗</td>
+<td><code>Function</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Type Declarations</h2>
+<p>Show declarationsts`type Placement =</p>
+<p>| 'top'</p>
+<p>| 'top-start'</p>
+<p>| 'top-end'</p>
+<p>| 'bottom'</p>
+<p>| 'bottom-start'</p>
+<p>| 'bottom-end'</p>
+<p>| 'left'</p>
+<p>| 'left-start'</p>
+<p>| 'left-end'</p>
+<p>| 'right'</p>
+<p>| 'right-start'</p>
+<p>| 'right-end'`</p></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/time-picker.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["time-picker"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

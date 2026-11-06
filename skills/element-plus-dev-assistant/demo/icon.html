@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icon 图标 · Element Plus 演示</title>
+<link rel="stylesheet" href="lib/element-plus.css">
+<link rel="stylesheet" href="lib/highlight.css">
+<link rel="stylesheet" href="build/icon.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#1f2d3d}
+.topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #e4e7ed;display:flex;align-items:center;gap:14px;padding:0 22px;height:56px}
+.topbar .home{color:#409EFF;text-decoration:none;font-size:13px;border:1px solid #d9ecff;background:#ecf5ff;padding:5px 12px;border-radius:16px}
+.topbar .home:hover{background:#409EFF;color:#fff}
+.topbar h1{font-size:17px;margin:0;font-weight:600}
+.topbar .count{margin-left:auto;font-size:12px;color:#909399}
+.layout{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;padding:18px 10px 40px 18px}
+.side .side-title{font-size:12px;color:#909399;letter-spacing:1px;margin:0 8px 8px}
+.side a{display:block;color:#606266;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;line-height:1.4}
+.side a:hover{background:#ecf5ff;color:#409EFF}
+.content{flex:1;min-width:0;padding:18px 26px 60px}
+.tabs{display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:10px;padding:4px;width:max-content;margin-bottom:18px}
+.tab{border:none;background:none;padding:8px 22px;font-size:14px;color:#606266;border-radius:8px;cursor:pointer}
+.tab.active{background:#409EFF;color:#fff;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.ex{background:#fff;border:1px solid #e4e7ed;border-radius:12px;margin-bottom:20px;overflow:hidden;scroll-margin-top:70px}
+.ex h3{margin:0;padding:15px 20px;font-size:15px;border-bottom:1px solid #f0f2f5;display:flex;align-items:center;gap:10px}
+.ex h3 .idx{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#ecf5ff;color:#409EFF;font-size:12px;align-items:center;justify-content:center;font-weight:600}
+.demo-card{padding:22px 20px}
+.code-box{border-top:1px dashed #ebeef5}
+.code-box summary{cursor:pointer;padding:11px 20px;font-size:13px;color:#409EFF;user-select:none;outline:none}
+.code-box summary:hover{background:#fafcff}
+.code-box pre{margin:0;padding:0 20px 18px;overflow:auto;background:#fff}
+.code-box pre code{background:#f6f8fa;border-radius:8px;display:block;padding:14px 16px;font-size:12.5px;line-height:1.6}
+.markdown-body{background:#fff;border:1px solid #e4e7ed;border-radius:12px;padding:26px 30px;line-height:1.75;font-size:14px}
+.markdown-body h1{font-size:23px;border-bottom:1px solid #eee;padding-bottom:8px}
+.markdown-body h2{font-size:19px;border-bottom:1px solid #eee;padding-bottom:6px;margin-top:28px}
+.markdown-body h3{font-size:16px;margin-top:20px}
+.markdown-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.markdown-body th,.markdown-body td{border:1px solid #ebeef5;padding:8px 12px;font-size:13px}
+.markdown-body th{background:#fafafa}
+.markdown-body code{background:#f6f7f9;padding:1px 5px;border-radius:3px;font-family:Consolas,Menlo,monospace;font-size:13px}
+.markdown-body pre{background:#f6f7f9;border-radius:6px;padding:14px;overflow:auto}
+.markdown-body pre code{background:none;padding:0}
+.markdown-body blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid #409EFF;background:#f4f8ff;color:#5a6b7b}
+.markdown-body img{max-width:100%}
+.demo-card .icon-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.layout{display:block}.side{display:none}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="home" href="index.html">← 全部组件</a>
+  <h1>Icon 图标</h1>
+  <span class="count">1 个示例 · 离线可用</span>
+</header>
+<div class="layout">
+  <aside class="side"><div class="side-title">示例目录（1）</div><a href="#ex-0">1. 图标示例</a></aside>
+  <main class="content">
+    <div class="tabs">
+      <button class="tab active" data-t="demo">在线演示</button>
+      <button class="tab" data-t="doc">文档参考</button>
+    </div>
+    <section id="demo" class="panel active"><section class="ex" id="ex-0"><h3><span class="idx">1</span>图标示例</h3><div class="demo-card"><div class="mount" id="mount-0"></div></div><details class="code-box"><summary>查看源代码</summary><pre><code class="language-vue">&lt;template&gt;
+  &lt;div class=&quot;icon-row&quot;&gt;
+    &lt;el-icon :size=&quot;28&quot;&gt;&lt;Edit /&gt;&lt;/el-icon&gt;
+    &lt;el-icon :size=&quot;28&quot; color=&quot;#409EFF&quot;&gt;&lt;Search /&gt;&lt;/el-icon&gt;
+    &lt;el-icon :size=&quot;28&quot; color=&quot;#67C23A&quot;&gt;&lt;Check /&gt;&lt;/el-icon&gt;
+    &lt;el-icon :size=&quot;28&quot; color=&quot;#E6A23C&quot;&gt;&lt;Star /&gt;&lt;/el-icon&gt;
+    &lt;el-icon :size=&quot;28&quot; color=&quot;#F56C6C&quot;&gt;&lt;Delete /&gt;&lt;/el-icon&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+import { Check, Delete, Edit, Search, Star } from &quot;@element-plus/icons-vue&quot;
+&lt;/script&gt;</code></pre></details></section></section>
+    <section id="doc" class="panel"><div class="markdown-body"><h1>Icon 图标</h1>
+<p>Element Plus 提供了一套常用的图标集合。</p>
+<h2>使用图标</h2>
+<ul>
+<li>如果你想像用例一样<strong>直接使用</strong>，你需要<a href="https://v3.vuejs.org/guide/component-registration.html#global-registration">全局注册组件</a>，才能够直接在项目里使用。</li>
+<li>如若需要查看所有可用的 SVG 图标请查阅 <a href="https://unpkg.com/browse/@element-plus/icons-vue@1/dist/es/">@element-plus/icons-vue@1.x</a><a href="https://unpkg.com/browse/@element-plus/icons-vue@latest/dist/types/components/">@element-plus/icons-vue@latest</a> 和有关 <a href="#icon-collection">Icon Collection</a> 的源码 <a href="https://github.com/element-plus/element-plus-icons">element-plus-icons</a></li>
+</ul>
+<h2>安装</h2>
+<h3>使用包管理器</h3>
+<h1>选择一个你喜欢的包管理器</h1>
+<p>npm</p>
+<p>yarn</p>
+<p>pnpm</p>
+<p>shell</p>
+<p><code>$ npm install @element-plus/icons-vue</code></p>
+<p>shell</p>
+<p><code>$ yarn add @element-plus/icons-vue</code></p>
+<p>shell</p>
+<p><code>$ pnpm install @element-plus/icons-vue</code></p>
+<h3>注册所有图标</h3>
+<p>您需要从 <code>@element-plus/icons-vue</code> 中导入所有图标并进行全局注册。</p>
+<p>ts</p>
+<p>`// main.ts</p>
+<p>// 如果您正在使用CDN引入，请删除下面一行。</p>
+<p>import * as ElementPlusIconsVue from '@element-plus/icons-vue'</p>
+<p>const app = createApp(App)</p>
+<p>for (const [key, component] of Object.entries(ElementPlusIconsVue)) {</p>
+<p>app.component(key, component)</p>
+<p>}`</p>
+<p>您也可以参考 <a href="https://codepen.io/sxzz/pen/xxpvdrg">此模板</a>。</p>
+<h3>浏览器直接引入</h3>
+<p>直接通过浏览器的 HTML 标签导入 Element Plus，然后就可以使用全局变量 <code>ElementPlusIconsVue</code>了。</p>
+<p>根据不同的 CDN 提供商有不同的引入方式，根据不同的 CDN 提供商有不同的引入方式， 我们在这里以 <a href="https://unpkg.com">unpkg</a> 和 <a href="https://jsdelivr.com">jsDelivr</a> 举例。你也可以使用其它的 CDN 供应商。</p>
+<p>unpkg</p>
+<p>jsDelivr</p>
+<p>html</p>
+<p><code>&lt;script src="//unpkg.com/@element-plus/icons-vue"&gt;&lt;/script&gt;</code></p>
+<p>html</p>
+<p><code>&lt;script src="//cdn.jsdelivr.net/npm/@element-plus/icons-vue"&gt;&lt;/script&gt;</code></p>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>我们建议使用 CDN 引入 Element Plus 的用户在链接地址上锁定版本，以免将来 Element Plus 升级时受到非兼容性更新的影响。锁定版本的方法请查看 <a href="https://unpkg.com">unpkg.com</a>。</p>
+</blockquote>
+<h3>自动导入</h3>
+<p>使用 <a href="https://github.com/antfu/unplugin-icons">unplugin-icons</a> 和 <a href="https://github.com/antfu/unplugin-auto-import">unplugin-auto-import</a> 从 iconify 中自动导入任何图标集。您可以参考<a href="https://github.com/sxzz/element-plus-best-practices/blob/db2dfc983ccda5570033a0ac608a1bd9d9a7f658/vite.config.ts#L21-L58">此模板</a>。</p>
+<h2>基础用法</h2>
+<blockquote>
+<p><strong>WARNING</strong></p>
+<p>由于 HTML 标准已经定义了一个名为 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/menu">menu</a> 的标签，如果你注册的 <code>Menu</code> 无法正常工作，则需要使用别名来渲染图标。</p>
+</blockquote>
+<p>vue</p>
+<p>`<!-- 使用 el-icon 为 SVG 图标提供属性 --></p>
+<p><template></p>
+<div>
+
+    <el-icon :size="size" :color="color">
+
+      <Edit />
+
+    </el-icon>
+
+    <!-- 或者独立使用它，不从父级获取属性 -->
+
+    <Edit />
+
+  </div>
+
+<p></template>`</p>
+<h2>结合 el-icon 使用</h2>
+<p><code>el-icon</code> 为原始的 SVG 图标提供额外的属性，细节如下。</p>
+<p>vue</p>
+<p>`<template></p>
+<p>
+
+    with extra class <b>is-loading</b>, your icon is able to rotate 360 deg in 2
+
+    seconds, you can also override this
+
+  </p>
+
+<p><el-icon :size="20"></p>
+<pre><code>&lt;Edit /&gt;
+</code></pre>
+<p></el-icon></p>
+<p><el-icon color="#409efc" class="no-inherit"></p>
+<pre><code>&lt;Share /&gt;
+</code></pre>
+<p></el-icon></p>
+<p><el-icon></p>
+<pre><code>&lt;Delete /&gt;
+</code></pre>
+<p></el-icon></p>
+<p><el-icon class="is-loading"></p>
+<pre><code>&lt;Loading /&gt;
+</code></pre>
+<p></el-icon></p>
+<p><el-button type="primary"></p>
+<pre><code>&lt;el-icon style="vertical-align: middle"&gt;
+
+  &lt;Search /&gt;
+
+&lt;/el-icon&gt;
+
+&lt;span style="vertical-align: middle"&gt; Search &lt;/span&gt;
+</code></pre>
+<p></el-button></p>
+<p></template>`</p>
+<p>通过添加额外的类名 <strong>is-loading</strong>，你的图标就可以在 2 秒内旋转 360 度，当然你也可以自己改写想要的动画。</p>
+<p>** 搜索</p>
+<h2>直接使用 SVG 图标</h2>
+<p>vue</p>
+<p>`<template></p>
+<div style="font-size: 20px">
+
+    <!-- 由于SVG图标默认不携带任何属性 -->
+
+    <!-- 你需要直接提供它们 -->
+
+    <Edit style="width: 1em; height: 1em; margin-right: 8px" />
+
+    <Share style="width: 1em; height: 1em; margin-right: 8px" />
+
+    <Delete style="width: 1em; height: 1em; margin-right: 8px" />
+
+    <Search style="width: 1em; height: 1em; margin-right: 8px" />
+
+  </div>
+
+<p></template>`</p>
+<h2>图标集合</h2>
+<blockquote>
+<p><strong>TIP</strong></p>
+<p>只要你安装了 @element-plus/icons-vue，<strong>就可以在任意版本里使用 SVG 图标</strong>。</p>
+<p><strong>您可以点击图标复制代码</strong></p>
+</blockquote>
+<p>Copy SVG content</p>
+<p>Copy icon code</p>
+<p>**</p>
+<p>System</p>
+<ul>
+<li>**Plus</li>
+<li>**Minus</li>
+<li>**CirclePlus</li>
+<li>**Search</li>
+<li>**Female</li>
+<li>**Male</li>
+<li>**Aim</li>
+<li>**House</li>
+<li>**FullScreen</li>
+<li>**Loading</li>
+<li>**Link</li>
+<li>**Service</li>
+<li>**Pointer</li>
+<li>**Star</li>
+<li>**Notification</li>
+<li>**Connection</li>
+<li>**ChatDotRound</li>
+<li>**Setting</li>
+<li>**Clock</li>
+<li>**Position</li>
+<li>**Discount</li>
+<li>**Odometer</li>
+<li>**ChatSquare</li>
+<li>**ChatRound</li>
+<li>**ChatLineRound</li>
+<li>**ChatLineSquare</li>
+<li>**ChatDotSquare</li>
+<li>**View</li>
+<li>**Hide</li>
+<li>**Unlock</li>
+<li>**Lock</li>
+<li>**RefreshRight</li>
+<li>**RefreshLeft</li>
+<li>**Refresh</li>
+<li>**Bell</li>
+<li>**MuteNotification</li>
+<li>**User</li>
+<li>**Check</li>
+<li>**CircleCheck</li>
+<li>**Warning</li>
+<li>**CircleClose</li>
+<li>**Close</li>
+<li>**PieChart</li>
+<li>**More</li>
+<li>**Compass</li>
+<li>**Filter</li>
+<li>**Switch</li>
+<li>**Select</li>
+<li>**SemiSelect</li>
+<li>**CloseBold</li>
+<li>**EditPen</li>
+<li>**Edit</li>
+<li>**Message</li>
+<li>**MessageBox</li>
+<li>**TurnOff</li>
+<li>**Finished</li>
+<li>**Delete</li>
+<li>**Crop</li>
+<li>**SwitchButton</li>
+<li>**Operation</li>
+<li>**Open</li>
+<li>**Remove</li>
+<li>**ZoomOut</li>
+<li>**ZoomIn</li>
+<li>**InfoFilled</li>
+<li>**CircleCheckFilled</li>
+<li>**SuccessFilled</li>
+<li>**WarningFilled</li>
+<li>**CircleCloseFilled</li>
+<li>**QuestionFilled</li>
+<li>**WarnTriangleFilled</li>
+<li>**UserFilled</li>
+<li>**MoreFilled</li>
+<li>**Tools</li>
+<li>**HomeFilled</li>
+<li>**Menu</li>
+<li>**UploadFilled</li>
+<li>**Avatar</li>
+<li>**HelpFilled</li>
+<li>**Share</li>
+<li>**StarFilled</li>
+<li>**Comment</li>
+<li>**Histogram</li>
+<li>**Grid</li>
+<li>**Promotion</li>
+<li>**DeleteFilled</li>
+<li>**RemoveFilled</li>
+<li>**CirclePlusFilled</li>
+</ul>
+<p>Arrow</p>
+<ul>
+<li>**ArrowLeft</li>
+<li>**ArrowUp</li>
+<li>**ArrowRight</li>
+<li>**ArrowDown</li>
+<li>**ArrowLeftBold</li>
+<li>**ArrowUpBold</li>
+<li>**ArrowRightBold</li>
+<li>**ArrowDownBold</li>
+<li>**DArrowRight</li>
+<li>**DArrowLeft</li>
+<li>**Download</li>
+<li>**Upload</li>
+<li>**Top</li>
+<li>**Bottom</li>
+<li>**Back</li>
+<li>**Right</li>
+<li>**TopRight</li>
+<li>**TopLeft</li>
+<li>**BottomRight</li>
+<li>**BottomLeft</li>
+<li>**Sort</li>
+<li>**SortUp</li>
+<li>**SortDown</li>
+<li>**Rank</li>
+<li>**CaretLeft</li>
+<li>**CaretTop</li>
+<li>**CaretRight</li>
+<li>**CaretBottom</li>
+<li>**DCaret</li>
+<li>**Expand</li>
+<li>**Fold</li>
+</ul>
+<p>Document</p>
+<ul>
+<li>**DocumentAdd</li>
+<li>**Document</li>
+<li>**Notebook</li>
+<li>**Tickets</li>
+<li>**Memo</li>
+<li>**Collection</li>
+<li>**Postcard</li>
+<li>**ScaleToOriginal</li>
+<li>**SetUp</li>
+<li>**DocumentDelete</li>
+<li>**DocumentChecked</li>
+<li>**DataBoard</li>
+<li>**DataAnalysis</li>
+<li>**CopyDocument</li>
+<li>**FolderChecked</li>
+<li>**Files</li>
+<li>**Folder</li>
+<li>**FolderDelete</li>
+<li>**FolderRemove</li>
+<li>**FolderOpened</li>
+<li>**DocumentCopy</li>
+<li>**DocumentRemove</li>
+<li>**FolderAdd</li>
+<li>**FirstAidKit</li>
+<li>**Reading</li>
+<li>**DataLine</li>
+<li>**Management</li>
+<li>**Checked</li>
+<li>**Ticket</li>
+<li>**Failed</li>
+<li>**TrendCharts</li>
+<li>**List</li>
+</ul>
+<p>Media</p>
+<ul>
+<li>**Microphone</li>
+<li>**Mute</li>
+<li>**Mic</li>
+<li>**VideoPause</li>
+<li>**VideoCamera</li>
+<li>**VideoPlay</li>
+<li>**Headset</li>
+<li>**Monitor</li>
+<li>**Film</li>
+<li>**Camera</li>
+<li>**Picture</li>
+<li>**PictureRounded</li>
+<li>**Iphone</li>
+<li>**Cellphone</li>
+<li>**VideoCameraFilled</li>
+<li>**PictureFilled</li>
+<li>**Platform</li>
+<li>**CameraFilled</li>
+<li>**BellFilled</li>
+</ul>
+<p>Traffic</p>
+<ul>
+<li>**Location</li>
+<li>**LocationInformation</li>
+<li>**DeleteLocation</li>
+<li>**Coordinate</li>
+<li>**Bicycle</li>
+<li>**OfficeBuilding</li>
+<li>**School</li>
+<li>**Guide</li>
+<li>**AddLocation</li>
+<li>**MapLocation</li>
+<li>**Place</li>
+<li>**LocationFilled</li>
+<li>**Van</li>
+</ul>
+<p>Food</p>
+<ul>
+<li>**Watermelon</li>
+<li>**Pear</li>
+<li>**NoSmoking</li>
+<li>**Smoking</li>
+<li>**Mug</li>
+<li>**GobletSquareFull</li>
+<li>**GobletFull</li>
+<li>**KnifeFork</li>
+<li>**Sugar</li>
+<li>**Bowl</li>
+<li>**MilkTea</li>
+<li>**Lollipop</li>
+<li>**Coffee</li>
+<li>**Chicken</li>
+<li>**Dish</li>
+<li>**IceTea</li>
+<li>**ColdDrink</li>
+<li>**CoffeeCup</li>
+<li>**DishDot</li>
+<li>**IceDrink</li>
+<li>**IceCream</li>
+<li>**Dessert</li>
+<li>**IceCreamSquare</li>
+<li>**ForkSpoon</li>
+<li>**IceCreamRound</li>
+<li>**Food</li>
+<li>**HotWater</li>
+<li>**Grape</li>
+<li>**Fries</li>
+<li>**Apple</li>
+<li>**Burger</li>
+<li>**Goblet</li>
+<li>**GobletSquare</li>
+<li>**Orange</li>
+<li>**Cherry</li>
+</ul>
+<p>Items</p>
+<ul>
+<li>**Printer</li>
+<li>**Calendar</li>
+<li>**CreditCard</li>
+<li>**Box</li>
+<li>**Money</li>
+<li>**Refrigerator</li>
+<li>**Cpu</li>
+<li>**Football</li>
+<li>**Brush</li>
+<li>**Suitcase</li>
+<li>**SuitcaseLine</li>
+<li>**Umbrella</li>
+<li>**AlarmClock</li>
+<li>**Medal</li>
+<li>**GoldMedal</li>
+<li>**Present</li>
+<li>**Mouse</li>
+<li>**Watch</li>
+<li>**QuartzWatch</li>
+<li>**Magnet</li>
+<li>**Help</li>
+<li>**Soccer</li>
+<li>**ToiletPaper</li>
+<li>**ReadingLamp</li>
+<li>**Paperclip</li>
+<li>**MagicStick</li>
+<li>**Basketball</li>
+<li>**Baseball</li>
+<li>**Coin</li>
+<li>**Goods</li>
+<li>**Sell</li>
+<li>**SoldOut</li>
+<li>**Key</li>
+<li>**ShoppingCart</li>
+<li>**ShoppingCartFull</li>
+<li>**ShoppingTrolley</li>
+<li>**Phone</li>
+<li>**Scissor</li>
+<li>**Handbag</li>
+<li>**ShoppingBag</li>
+<li>**Trophy</li>
+<li>**TrophyBase</li>
+<li>**Stopwatch</li>
+<li>**Timer</li>
+<li>**CollectionTag</li>
+<li>**TakeawayBox</li>
+<li>**PriceTag</li>
+<li>**Wallet</li>
+<li>**Opportunity</li>
+<li>**PhoneFilled</li>
+<li>**WalletFilled</li>
+<li>**GoodsFilled</li>
+<li>**Flag</li>
+<li>**BrushFilled</li>
+<li>**Briefcase</li>
+<li>**Stamp</li>
+</ul>
+<p>Weather</p>
+<ul>
+<li>**Sunrise</li>
+<li>**Sunny</li>
+<li>**Ship</li>
+<li>**MostlyCloudy</li>
+<li>**PartlyCloudy</li>
+<li>**Sunset</li>
+<li>**Drizzling</li>
+<li>**Pouring</li>
+<li>**Cloudy</li>
+<li>**Moon</li>
+<li>**MoonNight</li>
+<li>**Lightning</li>
+</ul>
+<p>Other</p>
+<ul>
+<li>**ChromeFilled</li>
+<li>**Eleme</li>
+<li>**ElemeFilled</li>
+<li>**ElementPlus</li>
+<li>**Shop</li>
+<li>**SwitchFilled</li>
+<li>**WindPower</li>
+</ul>
+<h2>API</h2>
+<h3>Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>color</td>
+<td>svg 的 fill 颜色</td>
+<td><code>string</code></td>
+<td>继承颜色</td>
+</tr>
+<tr>
+<td>size</td>
+<td>SVG 图标的大小，size x size</td>
+<td><code>number</code> / <code>string</code></td>
+<td>继承字体大小</td>
+</tr>
+</tbody>
+</table>
+<h3>Slots</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>自定义默认内容</td>
+</tr>
+</tbody>
+</table></div></section>
+  </main>
+</div>
+
+<script src="lib/vue.global.prod.js"></script>
+<script src="lib/element-plus.full.min.js"></script>
+<script src="lib/icons.iife.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="build/icon.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(t.getAttribute('data-t')).classList.add('active');
+      if (window.hljs) hljs.highlightAll();
+    });
+  });
+  if (window.hljs) hljs.highlightAll();
+
+  if (!(window.Vue && window.ElementPlus && window.ElementPlusIconsVue)) return;
+  var list = (window.__EXAMPLES__ && window.__EXAMPLES__["icon"]) || [];
+  list.forEach(function(ex, i) {
+    var el = document.getElementById('mount-' + i);
+    if (!el) return;
+    try {
+      var app = Vue.createApp(ex.comp);
+      app.use(ElementPlus);
+      app.config.errorHandler = function(err, instance, info) {
+        el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (err && err.message ? err.message : err) + '</p>';
+      };
+      for (var k in ElementPlusIconsVue) { app.component(k, ElementPlusIconsVue[k]); }
+      app.mount(el);
+    } catch (e) {
+      el.innerHTML = '<p style="color:#F56C6C">该示例渲染失败：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

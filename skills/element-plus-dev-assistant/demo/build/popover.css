@@ -1,0 +1,32 @@
+
+.popover-base-box {
+
+  width: 600px;
+}
+.popover-base-box .row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+.popover-base-box .center {
+
+  justify-content: center;
+}
+
+
+
+
+.el-button + .el-button[data-v-3af4bl] {
+
+  margin-left: 8px;
+}
+
+
+
+
+
+
+

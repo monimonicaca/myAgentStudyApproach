@@ -1,0 +1,29 @@
+
+.popconfirm-base-box {
+
+  width: 600px;
+}
+.popconfirm-base-box .row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+.popconfirm-base-box .center {
+
+  justify-content: center;
+}
+.popconfirm-base-box .box-item {
+
+  width: 110px;
+
+  margin-top: 10px;
+}
+
+
+
+
+
+

@@ -26,3 +26,18 @@ https://github.com/obra/superpowers
 # 26.11.02-26.11.08
 1、紫微斗数 · 开源排盘引擎
 https://github.com/Renhuai123/ziwei-doushu
+
+## 11.05
+1、https://github.com/mattpocock/skills
+
+## 11.06
+1、https://github.com/garrytan/gstack
+
+# 26.11.09-26.11.15
+
+## 11.09
+1、Hunt down social media accounts by username across social networks
+https://github.com/sherlock-project/sherlock
+
+2、省token的
+https://github.com/ranxianglei/billion-context
